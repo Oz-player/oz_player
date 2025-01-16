@@ -1,4 +1,4 @@
-package com.example.oz_player
+package com.oz.ozplayer
 
 import io.flutter.embedding.android.FlutterActivity
 
