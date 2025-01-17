@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:oz_player/presentation/ui/home/home_page.dart';
+import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -7,8 +7,8 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(),
-      //routes: [],
+      builder: (context, state) => Splash(),
+      // routes: [],
     ),
   ],
 
