@@ -15,7 +15,7 @@ class HomeIndexedStack extends StatelessWidget {
         return IndexedStack(
           index: currentIndex,
           children: [
-            // 여기에 탭에 속한 페이지 넣기!
+            // TODO 여기에 탭에 속한 페이지 넣기!
           ],
         );
       }

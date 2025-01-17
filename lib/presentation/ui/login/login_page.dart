@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AndroidLoginPage extends StatelessWidget {
+class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('AndroidLoginPage'),
+      body: Text('LoginPage'),
     );
   }
 }
