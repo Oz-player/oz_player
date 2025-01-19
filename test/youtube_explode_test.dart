@@ -15,13 +15,10 @@ void main() async{
     final videoTitle = video.title;
     final videoDuration = video.duration;
     final videoUrl = video.url;
+    final audioUrl = video.audioUrl;
 
-    debugPrint('title : $videoTitle, \nid : $videoId, \nduration : $videoDuration, \nUrl : $videoUrl');
+    debugPrint('title : $videoTitle, \nid : $videoId, \nduration : $videoDuration, \nUrl : $videoUrl, \naudioUrl : $audioUrl');
 
     expect(video.id != '', true);
-  });
-
-  test('YOUTUBE EXPLODE TEST _ Stream', () async {
-    
   });
 }

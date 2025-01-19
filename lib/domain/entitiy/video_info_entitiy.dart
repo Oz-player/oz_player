@@ -5,13 +5,15 @@ class VideoInfoEntitiy {
   final String title;
   final Duration? duration;
   final String url;
+  final String audioUrl;
 
-  VideoInfoEntitiy({required this.id, required this.title, required this.duration, required this.url});
+  VideoInfoEntitiy({required this.id, required this.title, required this.duration, required this.url, required this.audioUrl});
 
-  VideoInfoEntitiy.yt(VideoSearchList video) : this (
+  VideoInfoEntitiy.yt(VideoSearchList video, StreamManifest manifest) : this (
     id: video.first.id.value,
     title: video.first.title,
     duration: video.first.duration,
-    url: video.first.url
+    url: video.first.url,
+    audioUrl: manifest.audioOnly.first.url.toString(),
   );
 }

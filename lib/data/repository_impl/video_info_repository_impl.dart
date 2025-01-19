@@ -7,7 +7,8 @@ class VideoInfoRepositoryImpl implements VideoInfoRepository {
   Future<VideoInfoEntitiy> getVideoInfo(String songName, String artist) async {
     final yt = YoutubeExplode();
     final video = await yt.search.search('$artist $songName');
+    final manifest = await yt.videos.streamsClient.getManifest(video.first.id.value);
 
-    return VideoInfoEntitiy.yt(video);
+    return VideoInfoEntitiy.yt(video, manifest);
   }
 }
