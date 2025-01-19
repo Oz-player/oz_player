@@ -23,6 +23,7 @@ class AudioPlayerState {
 class AudioPlayerViewModel extends StateNotifier<AudioPlayerState> {
   AudioPlayerViewModel() : super(AudioPlayerState(AudioPlayer(), false));
 
+  /// 오디오 연결
   void setAudioPlayer(String songName, String artist) async {
     final videoInfoRepository = VideoInfoRepositoryImpl();
     final videoInfoUsecase = VideoInfoUsecase(videoInfoRepository);
@@ -31,13 +32,21 @@ class AudioPlayerViewModel extends StateNotifier<AudioPlayerState> {
     await state.audioPlayer.setUrl(video.audioUrl);
   }
 
+  /// 오디오 재생
   void togglePlay() async {
     await state.audioPlayer.play();
     state.isPlaying = true;
   }
 
+  /// 오디오 일시정지
   void togglePause() async {
     await state.audioPlayer.pause();
+    state.isPlaying = false;
+  }
+
+  /// 오디오 스톱 및 연결 오디오 제거
+  void toggleStop() async {
+    await state.audioPlayer.stop();
     state.isPlaying = false;
   }
 

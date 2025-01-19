@@ -17,6 +17,7 @@ class GeminiSourceImpl implements AiSource {
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);
 
+      log('추천음악 GEMINI 응답 성공');
       final filteringText = response.text!.split('json')[1].split('```')[0];
       Map<String,dynamic> data = jsonDecode(filteringText);
       return RecommendMusicDto.fromJson(data);

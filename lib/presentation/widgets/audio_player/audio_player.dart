@@ -43,6 +43,13 @@ class AudioPlayer extends StatelessWidget {
                           .read(audioPlayerViewModelProvider.notifier)
                           .togglePause();
                     },
+                    icon: Icon(Icons.pause)),
+                IconButton(
+                    onPressed: () {
+                      ref
+                          .read(audioPlayerViewModelProvider.notifier)
+                          .togglePause();
+                    },
                     icon: Icon(Icons.stop)),
               ],
             ),

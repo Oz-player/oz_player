@@ -16,4 +16,12 @@ class VideoInfoEntitiy {
     url: video.first.url,
     audioUrl: manifest.audioOnly.first.url.toString(),
   );
+
+  VideoInfoEntitiy.empty() : this(
+    id: '',
+    title: '',
+    duration: null,
+    url: '',
+    audioUrl: '',
+  );
 }
