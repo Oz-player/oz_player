@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oz_player/data/repository_impl/gemini_repository_impl.dart';
@@ -25,8 +24,8 @@ void main() async {
 ''';
 
     final result = await geminiUsecase.recommentMusicByGemini(condition, apiKey!);
-    print('${result.musicName}');
-    print('${result.artist}');
+    debugPrint('musicName : ${result.musicName}');
+    debugPrint('artist : ${result.artist}');
 
     expect(result.musicName != null, true);
   });
