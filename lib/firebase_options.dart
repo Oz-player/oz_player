@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1030920972906',
     projectId: 'oz-player',
     storageBucket: 'oz-player.firebasestorage.app',
+    androidClientId: '1030920972906-s84q0hspn0gl972qa5h8cmgvgel0b0nh.apps.googleusercontent.com',
+    iosClientId: '1030920972906-lmrobs01kau10bqi70jpm61lvv060gm8.apps.googleusercontent.com',
     iosBundleId: 'com.oz.ozplayer',
   );
 
