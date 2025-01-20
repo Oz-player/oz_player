@@ -42,7 +42,7 @@ class GoogleLoginUseCase {
 
       // 새로운 사용자는 Firestore 데이터 저장 후 홈페이지로 이동
       await googleLoginRepository.saveNewUser(uid, email);
-      return ['home', uid];
+      return ['/home', uid];
     } catch (e) {
       //
       rethrow;

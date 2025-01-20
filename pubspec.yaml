@@ -46,7 +46,11 @@ dependencies:
   flutter_dotenv: ^5.2.1
   youtube_explode_dart: ^2.3.6
   just_audio: ^0.9.43
+
   riverpod: ^2.6.1
+
+
+  audio_video_progress_bar: ^2.0.3
 
 
 dev_dependencies:
