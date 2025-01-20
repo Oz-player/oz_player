@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/recommend_music_entity.dart';
 import 'package:oz_player/domain/repository/gemini_repository.dart';
 
@@ -14,3 +15,8 @@ class GeminiUsecase {
     return result;
   }
 }
+
+final geminiUsecaseProvider = Provider<GeminiUsecase>((ref){
+  final geminiRepository = ref.watch(geiminiRepositoryProvider);
+  return GeminiUsecase(geminiRepository);
+});

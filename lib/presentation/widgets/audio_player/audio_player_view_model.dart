@@ -17,15 +17,19 @@ class AudioPlayerState {
           audioPlayer ?? this.audioPlayer, isPlaying ?? this.isPlaying);
 }
 
-class AudioPlayerViewModel extends StateNotifier<AudioPlayerState> {
-  AudioPlayerViewModel() : super(AudioPlayerState(AudioPlayer(), false));
+class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
+  @override
+  AudioPlayerState build() {
+    return AudioPlayerState(AudioPlayer(), false);
+  }
 
   /// 오디오 연결
   void setAudioPlayer(String songName, String artist) async {
-    final videoInfoRepository = VideoInfoRepositoryImpl();
-    final videoInfoUsecase = VideoInfoUsecase(videoInfoRepository);
-
-    final video = await videoInfoUsecase.getVideoInfo(songName, artist);
+    // final videoInfoRepository = VideoInfoRepositoryImpl();
+    // final videoInfoUsecase = VideoInfoUsecase(videoInfoRepository);
+    // final video = await videoInfoUsecase.getVideoInfo(songName, artist);
+    
+    final video = await ref.read(videoInfoUsecaseProvider).getVideoInfo(songName, artist);
     await state.audioPlayer.setUrl(video.audioUrl);
   }
 
@@ -53,6 +57,6 @@ class AudioPlayerViewModel extends StateNotifier<AudioPlayerState> {
 }
 
 final audioPlayerViewModelProvider =
-    StateNotifierProvider<AudioPlayerViewModel, AudioPlayerState>((ref) {
+    NotifierProvider<AudioPlayerViewModel, AudioPlayerState>(() {
   return AudioPlayerViewModel();
 });
