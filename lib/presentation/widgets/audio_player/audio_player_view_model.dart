@@ -42,9 +42,19 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
 
   /// 오디오 재생
   void togglePlay() async {
-    if (state.isPlaying == false || state.audioPlayer.processingState == ProcessingState.completed) {
-      await state.audioPlayer.play();
-      state.isPlaying = true;
+    if(_playerStateSubscription == null){
+      return;
+    }
+
+    if (state.isPlaying == false) {
+      if (state.audioPlayer.processingState == ProcessingState.completed) {
+        await state.audioPlayer.seek(Duration.zero);
+        await state.audioPlayer.play();
+        state.isPlaying = true;
+      } else {
+        await state.audioPlayer.play();
+        state.isPlaying = true;
+      }
     } else {
       return;
     }
@@ -66,6 +76,33 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
     _playerStateSubscription = null;
   }
 
+  /// 오디오 앞으로 건너뛰기
+  /// 건너뛰기시 버퍼링(노이즈) 문제를 위해 pause후 다시 play
+  void skipForwardSec(int sec) async {
+    await state.audioPlayer.pause();
+    final duration = state.audioPlayer.duration;
+    final currentPosition = state.audioPlayer.position;
+    final newPosition = currentPosition + Duration(seconds: sec);
+
+    if (newPosition > duration!) {
+      await state.audioPlayer.seek(duration);
+    } else {
+      await state.audioPlayer.seek(newPosition);
+    }
+    await state.audioPlayer.play();
+  }
+
+    /// 오디오 앞으로 건너뛰기
+  /// 건너뛰기시 버퍼링(노이즈) 문제를 위해 pause후 다시 play
+  void skipForwardPosition(Duration pos) async {
+    await state.audioPlayer.pause();
+    final newPosition = pos;
+
+    await state.audioPlayer.seek(newPosition);
+    await state.audioPlayer.play();
+  }
+
+  /// 새로운 오디오플레이어 객체를 사용할때
   void updateAudioPlayer(AudioPlayer player) {
     state = state.copyWith(audioPlayer: player);
   }
