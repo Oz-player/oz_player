@@ -15,51 +15,56 @@ class AudioPlayer extends StatelessWidget {
   Widget fullAudioPlayer() {
     return Consumer(
       builder: (context, ref, child) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-                onPressed: () {
-                  final songName = '신호등';
-                  final artist = '이무진';
-                  ref
-                      .read(audioPlayerViewModelProvider.notifier)
-                      .setAudioPlayer(songName, artist);
-                },
-                child: Text('이무진 - 신호등')),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .togglePlay();
-                    },
-                    icon: Icon(Icons.play_arrow)),
-                IconButton(
-                    onPressed: () {
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .togglePause();
-                    },
-                    icon: Icon(Icons.pause)),
-                IconButton(
-                    onPressed: () {
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .togglePause();
-                    },
-                    icon: Icon(Icons.stop)),
-              ],
-            ),
-          ],
+        return Hero(
+          tag: 'audio',
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    final songName = '신호등';
+                    final artist = '이무진';
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setAudioPlayer(songName, artist);
+                  },
+                  child: Text('이무진 - 신호등')),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .togglePlay();
+                      },
+                      icon: Icon(Icons.play_arrow)),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .togglePause();
+                      },
+                      icon: Icon(Icons.pause)),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .togglePause();
+                      },
+                      icon: Icon(Icons.stop)),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
   Widget bottomAudioPlayer() {
-    return Container();
+    return Consumer(builder:(context, ref, child) {
+      return Hero(tag: 'audio', child: Container());
+    },);
   }
 }

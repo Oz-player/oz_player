@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:oz_player/data/repository_impl/video_info_repository_impl.dart';
 import 'package:oz_player/domain/usecase/video_info_usecase.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
