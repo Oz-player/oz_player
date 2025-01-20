@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:oz_player/data/source/google_login_data_source.dart';
-import 'package:oz_player/domain/repository/google_login_repository.dart';
+import 'package:oz_player/data/source/login/google_login_data_source.dart';
+import 'package:oz_player/domain/repository/login/google_login_repository.dart';
 
 class GoogleLoginRepositoryImpl implements GoogleLoginRepository {
   final GoogleLoginDataSource _googleLoginDataSource;

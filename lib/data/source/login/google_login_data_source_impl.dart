@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:oz_player/data/source/google_login_data_source.dart';
+import 'package:oz_player/data/source/login/google_login_data_source.dart';
 
 // google sign in 이랑 firebase 연동
 // firestore에 사용자 정보 저장
