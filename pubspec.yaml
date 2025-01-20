@@ -51,6 +51,7 @@ dependencies:
 
 
   audio_video_progress_bar: ^2.0.3
+  sign_in_with_apple: ^6.1.4
 
 
 dev_dependencies:

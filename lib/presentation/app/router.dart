@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/audio_page/audio_page.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
-import 'package:oz_player/presentation/ui/splash/splash.dart';
 import 'package:oz_player/presentation/ui/test_page/testpage.dart';
 
 final router = GoRouter(
