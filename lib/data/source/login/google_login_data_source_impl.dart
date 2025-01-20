@@ -41,7 +41,7 @@ class GoogleLoginDataSourceImpl implements GoogleLoginDataSource {
   }
 
   @override
-  Future<QuerySnapshot<Object?>> fetchUserEmail(String email) async {
+  Future<QuerySnapshot<Map<String, dynamic>?>> fetchUserEmail(String email) async {
     try {
       final snapshot = await _firestore
           .collection('User')
