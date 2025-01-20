@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
 import 'package:oz_player/domain/repository/video_info_repository.dart';
 
@@ -13,3 +14,8 @@ class VideoInfoUsecase {
     return result;
   }
 }
+
+final videoInfoUsecaseProvider = Provider<VideoInfoUsecase>((ref){
+  final videoInfoRepository = ref.read(videoInfoRepositoryProvider);
+  return VideoInfoUsecase(videoInfoRepository);
+});

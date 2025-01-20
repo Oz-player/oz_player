@@ -1,3 +1,4 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
@@ -15,11 +16,35 @@ class AudioPlayer extends StatelessWidget {
   Widget fullAudioPlayer() {
     return Consumer(
       builder: (context, ref, child) {
+        final audioState = ref.watch(audioPlayerViewModelProvider);
+        
         return Hero(
           tag: 'audio',
+          flightShuttleBuilder:
+              (flightContext, animation, direction, fromContext, toContext) {
+            return ScaleTransition(
+              scale: animation,
+              child: Icon(Icons.music_note, size: 50),
+            );
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: StreamBuilder(
+                  stream: audioState.audioPlayer.positionStream,
+                  builder: (context, snapshot) {
+                    return ProgressBar(
+                      progress: snapshot.data ?? const Duration(seconds: 0),
+                      total: audioState.audioPlayer.duration ?? const Duration(seconds: 2),
+                      onSeek: (duration) {
+                        ref.read(audioPlayerViewModelProvider.notifier).skipForwardPosition(duration);
+                      },
+                    );
+                  }
+                ),
+              ),
               TextButton(
                   onPressed: () {
                     final songName = '신호등';
@@ -53,6 +78,13 @@ class AudioPlayer extends StatelessWidget {
                             .togglePause();
                       },
                       icon: Icon(Icons.stop)),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .skipForwardSec(10);
+                      },
+                      icon: Icon(Icons.skip_next)),
                 ],
               ),
             ],
@@ -63,8 +95,52 @@ class AudioPlayer extends StatelessWidget {
   }
 
   Widget bottomAudioPlayer() {
-    return Consumer(builder:(context, ref, child) {
-      return Hero(tag: 'audio', child: Container());
-    },);
+    return Consumer(
+      builder: (context, ref, child) {
+        return Hero(
+            tag: 'audio',
+            child: Container(
+              color: Colors.grey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    color: Colors.red,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .togglePlay();
+                      },
+                      icon: Icon(Icons.play_arrow)),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .togglePause();
+                      },
+                      icon: Icon(Icons.pause)),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .togglePause();
+                      },
+                      icon: Icon(Icons.stop)),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .skipForwardSec(10);
+                      },
+                      icon: Icon(Icons.skip_next)),
+                ],
+              ),
+            ));
+      },
+    );
   }
 }
