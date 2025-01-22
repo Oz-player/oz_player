@@ -23,19 +23,17 @@ class ManiadbSongDto {
     required this.artist,
   });
 
-    factory ManiadbSongDto.fromJson(Map<String, dynamic> json) {
-    return ManiadbSongDto(
-      id: json['id']?? '',
-      title: json['title']?? '',
-      runningTime: json['runningTime']?? '',
-      link: json['link']?? '',
-      pubDate: json['pubDate']?? '',
-      author: json['author']?? '',
-      description: json['description']?? '',
-      comments: json['comments']?? '',
-      album: json['album']?? [],
-      artist: json['artist']?? [],
-    );
-  }
-
+  ManiadbSongDto.fromJson(Map<String, dynamic> json)
+      : this(
+          id: json['id'] ?? '',
+          title: json['title'] ?? '',
+          runningTime: json['runningTime'] ?? '',
+          link: json['link'] ?? '',
+          pubDate: json['pubDate'] ?? '',
+          author: json['author'] ?? '',
+          description: json['description'] ?? '',
+          comments: json['comments'] ?? '',
+          album: json['album'] ?? [],
+          artist: json['artist'] ?? [],
+        );
 }

@@ -9,20 +9,6 @@ class ManiadbDataSourceImpl implements ManiadbDataSource {
   final Xml2Json xml2json = Xml2Json();
 
 
-  //xml파일에서 있던 __Cdata속성 없애는 함수
-  dynamic cleanCData(dynamic data) {
-    if (data is Map && data.containsKey('__cdata')) {
-      return data['__cdata'].trim(); // __cdata 값 반환
-    }
-    if (data is Map) {
-      return data.map((key, value) => MapEntry(key, cleanCData(value)));
-    }
-    if (data is List) {
-      return data.map(cleanCData).toList();
-    }
-    return data;
-  }
-
   @override
   Future<List<ManiadbArtistDto>> fetchArtist(String query) async {
     final client = Client();
@@ -35,9 +21,8 @@ class ManiadbDataSourceImpl implements ManiadbDataSource {
     if (response.statusCode == 200) {
       xml2json.parse(response.body);
       var jsonData = xml2json.toParker();
-      var cleanedJson = cleanCData(jsonData);
 
-      Map<String, dynamic> map = jsonDecode(cleanedJson);
+      Map<String, dynamic> map = jsonDecode(jsonData);
       final dynamic itemData = map['rss']['channel']['item'];
 
       // item이 단일 객체일 경우와 리스트일 경우를 구분
@@ -64,9 +49,8 @@ class ManiadbDataSourceImpl implements ManiadbDataSource {
     if (response.statusCode == 200) {
       xml2json.parse(response.body);
       var jsonData = xml2json.toParker();
-      var cleanedJson = cleanCData(jsonData);
 
-      Map<String, dynamic> map = jsonDecode(cleanedJson);
+      Map<String, dynamic> map = jsonDecode(jsonData);
       final dynamic itemData = map['rss']['channel']['item'];
 
       // item이 단일 객체일 경우와 리스트일 경우를 구분
