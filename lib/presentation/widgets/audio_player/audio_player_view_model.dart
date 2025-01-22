@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
@@ -6,51 +7,71 @@ import 'package:oz_player/domain/usecase/video_info_usecase.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
+  StreamSubscription? playerStateSubscription;
   bool isPlaying;
 
-  AudioPlayerState(this.audioPlayer, this.isPlaying);
+  AudioPlayerState(
+      this.audioPlayer, this.playerStateSubscription, this.isPlaying);
 
   AudioPlayerState copyWith({
     AudioPlayer? audioPlayer,
+    StreamSubscription? playerStateSubscription,
     bool? isPlaying,
   }) =>
       AudioPlayerState(
-          audioPlayer ?? this.audioPlayer, isPlaying ?? this.isPlaying);
+          audioPlayer ?? this.audioPlayer,
+          playerStateSubscription ?? this.playerStateSubscription,
+          isPlaying ?? this.isPlaying);
 }
 
 class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
-  StreamSubscription? _playerStateSubscription;
-
   @override
   AudioPlayerState build() {
-    return AudioPlayerState(AudioPlayer(), false);
+    return AudioPlayerState(AudioPlayer(), null, false);
   }
 
   /// 오디오 연결
   void setAudioPlayer(String songName, String artist) async {
-    final video =
-        await ref.read(videoInfoUsecaseProvider).getVideoInfo(songName, artist);
-    await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+    try {
+      final video = await ref
+          .read(videoInfoUsecaseProvider)
+          .getVideoInfo(songName, artist);
+      await state.audioPlayer.setUrl(video.audioUrl, preload: true);
 
-    _playerStateSubscription ??=
-        state.audioPlayer.playerStateStream.listen((playerState) {
-      if (playerState.processingState == ProcessingState.completed) {
-        state.isPlaying = false;
-      }
-    });
+      state = state.copyWith();
+
+      state.playerStateSubscription ??=
+          state.audioPlayer.playerStateStream.listen((playerState) {
+        if (playerState.processingState == ProcessingState.completed) {
+          state.isPlaying = false;
+        }
+      });
+    } catch (e) {
+      log('잘못된 url 이거나, 인터넷 연결 문제 \n$e');
+    }
   }
 
   /// 오디오 재생
+  /// 오디오가 이미 completed 상태이면, 처음부터 다시 재생
+  /// 오디오 재생시 버퍼링중이면, 버퍼링을 기다렸다가 실행
   void togglePlay() async {
-    if(_playerStateSubscription == null){
+    if (state.playerStateSubscription == null) {
       return;
     }
 
     if (state.isPlaying == false) {
       if (state.audioPlayer.processingState == ProcessingState.completed) {
         await state.audioPlayer.seek(Duration.zero);
-        await state.audioPlayer.play();
-        state.isPlaying = true;
+
+        await for (var playerState in state.audioPlayer.playerStateStream) {
+          if (playerState.processingState == ProcessingState.buffering) {
+            continue;
+          } else if (playerState.processingState == ProcessingState.ready) {
+            await state.audioPlayer.play();
+            state.isPlaying = true;
+            break;
+          }
+        }
       } else {
         await state.audioPlayer.play();
         state.isPlaying = true;
@@ -66,14 +87,13 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
     state.isPlaying = false;
   }
 
-  /// 오디오 스톱 및 연결 오디오 제거
+  /// 오디오 완전 정지, 재시작 시 새로운 설정 필요
   void toggleStop() async {
     await state.audioPlayer.stop();
     state.isPlaying = false;
 
-    // stop 후에는 리스너를 해제
-    _playerStateSubscription?.cancel();
-    _playerStateSubscription = null;
+    state.playerStateSubscription?.cancel();
+    state.playerStateSubscription = null;
   }
 
   /// 오디오 앞으로 건너뛰기
@@ -89,17 +109,33 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
     } else {
       await state.audioPlayer.seek(newPosition);
     }
-    await state.audioPlayer.play();
+
+    await for (var playerState in state.audioPlayer.playerStateStream) {
+      if (playerState.processingState == ProcessingState.buffering) {
+        continue;
+      } else if (playerState.processingState == ProcessingState.ready) {
+        await state.audioPlayer.play();
+        break;
+      }
+    }
   }
 
-    /// 오디오 앞으로 건너뛰기
+  /// 오디오 앞으로 건너뛰기
   /// 건너뛰기시 버퍼링(노이즈) 문제를 위해 pause후 다시 play
   void skipForwardPosition(Duration pos) async {
     await state.audioPlayer.pause();
     final newPosition = pos;
 
     await state.audioPlayer.seek(newPosition);
-    await state.audioPlayer.play();
+
+    await for (var playerState in state.audioPlayer.playerStateStream) {
+      if (playerState.processingState == ProcessingState.buffering) {
+        continue;
+      } else if (playerState.processingState == ProcessingState.ready) {
+        await state.audioPlayer.play();
+        break;
+      }
+    }
   }
 
   /// 새로운 오디오플레이어 객체를 사용할때

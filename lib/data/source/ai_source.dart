@@ -4,6 +4,7 @@ import 'package:oz_player/data/source/gemini_source_impl.dart';
 
 abstract class AiSource {
   Future<RecommendMusicDto> getResponse(String prompt, String apiKey);
+  Future<List<RecommendMusicDto>> getMultiResponse(String prompt, String apiKey);
 }
 
 final aiSourceProvider = Provider<AiSource>((ref){
