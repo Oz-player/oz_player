@@ -1,11 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:oz_player/data/source/login/apple_login_data_source.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AppleLoginDataSourceImpl implements AppleLoginDataSource {
   final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
-  AppleLoginDataSourceImpl(this._firestore);
+  AppleLoginDataSourceImpl({
+    required FirebaseFirestore firestore,
+    required FirebaseAuth auth,
+  })  : _firestore = firestore,
+        _auth = auth;
 
   @override
   Future<Map<String, String>> signInWithApple() async {
@@ -18,7 +24,7 @@ class AppleLoginDataSourceImpl implements AppleLoginDataSource {
       final uid = appleCredential.userIdentifier ?? 'unknown_uid';
       final email = appleCredential.email ?? 'unknown_email';
 
-      // uid, email 
+      // uid, email(애플 로그인 정보)
       final Map<String, String> userInfo = {
         'uid': uid, // 애플로그인에서 받은 사용자 고유 ID
         'email': email,
@@ -26,6 +32,17 @@ class AppleLoginDataSourceImpl implements AppleLoginDataSource {
       return userInfo;
     } catch (e) {
       throw Exception('$e');
+    }
+  }
+
+  @override
+  Future<UserCredential> signInWithAppleFirebase(
+      OAuthCredential credential) async {
+    try {
+      final userCredential = await _auth.signInWithCredential(credential);
+      return userCredential;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -38,23 +55,49 @@ class AppleLoginDataSourceImpl implements AppleLoginDataSource {
 
   @override
   Future<void> updateUser(String uid, String email) async {
-    final docRef = _firestore.collection('User').doc(uid);
-    await docRef.update(
-      {
-        // 'uid': uid,
+    try {
+      final docRef = _firestore.collection('User').doc(uid);
+      await docRef.update({
         'email': email,
-      },
-    );
+      });
+    } catch (e) {
+      print('사용자 정보 업데이트 실패! $e');
+    }
   }
 
   @override
-  Future<void> createUser(String uid, String email) async {
-    final docRef = _firestore.collection('User').doc(uid);
-    await docRef.set(
-      {
+  Future<void> createUser(String uid, String? email) async {
+    print('Firestore createUser 호출: uid=$uid, email=$email');
+    try {
+      final docRef = _firestore.collection('User').doc(uid);
+      final nullableEmail = email ?? 'unKnown'; // email이 null값으로 올 때, 기본값
+      await docRef.set({
         'uid': uid,
-        'email': email,
-      },
-    );
+        'email': nullableEmail,
+      });
+      print('새로운 사용자 생성 완료! $uid, $nullableEmail');
+    } catch (e) {
+      print('사용자 생성 실패! $e');
+    }
+  }
+
+  @override
+  Future<void> saveUser() async {
+    try {
+      final userInfo = await signInWithApple();
+      final uid = userInfo['uid']!;
+      final email = userInfo['email'];
+      
+      final existUser = await isExistUser(uid);
+
+      if (existUser) {
+        await createUser(uid, email ?? 'unKnown');
+      } else {
+        await createUser(uid, email);
+      }
+      print('새로운 사용자 Firestore Database에 저장완료!: $uid, $email');
+    } catch (e) {
+      print('새로운 사용자 Firestore Database에 저장 실패!: $e');
+    }
   }
 }

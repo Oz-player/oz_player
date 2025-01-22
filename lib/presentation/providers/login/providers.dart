@@ -25,8 +25,6 @@ final firestoreProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
 });
 
-
-
 final googleLoginDataSourceProvider = Provider<GoogleLoginDataSource>((ref) {
   final googleSignIn = ref.read(googleSignInProvider);
   final auth = ref.read(firebaseAuthProvider);
@@ -53,7 +51,11 @@ final googleLoginUseCaseProvider = Provider<GoogleLoginUseCase>((ref) {
 
 final appleLoginDataSourceProvider = Provider<AppleLoginDataSource>((ref) {
   final firestore = ref.read(firestoreProvider);
-  return AppleLoginDataSourceImpl(firestore);
+  final auth = ref.read(firebaseAuthProvider);
+  return AppleLoginDataSourceImpl(
+    firestore: firestore,
+    auth: auth,
+  );
 });
 
 final appleLoginRepositoryProvider = Provider<AppleLoginRepository>((ref) {
