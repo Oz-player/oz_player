@@ -13,7 +13,10 @@ class TextBoxWidgets extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(state.textList[state.index]),
+        child: Text(
+          state.textList[state.index],
+          style: TextStyle(fontSize: 14),
+        ),
       ),
     );
   }
