@@ -53,6 +53,7 @@ dependencies:
   audio_video_progress_bar: ^2.0.3
   http: ^1.2.2
   xml2json: ^6.2.6
+  html: ^0.15.5
 
 
 dev_dependencies:

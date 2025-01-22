@@ -16,7 +16,7 @@ void main() {
 
   test('test fetchSong', () async{
     ManiadbDataSourceImpl maniadbDataSourceImpl = ManiadbDataSourceImpl();
-    final search = await maniadbDataSourceImpl.fetchSong('동그라미');
+    final search = await maniadbDataSourceImpl.fetchSong('사랑');
     expect(search.isEmpty, false);
     for (var search in search) {
       print(search.title);

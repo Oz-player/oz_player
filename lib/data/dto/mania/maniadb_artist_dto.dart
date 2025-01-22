@@ -35,25 +35,23 @@ class ManiadbArtistDto {
     required this.majorSongList,
   });
 
-  factory ManiadbArtistDto.fromJson(Map<String, dynamic> json) {
-
-    return ManiadbArtistDto(
-      id: json['id'] ?? '',
-      title: json['title']?? '',
-      reference: json['reference']?? '',
-      demographic: json['demographic']?? '',
-      period: json['period']?? '',
-      link: json['link']?? '',
-      image: json['image']?? '',
-      linkGallery: json['maniadb:linkgallery']?? '',
-      linkDiscography: json['maniadb:linkdiscography']?? '',
-      pubDate: json['pubDate']?? '',
-      author: json['author']?? '',
-      description: json['description']?? '',
-      guid: json['guid']?? '',
-      comments: json['comments']?? '',
-      majorSongs: json['majorSongs']?? [],
-      majorSongList: json['maniadb:majorsonglist']?? '',
-    );
-  }
+  ManiadbArtistDto.fromJson(Map<String, dynamic> json)
+      : this(
+          id: json['id'] ?? '',
+          title: json['title'] ?? '',
+          reference: json['reference'] ?? '',
+          demographic: json['demographic'] ?? '',
+          period: json['period'] ?? '',
+          link: json['link'] ?? '',
+          image: json['image'] ?? '',
+          linkGallery: json['maniadb:linkgallery'] ?? '',
+          linkDiscography: json['maniadb:linkdiscography'] ?? '',
+          pubDate: json['pubDate'] ?? '',
+          author: json['author'] ?? '',
+          description: json['description'] ?? '',
+          guid: json['guid'] ?? '',
+          comments: json['comments'] ?? '',
+          majorSongs: json['majorSongs'] ?? [],
+          majorSongList: json['maniadb:majorsonglist'] ?? '',
+        );
 }
