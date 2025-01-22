@@ -1,37 +1,44 @@
 import 'package:go_router/go_router.dart';
-import 'package:oz_player/presentation/ui/audio_page/audio_page.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
+import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
+import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
 import 'package:oz_player/presentation/ui/splash/splash.dart';
-import 'package:oz_player/presentation/ui/test_page/testpage.dart';
 
 final router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home/recommend',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => Search(),
+      builder: (context, state) => Splash(),
       routes: [
         GoRoute(
-            path: 'test',
-            builder: (context, state) => const Testpage(),
-            routes: [
-              GoRoute(
-                path: 'audio',
-                builder: (context, state) => const AudioPage(),
-              ),
-            ]),
-        GoRoute(
-          path: 'home',
-          builder: (context, state) => HomePage(),
+          path: 'login',
+          builder: (context, state) => LoginPage(),
         ),
-        GoRoute(
-          path: '/search',
-          builder: (context, state) => Search(),
-        )
       ],
     ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => HomePage(),
+      routes: [
+        GoRoute(
+          path: 'recommend',
+          builder: (context, state) => RecommendPage(),
+          routes: [
+            GoRoute(
+              path: 'conditionOne',
+              builder: (context, state) => RecommendPageConditionOne(),
+            )
+          ]
+        )
+      ]
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => Search(),
+    )
   ],
 
   /*
