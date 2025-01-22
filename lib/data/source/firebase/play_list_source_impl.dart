@@ -13,7 +13,8 @@ class PlayListSourceImpl implements PlayListSource {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
       return (doc.data() as List).map((e) => PlayListDTO.fromJson(e)).toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
       return [];
     }
   }
@@ -33,7 +34,8 @@ class PlayListSourceImpl implements PlayListSource {
         }
       }
       return null;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
       return null;
     }
   }
@@ -58,6 +60,31 @@ class PlayListSourceImpl implements PlayListSource {
     try {
       await _firestore.collection('Playlist').doc(userId).update({
         '$listName.songIds': FieldValue.arrayUnion([songId])
+      });
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
+    }
+  }
+
+  // 플레이리스트 삭제
+  @override
+  Future<void> deletePlayList(String userId, String listName) async {
+    try {
+      await _firestore
+          .collection('Playlist')
+          .doc(userId)
+          .update({listName: FieldValue.delete()});
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
+    }
+  }
+
+  // 플레이리스트에서 특정 곡 삭제
+  @override
+  Future<void> deleteSong(String userId, String listName, String songId) async {
+    try {
+      await _firestore.collection('Playlist').doc(userId).update({
+        '$listName.songIds': FieldValue.arrayRemove([songId])
       });
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');

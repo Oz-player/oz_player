@@ -5,4 +5,6 @@ abstract interface class PlayListSource {
   Future<PlayListDTO?> getPlayList(String userId, String listName);
   Future<void> addPlayList(String userId, PlayListDTO playListDTO);
   Future<void> addSong(String userId, String listName, String songId);
+  Future<void> deletePlayList(String userId, String listName);
+  Future<void> deleteSong(String userId, String listName, String songId);
 }
