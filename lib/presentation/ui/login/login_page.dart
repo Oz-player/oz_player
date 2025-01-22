@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:oz_player/presentation/ui/login/widgets/apple_button.dart';
+import 'package:oz_player/presentation/ui/login/widgets/google_button.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -8,13 +10,14 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Google로 시작하기'),
-            ),
+            GoogleButton(),
+            SizedBox(height: 12),
+            AppleButton(),
           ],
         ),
       ),
     );
   }
 }
+
+
