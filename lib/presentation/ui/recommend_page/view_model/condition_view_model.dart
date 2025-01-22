@@ -9,9 +9,20 @@ class ConditionState {
   Set<int> genreSet;
   List<String> artist;
   Set<int> artistSet;
+  int page;
+  double opacity;
 
-  ConditionState(this.mood, this.moodSet, this.situation, this.situationSet,
-      this.genre, this.genreSet, this.artist, this.artistSet);
+  ConditionState(
+      this.mood,
+      this.moodSet,
+      this.situation,
+      this.situationSet,
+      this.genre,
+      this.genreSet,
+      this.artist,
+      this.artistSet,
+      this.page,
+      this.opacity);
 
   ConditionState copyWith({
     List<String>? mood,
@@ -22,6 +33,8 @@ class ConditionState {
     Set<int>? genreSet,
     List<String>? artist,
     Set<int>? artistSet,
+    int? page,
+    double? opacity,
   }) =>
       ConditionState(
           mood ?? this.mood,
@@ -31,10 +44,12 @@ class ConditionState {
           genre ?? this.genre,
           genreSet ?? this.genreSet,
           artist ?? this.artist,
-          artistSet ?? this.artistSet);
+          artistSet ?? this.artistSet,
+          page ?? this.page,
+          opacity ?? this.opacity);
 }
 
-class ConditionViewModel extends Notifier<ConditionState> {
+class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   @override
   ConditionState build() {
     List<String> mood = [
@@ -102,12 +117,12 @@ class ConditionViewModel extends Notifier<ConditionState> {
       '악기 연주자',
       '합창단',
     ];
-    return ConditionState(mood, {}, situation, {}, genre, {}, artist, {});
+    return ConditionState(
+        mood, {}, situation, {}, genre, {}, artist, {}, 0, 1.0);
   }
 
-  void clickBox(int index, Set<int> set){
-    
-    if(set.contains(index)){
+  void clickBox(int index, Set<int> set) {
+    if (set.contains(index)) {
       set.remove(index);
     } else {
       set.add(index);
@@ -115,9 +130,42 @@ class ConditionViewModel extends Notifier<ConditionState> {
 
     state = state.copyWith();
   }
+
+  void nextPage() {
+    if (state.page == 0 && state.moodSet.isNotEmpty) {
+      nextPageAnimation();
+    } else if (state.page == 1 && state.situationSet.isNotEmpty) {
+      nextPageAnimation();
+    } else if(state.page == 2 && state.genre.isNotEmpty){
+      nextPageAnimation();
+    } else if(state.page == 3 && state.artistSet.isNotEmpty){
+      nextPageAnimation();
+    }
+  }
+
+  void nextPageAnimation() async {
+    if (state.page < 3) {
+      toggleOpacity();
+      state = state.copyWith();
+
+      await Future.delayed(Duration(milliseconds: 500));
+
+      state.page += 1;
+      state = state.copyWith();
+
+      toggleOpacity();
+      state = state.copyWith();
+    } else {
+      return;
+    }
+  }
+
+  void toggleOpacity() {
+    state.opacity = state.opacity == 1.0 ? 0.0 : 1.0;
+  }
 }
 
 final conditionViewModelProvider =
-    NotifierProvider<ConditionViewModel, ConditionState>(() {
+    AutoDisposeNotifierProvider<ConditionViewModel, ConditionState>(() {
   return ConditionViewModel();
 });
