@@ -7,7 +7,7 @@ import 'package:oz_player/presentation/ui/search/search.dart';
 import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 final router = GoRouter(
-  initialLocation: '/home/recommend',
+  initialLocation: '/home',
   routes: [
     GoRoute(
       path: '/',
