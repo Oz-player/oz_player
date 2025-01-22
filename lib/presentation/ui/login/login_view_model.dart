@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oz_player/providers.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 
 enum LoginState { idle, loading, success, error }
 

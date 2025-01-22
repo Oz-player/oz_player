@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 
-class GoogleButton extends StatelessWidget {
+class GoogleButton extends ConsumerWidget {
   const GoogleButton({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        try {
+          await ref.read(loginViewModelProvider.notifier).googleLogin();
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('구글 로그인 실패! $e')),
+          );
+        }
+      },
       style: ElevatedButton.styleFrom(
         fixedSize: const Size(335, 52),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
