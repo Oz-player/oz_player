@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
-class RecommendPageConditionOne extends ConsumerStatefulWidget {
+class RecommendPageConditionOne extends ConsumerWidget {
   const RecommendPageConditionOne({super.key});
 
   @override
-  ConsumerState<RecommendPageConditionOne> createState() =>
-      _RecommendPageConditionOneState();
-}
-
-class _RecommendPageConditionOneState
-    extends ConsumerState<RecommendPageConditionOne> {
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final conditionState = ref.watch(conditionViewModelProvider);
 
     return Scaffold(
@@ -62,14 +55,14 @@ class _RecommendPageConditionOneState
                 Wrap(
                   children: [
                     if (conditionState.page == 0)
-                      ...boxes(conditionState.mood, conditionState.moodSet),
+                      ...boxes(conditionState.mood, conditionState.moodSet, ref),
                     if (conditionState.page == 1)
                       ...boxes(conditionState.situation,
-                          conditionState.situationSet),
+                          conditionState.situationSet, ref),
                     if (conditionState.page == 2)
-                      ...boxes(conditionState.genre, conditionState.genreSet),
+                      ...boxes(conditionState.genre, conditionState.genreSet, ref),
                     if (conditionState.page == 3)
-                      ...boxes(conditionState.artist, conditionState.artistSet),
+                      ...boxes(conditionState.artist, conditionState.artistSet, ref),
                   ],
                 ),
                 SizedBox(height: 60,),
@@ -80,8 +73,11 @@ class _RecommendPageConditionOneState
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(Colors.black)
                       ),
-                        onPressed: () {
-                          ref.read(conditionViewModelProvider.notifier).nextPage();
+                        onPressed: () async {
+                          final isNextPage = ref.read(conditionViewModelProvider.notifier).nextPage();
+                          if(isNextPage){
+                            context.go('/home/recommend/conditionTwo');
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -98,7 +94,7 @@ class _RecommendPageConditionOneState
     );
   }
 
-  List<Widget> boxes(List<String> condition, Set<int> set) {
+  List<Widget> boxes(List<String> condition, Set<int> set, WidgetRef ref) {
     return List.generate(condition.length, (index) {
       if (set.contains(index)) {
         return GestureDetector(

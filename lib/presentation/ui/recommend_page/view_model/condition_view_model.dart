@@ -131,19 +131,27 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
     state = state.copyWith();
   }
 
-  void nextPage() {
+  bool nextPage() {
     if (state.page == 0 && state.moodSet.isNotEmpty) {
       nextPageAnimation();
+      return false;
     } else if (state.page == 1 && state.situationSet.isNotEmpty) {
       nextPageAnimation();
+      return false;
     } else if(state.page == 2 && state.genre.isNotEmpty){
       nextPageAnimation();
+      return false;
     } else if(state.page == 3 && state.artistSet.isNotEmpty){
       nextPageAnimation();
+      return true;
+    } else{
+      return false;
     }
   }
 
-  void nextPageAnimation() async {
+  /// false 값이면 계속 recommend_page_condition_one 페이지
+  /// true는 아얘 recommend_page_condition_two 로 이동
+  Future<void> nextPageAnimation() async {
     if (state.page < 3) {
       toggleOpacity();
       state = state.copyWith();
