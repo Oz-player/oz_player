@@ -1,30 +1,41 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:oz_player/domain/repository/login/apple_login_repository.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AppleLoginUseCase {
-  final FirebaseAuth _firebaseAuth;
+  final AppleLoginRepository _appleLoginRepository;
 
-  AppleLoginUseCase(this._firebaseAuth);
+  AppleLoginUseCase(this._appleLoginRepository);
 
-  Future<User?> execute() async {
+  Future<void> execute() async {
     try {
-      final AuthorizationCredentialAppleID appleCredential =
-          await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
+
+      // apple 로그인 정보 요청
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email],
       );
 
-      final OAuthCredential credential = OAuthProvider('apple.com').credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
-      );
+      // 로그인 성공하면 uid, email 정보 받기
+      final uid = appleCredential.userIdentifier;
+      final email = appleCredential.email;
 
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
-      return userCredential.user;
+      if (uid == null || email == null) {
+        throw Exception('사용자 정보 받기 실패!');
+      }
+
+
+      // 기존 사용자 찾기
+      final isExistUser = await _appleLoginRepository.isExistUser(uid);
+
+      if (isExistUser) {
+        // 기존 사용자면 데이터 업데이트
+        await _appleLoginRepository.updateUser(uid, email);
+      } else {
+        // 새로운 사용자면 데이터 등록
+        await _appleLoginRepository.createUser(uid, email);
+      }
     } catch (e) {
-      rethrow;
+      //
+      throw Exception('애플 로그인 실패! $e');
     }
   }
 }
