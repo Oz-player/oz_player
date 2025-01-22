@@ -7,6 +7,10 @@ class PlayListSourceImpl implements PlayListSource {
 
   PlayListSourceImpl(this._firestore);
 
+  // NOTICE : (add 관련) 플레이리스트에 음악을 넣을 때
+  // firebase-Song 콜렉션에도 추가해야 합니다
+  // Song 콜렉션이 명확하게 정해지고 나서 기능 추가 예정
+
   // 유저의 전체 플레이리스트를 가져옴
   @override
   Future<List<PlayListDTO>> getPlayLists(String userId) async {
