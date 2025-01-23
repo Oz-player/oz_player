@@ -19,6 +19,7 @@ class GeminiSourceImpl implements AiSource {
 
       log('추천음악 GEMINI 응답 성공');
       final filteringText = response.text!.split('json')[1].split('```')[0];
+
       Map<String, dynamic> data = jsonDecode(filteringText);
       return RecommendMusicDto.fromJson(data);
     } catch (e) {
@@ -42,11 +43,11 @@ class GeminiSourceImpl implements AiSource {
       print(response.text);
 
       log('추천음악 GEMINI 응답 성공');
-      // final filteringText = response.text!.split('json')[1].split('```')[0];
-      final filteringText = response.text!;
-      List<Map<String, dynamic>> data = List<Map<String, dynamic>>.from(jsonDecode(filteringText));
+      final filteringText = response.text!.split('json')[1].split('```')[0];
+      List<Map<String, dynamic>> data =
+          List<Map<String, dynamic>>.from(jsonDecode(filteringText));
 
-      final list = data.map((e){
+      final list = data.map((e) {
         return RecommendMusicDto.fromJson(e);
       }).toList();
 

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -17,6 +20,7 @@ class ConditionState {
   bool event;
   List<String> title;
   List<String> subtitle;
+  List<SongEntitiy> recommendSongs;
 
   ConditionState(
       this.mood,
@@ -31,7 +35,8 @@ class ConditionState {
       this.opacity,
       this.event,
       this.title,
-      this.subtitle);
+      this.subtitle,
+      this.recommendSongs);
 
   ConditionState copyWith({
     List<String>? mood,
@@ -47,6 +52,7 @@ class ConditionState {
     bool? event,
     List<String>? title,
     List<String>? subtitle,
+    List<SongEntitiy>? recommendSongs,
   }) =>
       ConditionState(
           mood ?? this.mood,
@@ -61,7 +67,8 @@ class ConditionState {
           opacity ?? this.opacity,
           event ?? this.event,
           title ?? this.title,
-          subtitle ?? this.subtitle);
+          subtitle ?? this.subtitle,
+          recommendSongs ?? this.recommendSongs);
 }
 
 class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
@@ -145,7 +152,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '마음에 드는 아티스트를 선택해 맞춤화 추천을 받아요!',
     ];
     return ConditionState(mood, {}, situation, {}, genre, {}, artist, {}, 0,
-        1.0, false, title, subtitle);
+        1.0, false, title, subtitle, []);
   }
 
   void clickBox(int index, Set<int> set) {
@@ -239,8 +246,13 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   /// 응답받은 값(musicName, artist)으로 maniadb 검색
   /// 응답받은 값(musicName, artist)으로 video 검색
   /// 검색 값 저장 및 출력
+  /// 만약 검색후에 나온 결과값이 아무것도 나오지 않을 경우엔? 대응 필요
   Future<void> recommendMusic() async {
+    // 검색 시작전 초기화
+    state.recommendSongs = [];
+
     final gemini = ref.read(geiminiRepositoryProvider);
+    final videoEx = ref.read(videoInfoUsecaseProvider);
     ref.read(loadingViewModelProvider.notifier).startLoading();
 
     final apiKey = dotenv.env['GEMINI_KEY'];
@@ -260,10 +272,36 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 4. 선호하는 아티스트는 '$artisttext'
 ''';
 
-    final except = '''백예린 - 혼란스러워''';
+    final except = '''
+''';
 
     final result = await gemini.recommentMultiMusicByGemini(
         condition, apiKey!, num, except);
+
+    // 응답받은 값(musicName, artist)으로 maniadb 검색
+    // 응답받은 값(musicName, artist)으로 video 검색
+    for (int i = 0; i < result.length; i++) {
+      final title = result[i].musicName;
+      final artist = result[i].artist;
+
+      print(title);
+      print(artist);
+
+      try {
+        final video =
+            await videoEx.getVideoInfo(result[i].musicName!, result[i].artist!);
+
+        final song = SongEntitiy(
+            video: video, title: title!, imgUrl: '', artist: artist!);
+        state.recommendSongs.add(song);
+      } catch (e) {
+        log('검색결과에 없는 노래, 스킵');
+      }
+    }
+
+    // 검색 결과값이 없을 경우 (대응 고민)
+    if(state.recommendSongs.isEmpty){
+    }
 
     ref.read(loadingViewModelProvider.notifier).endLoading();
   }
