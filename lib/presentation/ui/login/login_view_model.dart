@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
 enum LoginState { idle, loading, success, error }
 
@@ -17,7 +18,9 @@ class LoginViewModel extends Notifier<LoginState> {
   Future<void> googleLogin() async {
     state = LoginState.loading;
     try {
-      await _googleLoginUseCase.execute(); // GoogleLogin UseCase 호출
+      final login = await _googleLoginUseCase.execute(); // GoogleLogin UseCase 호출
+      ref.read(userViewModelProvider.notifier).setUserId(login[1]);
+
       state = LoginState.success;
     } catch (e) {
       state = LoginState.error;
@@ -33,7 +36,9 @@ class LoginViewModel extends Notifier<LoginState> {
 
     state = LoginState.loading;
     try {
-      await _appleLoginUseCase.execute(); // AppleLogin UseCase 호출
+      final login = await _appleLoginUseCase.execute(); // AppleLogin UseCase 호출
+      ref.read(userViewModelProvider.notifier).setUserId(login[1]);
+      
       state = LoginState.success;
     } catch (e) {
       state = LoginState.error;

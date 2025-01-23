@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:oz_player/domain/usecase/video_info_usecase.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
