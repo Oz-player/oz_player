@@ -19,7 +19,6 @@ import 'package:oz_player/domain/repository/video_info_repository.dart';
 import 'package:oz_player/domain/usecase/login/apple_login_use_case.dart';
 import 'package:oz_player/domain/usecase/login/google_login_use_case.dart';
 import 'package:oz_player/domain/usecase/video_info_usecase.dart';
-import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
 final googleSignInProvider = Provider<GoogleSignIn>((ref) {
   return GoogleSignIn();
@@ -92,9 +91,4 @@ final videoInfoRepositoryProvider = Provider<VideoInfoRepository>((ref){
 final videoInfoUsecaseProvider = Provider<VideoInfoUsecase>((ref){
   final videoInfoRepository = ref.read(videoInfoRepositoryProvider);
   return VideoInfoUsecase(videoInfoRepository);
-});
-
-final userViewModelProvider =
-    StateNotifierProvider<UserViewmodel, String>((ref) {
-  return UserViewmodel();
 });

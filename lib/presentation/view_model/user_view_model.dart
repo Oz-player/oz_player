@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserViewmodel extends StateNotifier<String> {
-  UserViewmodel() : super('');
+class UserViewModel extends StateNotifier<String> {
+  UserViewModel() : super('');
 
   void setUserId(String userid) {
     state = userid;
@@ -11,3 +11,8 @@ class UserViewmodel extends StateNotifier<String> {
     return state;
   }
 }
+
+final userViewModelProvider =
+    StateNotifierProvider<UserViewModel, String>((ref) {
+  return UserViewModel();
+});
