@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class ConditionState {
   List<String> mood;
@@ -13,6 +14,7 @@ class ConditionState {
   Set<int> artistSet;
   int page;
   double opacity;
+  bool event;
   List<String> title;
   List<String> subtitle;
 
@@ -27,6 +29,7 @@ class ConditionState {
       this.artistSet,
       this.page,
       this.opacity,
+      this.event,
       this.title,
       this.subtitle);
 
@@ -41,6 +44,7 @@ class ConditionState {
     Set<int>? artistSet,
     int? page,
     double? opacity,
+    bool? event,
     List<String>? title,
     List<String>? subtitle,
   }) =>
@@ -55,6 +59,7 @@ class ConditionState {
           artistSet ?? this.artistSet,
           page ?? this.page,
           opacity ?? this.opacity,
+          event ?? this.event,
           title ?? this.title,
           subtitle ?? this.subtitle);
 }
@@ -140,19 +145,30 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '마음에 드는 아티스트를 선택해 맞춤화 추천을 받아요!',
     ];
     return ConditionState(mood, {}, situation, {}, genre, {}, artist, {}, 0,
-        1.0, title, subtitle);
+        1.0, false, title, subtitle);
   }
 
   void clickBox(int index, Set<int> set) {
-    if (set.contains(index)) {
-      set.remove(index);
+    if (state.page == 0) {
+      if (set.contains(index)) {
+        set.remove(index);
+      } else {
+        if (set.length < 3) {
+          set.add(index);
+        }
+      }
+
+      state = state.copyWith();
     } else {
-      if (set.length < 3) {
+      if (set.contains(index)) {
+        set.remove(index);
+      } else {
+        set.clear();
         set.add(index);
       }
-    }
 
-    state = state.copyWith();
+      state = state.copyWith();
+    }
   }
 
   bool nextPage() {
@@ -162,7 +178,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
     } else if (state.page == 1 && state.situationSet.isNotEmpty) {
       nextPageAnimation();
       return false;
-    } else if (state.page == 2 && state.genre.isNotEmpty) {
+    } else if (state.page == 2 && state.genreSet.isNotEmpty) {
       nextPageAnimation();
       return false;
     } else if (state.page == 3 && state.artistSet.isNotEmpty) {
@@ -177,18 +193,41 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   /// true는 아얘 recommend_page_condition_two 로 이동
   Future<void> nextPageAnimation() async {
     if (state.page < 3) {
+      state.event = true;
       toggleOpacity();
       state = state.copyWith();
 
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 250));
 
       state.page += 1;
       state = state.copyWith();
 
       toggleOpacity();
       state = state.copyWith();
+
+      await Future.delayed(Duration(milliseconds: 250));
+      state.event = false;
     } else {
       return;
+    }
+  }
+
+  Future<void> beforePageAnimation() async {
+    if (state.page > 0) {
+      state.event = true;
+      toggleOpacity();
+      state = state.copyWith();
+
+      await Future.delayed(Duration(milliseconds: 250));
+
+      state.page -= 1;
+      state = state.copyWith();
+
+      toggleOpacity();
+      state = state.copyWith();
+
+      await Future.delayed(Duration(milliseconds: 250));
+      state.event = false;
     }
   }
 
@@ -202,13 +241,18 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   /// 검색 값 저장 및 출력
   Future<void> recommendMusic() async {
     final gemini = ref.read(geiminiRepositoryProvider);
+    ref.read(loadingViewModelProvider.notifier).startLoading();
 
     final apiKey = dotenv.env['GEMINI_KEY'];
     final num = 5;
-    final moodtext = state.moodSet.map((e)=>state.mood[e]).toList().join(', ');
-    final situationtext = state.situationSet.map((e)=>state.situation[e]).toList().join(', ');
-    final genretext = state.genreSet.map((e)=>state.genre[e]).toList().join(', ');
-    final artisttext = state.artistSet.map((e)=>state.artist[e]).toList().join(', ');
+    final moodtext =
+        state.moodSet.map((e) => state.mood[e]).toList().join(', ');
+    final situationtext =
+        state.situationSet.map((e) => state.situation[e]).toList().join(', ');
+    final genretext =
+        state.genreSet.map((e) => state.genre[e]).toList().join(', ');
+    final artisttext =
+        state.artistSet.map((e) => state.artist[e]).toList().join(', ');
     final condition = '''
 1. 지금 나의 기분은 '$moodtext'
 2. 지금 내가 하고 있는것은 '$situationtext'
@@ -216,8 +260,12 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 4. 선호하는 아티스트는 '$artisttext'
 ''';
 
-    final result =
-        await gemini.recommentMultiMusicByGemini(condition, apiKey!, num);
+    final except = '''백예린 - 혼란스러워''';
+
+    final result = await gemini.recommentMultiMusicByGemini(
+        condition, apiKey!, num, except);
+
+    ref.read(loadingViewModelProvider.notifier).endLoading();
   }
 }
 

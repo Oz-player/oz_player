@@ -45,7 +45,10 @@ void main() async {
 4. 선호하는 아티스트는 '여성 솔로'
 ''';
 
-    final result = await geminiUsecase.recommentMultiMusicByGemini(condition, apiKey!, num);
+    final except = '''
+''';
+
+    final result = await geminiUsecase.recommentMultiMusicByGemini(condition, apiKey!, num, except);
     debugPrint('musicName : ${result[0].musicName}');
     debugPrint('artist : ${result[0].artist}');
 

@@ -27,19 +27,25 @@ artist : '가수이름',
   }
   
   @override
-  Future<List<RecommendMusicEntity>> recommentMultiMusicByGemini(String condition, String apiKey, int num) async {
+  Future<List<RecommendMusicEntity>> recommentMultiMusicByGemini(String condition, String apiKey, int num, String except) async {
         final prompt = '''
-아래 상황에 들을 수 있을만한 노래를 $num개 정도 추천해줘
-
+아래 조건에 맞는 실제로 존재하는 노래를 최대 $num곡 추천해줘.  
 $condition
+5. 반드시 존재하는 노래만 추천해야 함.  
+6. 조건에 맞는 곡이 $num개 미만이어도 괜찮으며, 조건에 맞는 곡만 최대 $num곡까지 추천할 것.  
+7. 한국곡 추천을 우선으로 하되, 전 세계 다양한 나라의 곡들이 추천되도록 할 것.  
+8. 다음곡들은 추천에서 제외할것
+$except
 
-답변은 오직 JSON 형식으로만 작성해 줘.
-
-답변 예시는 다음과 같아
-{
-musicName : '노래제목',
-artist : '가수이름',
-}
+응답할때 값은 다음 조건에 맞아야 함
+1. musicName엔 '가수 - 노래제목' 으로 출력되어야 함 
+2. 응답형식은 다음과 같아야 함
+응답 형식:
+[
+  {
+    "musicName": "가수 - 노래제목"
+  }
+]
 ''';
 
     final result = await _aiSource.getMultiResponse(prompt, apiKey);
@@ -49,5 +55,4 @@ artist : '가수이름',
 
     return newResult;
   }
-  
 }
