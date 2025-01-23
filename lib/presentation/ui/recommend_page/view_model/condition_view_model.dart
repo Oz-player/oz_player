@@ -1,4 +1,6 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 
 class ConditionState {
   List<String> mood;
@@ -11,6 +13,8 @@ class ConditionState {
   Set<int> artistSet;
   int page;
   double opacity;
+  List<String> title;
+  List<String> subtitle;
 
   ConditionState(
       this.mood,
@@ -22,7 +26,9 @@ class ConditionState {
       this.artist,
       this.artistSet,
       this.page,
-      this.opacity);
+      this.opacity,
+      this.title,
+      this.subtitle);
 
   ConditionState copyWith({
     List<String>? mood,
@@ -35,6 +41,8 @@ class ConditionState {
     Set<int>? artistSet,
     int? page,
     double? opacity,
+    List<String>? title,
+    List<String>? subtitle,
   }) =>
       ConditionState(
           mood ?? this.mood,
@@ -46,7 +54,9 @@ class ConditionState {
           artist ?? this.artist,
           artistSet ?? this.artistSet,
           page ?? this.page,
-          opacity ?? this.opacity);
+          opacity ?? this.opacity,
+          title ?? this.title,
+          subtitle ?? this.subtitle);
 }
 
 class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
@@ -117,15 +127,29 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '악기 연주자',
       '합창단',
     ];
-    return ConditionState(
-        mood, {}, situation, {}, genre, {}, artist, {}, 0, 1.0);
+    List<String> title = [
+      '지금, 당신의 상태나 기분은\n어떤지 알려주세요',
+      '어떤 순간에 어울리는 음악을\n찾으시나요?',
+      '원하는 음악 장르를\n선택해주세요',
+      '선호하는 아티스트를\n선택해주세요',
+    ];
+    List<String> subtitle = [
+      '최대 3개 까지 선택이 가능해요!',
+      '하고 있는 일에 몰입감을 더해보세요!',
+      '현재 기분에 맞는 음악 장르를 골라요!',
+      '마음에 드는 아티스트를 선택해 맞춤화 추천을 받아요!',
+    ];
+    return ConditionState(mood, {}, situation, {}, genre, {}, artist, {}, 0,
+        1.0, title, subtitle);
   }
 
   void clickBox(int index, Set<int> set) {
     if (set.contains(index)) {
       set.remove(index);
     } else {
-      set.add(index);
+      if (set.length < 3) {
+        set.add(index);
+      }
     }
 
     state = state.copyWith();
@@ -138,13 +162,13 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
     } else if (state.page == 1 && state.situationSet.isNotEmpty) {
       nextPageAnimation();
       return false;
-    } else if(state.page == 2 && state.genre.isNotEmpty){
+    } else if (state.page == 2 && state.genre.isNotEmpty) {
       nextPageAnimation();
       return false;
-    } else if(state.page == 3 && state.artistSet.isNotEmpty){
+    } else if (state.page == 3 && state.artistSet.isNotEmpty) {
       nextPageAnimation();
       return true;
-    } else{
+    } else {
       return false;
     }
   }
@@ -170,6 +194,30 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
   void toggleOpacity() {
     state.opacity = state.opacity == 1.0 ? 0.0 : 1.0;
+  }
+
+  /// Gemini 한테 태그를 기반으로한 음악을 검색해달라고 요청
+  /// 응답받은 값(musicName, artist)으로 maniadb 검색
+  /// 응답받은 값(musicName, artist)으로 video 검색
+  /// 검색 값 저장 및 출력
+  Future<void> recommendMusic() async {
+    final gemini = ref.read(geiminiRepositoryProvider);
+
+    final apiKey = dotenv.env['GEMINI_KEY'];
+    final num = 5;
+    final moodtext = state.moodSet.map((e)=>state.mood[e]).toList().join(', ');
+    final situationtext = state.situationSet.map((e)=>state.situation[e]).toList().join(', ');
+    final genretext = state.genreSet.map((e)=>state.genre[e]).toList().join(', ');
+    final artisttext = state.artistSet.map((e)=>state.artist[e]).toList().join(', ');
+    final condition = '''
+1. 지금 나의 기분은 '$moodtext'
+2. 지금 내가 하고 있는것은 '$situationtext'
+3. 추천 받고 싶은 노래의 장르는 '$genretext'
+4. 선호하는 아티스트는 '$artisttext'
+''';
+
+    final result =
+        await gemini.recommentMultiMusicByGemini(condition, apiKey!, num);
   }
 }
 

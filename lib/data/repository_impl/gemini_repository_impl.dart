@@ -29,7 +29,7 @@ artist : '가수이름',
   @override
   Future<List<RecommendMusicEntity>> recommentMultiMusicByGemini(String condition, String apiKey, int num) async {
         final prompt = '''
-다음 조건을 만족하는 노래를 $num개 정도 추천해줘
+아래 상황에 들을 수 있을만한 노래를 $num개 정도 추천해줘
 
 $condition
 

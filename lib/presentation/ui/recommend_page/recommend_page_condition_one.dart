@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class RecommendPageConditionOne extends ConsumerWidget {
   const RecommendPageConditionOne({super.key});
@@ -39,14 +40,14 @@ class RecommendPageConditionOne extends ConsumerWidget {
                   height: 8,
                 ),
                 Text(
-                  '지금, 당신의 상태나 기분은\n어떤지 알려주세요',
+                  conditionState.title[conditionState.page],
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 12,
                 ),
                 Text(
-                  '최대 3개까지 선택이 가능해요!',
+                  conditionState.subtitle[conditionState.page],
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
                 SizedBox(
@@ -76,6 +77,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
                         onPressed: () async {
                           final isNextPage = ref.read(conditionViewModelProvider.notifier).nextPage();
                           if(isNextPage){
+                            ref.read(loadingViewModelProvider.notifier).startLoading();
                             context.go('/home/recommend/conditionTwo');
                           }
                         },
