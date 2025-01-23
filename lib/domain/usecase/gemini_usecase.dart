@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/recommend_music_entity.dart';
 import 'package:oz_player/domain/repository/gemini_repository.dart';
-import 'package:oz_player/providers.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 
 class GeminiUsecase {
   GeminiUsecase(this._geminiRepository);
