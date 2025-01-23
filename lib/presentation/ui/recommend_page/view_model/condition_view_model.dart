@@ -257,14 +257,15 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
     final apiKey = dotenv.env['GEMINI_KEY'];
     final num = 5;
-    final moodtext =
-        state.moodSet.map((e) => state.mood[e]).toList().join(', ');
-    final situationtext =
-        state.situationSet.map((e) => state.situation[e]).toList().join(', ');
-    final genretext =
-        state.genreSet.map((e) => state.genre[e]).toList().join(', ');
-    final artisttext =
-        state.artistSet.map((e) => state.artist[e]).toList().join(', ');
+    final moodlist = state.moodSet.map((e) => state.mood[e]).toList();
+    final situationlist =
+        state.situationSet.map((e) => state.situation[e]).toList();
+    final genrelist = state.genreSet.map((e) => state.genre[e]).toList();
+    final artistlist = state.artistSet.map((e) => state.artist[e]).toList();
+    final moodtext = moodlist.join(', ');
+    final situationtext = situationlist.join(', ');
+    final genretext = genrelist.join(', ');
+    final artisttext = artistlist.join(', ');
     final condition = '''
 1. 지금 나의 기분은 '$moodtext'
 2. 지금 내가 하고 있는것은 '$situationtext'
@@ -292,7 +293,15 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
             await videoEx.getVideoInfo(result[i].musicName!, result[i].artist!);
 
         final song = SongEntitiy(
-            video: video, title: title!, imgUrl: '', artist: artist!);
+            video: video,
+            title: title!,
+            imgUrl: '',
+            artist: artist!,
+            moodlist: moodlist,
+            situation: situationlist[0],
+            genre: genrelist[0],
+            favoriteArtist: artistlist[0]);
+
         state.recommendSongs.add(song);
       } catch (e) {
         log('검색결과에 없는 노래, 스킵');
@@ -300,8 +309,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
     }
 
     // 검색 결과값이 없을 경우 (대응 고민)
-    if(state.recommendSongs.isEmpty){
-    }
+    if (state.recommendSongs.isEmpty) {}
 
     ref.read(loadingViewModelProvider.notifier).endLoading();
   }
