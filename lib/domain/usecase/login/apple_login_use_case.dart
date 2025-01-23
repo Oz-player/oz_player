@@ -48,10 +48,10 @@ class AppleLoginUseCase {
       if (isExistUser) {
         print('createUser 호출 전');
         // 기존 사용자면 데이터 업데이트
-        await _appleLoginRepository.updateUser(firebaseUid, firebaseEmail!);
+        await _appleLoginRepository.updateUser(firebaseUid, firebaseEmail);
       } else {
         // 새로운 사용자면 데이터 등록
-        await _appleLoginRepository.createUser(firebaseUid, firebaseEmail!);
+        await _appleLoginRepository.createUser(firebaseUid, firebaseEmail);
         print('createUser 호출 완료');
       }
 
