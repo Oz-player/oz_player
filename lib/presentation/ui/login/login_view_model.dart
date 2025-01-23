@@ -1,33 +1,51 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oz_player/domain/usecase/login/google_login_use_case.dart';
-import 'package:oz_player/providers.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
-class LoginViewModel extends StateNotifier<String> {
-  final GoogleLoginUseCase _googleLoginUseCase;
+enum LoginState { idle, loading, success, error }
 
-  LoginViewModel(this._googleLoginUseCase) : super('');
+class LoginViewModel extends Notifier<LoginState> {
+  late final _googleLoginUseCase = ref.read(googleLoginUseCaseProvider);
+  late final _appleLoginUseCase = ref.read(appleLoginUseCaseProvider);
 
-  void startLoading() => state = 'loading';
-  void stopLoading() => state = '';
+  LoginViewModel();
 
-  Future<List<String>> googleLogin() async {
+  @override
+  LoginState build() => LoginState.idle;
+
+  Future<void> googleLogin() async {
+    state = LoginState.loading;
     try {
-      startLoading();
-      final route =
-          await _googleLoginUseCase.execute(); // GoogleLogin UseCase 호출
-      print('$route');
-      // 로그인 성공 후 route 따라 페이지 이동
-      return route;
+      final login = await _googleLoginUseCase.execute(); // GoogleLogin UseCase 호출
+      ref.read(userViewModelProvider.notifier).setUserId(login[1]);
+
+      state = LoginState.success;
     } catch (e) {
-      return ['error', ''];
-    } finally {
-      // stopLoading();
+      state = LoginState.error;
+    }
+  }
+
+  Future<void> appleLogin() async {
+    if (!Platform.isIOS) {
+      // IOS가 아닌 경우 애플 로그인 X
+      state = LoginState.error;
+      return;
+    }
+
+    state = LoginState.loading;
+    try {
+      final login = await _appleLoginUseCase.execute(); // AppleLogin UseCase 호출
+      ref.read(userViewModelProvider.notifier).setUserId(login[1]);
+      
+      state = LoginState.success;
+    } catch (e) {
+      state = LoginState.error;
     }
   }
 }
 
-final loginViewModelProvider =
-    StateNotifierProvider<LoginViewModel, String>((ref) {
-  final googleLoginUseCase = ref.read(googleLoginUseCaseProvider);
-  return LoginViewModel(googleLoginUseCase);
-});
+final loginViewModelProvider = NotifierProvider<LoginViewModel, LoginState>(
+  () => LoginViewModel(),
+);

@@ -1204,7 +1204,6 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
 /// A class which mocks [GoogleSignInAccount].
 ///
 /// See the documentation for Mockito's code generation for more information.
-// ignore: must_be_immutable
 class MockGoogleSignInAccount extends _i1.Mock
     implements _i8.GoogleSignInAccount {
   @override
@@ -1329,7 +1328,6 @@ class MockUserCredential extends _i1.Mock implements _i4.UserCredential {}
 /// A class which mocks [CollectionReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
-// ignore: must_be_immutable
 class MockCollectionReference<T extends Object?> extends _i1.Mock
     implements _i6.CollectionReference<T> {
   @override
@@ -1878,7 +1876,6 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [DocumentReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
-// ignore: must_be_immutable
 class MockDocumentReference<T extends Object?> extends _i1.Mock
     implements _i6.DocumentReference<T> {
   @override
@@ -2119,7 +2116,6 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
 /// A class which mocks [Query].
 ///
 /// See the documentation for Mockito's code generation for more information.
-// ignore: must_be_immutable
 class MockQuery<T extends Object?> extends _i1.Mock implements _i6.Query<T> {
   @override
   _i6.FirebaseFirestore get firestore =>

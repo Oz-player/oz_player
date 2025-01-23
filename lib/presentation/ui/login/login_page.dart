@@ -2,50 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
-import 'package:oz_player/presentation/ui/login/user_view_model.dart';
+import 'package:oz_player/presentation/ui/login/widgets/apple_button.dart';
+import 'package:oz_player/presentation/ui/login/widgets/google_button.dart';
 
 class LoginPage extends ConsumerWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Consumer(builder: (context, ref, child) {
-            final isLoading = ref.watch(loginViewModelProvider);
+    final loginState = ref.watch(loginViewModelProvider);
 
-            return GestureDetector(
-              onTap: isLoading == 'loading'
-                  ? null
-                  : () async {
-                      try {
-                        var route = await ref
-                            .read(loginViewModelProvider.notifier)
-                            .googleLogin();
-                        ref
-                            .read(userViewModelProvider.notifier)
-                            .setUserId(route[1]);
-                        if (route.isNotEmpty &&
-                            isLoading != 'loading' &&
-                            isLoading != 'error' &&
-                            context.mounted) {
-                          context.go(route[0]);
-                        }
-                      } catch (e) {
-                        if (context.mounted) {
-                          print('로그인 실패!: $e');
-                          
-                        }
-                      }
-                    },
-              child: Container(
-                width: 200,
-                height: 60,
-                child: Text('구글 로그인'),
-              ),
-            );
-          }),
-        ],
+    // 로그인 상태가 success일 때, 페이지 이동
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (loginState == LoginState.success) {
+        context.go('/home');
+      }
+    });
+
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GoogleButton(),
+            SizedBox(height: 12),
+            AppleButton(), // IOS에서만 애플 로그인 버튼 보임
+          ],
+        ),
       ),
     );
   }
