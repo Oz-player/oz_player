@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BottomNavigationViewModel extends StateNotifier<int> {
-  BottomNavigationViewModel() : super(0);
+  BottomNavigationViewModel() : super(1);
 
   void updatePage(int index){
     state = index;

@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/firebase_options.dart';
 import 'package:oz_player/presentation/app/router.dart';
+import 'package:oz_player/presentation/theme/theme.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 
 void main() async {
@@ -25,10 +26,9 @@ class MyApp extends ConsumerWidget {
     
     return MaterialApp.router(
       title: 'Oz Player',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      themeMode: ThemeMode.light,
+      theme: lightTheme,
+      darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );

@@ -44,19 +44,18 @@ class RecommendPage extends ConsumerWidget {
                 textState.index == 1
                     ? SizedBox(
                         height: 48,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 90),
-                          child: TextButton(
-                              onPressed: () {
-                                context.go('/home/recommend/conditionOne');
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    WidgetStatePropertyAll(Colors.black),
-                              ),
-                              child: Text('시작하기')),
-                        ),
+                        child: TextButton(
+                            onPressed: () {
+                              context.go('/home/recommend/conditionOne');
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStatePropertyAll(Colors.black),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 64),
+                              child: Text('시작하기', style: TextStyle(color: Colors.white),),
+                            )),
                       )
                     : SizedBox(height: 48),
                 SizedBox(
