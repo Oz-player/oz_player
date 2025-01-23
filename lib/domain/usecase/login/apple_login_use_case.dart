@@ -16,7 +16,7 @@ class AppleLoginUseCase {
 
       // 로그인 성공하면 uid, email 정보 받기
       final uid = appleCredential.userIdentifier;
-      final email = appleCredential.email;
+      final email = 'zzzzzz@gmail.com'; // 나중에 다시 해보기!
       print('!!!!!!!!!!!');
       print('$uid, $email');
 
@@ -57,7 +57,7 @@ class AppleLoginUseCase {
 
       return ['/home', firebaseUid];
     } catch (e) {
-      //
+      print('$e');
       throw Exception('애플 로그인 실패! $e');
     }
   }
