@@ -9,7 +9,7 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 
 final router = GoRouter(
-  initialLocation: '/my',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/',
