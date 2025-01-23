@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
+import 'package:oz_player/presentation/ui/search/search_result_page.dart';
 
 import 'package:oz_player/presentation/ui/test_page/testpage.dart';
 
@@ -12,7 +13,7 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 
 final router = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/search',
   routes: [
     GoRoute(
       path: '/',
@@ -42,6 +43,12 @@ final router = GoRouter(
     GoRoute(
       path: '/search',
       builder: (context, state) => Search(),
+      routes: [
+        GoRoute(
+          path: 'searchResult',
+          builder: (context, state) => SearchResultPage(),
+        ),
+      ],
     )
   ],
 

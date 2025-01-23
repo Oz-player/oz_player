@@ -17,15 +17,59 @@ class _SearchState extends State<Search> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Column(
-          children: [
-            SearchArea(),
-            Expanded(
-              child: ListView(
-                
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SearchArea(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView(
+                    children: [
+                      Text(
+                        '최근 검색어',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.search),
+                          Text(
+                            '태연',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),Row(
+                        children: [
+                          Icon(Icons.search),
+                          Text(
+                            '태연',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),Row(
+                        children: [
+                          Icon(Icons.search),
+                          Text(
+                            '태연',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ));
