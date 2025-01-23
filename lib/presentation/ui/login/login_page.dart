@@ -20,14 +20,17 @@ class LoginPage extends ConsumerWidget {
     });
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GoogleButton(),
-            SizedBox(height: 12),
-            AppleButton(), // IOS에서만 애플 로그인 버튼 보임
-          ],
+      body: SafeArea(
+        child: SizedBox.expand(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Spacer(),
+              GoogleButton(),
+              AppleButton(), // IOS에서만 애플 로그인 버튼 보임
+              SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );
