@@ -38,6 +38,7 @@ class AudioPlayer extends StatelessWidget {
                     return ProgressBar(
                       progress: snapshot.data ?? const Duration(seconds: 0),
                       total: audioState.audioPlayer.duration ?? const Duration(seconds: 2),
+                      buffered: audioState.audioPlayer.bufferedPosition,
                       onSeek: (duration) {
                         ref.read(audioPlayerViewModelProvider.notifier).skipForwardPosition(duration);
                       },
@@ -75,13 +76,6 @@ class AudioPlayer extends StatelessWidget {
                       onPressed: () {
                         ref
                             .read(audioPlayerViewModelProvider.notifier)
-                            .togglePause();
-                      },
-                      icon: Icon(Icons.stop)),
-                  IconButton(
-                      onPressed: () {
-                        ref
-                            .read(audioPlayerViewModelProvider.notifier)
                             .skipForwardSec(10);
                       },
                       icon: Icon(Icons.skip_next)),
@@ -97,6 +91,10 @@ class AudioPlayer extends StatelessWidget {
   Widget bottomAudioPlayer() {
     return Consumer(
       builder: (context, ref, child) {
+        final audioState = ref.watch(audioPlayerViewModelProvider);
+        if(audioState.playerStateSubscription == null){
+          return SizedBox.shrink();
+        }
         return Hero(
             tag: 'audio',
             child: Container(
@@ -123,13 +121,6 @@ class AudioPlayer extends StatelessWidget {
                             .togglePause();
                       },
                       icon: Icon(Icons.pause)),
-                  IconButton(
-                      onPressed: () {
-                        ref
-                            .read(audioPlayerViewModelProvider.notifier)
-                            .togglePause();
-                      },
-                      icon: Icon(Icons.stop)),
                   IconButton(
                       onPressed: () {
                         ref

@@ -11,9 +11,11 @@ class Testpage extends StatelessWidget {
       body: SafeArea(
           child: Column(
         children: [
-          TextButton(onPressed: (){
-            context.go('/test/audio');
-          }, child: Text('오디오페이지로')),
+          Center(
+            child: TextButton(onPressed: (){
+              context.go('/test/audio');
+            }, child: Text('오디오페이지로')),
+          ),
           AudioPlayer(isMainWidget: false)
         ],
       )),
