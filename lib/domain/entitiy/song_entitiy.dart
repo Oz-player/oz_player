@@ -9,14 +9,17 @@ class SongEntitiy {
   String situation;
   String genre;
   String favoriteArtist;
+  List<String> relatedartistlist;
 
-  SongEntitiy(
-      {required this.video,
-      required this.title,
-      required this.imgUrl,
-      required this.artist,
-      required this.moodlist,
-      required this.situation,
-      required this.genre,
-      required this.favoriteArtist});
+  SongEntitiy({
+    required this.video,
+    required this.title,
+    required this.imgUrl,
+    required this.artist,
+    required this.moodlist,
+    required this.situation,
+    required this.genre,
+    required this.favoriteArtist,
+    required this.relatedartistlist,
+  });
 }
