@@ -12,21 +12,10 @@ class ManiadbRepositoryImpl implements ManiadbRepository {
     return result
         ?.map(
           (e) => ManiadbArtistEntity(
-            id: e.id,
             title: e.title,
-            reference: e.reference,
             demographic: e.demographic,
             period: e.period,
-            link: e.link,
             image: e.image,
-            linkGallery: e.linkGallery,
-            linkDiscography: e.linkDiscography,
-            pubDate: e.pubDate,
-            author: e.author,
-            description: e.description,
-            guid: e.guid,
-            comments: e.comments,
-            majorSongs: e.majorSongs,
             majorSongList: e.majorSongList,
           ),
         )
@@ -39,14 +28,7 @@ class ManiadbRepositoryImpl implements ManiadbRepository {
     return result
         ?.map(
           (e) => ManiadbSongEntity(
-            id: e.id,
             title: e.title,
-            runningTime: e.runningTime,
-            link: e.link,
-            pubDate: e.pubDate,
-            author: e.author,
-            description: e.description,
-            comments: e.comments,
             album: e.album,
             artist: e.artist,
           ),
