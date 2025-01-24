@@ -20,6 +20,7 @@ class RecommendPage extends ConsumerWidget {
           title: Text('음악 카드 추천'),
           centerTitle: true,
           leading: SizedBox.shrink(),
+          backgroundColor: Colors.transparent,
           actions: [
             IconButton(onPressed: () {}, icon: Icon(Icons.ac_unit)),
           ],

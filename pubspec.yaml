@@ -57,6 +57,7 @@ dependencies:
   http: ^1.2.2
   xml2json: ^6.2.6
   html: ^0.15.5
+  card_swiper: ^3.0.1
 
 
 
