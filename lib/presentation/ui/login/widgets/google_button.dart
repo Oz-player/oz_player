@@ -29,7 +29,7 @@ class GoogleButton extends ConsumerWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         backgroundColor: Colors.white,
-        foregroundColor: Colors.grey[600],
+        foregroundColor: Color(0xFF6B7684),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

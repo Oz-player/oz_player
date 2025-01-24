@@ -29,7 +29,7 @@ class SettingsButton extends StatelessWidget {
               text,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[600],
+                color: Color(0xFF6B7684),
                 fontWeight: FontWeight.w500,
                 height: 19 / 16,
               ),
@@ -38,7 +38,7 @@ class SettingsButton extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
-              color: Colors.grey[600],
+              color: Color(0xFF6B7684),
             ),
           ],
         ),

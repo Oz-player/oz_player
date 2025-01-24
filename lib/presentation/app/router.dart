@@ -10,7 +10,7 @@ import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
 import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 final router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/settings/revoke',
   routes: [
     GoRoute(
       path: '/',

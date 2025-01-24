@@ -108,18 +108,20 @@ class ExitButtons extends StatelessWidget {
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(
                               horizontal: 47, vertical: 10),
-                          backgroundColor: Colors.grey[300],
+                          backgroundColor: Color(0xFFF2E6FF),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                         child: Text(
-                          '확인',
+                          '취소',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.grey[600],
+                            color: Color(0xFF6B7684),
                             height: 1.4,
                           ),
                         ),
@@ -135,10 +137,10 @@ class ExitButtons extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          print('로그아웃 확인버튼 선택!');
                         },
                         child: Text(
-                          '취소',
+                          '확인',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -153,12 +155,14 @@ class ExitButtons extends StatelessWidget {
                 title: Text(
                   '잠깐!\n정말 로그아웃 하시겠어요?',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.4),
+                  style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600, height: 1.4),
                 ),
                 content: Text(
                   '확인 버튼을 누르면 로그아웃됩니다',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600], height: 1.4),
+                  style: TextStyle(
+                      fontSize: 12, color: Color(0xFF6B7684), height: 1.4),
                 ),
               ),
             );
@@ -170,14 +174,13 @@ class ExitButtons extends StatelessWidget {
               height: 10,
               width: 2,
               decoration: BoxDecoration(
-                color: Colors.grey[400],
+                color: Color(0xFFADB5BD),
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
           ),
           textButton('회원탈퇴', () {
             context.go('/settings/revoke');
-            
           }),
         ],
       ),
@@ -198,7 +201,7 @@ class ExitButtons extends StatelessWidget {
             height: 17 / 14,
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Colors.grey[400],
+            color: Color(0xFFADB5BD),
           ),
         ),
       ),
@@ -224,7 +227,7 @@ class VersionInfo extends StatelessWidget {
             '버전 안내',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: Color(0xFF6B7684),
               fontWeight: FontWeight.w500,
               height: 19 / 16,
             ),
@@ -235,7 +238,7 @@ class VersionInfo extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
+              color: Color(0xFF6B7684),
               height: 17 / 14,
             ),
           ),
