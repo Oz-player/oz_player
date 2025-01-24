@@ -33,7 +33,7 @@ class HomeBottomNavigation extends StatelessWidget {
                 switch (value) {
                   case 0:
                     if (currentPage != 0) {
-                      // context.go('보관함');
+                      context.go('/saved');
                     }
                     break;
                   case 1:
