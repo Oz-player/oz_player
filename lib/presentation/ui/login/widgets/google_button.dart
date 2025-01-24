@@ -21,8 +21,8 @@ class GoogleButton extends ConsumerWidget {
       },
       style: ElevatedButton.styleFrom(
         fixedSize: const Size(335, 52),
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-        textStyle: TextStyle(fontSize: 18),
+        padding: EdgeInsets.zero,
+        textStyle: TextStyle(fontSize: 20, height: 24/20),
         minimumSize: Size.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
@@ -38,7 +38,7 @@ class GoogleButton extends ConsumerWidget {
             height: 24,
             fit: BoxFit.fitHeight,
           ),
-          SizedBox(width: 4),
+          SizedBox(width: 15),
           Text('Google로 시작하기'),
         ],
       ),

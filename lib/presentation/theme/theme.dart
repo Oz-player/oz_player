@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:oz_player/presentation/theme/app_theme_extension.dart';
 
 class LightTheme extends AppThemeExtension {
-  const LightTheme({
-    super.main = Colors.black,
-    super.mainLight = Colors.grey,
-    super.sub = Colors.black,
-    super.background = const Color(0xFFF5F5F5) // grey[100],
-  });
+  const LightTheme(
+      {super.main = Colors.black,
+      super.mainLight = Colors.grey,
+      super.sub = Colors.black,
+      super.background = const Color(0xFFF5F5F5) // grey[100],
+      });
 }
 
 class DarkTheme extends AppThemeExtension {
@@ -42,7 +42,11 @@ ThemeData _theme(Brightness brightness, AppThemeExtension ext) => ThemeData(
         borderSide: BorderSide(color: Colors.black),
       ),
     ),
-    extensions: [ext]);
+    extensions: [ext],
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+    ),
+    fontFamily: 'Pretendard');
 
 extension BuildContextThemeExt on BuildContext {
   ThemeData get theme => Theme.of(this);

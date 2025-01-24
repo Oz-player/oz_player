@@ -25,8 +25,8 @@ class AppleButton extends ConsumerWidget {
       },
       style: ElevatedButton.styleFrom(
         fixedSize: const Size(335, 52),
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-        textStyle: TextStyle(fontSize: 18),
+        padding: EdgeInsets.zero,
+        textStyle: TextStyle(fontSize: 20, height: 24/20),
         minimumSize: Size.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
@@ -37,16 +37,13 @@ class AppleButton extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Transform.translate(
-            offset: Offset(0, -.5),
-            child: Image.asset(
-              'assets/images/ic_apple_logo.png',
-              color: Colors.white,
-              height: 24,
-              fit: BoxFit.fitHeight,
-            ),
+          Image.asset(
+            'assets/images/ic_apple_logo.png',
+            color: Colors.white,
+            height: 24,
+            fit: BoxFit.fitHeight,
           ),
-          SizedBox(width: 6),
+          SizedBox(width: 15),
           Text('Apple로 시작하기'),
         ],
       ),
