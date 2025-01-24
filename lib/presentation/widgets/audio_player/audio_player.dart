@@ -4,13 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 
 class AudioPlayer extends StatelessWidget {
-  const AudioPlayer({super.key, required this.isMainWidget});
-
-  final bool isMainWidget;
+  const AudioPlayer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return isMainWidget ? fullAudioPlayer() : bottomAudioPlayer();
+    return bottomAudioPlayer();
   }
 
   Widget fullAudioPlayer() {

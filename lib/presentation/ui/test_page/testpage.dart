@@ -16,7 +16,7 @@ class Testpage extends StatelessWidget {
               context.go('/test/audio');
             }, child: Text('오디오페이지로')),
           ),
-          AudioPlayer(isMainWidget: false)
+          AudioPlayer()
         ],
       )),
     );

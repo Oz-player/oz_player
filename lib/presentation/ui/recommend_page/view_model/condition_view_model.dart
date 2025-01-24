@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/data/source/manidb/maniadb_data_source_impl.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/domain/usecase/maniadb/maniadb_artist_usecase.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -253,6 +255,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
     final gemini = ref.read(geiminiRepositoryProvider);
     final videoEx = ref.read(videoInfoUsecaseProvider);
+    final maniaDB = ref.read(maniadbArtistUsecaseProvider);
     ref.read(loadingViewModelProvider.notifier).startLoading(1);
 
     final apiKey = dotenv.env['GEMINI_KEY'];
@@ -289,7 +292,13 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
       try {
         final video =
-            await videoEx.getVideoInfo(result[i].musicName!, result[i].artist!);
+            await videoEx.getVideoInfo(title!, artist!);
+
+        final search = await maniaDB.execute(artist);
+        for(var i in search!){
+          final songList = i.majorSongList;
+          
+        }
 
         final song = SongEntitiy(
             video: video,

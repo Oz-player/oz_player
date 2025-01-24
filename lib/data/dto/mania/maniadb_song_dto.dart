@@ -33,7 +33,7 @@ class ManiadbSongDto {
           author: json['author'] ?? '',
           description: json['description'] ?? '',
           comments: json['comments'] ?? '',
-          album: json['album'] ?? [],
-          artist: json['artist'] ?? [],
+          album: json['maniadb:album'] ?? [],
+          artist: json['maniadb:artist'] ?? [],
         );
 }

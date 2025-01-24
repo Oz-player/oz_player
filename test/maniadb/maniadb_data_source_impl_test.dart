@@ -16,11 +16,11 @@ void main() {
 
   test('test fetchSong', () async{
     ManiadbDataSourceImpl maniadbDataSourceImpl = ManiadbDataSourceImpl();
-    final search = await maniadbDataSourceImpl.fetchSong('사랑');
+    final search = await maniadbDataSourceImpl.fetchSong('미운오리');
     expect(search.isEmpty, false);
     for (var search in search) {
       print(search.title);
-      
+      print(search.artist);
     }
   });
 }
