@@ -7,12 +7,11 @@ void main() {
     NaverSearchDataSourceImpl naverSearchDataSourceImpl = NaverSearchDataSourceImpl();
     
     // Fetch the search results
-    final searchResults = await naverSearchDataSourceImpl.fetchNaver('내일은 너무 멀어 지금');
+    final searchResults = await naverSearchDataSourceImpl.fetchNaver('나는 사실 사막에');
     
     // Validate that the result is not empty
     expect(searchResults.isEmpty, false);
 
-    // Print each result
     for (final result in searchResults) {
       print('Title: ${result.title}');
       print('Artist: ${result.artist}');

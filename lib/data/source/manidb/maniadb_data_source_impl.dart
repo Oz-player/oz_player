@@ -38,11 +38,11 @@ class ManiadbDataSourceImpl implements ManiadbDataSource {
   }
 
   @override
-  Future<List<ManiadbSongDto>> fetchSong(String query) async{
+  Future<List<ManiadbSongDto>> fetchSong(String query) async {
     final client = Client();
     final response = await client.get(
       Uri.parse(
-        'http://www.maniadb.com/api/search/$query/?sr=song&display=1&key=example&v=0.5',
+        'http://www.maniadb.com/api/search/$query/?sr=song&display=10&key=example&v=0.5',
       ),
     );
 
@@ -51,16 +51,12 @@ class ManiadbDataSourceImpl implements ManiadbDataSource {
       var jsonData = xml2json.toParker();
 
       Map<String, dynamic> map = jsonDecode(jsonData);
-      final dynamic itemData = map['rss']['channel']['item'];
+      final results = List.from(map['rss']['channel']['item']);
+      final iterable = results.map((e) {
+        return ManiadbSongDto.fromJson(e);
+      });
 
-      // item이 단일 객체일 경우와 리스트일 경우를 구분
-      final results = (itemData is List)
-          ? List.from(itemData)
-          : [itemData]; // 단일 객체라면 리스트로 감싸줌
-
-      final iterable = results.map((e) => ManiadbSongDto.fromJson(e));
-      final list = iterable.toList();
-      return list;
+      return iterable.toList();
     }
     return [];
   }
