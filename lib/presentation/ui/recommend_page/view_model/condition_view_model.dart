@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/domain/usecase/maniadb/maniadb_artist_usecase.dart';
+import 'package:oz_player/domain/usecase/maniadb/maniadb_song_usecase.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -21,6 +24,7 @@ class ConditionState {
   List<String> title;
   List<String> subtitle;
   List<SongEntitiy> recommendSongs;
+  List<String> exceptList;
 
   ConditionState(
       this.mood,
@@ -36,7 +40,8 @@ class ConditionState {
       this.event,
       this.title,
       this.subtitle,
-      this.recommendSongs);
+      this.recommendSongs,
+      this.exceptList);
 
   ConditionState copyWith({
     List<String>? mood,
@@ -53,6 +58,7 @@ class ConditionState {
     List<String>? title,
     List<String>? subtitle,
     List<SongEntitiy>? recommendSongs,
+    List<String>? exceptList,
   }) =>
       ConditionState(
           mood ?? this.mood,
@@ -68,7 +74,8 @@ class ConditionState {
           event ?? this.event,
           title ?? this.title,
           subtitle ?? this.subtitle,
-          recommendSongs ?? this.recommendSongs);
+          recommendSongs ?? this.recommendSongs,
+          exceptList ?? this.exceptList);
 }
 
 class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
@@ -152,7 +159,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '마음에 드는 아티스트를 선택해 맞춤화 추천을 받아요!',
     ];
     return ConditionState(mood, {}, situation, {}, genre, {}, artist, {}, 0,
-        1.0, false, title, subtitle, []);
+        1.0, false, title, subtitle, [], []);
   }
 
   void clickBox(int index, Set<int> set) {
@@ -253,6 +260,8 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
     final gemini = ref.read(geiminiRepositoryProvider);
     final videoEx = ref.read(videoInfoUsecaseProvider);
+    final maniaDBSong = ref.read(maniadbSongUsecaseProvider);
+    final maniaDBArtist = ref.read(maniadbArtistUsecaseProvider);
     ref.read(loadingViewModelProvider.notifier).startLoading(1);
 
     final apiKey = dotenv.env['GEMINI_KEY'];
@@ -262,6 +271,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
         state.situationSet.map((e) => state.situation[e]).toList();
     final genrelist = state.genreSet.map((e) => state.genre[e]).toList();
     final artistlist = state.artistSet.map((e) => state.artist[e]).toList();
+    final exceptlist = state.exceptList.join('\n');
     final moodtext = moodlist.join(', ');
     final situationtext = situationlist.join(', ');
     final genretext = genrelist.join(', ');
@@ -274,6 +284,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 ''';
 
     final except = '''
+$exceptlist
 ''';
 
     final result = await gemini.recommentMultiMusicByGemini(
@@ -285,26 +296,49 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       final title = result[i].musicName;
       final artist = result[i].artist;
 
-      log('$title - $artist');
+      log('title : $title');
+      log('title : $artist');
+
+      String? imgUrl;
 
       try {
-        final video =
-            await videoEx.getVideoInfo(result[i].musicName!, result[i].artist!);
+        final searchSong = await maniaDBSong.execute(title!);
+
+        for (var i in searchSong!) {
+          if (i.artist['name'] == artist) {
+            final searchArtist = await maniaDBArtist.execute(artist!);
+            imgUrl = searchArtist![0].image;
+            
+            if (imgUrl.isEmpty) {
+              log('imgUrl : 불러오기 실패');
+            } else {
+              log('imgUrl : $imgUrl');
+            }
+            break;
+          }
+        }
+
+        log('$title - $artist 검색성공');
+        final video = await videoEx.getVideoInfo(title, artist!);
 
         final song = SongEntitiy(
-            video: video,
-            title: title!,
-            imgUrl: '',
-            artist: artist!,
-            moodlist: moodlist,
-            situation: situationlist[0],
-            genre: genrelist[0],
-            favoriteArtist: artistlist[0],
-            relatedartistlist: []);
+          video: video,
+          title: title,
+          imgUrl: imgUrl ?? '',
+          artist: artist,
+          moodlist: moodlist,
+          situation: situationtext,
+          genre: genretext,
+          favoriteArtist: artisttext,
+        );
 
         state.recommendSongs.add(song);
       } catch (e) {
-        log('검색결과에 없는 노래, 스킵');
+        log('$e');
+        log('$title - $artist 는 검색결과에 없는 노래, 스킵');
+      } finally {
+        // 추천항목에서 재 추천이 되지 않도록 예외 리스트에 넣기
+        state.exceptList.add('$artist - $title');
       }
     }
 

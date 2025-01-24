@@ -6,6 +6,7 @@ import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_m
 class HomeBottomNavigation extends StatelessWidget {
   const HomeBottomNavigation({super.key});
 
+  // 향후 IOS 버전 BottomNavigationBar을 추가해야 할듯
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {

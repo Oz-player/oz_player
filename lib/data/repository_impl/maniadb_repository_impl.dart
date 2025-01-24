@@ -1,16 +1,17 @@
+import 'package:oz_player/data/source/manidb/maniadb_data_source.dart';
 import 'package:oz_player/domain/entitiy/maniadb/maniadb_artist_entity.dart';
 import 'package:oz_player/domain/entitiy/maniadb/maniadb_song_entity.dart';
 import 'package:oz_player/domain/repository/maniadb_repository.dart';
 
 class ManiadbRepositoryImpl implements ManiadbRepository {
-  ManiadbRepositoryImpl(this._maniadbRepository);
-  final ManiadbRepository _maniadbRepository;
+  ManiadbRepositoryImpl(this._maniadbDataSource);
+  final ManiadbDataSource _maniadbDataSource;
 
   @override
   Future<List<ManiadbArtistEntity>?> fetchArtist(String query) async {
-    final result = await _maniadbRepository.fetchArtist(query);
+    final result = await _maniadbDataSource.fetchArtist(query);
     return result
-        ?.map(
+        .map(
           (e) => ManiadbArtistEntity(
             title: e.title,
             demographic: e.demographic,
@@ -24,9 +25,9 @@ class ManiadbRepositoryImpl implements ManiadbRepository {
 
   @override
   Future<List<ManiadbSongEntity>?> fetchSong(String query) async {
-    final result = await _maniadbRepository.fetchSong(query);
+    final result = await _maniadbDataSource.fetchSong(query);
     return result
-        ?.map(
+        .map(
           (e) => ManiadbSongEntity(
             title: e.title,
             album: e.album,

@@ -7,7 +7,7 @@ class AudioPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: AudioPlayer(isMainWidget: true)),
+      body: SafeArea(child: AudioPlayer()),
     );
   }
 }
