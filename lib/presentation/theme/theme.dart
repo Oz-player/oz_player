@@ -46,6 +46,18 @@ ThemeData _theme(Brightness brightness, AppThemeExtension ext) => ThemeData(
     appBarTheme: const AppBarTheme(
       elevation: 0,
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        shadowColor: WidgetStatePropertyAll(
+          Colors.transparent,
+        ),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    ),
     fontFamily: 'Pretendard');
 
 extension BuildContextThemeExt on BuildContext {
