@@ -299,7 +299,8 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
             moodlist: moodlist,
             situation: situationlist[0],
             genre: genrelist[0],
-            favoriteArtist: artistlist[0]);
+            favoriteArtist: artistlist[0],
+            relatedartistlist: []);
 
         state.recommendSongs.add(song);
       } catch (e) {

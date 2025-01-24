@@ -13,7 +13,7 @@ class ManiadbArtistDto {
   String description;
   String guid;
   String comments;
-  List<dynamic> majorSongs;
+  Map<String, dynamic> majorSongs;
   String majorSongList;
 
   ManiadbArtistDto({
@@ -51,7 +51,11 @@ class ManiadbArtistDto {
           description: json['description'] ?? '',
           guid: json['guid'] ?? '',
           comments: json['comments'] ?? '',
-          majorSongs: json['majorSongs'] ?? [],
+          majorSongs: json['maniadb:majorsongs'] !=null ? {
+            'id':json['maniadb:majorsongs']['id'] ?? '',
+            'name':json['maniadb:majorsongs']['name'] ?? '',
+            'merchants':json['maniadb:majorsongs']['merchants'] ?? '',
+          }: {},
           majorSongList: json['maniadb:majorsonglist'] ?? '',
         );
 }
