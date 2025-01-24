@@ -19,13 +19,12 @@ class HomeBottomNavigation extends StatelessWidget {
               color: Colors.black.withValues(alpha: 0.25),
               blurRadius: 10,
               offset: const Offset(0, -4),
-            )
+            ),
           ]),
           child: ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             child: BottomNavigationBar(
               currentIndex: currentPage,
-              iconSize: 28,
               elevation: 10,
               unselectedItemColor: Colors.grey[600],
               selectedItemColor: Color(0xff7303e3),
@@ -58,15 +57,17 @@ class HomeBottomNavigation extends StatelessWidget {
                   label: '보관함',
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    label: '홈'),
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: '홈',
+                ),
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.search,
-                    ),
-                    label: '음악 검색'),
+                  icon: Icon(
+                    Icons.search,
+                  ),
+                  label: '음악 검색',
+                ),
               ],
             ),
           ),
