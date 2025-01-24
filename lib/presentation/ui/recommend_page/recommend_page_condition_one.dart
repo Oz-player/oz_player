@@ -15,6 +15,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
       appBar: AppBar(
         title: Text('음악 카드 추천'),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
         leading: IconButton(onPressed: (){
           if(conditionState.page == 0){
             context.pop();
@@ -60,6 +61,8 @@ class RecommendPageConditionOne extends ConsumerWidget {
                   height: 52,
                 ),
                 Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
                   children: [
                     if (conditionState.page == 0)
                       ...boxes(conditionState.mood, conditionState.moodSet, ref),
@@ -85,7 +88,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
 
                           final isNextPage = ref.read(conditionViewModelProvider.notifier).nextPage();
                           if(isNextPage){
-                            ref.read(conditionViewModelProvider.notifier).recommendMusic();
+                            // ref.read(conditionViewModelProvider.notifier).recommendMusic();
                             context.go('/home/recommend/conditionTwo');
                           }
                         },
@@ -127,19 +130,16 @@ class RecommendPageConditionOne extends ConsumerWidget {
   }
 
   Widget tagBox(String tag, bool clicked, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 12, bottom: 12),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[800]!),
-            borderRadius: BorderRadius.circular(8),
-            color: clicked ? Colors.grey : Colors.transparent),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            tag,
-            style: TextStyle(fontSize: 14),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xffe5e8eb)),
+          borderRadius: BorderRadius.circular(8),
+          color: clicked ? Color(0xfff2e6ff) : Colors.white),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Text(
+          tag,
+          style: TextStyle(fontSize: 14),
         ),
       ),
     );
