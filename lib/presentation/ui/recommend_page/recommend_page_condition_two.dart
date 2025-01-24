@@ -45,7 +45,7 @@ class _RecommendPageConditionTwoState
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             context.pop();
           },
           icon: Icon(Icons.arrow_back),
@@ -93,11 +93,18 @@ class _RecommendPageConditionTwoState
             SizedBox(
               height: 300,
               child: Swiper(
-                loop: false,
                 itemBuilder: (BuildContext context, int index) {
-                  return CardWidget();
+                  final recommendSong = conditionState.recommendSongs[index];
+                  final title = recommendSong.title;
+                  final artist = recommendSong.artist;
+                  final imgUrl = recommendSong.imgUrl;
+                  return CardWidget(
+                    title: title,
+                    artist: artist,
+                    imgUrl: imgUrl,
+                  );
                 },
-                itemCount: 5,
+                itemCount: conditionState.recommendSongs == [] ? 1 : conditionState.recommendSongs.length,
                 viewportFraction: 0.5,
                 scale: 0.5,
                 fade: 0.3,
@@ -129,7 +136,7 @@ class _RecommendPageConditionTwoState
                   width: 12,
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     AudioBottomSheet.show(context);
                   },
                   borderRadius: BorderRadius.circular(50),
@@ -147,7 +154,7 @@ class _RecommendPageConditionTwoState
                   width: 12,
                 ),
                 InkWell(
-                  onTap: (){},
+                  onTap: () {},
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
                     backgroundColor: Colors.white30,

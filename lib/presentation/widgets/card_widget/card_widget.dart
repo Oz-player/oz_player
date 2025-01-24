@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CardWidget extends StatelessWidget {
-  const CardWidget({super.key});
+  const CardWidget({super.key, this.imgUrl, this.title, this.artist});
+
+  final imgUrl;
+  final title;
+  final artist;
 
   @override
   Widget build(BuildContext context) {
@@ -32,24 +36,45 @@ class CardWidget extends StatelessWidget {
                   width: 160,
                   height: 160,
                   decoration: BoxDecoration(
-                    color: Colors.grey[600],
-                    borderRadius: BorderRadius.circular(12)
+                      color: Colors.grey[600],
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Image.network(
+                    imgUrl,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/muoz.png',
+                        fit: BoxFit.contain,
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
                   height: 12,
                 ),
                 Text(
-                  'Come Together',
+                  title ?? '-',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[900]),
                 ),
-                SizedBox(height: 8,),
+                SizedBox(
+                  height: 8,
+                ),
                 Text(
-                  '비틀즈',
+                  artist ?? '-',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 )

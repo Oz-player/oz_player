@@ -10,13 +10,14 @@ void main() {
     final maniadbRepository = ManiadbRepositoryImpl(maniadbDataSource);
     final maniadbUsecase = ManiadbArtistUsecase(maniadbRepository);
 
-    final search = await maniadbUsecase.execute('어반자카파');
+    final search = await maniadbUsecase.execute('볼빨간사춘기');
     expect(search!.isEmpty, false);
     for (var search in search) {
       print('title : ${search.title}');
       print('majorSongList : ${search.majorSongList}');
       print('imageUrl : ${search.image}');
     }
+    print(search[0].image);
   });
 
   test('test fetchSong', () async {

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
@@ -295,6 +296,9 @@ $exceptlist
       final title = result[i].musicName;
       final artist = result[i].artist;
 
+      log('title : $title');
+      log('title : $artist');
+
       String? imgUrl;
 
       try {
@@ -304,12 +308,19 @@ $exceptlist
           if (i.artist['name'] == artist) {
             final searchArtist = await maniaDBArtist.execute(artist!);
             imgUrl = searchArtist![0].image;
+            
+            if (imgUrl.isEmpty) {
+              log('imgUrl : 불러오기 실패');
+            } else {
+              log('imgUrl : $imgUrl');
+            }
+            break;
           }
         }
 
         log('$title - $artist 검색성공');
         final video = await videoEx.getVideoInfo(title, artist!);
-        
+
         final song = SongEntitiy(
           video: video,
           title: title,
