@@ -42,7 +42,7 @@ class ManiadbDataSourceImpl implements ManiadbDataSource {
     final client = Client();
     final response = await client.get(
       Uri.parse(
-        'http://www.maniadb.com/api/search/$query/?sr=song&display=10&key=example&v=0.5',
+        'http://www.maniadb.com/api/search/$query/?sr=song&display=100&key=example&v=0.5',
       ),
     );
 

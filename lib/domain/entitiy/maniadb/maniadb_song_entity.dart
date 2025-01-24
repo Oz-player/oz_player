@@ -1,7 +1,7 @@
 class ManiadbSongEntity {
   final String title;
-  final List<dynamic> album;
-  final List<dynamic> artist;
+  final Map<String, dynamic> album;
+  final Map<String, dynamic> artist;
 
   ManiadbSongEntity({
     required this.title,

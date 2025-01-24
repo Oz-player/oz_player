@@ -88,7 +88,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
 
                           final isNextPage = ref.read(conditionViewModelProvider.notifier).nextPage();
                           if(isNextPage){
-                            // ref.read(conditionViewModelProvider.notifier).recommendMusic();
+                            ref.read(conditionViewModelProvider.notifier).recommendMusic();
                             context.go('/home/recommend/conditionTwo');
                           }
                         },

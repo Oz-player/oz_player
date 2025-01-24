@@ -14,7 +14,7 @@ class ManiadbSongUsecase {
 
 }
 
-final maniadbArtistUsecaseProvider = Provider<ManiadbSongUsecase>((ref){
+final maniadbSongUsecaseProvider = Provider<ManiadbSongUsecase>((ref){
   final maniadbDataSource = ManiadbDataSourceImpl();
   final maniadbRepository = ManiadbRepositoryImpl(maniadbDataSource);
   return ManiadbSongUsecase(maniadbRepository);

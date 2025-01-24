@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
@@ -43,8 +44,11 @@ class _RecommendPageConditionTwoState
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        leading: Icon(
-          Icons.arrow_back,
+        leading: IconButton(
+          onPressed: (){
+            context.pop();
+          },
+          icon: Icon(Icons.arrow_back),
           color: Colors.white,
         ),
         actions: [

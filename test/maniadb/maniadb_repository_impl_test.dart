@@ -10,18 +10,12 @@ void main() {
     final maniadbRepository = ManiadbRepositoryImpl(maniadbDataSource);
     final maniadbUsecase = ManiadbArtistUsecase(maniadbRepository);
 
-    final search = await maniadbUsecase.execute('아이유');
+    final search = await maniadbUsecase.execute('어반자카파');
     expect(search!.isEmpty, false);
     for (var search in search) {
       print('title : ${search.title}');
       print('majorSongList : ${search.majorSongList}');
       print('imageUrl : ${search.image}');
-      print('reference : ${search.reference}');
-      print('majorSongs : ${search.majorSongs}');
-      print('author : ${search.author}');
-      print('demographic : ${search.demographic}');
-      print('guid : ${search.guid}');
-      print('linkDiscograpy : ${search.linkDiscography}');
     }
   });
 
@@ -34,8 +28,7 @@ void main() {
     expect(search!.isEmpty, false);
     for (var search in search) {
       print('title : ${search.title}');
-      print('artist : ${search.artist}');
-      print('runningTime : ${search.runningTime}');
+      print('artist : ${search.artist['name']}');
     }
   });
 }
