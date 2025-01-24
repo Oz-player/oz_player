@@ -29,7 +29,7 @@ class SettingsButton extends StatelessWidget {
               text,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[900],
+                color: Colors.grey[600],
                 fontWeight: FontWeight.w500,
                 height: 19 / 16,
               ),
