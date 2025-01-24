@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:oz_player/presentation/ui/my_page/sample_page.dart';
-import 'package:oz_player/presentation/ui/my_page/widgets/settings_button.dart';
+import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/settings_page/sample_page.dart';
+import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
 
-class MyPage extends StatelessWidget {
-  const MyPage({super.key});
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class MyPage extends StatelessWidget {
               fontSize: 20,
               fontWeight: FontWeight.w500,
               color: Colors.grey[900],
+              height: 1.4,
             ),
           )),
       body: Padding(
@@ -95,7 +97,72 @@ class ExitButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          textButton('로그아웃', () {}),
+          textButton('로그아웃', () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                actions: [
+                  Row(
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 47, vertical: 10),
+                          backgroundColor: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          '확인',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[600],
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 47, vertical: 10),
+                          backgroundColor: Color(0xFF40017E),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          '취소',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                title: Text(
+                  '잠깐!\n정말 로그아웃 하시겠어요?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.4),
+                ),
+                content: Text(
+                  '확인 버튼을 누르면 로그아웃됩니다',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600], height: 1.4),
+                ),
+              ),
+            );
+          }),
           Transform.translate(
             offset: Offset(0, 1.75),
             child: Container(
@@ -108,7 +175,10 @@ class ExitButtons extends StatelessWidget {
               ),
             ),
           ),
-          textButton('회원탈퇴', () {}),
+          textButton('회원탈퇴', () {
+            context.go('/settings/revoke');
+            
+          }),
         ],
       ),
     );
