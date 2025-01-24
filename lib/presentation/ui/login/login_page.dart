@@ -22,14 +22,28 @@ class LoginPage extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: SizedBox.expand(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Spacer(),
-              GoogleButton(),
-              AppleButton(), // IOS에서만 애플 로그인 버튼 보임
-              SizedBox(height: 40),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Spacer(flex: 166),
+                SizedBox(
+                  width: 164,
+                  child: Image.asset('assets/images/muoz.png'),
+                ),
+                SizedBox(height: 28.5),
+                Text(
+                  '당신만의 신비로운 음악을\n찾아보세요',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, height: 1.4),
+                ),
+                Spacer(flex: 264),
+                GoogleButton(),
+                AppleButton(), // IOS에서만 애플 로그인 버튼 보임
+                SizedBox(height: 32),
+              ],
+            ),
           ),
         ),
       ),

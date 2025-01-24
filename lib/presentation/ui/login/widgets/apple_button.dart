@@ -10,13 +10,12 @@ class AppleButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topMargin = 16.0;
 
     // IOS에서만 보이게! 안드로이드에서는 빈공간 반환
-    if (!Platform.isIOS) return SizedBox(height: topMargin);
+    if (!Platform.isIOS) return SizedBox(height: 70);
 
     return Container(
-      margin: EdgeInsets.only(top: topMargin),
+      margin: EdgeInsets.only(top: 16),
       child: ElevatedButton(
         onPressed: () async {
           try {
@@ -30,9 +29,9 @@ class AppleButton extends ConsumerWidget {
           }
         },
         style: ElevatedButton.styleFrom(
-          fixedSize: const Size(335, 52),
+          fixedSize: const Size(double.infinity, 54),
           padding: EdgeInsets.zero,
-          textStyle: TextStyle(fontSize: 20, height: 24 / 20),
+          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, height: 19/16),
           minimumSize: Size.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
