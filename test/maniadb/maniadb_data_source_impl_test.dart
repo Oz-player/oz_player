@@ -7,10 +7,7 @@ void main() {
     final search = await maniadbDataSourceImpl.fetchArtist('백예린');
     expect(search.isEmpty, false);
     for (var search in search) {
-      print(search.title);
-      print(search.majorSongList);
-      print(search.image);
-      
+      print('majorSongs: ${search.majorSongs['merchants']}');
     }
   });
 
@@ -19,13 +16,16 @@ void main() {
     final searchone = await maniadbDataSourceImpl.fetchSong('bye bye my blue');
     expect(searchone.isEmpty, false);
     for (var searchs in searchone) {
+      print("id : ${searchs.id}");
       print("title : ${searchs.title}");
-      print("album : ${searchs.album['title']}");
-      print("artist : ${searchs.artist}");
-      print("comments : ${searchs.comments}");
-      print("description : ${searchs.description}");
+      print("runningTime : ${searchs.runningTime}");
       print("link : ${searchs.link}");
-      print("link : ${searchs.pubDate}");
+      print("pubdate : ${searchs.pubDate}");
+      print("author : ${searchs.author}");
+      print("description : ${searchs.description}");
+      print("comments : ${searchs.comments}");
+      print("album : ${searchs.album}");
+      print("artist : ${searchs.artist}");
       print("----------------------");
     }
   });

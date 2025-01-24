@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
-import 'package:oz_player/presentation/ui/search/search_result_page.dart';
+import 'package:oz_player/presentation/ui/search/widgets/search_result_page.dart';
 
-import 'package:oz_player/presentation/ui/test_page/testpage.dart';
+import 'package:oz_player/presentation/ui/my_page/my_page.dart';
+
+
 
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
@@ -43,12 +45,10 @@ final router = GoRouter(
     GoRoute(
       path: '/search',
       builder: (context, state) => Search(),
-      routes: [
-        GoRoute(
-          path: 'searchResult',
-          builder: (context, state) => SearchResultPage(),
-        ),
-      ],
+    ),
+    GoRoute(
+      path: '/my',
+      builder: (context, state) => MyPage(),
     )
   ],
 

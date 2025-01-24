@@ -15,13 +15,20 @@ class RecommendPageConditionOne extends ConsumerWidget {
       appBar: AppBar(
         title: Text('음악 카드 추천'),
         centerTitle: true,
+        leading: IconButton(onPressed: (){
+          if(conditionState.page == 0){
+            context.pop();
+          } else {
+            ref.read(conditionViewModelProvider.notifier).beforePageAnimation();
+          }
+        }, icon: Icon(Icons.arrow_back)),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.ac_unit)),
         ],
       ),
       body: AnimatedOpacity(
         opacity: conditionState.opacity,
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 250),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -39,14 +46,14 @@ class RecommendPageConditionOne extends ConsumerWidget {
                   height: 8,
                 ),
                 Text(
-                  '지금, 당신의 상태나 기분은\n어떤지 알려주세요',
+                  conditionState.title[conditionState.page],
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 12,
                 ),
                 Text(
-                  '최대 3개까지 선택이 가능해요!',
+                  conditionState.subtitle[conditionState.page],
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
                 SizedBox(
@@ -74,8 +81,11 @@ class RecommendPageConditionOne extends ConsumerWidget {
                         backgroundColor: WidgetStateProperty.all(Colors.black)
                       ),
                         onPressed: () async {
+                          if(conditionState.event) return;
+
                           final isNextPage = ref.read(conditionViewModelProvider.notifier).nextPage();
                           if(isNextPage){
+                            ref.read(conditionViewModelProvider.notifier).recommendMusic();
                             context.go('/home/recommend/conditionTwo');
                           }
                         },

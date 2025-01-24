@@ -3,7 +3,7 @@ import 'package:oz_player/data/source/play_list/play_list_source.dart';
 import 'package:oz_player/domain/repository/play_list_repository.dart';
 
 class PlayListRepositoryImpl implements PlayListRepository {
-  PlayListSource _source;
+  final PlayListSource _source;
 
   PlayListRepositoryImpl(this._source);
 

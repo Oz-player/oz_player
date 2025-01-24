@@ -39,12 +39,16 @@ void main() async {
     final apiKey = dotenv.env['GEMINI_KEY'];
     final num = 5;
     final condition = '''
-1. 위로가 필요할때 들을수 있는 노래
-2. 공부, 집중할때 들을 수 있는 노래
-3. 장르는 되도록 발라드
+1. 지금 나의 기분은 '위로가 필요해요, 혼란스러워요'
+2. 지금 내가 하고 있는것은 '산책'
+3. 추천 받고 싶은 노래의 장르는 '발라드'
+4. 선호하는 아티스트는 '여성 솔로'
 ''';
 
-    final result = await geminiUsecase.recommentMultiMusicByGemini(condition, apiKey!, num);
+    final except = '''
+''';
+
+    final result = await geminiUsecase.recommentMultiMusicByGemini(condition, apiKey!, num, except);
     debugPrint('musicName : ${result[0].musicName}');
     debugPrint('artist : ${result[0].artist}');
 
