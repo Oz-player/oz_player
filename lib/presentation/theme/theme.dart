@@ -6,7 +6,7 @@ class LightTheme extends AppThemeExtension {
     super.main = Colors.black,
     super.mainLight = Colors.grey,
     super.sub = Colors.black,
-    super.background = Colors.white,
+    super.background = const Color(0xFFF5F5F5) // grey[100],
   });
 }
 

@@ -253,7 +253,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
     final gemini = ref.read(geiminiRepositoryProvider);
     final videoEx = ref.read(videoInfoUsecaseProvider);
-    ref.read(loadingViewModelProvider.notifier).startLoading();
+    ref.read(loadingViewModelProvider.notifier).startLoading(1);
 
     final apiKey = dotenv.env['GEMINI_KEY'];
     final num = 5;
@@ -285,8 +285,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       final title = result[i].musicName;
       final artist = result[i].artist;
 
-      print(title);
-      print(artist);
+      log('$title - $artist');
 
       try {
         final video =

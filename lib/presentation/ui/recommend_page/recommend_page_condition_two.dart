@@ -31,7 +31,9 @@ class RecommendPageConditionTwo extends ConsumerWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.ac_unit)),
         ],
       ),
-      body: SafeArea(child: Text('data')),
+      body: SafeArea(
+        child: Text('data'),
+      ),
     );
   }
 }
