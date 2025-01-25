@@ -16,13 +16,17 @@ class RecommendPageConditionOne extends ConsumerWidget {
         title: Text('음악 카드 추천'),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        leading: IconButton(onPressed: (){
-          if(conditionState.page == 0){
-            context.pop();
-          } else {
-            ref.read(conditionViewModelProvider.notifier).beforePageAnimation();
-          }
-        }, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () {
+              if (conditionState.page == 0) {
+                context.pop();
+              } else {
+                ref
+                    .read(conditionViewModelProvider.notifier)
+                    .beforePageAnimation();
+              }
+            },
+            icon: Icon(Icons.arrow_back)),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.ac_unit)),
         ],
@@ -65,39 +69,55 @@ class RecommendPageConditionOne extends ConsumerWidget {
                   runSpacing: 12,
                   children: [
                     if (conditionState.page == 0)
-                      ...boxes(conditionState.mood, conditionState.moodSet, ref),
+                      ...boxes(
+                          conditionState.mood, conditionState.moodSet, ref),
                     if (conditionState.page == 1)
                       ...boxes(conditionState.situation,
                           conditionState.situationSet, ref),
                     if (conditionState.page == 2)
-                      ...boxes(conditionState.genre, conditionState.genreSet, ref),
+                      ...boxes(
+                          conditionState.genre, conditionState.genreSet, ref),
                     if (conditionState.page == 3)
-                      ...boxes(conditionState.artist, conditionState.artistSet, ref),
+                      ...boxes(
+                          conditionState.artist, conditionState.artistSet, ref),
                   ],
                 ),
-                SizedBox(height: 60,),
+                Spacer(),
                 Row(
                   children: [
                     Spacer(),
                     TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(Colors.black)
-                      ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all(Color(0xff40017e)),
+                            shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)))),
                         onPressed: () async {
-                          if(conditionState.event) return;
+                          if (conditionState.event) return;
 
-                          final isNextPage = ref.read(conditionViewModelProvider.notifier).nextPage();
-                          if(isNextPage){
-                            ref.read(conditionViewModelProvider.notifier).recommendMusic();
+                          final isNextPage = ref
+                              .read(conditionViewModelProvider.notifier)
+                              .nextPage();
+                          if (isNextPage) {
+                            ref
+                                .read(conditionViewModelProvider.notifier)
+                                .recommendMusic();
                             context.go('/home/recommend/conditionTwo');
                           }
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: Text('다음', style: TextStyle(color: Colors.white),),
+                          child: Text(
+                            '다음',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         )),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 52,
+                ),
               ],
             ),
           ),

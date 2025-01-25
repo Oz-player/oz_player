@@ -130,30 +130,54 @@ class AudioBottomSheet {
                         children: [
                           InkWell(
                               borderRadius: BorderRadius.circular(50),
-                              onTap: () {},
-                              child: Icon(Icons.skip_previous, size: 28, color: Colors.white,)),
-                          SizedBox(width: 40,),
+                              onTap: () {
+                                ref.read(audioPlayerViewModelProvider.notifier).skipBackwardSec(10);
+                              },
+                              child: Icon(
+                                Icons.skip_previous,
+                                size: 28,
+                                color: Colors.white,
+                              )),
+                          SizedBox(
+                            width: 40,
+                          ),
                           InkWell(
                             borderRadius: BorderRadius.circular(50),
-                            onTap: () {},
+                            onTap: () {
+                              ref.read(audioPlayerViewModelProvider.notifier).togglePlay();
+                            },
                             child: Container(
                               width: 72,
                               height: 72,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white, width: 2),
-                                borderRadius: BorderRadius.circular(50)
-                              ),
+                                  border:
+                                      Border.all(color: Colors.white, width: 2),
+                                  borderRadius: BorderRadius.circular(50)),
                               child: CircleAvatar(
                                 backgroundColor: Colors.white30,
-                                child: Icon(Icons.play_arrow, size: 28, color: Colors.white,),
+                                child: Icon(
+                                  audioState.isPlaying
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                  size: 28,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(width: 40,),
+                          SizedBox(
+                            width: 40,
+                          ),
                           InkWell(
                               borderRadius: BorderRadius.circular(50),
-                              onTap: () {},
-                              child: Icon(Icons.skip_next, size: 28, color: Colors.white,)),
+                              onTap: () {
+                                ref.read(audioPlayerViewModelProvider.notifier).skipForwardSec(10);
+                              },
+                              child: Icon(
+                                Icons.skip_next,
+                                size: 28,
+                                color: Colors.white,
+                              )),
                         ],
                       ),
                       SizedBox(

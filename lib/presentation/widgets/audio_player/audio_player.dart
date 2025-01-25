@@ -1,4 +1,3 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
@@ -11,6 +10,7 @@ class AudioPlayer extends StatelessWidget {
     return bottomAudioPlayer();
   }
 
+  /*
   Widget fullAudioPlayer() {
     return Consumer(
       builder: (context, ref, child) {
@@ -75,6 +75,7 @@ class AudioPlayer extends StatelessWidget {
       },
     );
   }
+  */
 
   Widget bottomAudioPlayer() {
     return Consumer(

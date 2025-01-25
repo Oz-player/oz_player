@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
@@ -35,6 +36,8 @@ class _RecommendPageConditionTwoState
   }
 
   Widget mainScaffold(ConditionState conditionState) {
+    int positionIndex = 0;
+
     return Scaffold(
       backgroundColor: Color(0xff0d0019),
       appBar: AppBar(
@@ -59,9 +62,7 @@ class _RecommendPageConditionTwoState
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              height: 14,
-            ),
+            Spacer(flex: 1),
             Text(
               '당신을 위해\n준비한 마법의 음악 카드',
               textAlign: TextAlign.center,
@@ -93,7 +94,13 @@ class _RecommendPageConditionTwoState
             SizedBox(
               height: 300,
               child: Swiper(
+                loop: false,
                 itemBuilder: (BuildContext context, int index) {
+                  final length = conditionState.recommendSongs.length;
+                  if (length == index) {
+                    return CardWidget(isEmpty: true);
+                  }
+
                   final recommendSong = conditionState.recommendSongs[index];
                   final title = recommendSong.title;
                   final artist = recommendSong.artist;
@@ -104,17 +111,19 @@ class _RecommendPageConditionTwoState
                     imgUrl: imgUrl,
                   );
                 },
-                itemCount: conditionState.recommendSongs == [] ? 1 : conditionState.recommendSongs.length,
+                itemCount: conditionState.recommendSongs == []
+                    ? 1
+                    : conditionState.recommendSongs.length + 1,
                 viewportFraction: 0.5,
                 scale: 0.5,
                 fade: 0.3,
                 onIndexChanged: (index) {
-                  // 중앙에 온 요소 처리
+                  positionIndex = index;
                 },
               ),
             ),
-            SizedBox(
-              height: 32,
+            Spacer(
+              flex: 2,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,6 +146,10 @@ class _RecommendPageConditionTwoState
                 ),
                 InkWell(
                   onTap: () {
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setAudioPlayer(conditionState
+                            .recommendSongs[positionIndex].video.audioUrl);
                     AudioBottomSheet.show(context);
                   },
                   borderRadius: BorderRadius.circular(50),
@@ -168,6 +181,9 @@ class _RecommendPageConditionTwoState
                 )
               ],
             ),
+            SizedBox(
+              height: 32,
+            ),
           ],
         ),
       ),
@@ -185,7 +201,7 @@ class _RecommendPageConditionTwoState
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Text(
             tag,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ),
       ),

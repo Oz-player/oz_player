@@ -58,6 +58,7 @@ dependencies:
   html: ^0.15.5
   card_swiper: ^3.0.1
   toggle_switch: ^2.3.0
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
