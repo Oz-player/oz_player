@@ -148,8 +148,15 @@ class _RecommendPageConditionTwoState
                   onTap: () {
                     ref
                         .read(audioPlayerViewModelProvider.notifier)
-                        .setAudioPlayer(conditionState
-                            .recommendSongs[positionIndex].video.audioUrl, positionIndex);
+                        .setCurrentSong(
+                            conditionState.recommendSongs[positionIndex]);
+                            
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setAudioPlayer(
+                            conditionState
+                                .recommendSongs[positionIndex].video.audioUrl,
+                            positionIndex);
                     AudioBottomSheet.show(context, positionIndex);
                   },
                   borderRadius: BorderRadius.circular(50),

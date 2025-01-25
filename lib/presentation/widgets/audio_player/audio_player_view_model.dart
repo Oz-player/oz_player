@@ -2,33 +2,43 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
   StreamSubscription? playerStateSubscription;
   bool isPlaying;
   int index;
+  SongEntitiy? currentSong;
+  bool isbuffering;
 
   AudioPlayerState(this.audioPlayer, this.playerStateSubscription,
-      this.isPlaying, this.index);
+      this.isPlaying, this.index, this.currentSong, this.isbuffering);
 
-  AudioPlayerState copyWith({
-    AudioPlayer? audioPlayer,
-    StreamSubscription? playerStateSubscription,
-    bool? isPlaying,
-    int? index,
-  }) =>
+  AudioPlayerState copyWith(
+          {AudioPlayer? audioPlayer,
+          StreamSubscription? playerStateSubscription,
+          bool? isPlaying,
+          int? index,
+          SongEntitiy? currentSong,
+          bool? isbuffering}) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
           playerStateSubscription ?? this.playerStateSubscription,
           isPlaying ?? this.isPlaying,
-          index ?? this.index);
+          index ?? this.index,
+          currentSong ?? this.currentSong,
+          isbuffering ?? this.isPlaying);
 }
 
 class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
-    return AudioPlayerState(AudioPlayer(), null, false, -1);
+    return AudioPlayerState(AudioPlayer(), null, false, -1, null, false);
+  }
+
+  void setCurrentSong(SongEntitiy song) {
+    state.currentSong = song;
   }
 
   /// 오디오 연결 + 스트림 연결 및 자동재생
@@ -50,14 +60,20 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       state.playerStateSubscription ??=
           state.audioPlayer.playerStateStream.listen((playerState) async {
         if (playerState.processingState == ProcessingState.completed) {
-          await togglePause();
           await state.audioPlayer.seek(Duration.zero);
+          await togglePause();
+        }
+        if (playerState.processingState == ProcessingState.buffering) {
+          state.isbuffering = true;
+        }
+        if (playerState.processingState == ProcessingState.ready) {
+          state.isbuffering = false;
         }
       });
 
       await togglePlay();
     } catch (e) {
-      log('잘못된 url 이거나, 인터넷 연결 문제 \n$e');
+      log('잘못된 오디오 url 이거나, 인터넷 연결 문제 \n$e');
     }
   }
 
@@ -68,6 +84,14 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     }
 
     state = state.copyWith(isPlaying: true);
+
+    await waitBuffering();
+  }
+
+  Future<void> waitBuffering() async {
+    if (state.isbuffering) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
     await state.audioPlayer.play();
   }
 
@@ -108,7 +132,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     }
 
     if (state.isPlaying) {
-      await state.audioPlayer.play();
+      await waitBuffering();
     }
   }
 
@@ -122,14 +146,14 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     final currentPosition = state.audioPlayer.position;
     final newPosition = currentPosition - Duration(seconds: sec);
 
-    if (newPosition < Duration(seconds: 0)) {
-      await state.audioPlayer.seek(Duration(seconds: 0));
+    if (newPosition < Duration.zero) {
+      await state.audioPlayer.seek(Duration.zero);
     } else {
       await state.audioPlayer.seek(newPosition);
     }
 
     if (state.isPlaying) {
-      await state.audioPlayer.play();
+      await waitBuffering();
     }
   }
 
@@ -144,7 +168,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     await state.audioPlayer.seek(newPosition);
 
     if (state.isPlaying) {
-      await state.audioPlayer.play();
+      await waitBuffering();
     }
   }
 
