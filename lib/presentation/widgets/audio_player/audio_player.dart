@@ -23,86 +23,93 @@ class AudioPlayer extends StatelessWidget {
             audioState.currentSong == null) {
           return SizedBox.shrink();
         }
-        return GestureDetector(
-          onTap: (){
-            AudioBottomSheet.showCurrentAudio(context);
+        return Dismissible(
+          key: Key('audio_player'),
+          direction: DismissDirection.horizontal,
+          onDismissed:(direction) {
+            ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
           },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: colorMode
-                    ? Colors.black.withValues(alpha: 0.32)
-                    : Colors.white.withValues(alpha: 0.32),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 9),
+          child: GestureDetector(
+            onTap: (){
+              AudioBottomSheet.showCurrentAudio(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: colorMode
+                      ? Colors.black.withValues(alpha: 0.32)
+                      : Colors.white.withValues(alpha: 0.32),
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[600],
-                            borderRadius: BorderRadius.circular(12)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: isValidUrl(audioState.currentSong!.imgUrl)
-                              ? Image.network(
-                                  audioState.currentSong!.imgUrl,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                )
-                              : Image.asset(
-                                  'assets/images/muoz.png',
-                                  fit: BoxFit.contain,
-                                ),
+                  padding: const EdgeInsets.symmetric(vertical: 9),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[600],
+                              borderRadius: BorderRadius.circular(12)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: isValidUrl(audioState.currentSong!.imgUrl)
+                                ? Image.network(
+                                    audioState.currentSong!.imgUrl,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : Image.asset(
+                                    'assets/images/muoz.png',
+                                    fit: BoxFit.contain,
+                                  ),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Text(
-                        audioState.currentSong!.title,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: Colors.white),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Spacer(),
-                      IconButton(
-                          onPressed: () {
-                            if (audioState.isPlaying) {
-                              ref
-                                  .read(audioPlayerViewModelProvider.notifier)
-                                  .togglePause();
-                            } else {
-                              ref
-                                  .read(audioPlayerViewModelProvider.notifier)
-                                  .togglePlay();
-                            }
-                          },
-                          icon: Icon(
-                            audioState.isPlaying ? Icons.pause : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 38,
-                          )),
-                    ],
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          audioState.currentSong!.title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              if (audioState.isPlaying) {
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .togglePause();
+                              } else {
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .togglePlay();
+                              }
+                            },
+                            icon: Icon(
+                              audioState.isPlaying ? Icons.pause : Icons.play_arrow,
+                              color: Colors.white,
+                              size: 38,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               ),
