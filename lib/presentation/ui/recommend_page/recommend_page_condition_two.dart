@@ -149,8 +149,8 @@ class _RecommendPageConditionTwoState
                     ref
                         .read(audioPlayerViewModelProvider.notifier)
                         .setAudioPlayer(conditionState
-                            .recommendSongs[positionIndex].video.audioUrl);
-                    AudioBottomSheet.show(context);
+                            .recommendSongs[positionIndex].video.audioUrl, positionIndex);
+                    AudioBottomSheet.show(context, positionIndex);
                   },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(

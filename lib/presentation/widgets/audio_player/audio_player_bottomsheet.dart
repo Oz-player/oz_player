@@ -1,11 +1,13 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class AudioBottomSheet {
-  static void show(BuildContext context) {
+  static void show(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
       isDismissible: false,
@@ -15,6 +17,7 @@ class AudioBottomSheet {
         return Consumer(
           builder: (context, ref, child) {
             final audioState = ref.watch(audioPlayerViewModelProvider);
+            final conditionState = ref.watch(conditionViewModelProvider);
 
             return Container(
               decoration: BoxDecoration(
@@ -71,24 +74,48 @@ class AudioBottomSheet {
                         width: 300,
                         height: 300,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.grey,
+                            color: Colors.grey[600],
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            conditionState.recommendSongs[index].imgUrl,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/muoz.png',
+                                fit: BoxFit.contain,
+                              );
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        '음악제목',
+                      AutoSizeText(
+                        conditionState.recommendSongs[index].title,
                         textAlign: TextAlign.center,
+                        maxLines: 1,
                         style: TextStyle(fontSize: 24, color: Colors.black),
                       ),
                       SizedBox(
                         height: 4,
                       ),
-                      Text(
-                        '가수이름',
+                      AutoSizeText(
+                        conditionState.recommendSongs[index].artist,
                         textAlign: TextAlign.center,
+                        maxLines: 1,
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                       SizedBox(
@@ -108,7 +135,7 @@ class AudioBottomSheet {
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
                                     TextStyle(color: Colors.white),
-                                timeLabelPadding: 18,
+                                timeLabelPadding: 10,
                                 baseBarColor: Color(0xff40017e),
                                 progressBarColor: Colors.white,
                                 //bufferedBarColor: Colors.grey,
@@ -131,7 +158,9 @@ class AudioBottomSheet {
                           InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
-                                ref.read(audioPlayerViewModelProvider.notifier).skipBackwardSec(10);
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .skipBackwardSec(10);
                               },
                               child: Icon(
                                 Icons.skip_previous,
@@ -144,7 +173,15 @@ class AudioBottomSheet {
                           InkWell(
                             borderRadius: BorderRadius.circular(50),
                             onTap: () {
-                              ref.read(audioPlayerViewModelProvider.notifier).togglePlay();
+                              if (audioState.isPlaying) {
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .togglePause();
+                              } else {
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .togglePlay();
+                              }
                             },
                             child: Container(
                               width: 72,
@@ -171,7 +208,9 @@ class AudioBottomSheet {
                           InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
-                                ref.read(audioPlayerViewModelProvider.notifier).skipForwardSec(10);
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .skipForwardSec(10);
                               },
                               child: Icon(
                                 Icons.skip_next,

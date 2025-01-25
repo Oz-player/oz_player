@@ -43,25 +43,28 @@ class CardWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.grey[600],
                             borderRadius: BorderRadius.circular(12)),
-                        child: Image.network(
-                          imgUrl,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return Center(
-                                child: CircularProgressIndicator(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            imgUrl,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/muoz.png',
+                                fit: BoxFit.contain,
                               );
-                            }
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              'assets/images/muoz.png',
-                              fit: BoxFit.contain,
-                            );
-                          },
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(

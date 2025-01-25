@@ -7,29 +7,39 @@ class AudioPlayerState {
   AudioPlayer audioPlayer;
   StreamSubscription? playerStateSubscription;
   bool isPlaying;
+  int index;
 
-  AudioPlayerState(
-      this.audioPlayer, this.playerStateSubscription, this.isPlaying);
+  AudioPlayerState(this.audioPlayer, this.playerStateSubscription,
+      this.isPlaying, this.index);
 
   AudioPlayerState copyWith({
     AudioPlayer? audioPlayer,
     StreamSubscription? playerStateSubscription,
     bool? isPlaying,
+    int? index,
   }) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
           playerStateSubscription ?? this.playerStateSubscription,
-          isPlaying ?? this.isPlaying);
+          isPlaying ?? this.isPlaying,
+          index ?? this.index);
 }
 
-class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
+class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
-    return AudioPlayerState(AudioPlayer(), null, false);
+    return AudioPlayerState(AudioPlayer(), null, false, -1);
   }
 
   /// 오디오 연결 + 스트림 연결 및 자동재생
-  Future<void> setAudioPlayer(String audioUrl) async {
+  Future<void> setAudioPlayer(String audioUrl, int index) async {
+    if (index == state.index) {
+      await togglePlay();
+      return;
+    }
+
+    state.index = index;
+
     if (state.playerStateSubscription != null) {
       await toggleStop();
     }
@@ -40,7 +50,7 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
       state.playerStateSubscription ??=
           state.audioPlayer.playerStateStream.listen((playerState) async {
         if (playerState.processingState == ProcessingState.completed) {
-          state.isPlaying = false;
+          await togglePause();
           await state.audioPlayer.seek(Duration.zero);
         }
       });
@@ -52,39 +62,19 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
   }
 
   /// 오디오 재생
-  bool isToggling = false;
-
   Future<void> togglePlay() async {
-    if (state.playerStateSubscription == null ||
-        state.isPlaying ||
-        isToggling) {
+    if (state.isPlaying) {
       return;
     }
 
-    isToggling = true;
-
-    try {
-      await for (var playerState in state.audioPlayer.playerStateStream
-          .timeout(Duration(seconds: 20))) {
-        if (playerState.processingState == ProcessingState.buffering) {
-          continue;
-        } else if (playerState.processingState == ProcessingState.ready) {
-          await state.audioPlayer.play();
-          state = state.copyWith(isPlaying: true);
-          break;
-        }
-      }
-    } catch (e) {
-      print("Stream timeout or error: $e");
-    } finally {
-      isToggling = false;
-    }
+    state = state.copyWith(isPlaying: true);
+    await state.audioPlayer.play();
   }
 
   /// 오디오 일시정지
   Future<void> togglePause() async {
+    state = state.copyWith(isPlaying: false);
     await state.audioPlayer.pause();
-    state.isPlaying = false;
   }
 
   /// 오디오 완전 정지, 재시작 시 새로운 설정 필요
@@ -118,19 +108,7 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
     }
 
     if (state.isPlaying) {
-      try {
-        await for (var playerState in state.audioPlayer.playerStateStream
-            .timeout(Duration(seconds: 20))) {
-          if (playerState.processingState == ProcessingState.buffering) {
-            continue;
-          } else if (playerState.processingState == ProcessingState.ready) {
-            await state.audioPlayer.play();
-            break;
-          }
-        }
-      } catch (e) {
-        print("앞으로 건너뛰기시 타임오류 $e");
-      }
+      await state.audioPlayer.play();
     }
   }
 
@@ -151,38 +129,22 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
     }
 
     if (state.isPlaying) {
-      try {
-        await for (var playerState in state.audioPlayer.playerStateStream
-            .timeout(Duration(seconds: 20))) {
-          if (playerState.processingState == ProcessingState.buffering) {
-            continue;
-          } else if (playerState.processingState == ProcessingState.ready) {
-            await state.audioPlayer.play();
-            break;
-          }
-        }
-      } catch (e) {
-        print("뒤로 건너뛰기시 타임오류 $e");
-      }
+      await state.audioPlayer.play();
     }
   }
 
   /// 오디오 앞으로 건너뛰기
   /// 건너뛰기시 버퍼링(노이즈) 문제를 위해 pause후 다시 play
   Future<void> skipForwardPosition(Duration pos) async {
-    await state.audioPlayer.pause();
-    final newPosition = pos;
+    if (state.isPlaying) {
+      await state.audioPlayer.pause();
+    }
 
+    final newPosition = pos;
     await state.audioPlayer.seek(newPosition);
 
-    await for (var playerState
-        in state.audioPlayer.playerStateStream.timeout(Duration(seconds: 20))) {
-      if (playerState.processingState == ProcessingState.buffering) {
-        continue;
-      } else if (playerState.processingState == ProcessingState.ready) {
-        await state.audioPlayer.play();
-        break;
-      }
+    if (state.isPlaying) {
+      await state.audioPlayer.play();
     }
   }
 
@@ -193,6 +155,6 @@ class AudioPlayerViewModel extends Notifier<AudioPlayerState> {
 }
 
 final audioPlayerViewModelProvider =
-    NotifierProvider<AudioPlayerViewModel, AudioPlayerState>(() {
+    AutoDisposeNotifierProvider<AudioPlayerViewModel, AudioPlayerState>(() {
   return AudioPlayerViewModel();
 });
