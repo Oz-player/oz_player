@@ -144,15 +144,7 @@ class _RecommendPageConditionTwoState
               children: [
                 InkWell(
                   onTap: () {
-                    ref
-                        .read(saveSongBottomSheetViewModelProvider.notifier)
-                        .setSaveSong(
-                            conditionState.recommendSongs[positionIndex]);
-                    SaveSongBottomSheet.show(
-                      context,
-                      ref,
-                      textController
-                    );
+                    // 음악 플레이리스트에 저장
                   },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
@@ -197,7 +189,14 @@ class _RecommendPageConditionTwoState
                   width: 12,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    /// 보관함에 저장
+                    ref
+                        .read(saveSongBottomSheetViewModelProvider.notifier)
+                        .setSaveSong(
+                            conditionState.recommendSongs[positionIndex]);
+                    SaveSongBottomSheet.show(context, ref, textController);
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
                     backgroundColor: Colors.white30,
