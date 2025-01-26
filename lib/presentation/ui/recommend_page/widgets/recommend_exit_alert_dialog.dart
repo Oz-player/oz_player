@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class RecommendExitAlertDialog extends ConsumerWidget {
@@ -47,6 +48,7 @@ class RecommendExitAlertDialog extends ConsumerWidget {
                     ref
                         .read(bottomNavigationProvider.notifier)
                         .updatePage(destination);
+                    ref.read(cardPositionProvider.notifier).reset();
                     if (destination == 0) {
                       context.go('/saved');
                     } else if (destination == 1) {

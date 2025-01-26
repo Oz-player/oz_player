@@ -37,6 +37,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     return AudioPlayerState(AudioPlayer(), null, false, -1, null, false);
   }
 
+  /// 오디오 플레이어에 현재 곡 정보 저장
   void setCurrentSong(SongEntitiy song) {
     state.currentSong = song;
   }

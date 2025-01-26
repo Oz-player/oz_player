@@ -38,7 +38,8 @@ class GeminiSourceImpl implements AiSource {
       );
 
       final content = [Content.text(prompt)];
-      final response = await model.generateContent(content);
+      final response = await model.generateContent(content,
+          generationConfig: GenerationConfig(temperature: 1.3));
 
       print(response.text);
 

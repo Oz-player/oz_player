@@ -1,8 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/recommend_exit_alert_dialog.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/save_song_bottom_sheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
@@ -20,10 +23,13 @@ class RecommendPageConditionTwo extends ConsumerStatefulWidget {
 
 class _RecommendPageConditionTwoState
     extends ConsumerState<RecommendPageConditionTwo> {
+  final textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final conditionState = ref.watch(conditionViewModelProvider);
     final loadingState = ref.watch(loadingViewModelProvider);
+    ref.watch(saveSongBottomSheetViewModelProvider);
 
     return loadingState.isLoading
         ? Stack(
@@ -36,7 +42,7 @@ class _RecommendPageConditionTwoState
   }
 
   Widget mainScaffold(ConditionState conditionState) {
-    int positionIndex = 0;
+    final positionIndex = ref.watch(cardPositionProvider);
 
     return Scaffold(
       backgroundColor: Color(0xff0d0019),
@@ -49,7 +55,13 @@ class _RecommendPageConditionTwoState
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            context.pop();
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => RecommendExitAlertDialog(
+                destination: 1,
+              ),
+            );
           },
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -118,7 +130,9 @@ class _RecommendPageConditionTwoState
                 scale: 0.5,
                 fade: 0.3,
                 onIndexChanged: (index) {
-                  positionIndex = index;
+                  ref
+                      .read(cardPositionProvider.notifier)
+                      .cardPositionIndex(index);
                 },
               ),
             ),
@@ -129,7 +143,17 @@ class _RecommendPageConditionTwoState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    ref
+                        .read(saveSongBottomSheetViewModelProvider.notifier)
+                        .setSaveSong(
+                            conditionState.recommendSongs[positionIndex]);
+                    SaveSongBottomSheet.show(
+                      context,
+                      ref,
+                      textController
+                    );
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
                     backgroundColor: Colors.white30,
@@ -150,7 +174,6 @@ class _RecommendPageConditionTwoState
                         .read(audioPlayerViewModelProvider.notifier)
                         .setCurrentSong(
                             conditionState.recommendSongs[positionIndex]);
-                            
                     ref
                         .read(audioPlayerViewModelProvider.notifier)
                         .setAudioPlayer(
