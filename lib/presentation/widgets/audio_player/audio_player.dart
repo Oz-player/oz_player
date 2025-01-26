@@ -1,120 +1,119 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/app/logic/isvaildurl.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 
 class AudioPlayer extends StatelessWidget {
-  const AudioPlayer({super.key});
+  const AudioPlayer({super.key, this.colorMode});
+
+  // 회색(하얀배경일때) : true, 하얀색(검은배경일때) : false
+  final colorMode;
 
   @override
   Widget build(BuildContext context) {
-    return bottomAudioPlayer();
+    return bottomAudioPlayer(colorMode);
   }
 
-  Widget fullAudioPlayer() {
+  Widget bottomAudioPlayer(bool colorMode) {
     return Consumer(
       builder: (context, ref, child) {
         final audioState = ref.watch(audioPlayerViewModelProvider);
-        
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: StreamBuilder(
-                stream: audioState.audioPlayer.positionStream,
-                builder: (context, snapshot) {
-                  return ProgressBar(
-                    progress: snapshot.data ?? const Duration(seconds: 0),
-                    total: audioState.audioPlayer.duration ?? const Duration(seconds: 2),
-                    buffered: audioState.audioPlayer.bufferedPosition,
-                    onSeek: (duration) {
-                      ref.read(audioPlayerViewModelProvider.notifier).skipForwardPosition(duration);
-                    },
-                  );
-                }
-              ),
-            ),
-            TextButton(
-                onPressed: () {
-                  final songName = '신호등';
-                  final artist = '이무진';
-                  ref
-                      .read(audioPlayerViewModelProvider.notifier)
-                      .setAudioPlayer(songName, artist);
-                },
-                child: Text('이무진 - 신호등')),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .togglePlay();
-                    },
-                    icon: Icon(Icons.play_arrow)),
-                IconButton(
-                    onPressed: () {
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .togglePause();
-                    },
-                    icon: Icon(Icons.pause)),
-                IconButton(
-                    onPressed: () {
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .skipForwardSec(10);
-                    },
-                    icon: Icon(Icons.skip_next)),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget bottomAudioPlayer() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final audioState = ref.watch(audioPlayerViewModelProvider);
-        if(audioState.playerStateSubscription == null){
+        if (audioState.playerStateSubscription == null ||
+            audioState.currentSong == null) {
           return SizedBox.shrink();
         }
-        return Container(
-          color: Colors.grey,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                color: Colors.red,
+        return Dismissible(
+          key: Key('audio_player'),
+          direction: DismissDirection.horizontal,
+          onDismissed:(direction) {
+            ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
+          },
+          child: GestureDetector(
+            onTap: (){
+              AudioBottomSheet.showCurrentAudio(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: colorMode
+                      ? Colors.black.withValues(alpha: 0.32)
+                      : Colors.white.withValues(alpha: 0.32),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 9),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[600],
+                              borderRadius: BorderRadius.circular(12)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: isValidUrl(audioState.currentSong!.imgUrl)
+                                ? Image.network(
+                                    audioState.currentSong!.imgUrl,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : Image.asset(
+                                    'assets/images/muoz.png',
+                                    fit: BoxFit.contain,
+                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          audioState.currentSong!.title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              if (audioState.isPlaying) {
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .togglePause();
+                              } else {
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .togglePlay();
+                              }
+                            },
+                            icon: Icon(
+                              audioState.isPlaying ? Icons.pause : Icons.play_arrow,
+                              color: Colors.white,
+                              size: 38,
+                            )),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              IconButton(
-                  onPressed: () {
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .togglePlay();
-                  },
-                  icon: Icon(Icons.play_arrow)),
-              IconButton(
-                  onPressed: () {
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .togglePause();
-                  },
-                  icon: Icon(Icons.pause)),
-              IconButton(
-                  onPressed: () {
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .skipForwardSec(10);
-                  },
-                  icon: Icon(Icons.skip_next)),
-            ],
+            ),
           ),
         );
       },

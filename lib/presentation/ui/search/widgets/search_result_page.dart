@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:oz_player/presentation/ui/search/widgets/search_area.dart';
 
 class SearchResultPage extends StatefulWidget {
   const SearchResultPage({super.key});

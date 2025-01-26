@@ -2,11 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
 
-
-import 'package:oz_player/presentation/ui/search/widgets/search_result_page.dart';
-
-
-
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_two.dart';
@@ -18,7 +13,7 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 final router = GoRouter(
 
-  initialLocation: '/search',
+  initialLocation: '/home',
 
   routes: [
     GoRoute(
@@ -35,7 +30,10 @@ final router = GoRouter(
       path: '/saved',
       builder: (context, state) => SavedPage(),
     ),
-    GoRoute(path: '/home', builder: (context, state) => HomePage(), routes: [
+    GoRoute(
+      path: '/home', 
+      builder: (context, state) => HomePage(), 
+      routes: [
       GoRoute(
           path: 'recommend',
           builder: (context, state) => RecommendPage(),

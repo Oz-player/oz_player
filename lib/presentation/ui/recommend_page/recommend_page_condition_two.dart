@@ -1,9 +1,13 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/recommend_exit_alert_dialog.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/save_song_bottom_sheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
@@ -19,10 +23,13 @@ class RecommendPageConditionTwo extends ConsumerStatefulWidget {
 
 class _RecommendPageConditionTwoState
     extends ConsumerState<RecommendPageConditionTwo> {
+  final textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final conditionState = ref.watch(conditionViewModelProvider);
     final loadingState = ref.watch(loadingViewModelProvider);
+    ref.watch(saveSongBottomSheetViewModelProvider);
 
     return loadingState.isLoading
         ? Stack(
@@ -35,6 +42,8 @@ class _RecommendPageConditionTwoState
   }
 
   Widget mainScaffold(ConditionState conditionState) {
+    final positionIndex = ref.watch(cardPositionProvider);
+
     return Scaffold(
       backgroundColor: Color(0xff0d0019),
       appBar: AppBar(
@@ -46,7 +55,13 @@ class _RecommendPageConditionTwoState
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            context.pop();
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => RecommendExitAlertDialog(
+                destination: 1,
+              ),
+            );
           },
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -59,9 +74,7 @@ class _RecommendPageConditionTwoState
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              height: 14,
-            ),
+            Spacer(flex: 1),
             Text(
               '당신을 위해\n준비한 마법의 음악 카드',
               textAlign: TextAlign.center,
@@ -93,7 +106,13 @@ class _RecommendPageConditionTwoState
             SizedBox(
               height: 300,
               child: Swiper(
+                loop: false,
                 itemBuilder: (BuildContext context, int index) {
+                  final length = conditionState.recommendSongs.length;
+                  if (length == index) {
+                    return CardWidget(isEmpty: true);
+                  }
+
                   final recommendSong = conditionState.recommendSongs[index];
                   final title = recommendSong.title;
                   final artist = recommendSong.artist;
@@ -104,23 +123,29 @@ class _RecommendPageConditionTwoState
                     imgUrl: imgUrl,
                   );
                 },
-                itemCount: conditionState.recommendSongs == [] ? 1 : conditionState.recommendSongs.length,
+                itemCount: conditionState.recommendSongs == []
+                    ? 1
+                    : conditionState.recommendSongs.length + 1,
                 viewportFraction: 0.5,
                 scale: 0.5,
                 fade: 0.3,
                 onIndexChanged: (index) {
-                  // 중앙에 온 요소 처리
+                  ref
+                      .read(cardPositionProvider.notifier)
+                      .cardPositionIndex(index);
                 },
               ),
             ),
-            SizedBox(
-              height: 32,
+            Spacer(
+              flex: 2,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    // 음악 플레이리스트에 저장
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
                     backgroundColor: Colors.white30,
@@ -137,7 +162,17 @@ class _RecommendPageConditionTwoState
                 ),
                 InkWell(
                   onTap: () {
-                    AudioBottomSheet.show(context);
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setCurrentSong(
+                            conditionState.recommendSongs[positionIndex]);
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setAudioPlayer(
+                            conditionState
+                                .recommendSongs[positionIndex].video.audioUrl,
+                            positionIndex);
+                    AudioBottomSheet.show(context, positionIndex);
                   },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
@@ -154,7 +189,14 @@ class _RecommendPageConditionTwoState
                   width: 12,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    /// 보관함에 저장
+                    ref
+                        .read(saveSongBottomSheetViewModelProvider.notifier)
+                        .setSaveSong(
+                            conditionState.recommendSongs[positionIndex]);
+                    SaveSongBottomSheet.show(context, ref, textController);
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
                     backgroundColor: Colors.white30,
@@ -167,6 +209,9 @@ class _RecommendPageConditionTwoState
                   ),
                 )
               ],
+            ),
+            SizedBox(
+              height: 32,
             ),
           ],
         ),
@@ -185,7 +230,7 @@ class _RecommendPageConditionTwoState
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Text(
             tag,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ),
       ),

@@ -16,13 +16,17 @@ class RecommendPage extends ConsumerWidget {
         ref.read(textBoxWidgetsViewModelProvider.notifier).nextText();
       },
       child: Scaffold(
+        backgroundColor: Color(0xff0d0019),
         appBar: AppBar(
-          title: Text('음악 카드 추천'),
+          title: Text('음악 카드 추천', style: TextStyle(color: Colors.white)),
           centerTitle: true,
           leading: SizedBox.shrink(),
           backgroundColor: Colors.transparent,
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.ac_unit)),
+            IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.ac_unit),
+                color: Colors.white),
           ],
         ),
         body: SafeArea(
@@ -31,36 +35,40 @@ class RecommendPage extends ConsumerWidget {
               children: [
                 Spacer(),
                 TextBoxWidgets(state: textState),
-                SizedBox(
-                  height: 70,
-                ),
+                Spacer(),
                 Container(
                   width: 212,
                   height: 212,
                   color: Colors.purple,
                 ),
-                SizedBox(
-                  height: 76,
-                ),
+                SizedBox(height: 120),
                 textState.index == 1
                     ? SizedBox(
-                        height: 48,
+                        width: 214,
+                        height: 64,
                         child: TextButton(
                             onPressed: () {
                               context.go('/home/recommend/conditionOne');
                             },
                             style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStatePropertyAll(Colors.black),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 64),
-                              child: Text('시작하기', style: TextStyle(color: Colors.white),),
+                                backgroundColor:
+                                    WidgetStatePropertyAll(Colors.white30),
+                                shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                )),
+                            child: Center(
+                              child: Text(
+                                '시작하기',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
                             )),
                       )
-                    : SizedBox(height: 48),
+                    : SizedBox(height: 64),
                 SizedBox(
-                  height: 116,
+                  height: 54,
                 )
               ],
             ),
