@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
@@ -33,6 +34,7 @@ class HomePage extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {
+                  ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
                   ref.read(bottomNavigationProvider.notifier).updatePage(4);
                   context.go('/home/recommend');
                 },
@@ -82,8 +84,7 @@ class HomePage extends ConsumerWidget {
                         ),
                         Positioned(
                           bottom: 18,
-                          left: 0,
-                          right: 0,
+                          left: 20,
                           child: Center(
                             child: Text(
                               '추천 카드 랭킹',

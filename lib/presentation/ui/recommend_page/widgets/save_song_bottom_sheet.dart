@@ -65,7 +65,7 @@ class SaveSongBottomSheet {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ...List.generate(
-                                  saveState.savedSong!.moodlist.length,
+                                  1,
                                   (index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 12),
@@ -77,7 +77,7 @@ class SaveSongBottomSheet {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 10),
                                       child: Text(
-                                        saveState.savedSong!.moodlist[index],
+                                        saveState.savedSong!.mood,
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),

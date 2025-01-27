@@ -151,7 +151,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '선호하는 아티스트를\n선택해주세요',
     ];
     List<String> subtitle = [
-      '최대 3개 까지 선택이 가능해요!',
+      '당신에게 딱 맞는 음악을 추천해 드릴게요!',
       '하고 있는 일에 몰입감을 더해보세요!',
       '현재 기분에 맞는 음악 장르를 골라요!',
       '마음에 드는 아티스트를 선택해 맞춤화 추천을 받아요!',
@@ -161,6 +161,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   }
 
   void clickBox(int index, Set<int> set) {
+    /*
     if (state.page == 0) {
       if (set.contains(index)) {
         set.remove(index);
@@ -181,6 +182,15 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
       state = state.copyWith();
     }
+    */
+    if (set.contains(index)) {
+      set.remove(index);
+    } else {
+      set.clear();
+      set.add(index);
+    }
+
+    state = state.copyWith();
   }
 
   bool nextPage() {
@@ -306,7 +316,7 @@ $exceptlist
           if (i.artist['name'] == artist) {
             final searchArtist = await maniaDBArtist.execute(artist!);
             imgUrl = searchArtist![0].image;
-            
+
             if (imgUrl.isEmpty) {
               log('imgUrl : 불러오기 실패');
             } else {
@@ -324,7 +334,7 @@ $exceptlist
           title: title,
           imgUrl: imgUrl ?? '',
           artist: artist,
-          moodlist: moodlist,
+          mood: moodtext,
           situation: situationtext,
           genre: genretext,
           favoriteArtist: artisttext,
