@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/ui/search/search_view_model.dart';
 
-class SearchArea extends StatefulWidget {
+class SearchArea extends ConsumerStatefulWidget {
   final Function(String) onSearch; // 검색 콜백 함수
 
   const SearchArea({super.key, required this.onSearch});
 
   @override
-  State<SearchArea> createState() => _SearchAreaState();
+  ConsumerState<SearchArea> createState() => _SearchAreaState();
 }
 
-class _SearchAreaState extends State<SearchArea> {
+class _SearchAreaState extends ConsumerState<SearchArea> {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
@@ -37,8 +39,11 @@ class _SearchAreaState extends State<SearchArea> {
           onPressed: () {
             final text = _textEditingController.text;
             if (text.isNotEmpty) {
-              widget.onSearch(text); // 검색어를 전달
+              widget.onSearch(text); 
+              ref.read(searchpageListViewModel.notifier).fetchSearch(text);
+              print('onsearch 호출됨');
             }
+            
           },
         ),
       ],

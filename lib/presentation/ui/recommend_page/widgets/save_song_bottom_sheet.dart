@@ -4,7 +4,8 @@ import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bo
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 
 class SaveSongBottomSheet {
-  static void show(BuildContext context, WidgetRef ref, TextEditingController textController) async {
+  static void show(BuildContext context, WidgetRef ref,
+      TextEditingController textController) async {
     final openSheet = await showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -64,7 +65,7 @@ class SaveSongBottomSheet {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ...List.generate(
-                                  saveState.savedSong!.moodlist.length,
+                                  1,
                                   (index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 12),
@@ -76,7 +77,7 @@ class SaveSongBottomSheet {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 10),
                                       child: Text(
-                                        saveState.savedSong!.moodlist[index],
+                                        saveState.savedSong!.mood,
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500),
@@ -242,7 +243,11 @@ class SaveSongBottomSheet {
                                 if (textController.text.isEmpty) {
                                   return;
                                 } else {
-                                  /// 카드 정보 보관함에 넘기기
+                                  ref
+                                      .read(saveSongBottomSheetViewModelProvider
+                                          .notifier)
+                                      .setMemoInSong(textController.text);
+                                  // 카드 정보 보관함에 넘기기
                                 }
                               },
                               child: Text(

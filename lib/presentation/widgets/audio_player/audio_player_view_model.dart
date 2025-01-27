@@ -49,11 +49,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       return;
     }
 
-    state.index = index;
-
     if (state.playerStateSubscription != null) {
       await toggleStop();
     }
+
+    state.index = index;
 
     try {
       await state.audioPlayer.setUrl(audioUrl, preload: true);
@@ -65,6 +65,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
           await togglePause();
         }
         if (playerState.processingState == ProcessingState.buffering) {
+          state.isbuffering = true;
+        }
+        if (playerState.processingState == ProcessingState.loading) {
           state.isbuffering = true;
         }
         if (playerState.processingState == ProcessingState.ready) {
@@ -112,8 +115,8 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       state.playerStateSubscription = null;
     } catch (e) {
       print("오디오 스트림 취소시 오류 $e");
-    } finally{
-      state = state.copyWith();
+    } finally {
+      state = state.copyWith(index: -1);
     }
   }
 

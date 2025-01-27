@@ -43,8 +43,9 @@ ThemeData _theme(Brightness brightness, AppThemeExtension ext) => ThemeData(
       ),
     ),
     extensions: [ext],
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       elevation: 0,
+      backgroundColor: ext.background,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

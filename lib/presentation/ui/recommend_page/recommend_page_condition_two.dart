@@ -5,6 +5,7 @@ import 'package:oz_player/presentation/ui/recommend_page/view_model/card_positio
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/recommend_exit_alert_dialog.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/save_song_bottom_sheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
@@ -144,7 +145,13 @@ class _RecommendPageConditionTwoState
               children: [
                 InkWell(
                   onTap: () {
+                    final length = conditionState.recommendSongs.length;
+                    if (length == positionIndex) {
+                      return;
+                    }
+                    
                     // 음악 플레이리스트에 저장
+                    SavePlaylistBottomSheet.show(context, ref);
                   },
                   borderRadius: BorderRadius.circular(50),
                   child: CircleAvatar(
@@ -162,6 +169,10 @@ class _RecommendPageConditionTwoState
                 ),
                 InkWell(
                   onTap: () {
+                    final length = conditionState.recommendSongs.length;
+                    if (length == positionIndex) {
+                      return;
+                    }
                     ref
                         .read(audioPlayerViewModelProvider.notifier)
                         .setCurrentSong(
@@ -190,6 +201,11 @@ class _RecommendPageConditionTwoState
                 ),
                 InkWell(
                   onTap: () {
+                    final length = conditionState.recommendSongs.length;
+                    if (length == positionIndex) {
+                      return;
+                    }
+
                     /// 보관함에 저장
                     ref
                         .read(saveSongBottomSheetViewModelProvider.notifier)
