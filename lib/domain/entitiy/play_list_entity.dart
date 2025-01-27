@@ -3,9 +3,9 @@ class PlayListEntity {
   String imgUrl;
   List<String> songIds;
 
-  PlayListEntity(
-    this.listName,
-    this.imgUrl,
-    this.songIds,
-  );
+  PlayListEntity({
+    required this.listName,
+    required this.imgUrl,
+    required this.songIds,
+  });
 }

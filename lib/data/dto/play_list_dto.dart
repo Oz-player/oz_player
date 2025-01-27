@@ -1,3 +1,5 @@
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+
 class PlayListDTO {
   final String listName;
   final String imgUrl;
@@ -15,6 +17,14 @@ class PlayListDTO {
       imgUrl: json['imgUrl'],
       songIds:
           (json['songIds'] as List<dynamic>).map((e) => e.toString()).toList(),
+    );
+  }
+
+  PlayListEntity toEntity() {
+    return PlayListEntity(
+      listName: listName,
+      imgUrl: imgUrl,
+      songIds: songIds,
     );
   }
 
