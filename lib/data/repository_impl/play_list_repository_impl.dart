@@ -1,5 +1,6 @@
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/data/source/play_list/play_list_source.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/repository/play_list_repository.dart';
 
 class PlayListRepositoryImpl implements PlayListRepository {
@@ -33,7 +34,8 @@ class PlayListRepositoryImpl implements PlayListRepository {
   }
 
   @override
-  Future<List<PlayListDTO>> getPlayLists(String userId) async {
-    return await _source.getPlayLists(userId);
+  Future<List<PlayListEntity>> getPlayLists(String userId) async {
+    final dtos = await _source.getPlayLists(userId);
+    return dtos.map((e) => e.toEntity()).toList();
   }
 }
