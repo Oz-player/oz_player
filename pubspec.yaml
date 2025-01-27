@@ -47,8 +47,6 @@ dependencies:
   youtube_explode_dart: ^2.3.6
   just_audio: ^0.9.43
 
-  riverpod: ^2.6.1
-
   audio_video_progress_bar: ^2.0.3
 
   sign_in_with_apple: ^6.1.4
