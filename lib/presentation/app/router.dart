@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
-
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_two.dart';
@@ -13,7 +12,9 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 final router = GoRouter(
 
-  initialLocation: '/home',
+
+  initialLocation: '/login',
+
 
   routes: [
     GoRoute(

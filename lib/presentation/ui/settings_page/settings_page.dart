@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/sample_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
 
@@ -75,9 +77,9 @@ class SubTitle extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
-          height: 24 / 20,
+          height: 19/16,
         ),
       ),
     );
@@ -86,13 +88,13 @@ class SubTitle extends StatelessWidget {
 
 //=============================================================
 // 로그아웃 회원탈퇴 위젯
-class ExitButtons extends StatelessWidget {
+class ExitButtons extends ConsumerWidget {
   const ExitButtons({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -136,8 +138,13 @@ class ExitButtons extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {
-                          print('로그아웃 확인버튼 선택!');
+                        onPressed: () async {
+                          print('로그아웃 확인 버튼 선택함!');
+                          final loginViewModel = ref.read(loginViewModelProvider.notifier);
+                          await loginViewModel.logout();
+
+                          // ignore: use_build_context_synchronously
+                          context.go('/login');
                         },
                         child: Text(
                           '확인',
