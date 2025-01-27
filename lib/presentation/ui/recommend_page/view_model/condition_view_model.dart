@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/data/source/spotify/spotify_data_source_impl.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 import 'package:oz_player/domain/usecase/maniadb/maniadb_artist_usecase.dart';
 import 'package:oz_player/domain/usecase/maniadb/maniadb_song_usecase.dart';
@@ -268,8 +269,9 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
     final gemini = ref.read(geiminiRepositoryProvider);
     final videoEx = ref.read(videoInfoUsecaseProvider);
-    final maniaDBSong = ref.read(maniadbSongUsecaseProvider);
-    final maniaDBArtist = ref.read(maniadbArtistUsecaseProvider);
+    // final maniaDBSong = ref.read(maniadbSongUsecaseProvider);
+    // final maniaDBArtist = ref.read(maniadbArtistUsecaseProvider);
+    final spotifyDB = ref.read(spotifySourceProvider);
     ref.read(loadingViewModelProvider.notifier).startLoading(1);
 
     final apiKey = dotenv.env['GEMINI_KEY'];
@@ -310,6 +312,7 @@ $exceptlist
       String? imgUrl;
 
       try {
+        /* ManiaDB로 imgUrl 가져오는 로직
         final searchSong = await maniaDBSong.execute(title!);
 
         for (var i in searchSong!) {
@@ -325,6 +328,11 @@ $exceptlist
             break;
           }
         }
+        */
+
+        final searchSong = await spotifyDB.searchList(title!);
+        final imgUrlMap = searchSong[1].images![0];
+        imgUrl = imgUrlMap['url'];
 
         log('$title - $artist 검색성공');
         final video = await videoEx.getVideoInfo(title, artist!);
