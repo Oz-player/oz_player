@@ -9,6 +9,7 @@ class SongEntitiy {
   String situation;
   String genre;
   String favoriteArtist;
+  String? memo;
 
   SongEntitiy({
     required this.video,
@@ -19,5 +20,6 @@ class SongEntitiy {
     required this.situation,
     required this.genre,
     required this.favoriteArtist,
+    this.memo,
   });
 }

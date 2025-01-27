@@ -4,7 +4,8 @@ import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bo
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 
 class SaveSongBottomSheet {
-  static void show(BuildContext context, WidgetRef ref, TextEditingController textController) async {
+  static void show(BuildContext context, WidgetRef ref,
+      TextEditingController textController) async {
     final openSheet = await showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -242,7 +243,11 @@ class SaveSongBottomSheet {
                                 if (textController.text.isEmpty) {
                                   return;
                                 } else {
-                                  /// 카드 정보 보관함에 넘기기
+                                  ref
+                                      .read(saveSongBottomSheetViewModelProvider
+                                          .notifier)
+                                      .setMemoInSong(textController.text);
+                                  // 카드 정보 보관함에 넘기기
                                 }
                               },
                               child: Text(
