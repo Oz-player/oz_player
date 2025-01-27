@@ -12,6 +12,8 @@ import 'package:oz_player/data/source/login/apple_login_data_source.dart';
 import 'package:oz_player/data/source/login/apple_login_data_source_impl.dart';
 import 'package:oz_player/data/source/login/google_login_data_source.dart';
 import 'package:oz_player/data/source/login/google_login_data_source_impl.dart';
+import 'package:oz_player/data/source/spotify/spotify_data_source.dart';
+import 'package:oz_player/data/source/spotify/spotify_data_source_impl.dart';
 import 'package:oz_player/domain/repository/gemini_repository.dart';
 import 'package:oz_player/domain/repository/login/apple_login_repository.dart';
 import 'package:oz_player/domain/repository/login/google_login_repository.dart';
@@ -91,4 +93,8 @@ final videoInfoRepositoryProvider = Provider<VideoInfoRepository>((ref){
 final videoInfoUsecaseProvider = Provider<VideoInfoUsecase>((ref){
   final videoInfoRepository = ref.read(videoInfoRepositoryProvider);
   return VideoInfoUsecase(videoInfoRepository);
+});
+
+final spotifySourceProvider = Provider<SpotifyDataSource>((ref){
+  return SpotifyDataSourceImpl();
 });
