@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/sample_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
-import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -78,9 +77,9 @@ class SubTitle extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
-          height: 24 / 20,
+          height: 19/16,
         ),
       ),
     );

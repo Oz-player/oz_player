@@ -28,10 +28,10 @@ class SettingsButton extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 color: Color(0xFF6B7684),
                 fontWeight: FontWeight.w500,
-                height: 19 / 16,
+                height: 17 / 14,
               ),
             ),
             Spacer(),

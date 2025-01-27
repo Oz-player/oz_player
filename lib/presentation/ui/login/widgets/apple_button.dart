@@ -16,6 +16,15 @@ class AppleButton extends ConsumerWidget {
 
     return Container(
       margin: EdgeInsets.only(top: 16),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(64),
+            blurRadius: 8.0,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
       child: ElevatedButton(
         onPressed: () async {
           try {
