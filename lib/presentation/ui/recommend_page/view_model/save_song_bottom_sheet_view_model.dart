@@ -26,6 +26,11 @@ class SaveSongBottomSheetViewModel
     state.savedSong = song;
   }
 
+  /// 보관함에 곡을 보내기 직전, memo 정보 추가
+  void setMemoInSong(String memo){
+    state.savedSong!.memo = memo;
+  }
+
   /// 음악카드 저장 프로세스 진행
   void nextPage() {
     state = state.copyWith(page: state.page + 1);

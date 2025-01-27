@@ -59,7 +59,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
                 ),
                 Text(
                   conditionState.subtitle[conditionState.page],
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 14, color: Color(0xff7303e3)),
                 ),
                 SizedBox(
                   height: 52,
