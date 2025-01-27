@@ -10,6 +10,10 @@ class UserViewModel extends StateNotifier<String> {
   String getUserId() {
     return state;
   }
+
+  void initUser() {
+    state = '';
+  }
 }
 
 final userViewModelProvider =

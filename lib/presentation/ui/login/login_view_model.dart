@@ -9,6 +9,7 @@ enum LoginState { idle, loading, success, error }
 class LoginViewModel extends Notifier<LoginState> {
   late final _googleLoginUseCase = ref.read(googleLoginUseCaseProvider);
   late final _appleLoginUseCase = ref.read(appleLoginUseCaseProvider);
+  late final _logoutUseCase = ref.read(logoutUseCaseProvider);
 
   LoginViewModel();
 
@@ -41,6 +42,19 @@ class LoginViewModel extends Notifier<LoginState> {
       
       state = LoginState.success;
     } catch (e) {
+      state = LoginState.error;
+    }
+  }
+
+  Future<void> logout() async {
+    state = LoginState.loading;
+    try {
+      await _logoutUseCase.execute();
+
+      ref.read(userViewModelProvider.notifier).initUser();
+      state = LoginState.idle;
+    } catch (e) {
+      //
       state = LoginState.error;
     }
   }
