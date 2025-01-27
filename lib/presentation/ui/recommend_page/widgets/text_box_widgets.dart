@@ -9,13 +9,18 @@ class TextBoxWidgets extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        color: Colors.transparent,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8)
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(
-          state.textList[state.index],
-          style: TextStyle(fontSize: 14),
+        child: Center(
+          widthFactor: 1.0,
+          child: Text(
+            state.textList[state.index],
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
         ),
       ),
     );

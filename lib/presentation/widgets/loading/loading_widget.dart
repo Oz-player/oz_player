@@ -12,21 +12,25 @@ class LoadingWidget extends ConsumerWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.grey[600]!.withValues(alpha: 0.6),
+      color: Colors.grey[900]!.withValues(alpha: 0.6),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Spacer(),
           Text(
             loadingState.loadingText[loadingState.index],
             style: TextStyle(
               fontSize: 24,
+              fontWeight: FontWeight.w600,
               color: Colors.white,
+              decoration: TextDecoration.none,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 36),
-          CircularProgressIndicator()
+          SizedBox(height: 44),
+          Container(width: 180, height: 180, color: Colors.red,),
+          SizedBox(height: 80,),
+          Spacer()
         ],
       ),
     );

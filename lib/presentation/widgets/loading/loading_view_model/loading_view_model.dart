@@ -21,7 +21,7 @@ class LoadingViewModel extends Notifier<LoadingState> {
   LoadingState build() {
     List<String> loadingText = [
       '',
-      '추천 음악 카드를 준비중...\n잠시만 기다려주세요',
+      '추천 음악 카드를 준비중\n잠시만 기다려주세요',
     ];
 
     return LoadingState(false, loadingText, 0);

@@ -12,7 +12,9 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 
 final router = GoRouter(
 
-  initialLocation: '/',
+
+  initialLocation: '/settings',
+
 
   routes: [
     GoRoute(
@@ -29,7 +31,10 @@ final router = GoRouter(
       path: '/saved',
       builder: (context, state) => SavedPage(),
     ),
-    GoRoute(path: '/home', builder: (context, state) => HomePage(), routes: [
+    GoRoute(
+      path: '/home', 
+      builder: (context, state) => HomePage(), 
+      routes: [
       GoRoute(
           path: 'recommend',
           builder: (context, state) => RecommendPage(),
