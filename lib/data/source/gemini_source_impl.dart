@@ -54,7 +54,7 @@ class GeminiSourceImpl implements AiSource {
 
       return list;
     } catch (e) {
-      log('추천음악 GEMINI 응답 실패');
+      log('추천음악 GEMINI 응답 실패 $e');
       return [];
     }
   }

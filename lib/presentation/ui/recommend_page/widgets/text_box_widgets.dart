@@ -8,9 +8,8 @@ class TextBoxWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8)
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -19,7 +18,7 @@ class TextBoxWidgets extends StatelessWidget {
           child: Text(
             state.textList[state.index],
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.grey[900]),
           ),
         ),
       ),

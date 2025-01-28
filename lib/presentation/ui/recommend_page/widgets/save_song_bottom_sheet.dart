@@ -95,6 +95,7 @@ class SaveSongBottomSheet {
                             title: saveState.savedSong!.title,
                             artist: saveState.savedSong!.artist,
                             imgUrl: saveState.savedSong!.imgUrl,
+                            isShade: true,
                           ),
                           SizedBox(
                             height: 40,
