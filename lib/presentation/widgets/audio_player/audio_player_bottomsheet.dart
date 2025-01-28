@@ -21,15 +21,10 @@ class AudioBottomSheet {
             final conditionState = ref.watch(conditionViewModelProvider);
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24)),
-                gradient: LinearGradient(
-                  colors: [Colors.white, Color(0xffa86cd9)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                ),
-              ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24)),
+                  color: Colors.white),
               child: Wrap(
                 children: [
                   Column(
@@ -50,11 +45,11 @@ class AudioBottomSheet {
                         height: 28,
                       ),
                       ToggleSwitch(
-                        minWidth: 90,
+                        minWidth: 67,
                         cornerRadius: 8,
                         activeBgColors: [
-                          [Colors.green[800]!],
-                          [Colors.red[800]!]
+                          [Color(0xff7303E3)],
+                          [Color(0xff7303E3)]
                         ],
                         activeFgColor: Colors.white,
                         inactiveBgColor: Colors.grey,
@@ -62,6 +57,7 @@ class AudioBottomSheet {
                         initialLabelIndex: 0,
                         totalSwitches: 2,
                         labels: ['노래', '동영상'],
+                        customTextStyles: [],
                         radiusStyle: true,
                         onToggle: (index) {
                           print('switched to: $index');
@@ -108,7 +104,10 @@ class AudioBottomSheet {
                         conditionState.recommendSongs[index].title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 24, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 4,
@@ -117,7 +116,8 @@ class AudioBottomSheet {
                         conditionState.recommendSongs[index].artist,
                         textAlign: TextAlign.center,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        minFontSize: 12,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                       SizedBox(
                         height: 16,
@@ -135,12 +135,12 @@ class AudioBottomSheet {
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Colors.white),
+                                    TextStyle(color: Color(0xff7303E3)),
                                 timeLabelPadding: 10,
-                                baseBarColor: Color(0xff40017e),
-                                progressBarColor: Colors.white,
-                                //bufferedBarColor: Colors.grey,
-                                thumbColor: Colors.white,
+                                baseBarColor: Color(0xffF2E6FF),
+                                progressBarColor: Color(0xff7303E3),
+                                bufferedBarColor: Color(0xffD9B3FE),
+                                thumbColor: Color(0xff7303E3),
                                 onSeek: (duration) {
                                   ref
                                       .read(
@@ -166,7 +166,7 @@ class AudioBottomSheet {
                               child: Icon(
                                 Icons.skip_previous,
                                 size: 28,
-                                color: Colors.white,
+                                color: Colors.grey[400],
                               )),
                           SizedBox(
                             width: 40,
@@ -188,17 +188,15 @@ class AudioBottomSheet {
                               width: 72,
                               height: 72,
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.white, width: 2),
                                   borderRadius: BorderRadius.circular(50)),
                               child: CircleAvatar(
-                                backgroundColor: Colors.white30,
+                                backgroundColor: Color(0xffF2E6FF),
                                 child: Icon(
                                   audioState.isPlaying
                                       ? Icons.pause
                                       : Icons.play_arrow,
                                   size: 28,
-                                  color: Colors.white,
+                                  color: Color(0xff7303E3),
                                 ),
                               ),
                             ),
@@ -216,7 +214,7 @@ class AudioBottomSheet {
                               child: Icon(
                                 Icons.skip_next,
                                 size: 28,
-                                color: Colors.white,
+                                color: Colors.grey[400],
                               )),
                         ],
                       ),
@@ -246,15 +244,10 @@ class AudioBottomSheet {
             final audioState = ref.watch(audioPlayerViewModelProvider);
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24)),
-                gradient: LinearGradient(
-                  colors: [Colors.white, Color(0xffa86cd9)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                ),
-              ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24)),
+                  color: Colors.white),
               child: Wrap(
                 children: [
                   Column(
@@ -275,11 +268,11 @@ class AudioBottomSheet {
                         height: 28,
                       ),
                       ToggleSwitch(
-                        minWidth: 90,
+                        minWidth: 67,
                         cornerRadius: 8,
                         activeBgColors: [
-                          [Colors.green[800]!],
-                          [Colors.red[800]!]
+                          [Color(0xff7303E3)],
+                          [Color(0xff7303E3)]
                         ],
                         activeFgColor: Colors.white,
                         inactiveBgColor: Colors.grey,
@@ -287,6 +280,7 @@ class AudioBottomSheet {
                         initialLabelIndex: 0,
                         totalSwitches: 2,
                         labels: ['노래', '동영상'],
+                        customTextStyles: [],
                         radiusStyle: true,
                         onToggle: (index) {
                           print('switched to: $index');
@@ -303,8 +297,7 @@ class AudioBottomSheet {
                             borderRadius: BorderRadius.circular(12)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: isValidUrl(
-                                  audioState.currentSong!.imgUrl)
+                          child: isValidUrl(audioState.currentSong!.imgUrl)
                               ? Image.network(
                                   audioState.currentSong!.imgUrl,
                                   fit: BoxFit.cover,
@@ -333,7 +326,10 @@ class AudioBottomSheet {
                         audioState.currentSong!.title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 24, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 4,
@@ -342,7 +338,8 @@ class AudioBottomSheet {
                         audioState.currentSong!.artist,
                         textAlign: TextAlign.center,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        minFontSize: 12,
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                       SizedBox(
                         height: 16,
@@ -360,12 +357,12 @@ class AudioBottomSheet {
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Colors.white),
+                                    TextStyle(color: Color(0xff7303E3)),
                                 timeLabelPadding: 10,
-                                baseBarColor: Color(0xff40017e),
-                                progressBarColor: Colors.white,
-                                //bufferedBarColor: Colors.grey,
-                                thumbColor: Colors.white,
+                                baseBarColor: Color(0xffF2E6FF),
+                                progressBarColor: Color(0xff7303E3),
+                                bufferedBarColor: Color(0xffD9B3FE),
+                                thumbColor: Color(0xff7303E3),
                                 onSeek: (duration) {
                                   ref
                                       .read(
@@ -391,7 +388,7 @@ class AudioBottomSheet {
                               child: Icon(
                                 Icons.skip_previous,
                                 size: 28,
-                                color: Colors.white,
+                                color: Colors.grey[400],
                               )),
                           SizedBox(
                             width: 40,
@@ -413,17 +410,15 @@ class AudioBottomSheet {
                               width: 72,
                               height: 72,
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.white, width: 2),
                                   borderRadius: BorderRadius.circular(50)),
                               child: CircleAvatar(
-                                backgroundColor: Colors.white30,
+                                backgroundColor: Color(0xffF2E6FF),
                                 child: Icon(
                                   audioState.isPlaying
                                       ? Icons.pause
                                       : Icons.play_arrow,
                                   size: 28,
-                                  color: Colors.white,
+                                  color: Color(0xff7303E3),
                                 ),
                               ),
                             ),
@@ -441,7 +436,7 @@ class AudioBottomSheet {
                               child: Icon(
                                 Icons.skip_next,
                                 size: 28,
-                                color: Colors.white,
+                                color: Colors.grey[400],
                               )),
                         ],
                       ),
@@ -459,4 +454,3 @@ class AudioBottomSheet {
     );
   }
 }
-

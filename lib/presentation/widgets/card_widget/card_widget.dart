@@ -1,40 +1,79 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CardWidget extends StatelessWidget {
+class CardWidget extends ConsumerWidget {
   const CardWidget(
-      {super.key, this.imgUrl, this.title, this.artist, this.isEmpty});
+      {super.key,
+      this.imgUrl,
+      this.title,
+      this.artist,
+      this.isEmpty,
+      this.isError,
+      this.isShade});
 
   final imgUrl;
   final title;
   final artist;
   final bool? isEmpty;
+  final bool? isError;
+  final bool? isShade;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: 205,
       height: 300,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [Color(0xfff3ffd3), Color(0xffa86cd9)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          boxShadow: isShade == true
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 13),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey[900]!),
-              color: Colors.white),
+              color: isEmpty == true ? Colors.white : Color(0xff40017E)),
           child: Padding(
             padding:
                 const EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 28),
             child: isEmpty == true
-                ? Center(child: Text('새로운 추천 받기'))
+                ? Center(
+                    child: isError == true
+                        ? Text(
+                            'AI가 음악 카드 추천에\n실패했습니다.\n\n잠시후 다시 시도해주시거나\n태그 조합을 바꾸어서\n시도해주세요.',
+                            textAlign: TextAlign.center,
+                          )
+                        : Column(
+                            children: [
+                              Spacer(
+                                flex: 3,
+                              ),
+                              Text(
+                                '새로운\n 추천 음악 카드',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[900],
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              Image.asset('assets/images/new_card.png'),
+                              Spacer(
+                                flex: 1,
+                              ),
+                            ],
+                          ))
                 : Column(
                     children: [
                       Container(
@@ -67,8 +106,8 @@ class CardWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 12,
+                      Spacer(
+                        flex: 2,
                       ),
                       AutoSizeText(
                         title ?? '-',
@@ -79,7 +118,7 @@ class CardWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey[900]),
+                            color: Colors.white),
                       ),
                       SizedBox(
                         height: 8,
@@ -90,8 +129,11 @@ class CardWidget extends StatelessWidget {
                         maxLines: 1,
                         minFontSize: 8,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                      )
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
                     ],
                   ),
           ),
