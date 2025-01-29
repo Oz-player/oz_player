@@ -45,7 +45,13 @@ ThemeData _theme(Brightness brightness, AppThemeExtension ext) => ThemeData(
     extensions: [ext],
     appBarTheme: AppBarTheme(
       elevation: 0,
-      backgroundColor: ext.background,
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Color(0xff0D0019),
+      )
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

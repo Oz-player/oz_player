@@ -131,7 +131,6 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '트로트',
       '인디',
       '무반주 음악',
-      '동요',
       '클래식',
     ];
     List<String> artist = [
@@ -142,7 +141,6 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '밴드',
       '혼성 그룹',
       '오케스트라',
-      '악기 연주자',
       '합창단',
       '상관없음',
     ];

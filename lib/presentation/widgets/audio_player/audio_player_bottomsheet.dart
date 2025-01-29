@@ -163,11 +163,8 @@ class AudioBottomSheet {
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .skipBackwardSec(10);
                               },
-                              child: Icon(
-                                Icons.skip_previous,
-                                size: 28,
-                                color: Colors.grey[400],
-                              )),
+                              child: Image.asset(
+                                  'assets/images/skip_backward_icon.png')),
                           SizedBox(
                             width: 40,
                           ),
@@ -211,11 +208,8 @@ class AudioBottomSheet {
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .skipForwardSec(10);
                               },
-                              child: Icon(
-                                Icons.skip_next,
-                                size: 28,
-                                color: Colors.grey[400],
-                              )),
+                              child: Image.asset(
+                                  'assets/images/skip_forward_icon.png')),
                         ],
                       ),
                       SizedBox(
@@ -385,11 +379,8 @@ class AudioBottomSheet {
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .skipBackwardSec(10);
                               },
-                              child: Icon(
-                                Icons.skip_previous,
-                                size: 28,
-                                color: Colors.grey[400],
-                              )),
+                              child: Image.asset(
+                                  'assets/images/skip_backward_icon.png')),
                           SizedBox(
                             width: 40,
                           ),
@@ -433,11 +424,8 @@ class AudioBottomSheet {
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .skipForwardSec(10);
                               },
-                              child: Icon(
-                                Icons.skip_next,
-                                size: 28,
-                                color: Colors.grey[400],
-                              )),
+                              child: Image.asset(
+                                  'assets/images/skip_forward_icon.png')),
                         ],
                       ),
                       SizedBox(

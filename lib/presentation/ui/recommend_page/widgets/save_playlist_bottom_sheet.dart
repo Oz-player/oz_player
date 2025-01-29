@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SavePlaylistBottomSheet {
-  static void show(BuildContext context, WidgetRef ref) async {
+  static void show(BuildContext context, WidgetRef ref,
+      TextEditingController title, TextEditingController description) async {
     final openSheet = await showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -102,7 +104,8 @@ class SavePlaylistBottomSheet {
                               child: SizedBox(
                                 width: double.infinity,
                                 height: 480,
-                                child: ListView.builder(
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) => Divider(),
                                   itemCount: 10,
                                   itemBuilder: (context, index) => Container(
                                     padding: EdgeInsets.symmetric(vertical: 12),
@@ -181,17 +184,25 @@ class SavePlaylistBottomSheet {
                           ],
                         ),
                         Positioned(
-                          right: 20,
-                          bottom: 32,
-                          child: FloatingActionButton(
-                            onPressed: () {
-                              
-                            },
-                            shape: CircleBorder(),
-                            backgroundColor: Color(0xff7303E3),
-                            child: Icon(Icons.add, size: 28, color: Colors.white,),
-                            )
-                          ),
+                            right: 20,
+                            bottom: 32,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                context.pop();
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) =>
+                                        playlistDialog(title, description));
+                              },
+                              shape: CircleBorder(),
+                              backgroundColor: Color(0xff7303E3),
+                              child: Icon(
+                                Icons.add,
+                                size: 28,
+                                color: Colors.white,
+                              ),
+                            )),
                       ],
                     ),
                   ],
@@ -206,4 +217,168 @@ class SavePlaylistBottomSheet {
       await Future.delayed(Duration(milliseconds: 500));
     }
   }
+}
+
+Widget playlistDialog(
+    TextEditingController title, TextEditingController description) {
+  return Consumer(
+    builder: (context, ref, child) {
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: AlertDialog(
+          backgroundColor: Colors.white,
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 28,
+              ),
+              Text(
+                '새로운 플레이리스트를\n생성합니다',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 40,
+                width: 260,
+                child: TextField(
+                  controller: title,
+                  style: TextStyle(
+                    color: Colors.grey[900],
+                  ),
+                  maxLines: 1,
+                  maxLength: 20,
+                  buildCounter: (context,
+                          {required currentLength,
+                          required isFocused,
+                          required maxLength}) =>
+                      null,
+                  cursorWidth: 2.0,
+                  cursorHeight: 20.0,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      hintText: '제목',
+                      hintStyle: TextStyle(color: Colors.grey[600]),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      )),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                height: 80,
+                width: 260,
+                child: TextField(
+                  controller: description,
+                  style: TextStyle(
+                    color: Colors.grey[900],
+                  ),
+                  maxLines: 3,
+                  cursorWidth: 2.0,
+                  cursorHeight: 20.0,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      hintText: '설명추가',
+                      hintStyle: TextStyle(color: Colors.grey[600]),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      )),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Color(0xfff2e6ff)),
+                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () {
+                          context.pop();
+                          title.clear();
+                          description.clear();
+                        },
+                        child: Text(
+                          '취소',
+                          style: TextStyle(color: Colors.grey[600]),
+                        )),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Color(0xff40017E)),
+                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () {
+                          // 플레이리스트 저장로직
+                        },
+                        child: Text(
+                          '확인',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
