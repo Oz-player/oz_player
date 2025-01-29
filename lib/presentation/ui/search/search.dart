@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oz_player/presentation/ui/search/widgets/search_area.dart';
 import 'package:oz_player/presentation/ui/search/widgets/search_result_page.dart';
 import 'package:oz_player/presentation/ui/search/widgets/search_word_page.dart';
+import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -22,6 +23,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: SearchArea(onSearch: _updateSearchText), // 검색 콜백 전달
         backgroundColor: Colors.white,
@@ -41,6 +43,7 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
+      bottomNavigationBar: HomeBottomNavigation()
     );
   }
 }
