@@ -24,7 +24,17 @@ class RecommendPageConditionTwo extends ConsumerStatefulWidget {
 
 class _RecommendPageConditionTwoState
     extends ConsumerState<RecommendPageConditionTwo> {
-  final textController = TextEditingController();
+  final textControllerSaveSongMemo = TextEditingController();
+  final textControllerPlaylistTitle = TextEditingController();
+  final textControllerPlaylistDescription = TextEditingController();
+
+  @override
+  void dispose() {
+    textControllerSaveSongMemo.dispose();
+    textControllerPlaylistTitle.dispose();
+    textControllerPlaylistDescription.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,35 +165,41 @@ class _RecommendPageConditionTwoState
               ),
               positionIndex == conditionState.recommendSongs.length
                   ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: SizedBox(
-                      height: 48,
-                      child: TextButton(
-                          style: TextButton.styleFrom(
-                              disabledForegroundColor: Colors.grey[400],
-                              disabledBackgroundColor: Colors.grey[300],
-                              backgroundColor: Color(0xff40017e),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8))),
-                          onPressed: conditionState.event == false
-                              ? null
-                              : () async {
-                                  ref
-                                      .read(audioPlayerViewModelProvider.notifier)
-                                      .toggleStop();
-                                  ref
-                                      .read(conditionViewModelProvider.notifier)
-                                      .recommendMusic();
-                                },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Text(
-                              '새로운 음악 카드 받기',
-                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
-                          )),
-                    ),
-                  )
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: SizedBox(
+                        height: 48,
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                disabledForegroundColor: Colors.grey[400],
+                                disabledBackgroundColor: Colors.grey[300],
+                                backgroundColor: Color(0xff40017e),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            onPressed: conditionState.event == false
+                                ? null
+                                : () async {
+                                    ref
+                                        .read(audioPlayerViewModelProvider
+                                            .notifier)
+                                        .toggleStop();
+                                    ref
+                                        .read(
+                                            conditionViewModelProvider.notifier)
+                                        .recommendMusic();
+                                  },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: Text(
+                                '새로운 음악 카드 받기',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )),
+                      ),
+                    )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -195,7 +211,11 @@ class _RecommendPageConditionTwoState
                             }
 
                             // 음악 플레이리스트에 저장
-                            SavePlaylistBottomSheet.show(context, ref);
+                            SavePlaylistBottomSheet.show(
+                                context,
+                                ref,
+                                textControllerPlaylistTitle,
+                                textControllerPlaylistDescription);
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
@@ -257,7 +277,7 @@ class _RecommendPageConditionTwoState
                                 .setSaveSong(conditionState
                                     .recommendSongs[positionIndex]);
                             SaveSongBottomSheet.show(
-                                context, ref, textController);
+                                context, ref, textControllerSaveSongMemo);
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(

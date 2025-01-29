@@ -156,14 +156,14 @@ class RecommendPageConditionOne extends ConsumerWidget {
   Widget tagBox(String tag, bool clicked, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xffe5e8eb)),
+          border: Border.all(color: Color(0xffF2E6FF)),
           borderRadius: BorderRadius.circular(8),
           color: clicked ? Color(0xfff2e6ff) : Colors.white),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Text(
           tag,
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
     );

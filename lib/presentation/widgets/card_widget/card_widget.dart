@@ -41,7 +41,7 @@ class CardWidget extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: isEmpty == true ? Colors.white : Color(0xff40017E)),
+              color: Color(0xff40017E)),
           child: Padding(
             padding:
                 const EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 28),
@@ -51,6 +51,10 @@ class CardWidget extends ConsumerWidget {
                         ? Text(
                             'AI가 음악 카드 추천에\n실패했습니다.\n\n잠시후 다시 시도해주시거나\n태그 조합을 바꾸어서\n시도해주세요.',
                             textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
                           )
                         : Column(
                             children: [
@@ -62,7 +66,7 @@ class CardWidget extends ConsumerWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 20,
-                                    color: Colors.grey[900],
+                                    color: Colors.white,
                                     fontWeight: FontWeight.w600),
                               ),
                               SizedBox(
