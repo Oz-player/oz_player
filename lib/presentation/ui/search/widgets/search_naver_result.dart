@@ -21,22 +21,20 @@ class _SearchNaverResultState extends ConsumerState<SearchNaverResult> {
           final result = naverResults[index];
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
+            child: Column(
               children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  color: Colors.grey,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         result.artist, // SpotifyEntity의 title 속성 사용
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 20,
                       ),
                       SizedBox(
                         width: 150,
@@ -47,6 +45,15 @@ class _SearchNaverResultState extends ConsumerState<SearchNaverResult> {
                         ),
                       ), // SpotifyEntity의 artist 속성 사용
                     ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                  child: Text(
+                    //성인 등급의 노래인 경우 naver에서 인증이 필요해서 로그인 문구가 뜨는것을 없앰
+                    result.lyrics.contains('로그인 후 이용할 수 있는 컨텐츠입니다.')
+                        ? '청소년 이용 불가 노래입니다'
+                        : result.lyrics,
                   ),
                 ),
               ],
