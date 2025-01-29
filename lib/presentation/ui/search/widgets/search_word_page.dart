@@ -37,7 +37,7 @@ class SearchWordPage extends StatelessWidget {
                           '태연$index',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
