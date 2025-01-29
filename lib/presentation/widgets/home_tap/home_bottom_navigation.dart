@@ -37,11 +37,13 @@ class HomeBottomNavigation extends StatelessWidget {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (context) => RecommendExitAlertDialog(destination: 0,),
+                      builder: (context) => RecommendExitAlertDialog(
+                        destination: 0,
+                      ),
                     );
                     break;
                   }
-      
+
                   if (currentPage != 0 && currentPage != 4) {
                     context.go('/saved');
                     ref
@@ -49,7 +51,7 @@ class HomeBottomNavigation extends StatelessWidget {
                         .updatePage(value);
                   }
                   break;
-      
+
                 // 홈 탭을 터치했을 경우
                 case 1:
                   // 특이케이스 : 선택지 플로우에서 이탈시
@@ -57,11 +59,13 @@ class HomeBottomNavigation extends StatelessWidget {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (context) => RecommendExitAlertDialog(destination: 1,),
+                      builder: (context) => RecommendExitAlertDialog(
+                        destination: 1,
+                      ),
                     );
                     break;
                   }
-      
+
                   if (currentPage != 1 && currentPage != 4) {
                     context.go('/home');
                     ref
@@ -69,7 +73,7 @@ class HomeBottomNavigation extends StatelessWidget {
                         .updatePage(value);
                   }
                   break;
-      
+
                 // 음악 검색 탭을 터치했을 경우
                 case 2:
                   // 특이케이스 : 선택지 플로우에서 이탈시
@@ -77,11 +81,13 @@ class HomeBottomNavigation extends StatelessWidget {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
-                      builder: (context) => RecommendExitAlertDialog(destination: 2,),
+                      builder: (context) => RecommendExitAlertDialog(
+                        destination: 2,
+                      ),
                     );
                     break;
                   }
-      
+
                   if (currentPage != 2 && currentPage != 4) {
                     context.go('/search');
                     ref
@@ -93,22 +99,22 @@ class HomeBottomNavigation extends StatelessWidget {
             },
             items: [
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.group_work_outlined,
-                ),
+                icon: Image.asset(currentPage == 0
+                    ? 'assets/images/save_icon2.png'
+                    : 'assets/images/save_icon.png'),
                 label: '보관함',
               ),
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                ),
+                icon: Image.asset((currentPage == 1 || currentPage == 4)
+                    ? 'assets/images/home_icon2.png'
+                    : 'assets/images/home_icon.png'),
                 label: '홈',
               ),
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
-                ),
-                label: '음악 검색',
+                icon: Image.asset(currentPage == 2
+                    ? 'assets/images/search_icon2.png'
+                    : 'assets/images/search_icon.png'),
+                label: '검색',
               ),
             ],
           ),
