@@ -29,7 +29,13 @@ class HomePage extends ConsumerWidget {
           backgroundColor: Colors.transparent,
           actions: [
             IconButton(
-                onPressed: () {}, icon: Icon(Icons.ac_unit, color: Colors.black)),
+                onPressed: () {
+                  context.push('/settings');
+                },
+                icon: Image.asset('assets/images/option_icon.png')),
+            SizedBox(
+              width: 8,
+            ),
           ],
         ),
         body: SafeArea(
@@ -42,7 +48,9 @@ class HomePage extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
                   onTap: () {
-                    ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .toggleStop();
                     ref.read(bottomNavigationProvider.notifier).updatePage(4);
                     context.go('/home/recommend');
                   },
@@ -82,8 +90,8 @@ class HomePage extends ConsumerWidget {
                       Stack(
                         children: [
                           Container(
-                            width:
-                                (MediaQuery.sizeOf(context).width - 40) / 2 - 10,
+                            width: (MediaQuery.sizeOf(context).width - 40) / 2 -
+                                10,
                             height: 160,
                             decoration: BoxDecoration(
                               color: Colors.grey[600],
