@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/data/repository_impl/play_list_repository_impl.dart';
 import 'package:oz_player/data/source/saved/play_list_source_impl.dart';
 import 'package:oz_player/data/source/saved/play_list_source.dart';
-import 'package:oz_player/domain/repository/play_list_repository.dart';
+import 'package:oz_player/domain/repository/saved/play_list_repository.dart';
 import 'package:oz_player/domain/usecase/play_list_usecase.dart';
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
