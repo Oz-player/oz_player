@@ -1,4 +1,4 @@
-import 'package:oz_player/data/dto/firebase_song_dto.dart';
+import 'package:oz_player/data/dto/raw_song_dto.dart';
 import 'package:oz_player/domain/entitiy/library_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
@@ -16,13 +16,13 @@ class SongDTO {
   String? memo;
 
   SongDTO({
-    required FirebaseSongDTO firebaseSongDTO,
+    required RawSongDto rawSongDto,
     required LibraryEntity libraryEntity,
   }) {
-    artist = firebaseSongDTO.artist;
-    imgUrl = firebaseSongDTO.imgUrl;
-    title = firebaseSongDTO.title;
-    video = firebaseSongDTO.video;
+    artist = rawSongDto.artist;
+    imgUrl = rawSongDto.imgUrl;
+    title = rawSongDto.title;
+    video = rawSongDto.video;
     mood = libraryEntity.mood;
     situation = libraryEntity.situation;
     genre = libraryEntity.genre;
