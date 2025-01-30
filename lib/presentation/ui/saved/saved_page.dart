@@ -15,15 +15,6 @@ class SavedPage extends ConsumerStatefulWidget {
 class _SavedPageState extends ConsumerState<SavedPage> {
   bool isLibrary = true;
 
-  @override
-  void initState() {
-    super.initState();
-    // TODO : DB 정리하고 나서 데이터 뿌리기
-    // Future.microtask(() async {
-    //   await ref.read(playListViewModelProvider.notifier).getPlayLists('userId');
-    // });
-  }
-
   void onButtonClicked() {
     setState(() {
       isLibrary = !isLibrary;
