@@ -6,16 +6,20 @@ import 'package:oz_player/data/dto/recommend_music_dto.dart';
 import 'package:oz_player/data/source/ai_source.dart';
 
 class GeminiSourceImpl implements AiSource {
+
   @override
   Future<RecommendMusicDto> getResponse(String prompt, String apiKey) async {
     try {
       final model = GenerativeModel(
-        model: 'gemini-1.5-flash-latest',
+        model: 'gemini-1.5-pro-latest',
         apiKey: apiKey,
+        generationConfig: GenerationConfig(temperature: 1.3),
       );
 
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);
+
+      print(response.text);
 
       log('추천음악 GEMINI 응답 성공');
       final filteringText = response.text!.split('json')[1].split('```')[0];
@@ -35,11 +39,10 @@ class GeminiSourceImpl implements AiSource {
       final model = GenerativeModel(
         model: 'gemini-1.5-pro-latest',
         apiKey: apiKey,
+        generationConfig: GenerationConfig(temperature: 1.3),
       );
-
       final content = [Content.text(prompt)];
-      final response = await model.generateContent(content,
-          generationConfig: GenerationConfig(temperature: 1.3));
+      final response = await model.generateContent(content);
 
       print(response.text);
 
@@ -54,7 +57,7 @@ class GeminiSourceImpl implements AiSource {
 
       return list;
     } catch (e) {
-      log('추천음악 GEMINI 응답 실패');
+      log('추천음악 GEMINI 응답 실패 $e');
       return [];
     }
   }

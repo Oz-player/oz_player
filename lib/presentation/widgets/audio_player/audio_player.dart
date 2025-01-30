@@ -82,13 +82,27 @@ class AudioPlayer extends StatelessWidget {
                         SizedBox(
                           width: 16,
                         ),
-                        Text(
-                          audioState.currentSong!.title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              audioState.currentSong!.title,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 2,),
+                            Text(
+                              audioState.currentSong!.artist,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                  color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
                         Spacer(),
                         IconButton(

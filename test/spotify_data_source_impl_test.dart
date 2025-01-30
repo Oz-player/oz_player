@@ -6,7 +6,7 @@ void main() {
   test('spotify test', () async {
     await dotenv.load(fileName: ".env");
     SpotifyDataSourceImpl spotifyDataSourceImpl = SpotifyDataSourceImpl();
-    final search = await spotifyDataSourceImpl.searchList('love wins all');
+    final search = await spotifyDataSourceImpl.searchList('적재');
     expect(search.isEmpty, false);
     print(search.length);
     for (var searchs in search) {

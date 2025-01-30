@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
@@ -10,12 +11,11 @@ import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
 import 'package:oz_player/presentation/ui/splash/splash.dart';
 
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final router = GoRouter(
-
-
   initialLocation: '/login',
-
-
+  navigatorKey: _rootNavigatorKey,
   routes: [
     GoRoute(
       path: '/',
@@ -55,6 +55,7 @@ final router = GoRouter(
     ),
     GoRoute(
         path: '/settings',
+        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => SettingsPage(),
         routes: [
           GoRoute(

@@ -1,15 +1,9 @@
 import 'dart:developer';
-
-
-
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oz_player/data/source/spotify/spotify_data_source_impl.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
-import 'package:oz_player/domain/usecase/maniadb/maniadb_artist_usecase.dart';
-import 'package:oz_player/domain/usecase/maniadb/maniadb_song_usecase.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class ConditionState {
@@ -89,65 +83,66 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '혼란스러워요',
       '위로가 필요해요',
       '설레요',
-      '고민중이에요',
       '좌절했어요',
       '신나요',
       '슬퍼요',
       '화나요',
-      '기대되요',
+      '기대돼요',
       '피곤해요',
       '불안해요',
+      '우울해요',
       '답답해요',
       '걱정되요',
       '지루해요',
+      '차분해요',
+      '집중하고 싶어요',
+      '공허해요',
     ];
     List<String> situation = [
       '운동',
       '공부·집중',
       '독서',
-      '티 타임',
-      '자기 전·자면서',
+      '자기 전·수면',
       '산책',
       '요리',
       '파티',
       '목욕·샤워',
       '운전',
       '힐링',
-      '식사',
       '데이트',
       '명상',
+      '청소',
+      '게임',
+      '업무',
+      '휴가·여행',
     ];
     List<String> genre = [
       'POP',
-      '국내 가요',
-      '외국 가요',
-      '재즈',
-      '락',
-      '클래식',
-      '무반주 음악',
+      'K-POP',
+      'J-POP',
+      'OST',
       'BGM',
-      'EDM',
+      'R&B',
       '댄스',
+      '재즈',
+      '힙합',
+      '락',
       '발라드',
       '트로트',
       '인디',
-      '힙합',
-      'OST',
-      '동요',
-      'R&B',
+      '무반주 음악',
+      '클래식',
     ];
     List<String> artist = [
       '보이그룹',
       '걸그룹',
-      '혼성 아티스트',
       '남성 솔로',
       '여성 솔로',
-      '유닛',
       '밴드',
-      '전자 음악 제작자',
+      '혼성 그룹',
       '오케스트라',
-      '악기 연주자',
       '합창단',
+      '상관없음',
     ];
     List<String> title = [
       '지금, 당신의 상태나 기분은\n어떤지 알려주세요',
@@ -166,33 +161,13 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   }
 
   void clickBox(int index, Set<int> set) {
-    /*
-    if (state.page == 0) {
-      if (set.contains(index)) {
-        set.remove(index);
-      } else {
-        if (set.length < 3) {
-          set.add(index);
-        }
-      }
-
-      state = state.copyWith();
-    } else {
-      if (set.contains(index)) {
-        set.remove(index);
-      } else {
-        set.clear();
-        set.add(index);
-      }
-
-      state = state.copyWith();
-    }
-    */
     if (set.contains(index)) {
       set.remove(index);
+      state.event = false;
     } else {
       set.clear();
       set.add(index);
+      state.event = true;
     }
 
     state = state.copyWith();
@@ -220,7 +195,6 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
   /// true는 아얘 recommend_page_condition_two 로 이동
   Future<void> nextPageAnimation() async {
     if (state.page < 3) {
-      state.event = true;
       toggleOpacity();
       state = state.copyWith();
 
@@ -230,10 +204,20 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       state = state.copyWith();
 
       toggleOpacity();
-      state = state.copyWith();
-
-      await Future.delayed(Duration(milliseconds: 250));
       state.event = false;
+
+      if (state.page == 0 && state.moodSet.isNotEmpty) {
+        state.moodSet.clear();
+      } else if (state.page == 1 && state.situationSet.isNotEmpty) {
+        state.situationSet.clear();
+      } else if (state.page == 2 && state.genreSet.isNotEmpty) {
+        state.genreSet.clear();
+      } else if (state.page == 3 && state.artistSet.isNotEmpty) {
+        state.artistSet.clear();
+      }
+
+      state = state.copyWith();
+      await Future.delayed(Duration(milliseconds: 250));
     } else {
       return;
     }
@@ -241,7 +225,6 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
 
   Future<void> beforePageAnimation() async {
     if (state.page > 0) {
-      state.event = true;
       toggleOpacity();
       state = state.copyWith();
 
@@ -251,10 +234,22 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       state = state.copyWith();
 
       toggleOpacity();
+
+      if (state.page == 0 && state.moodSet.isNotEmpty) {
+        state.event = true;
+      } else if (state.page == 1 && state.situationSet.isNotEmpty) {
+        state.event = true;
+      } else if (state.page == 2 && state.genreSet.isNotEmpty) {
+        state.event = true;
+      } else if (state.page == 3 && state.artistSet.isNotEmpty) {
+        state.event = true;
+      } else {
+        state.event = false;
+      }
+
       state = state.copyWith();
 
       await Future.delayed(Duration(milliseconds: 250));
-      state.event = false;
     }
   }
 
@@ -335,8 +330,9 @@ $exceptlist
         */
 
         final searchSong = await spotifyDB.searchList(title!);
-        final imgUrlMap = searchSong[1].images![0];
-        imgUrl = imgUrlMap['url'];
+        final album = searchSong[0].album;
+        final albumImges = album!['images'][0];
+        imgUrl = albumImges['url'];
 
         log('$title - $artist 검색성공');
         final video = await videoEx.getVideoInfo(title, artist!);
@@ -365,8 +361,8 @@ $exceptlist
     // 검색 결과값이 없을 경우 (대응 고민)
     if (state.recommendSongs.isEmpty) {}
 
+    ref.read(cardPositionProvider.notifier).cardPositionIndex(0);
     ref.read(loadingViewModelProvider.notifier).endLoading();
-    // ref.read(audioPlayerViewModelProvider.notifier).setAudioPlayer();
   }
 }
 

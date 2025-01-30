@@ -24,7 +24,17 @@ class RecommendPageConditionTwo extends ConsumerStatefulWidget {
 
 class _RecommendPageConditionTwoState
     extends ConsumerState<RecommendPageConditionTwo> {
-  final textController = TextEditingController();
+  final textControllerSaveSongMemo = TextEditingController();
+  final textControllerPlaylistTitle = TextEditingController();
+  final textControllerPlaylistDescription = TextEditingController();
+
+  @override
+  void dispose() {
+    textControllerSaveSongMemo.dispose();
+    textControllerPlaylistTitle.dispose();
+    textControllerPlaylistDescription.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,194 +55,251 @@ class _RecommendPageConditionTwoState
   Widget mainScaffold(ConditionState conditionState) {
     final positionIndex = ref.watch(cardPositionProvider);
 
-    return Scaffold(
-      backgroundColor: Color(0xff0d0019),
-      appBar: AppBar(
-        title: Text(
-          '음악 카드 추천',
-          style: TextStyle(color: Colors.white),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/background_2.png'),
         ),
-        centerTitle: true,
+      ),
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => RecommendExitAlertDialog(
-                destination: 1,
-              ),
-            );
-          },
-          icon: Icon(Icons.arrow_back),
-          color: Colors.white,
+        appBar: AppBar(
+          title: Text(
+            '음악 카드 추천',
+            style: TextStyle(color: Colors.grey[900]),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => RecommendExitAlertDialog(
+                  destination: 1,
+                ),
+              );
+            },
+            icon: Icon(Icons.arrow_back),
+            color: Colors.grey[900],
+          ),
         ),
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: Icon(Icons.ac_unit, color: Colors.white)),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Spacer(flex: 1),
-            Text(
-              '당신을 위해\n준비한 마법의 음악 카드',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, color: Colors.white),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Text(
-              '원하는 카드를 저장하거나 플레이리스트에 추가해보세요',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey[400]),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                tagBox(conditionState
-                    .situation[conditionState.situationSet.first]),
-                tagBox(conditionState.genre[conditionState.genreSet.first]),
-                tagBox(conditionState.artist[conditionState.artistSet.first]),
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-            SizedBox(
-              height: 300,
-              child: Swiper(
-                loop: false,
-                itemBuilder: (BuildContext context, int index) {
-                  final length = conditionState.recommendSongs.length;
-                  if (length == index) {
-                    return CardWidget(isEmpty: true);
-                  }
-
-                  final recommendSong = conditionState.recommendSongs[index];
-                  final title = recommendSong.title;
-                  final artist = recommendSong.artist;
-                  final imgUrl = recommendSong.imgUrl;
-                  return CardWidget(
-                    title: title,
-                    artist: artist,
-                    imgUrl: imgUrl,
-                  );
-                },
-                itemCount: conditionState.recommendSongs == []
-                    ? 1
-                    : conditionState.recommendSongs.length + 1,
-                viewportFraction: 0.5,
-                scale: 0.5,
-                fade: 0.3,
-                onIndexChanged: (index) {
-                  ref
-                      .read(cardPositionProvider.notifier)
-                      .cardPositionIndex(index);
-                },
+        body: SafeArea(
+          child: Column(
+            children: [
+              Spacer(flex: 1),
+              Text(
+                '당신을 위해\n준비한 마법의 음악 카드',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.grey[900],
+                    fontWeight: FontWeight.w600),
               ),
-            ),
-            Spacer(
-              flex: 2,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                '원하는 카드를 저장하거나 플레이리스트에 추가해보세요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xff7303E3)),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  tagBox(conditionState
+                      .situation[conditionState.situationSet.first]),
+                  tagBox(conditionState.genre[conditionState.genreSet.first]),
+                  tagBox(conditionState.artist[conditionState.artistSet.first]),
+                ],
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              SizedBox(
+                height: 300,
+                child: Swiper(
+                  loop: false,
+                  itemBuilder: (BuildContext context, int index) {
                     final length = conditionState.recommendSongs.length;
-                    if (length == positionIndex) {
-                      return;
-                    }
-                    
-                    // 음악 플레이리스트에 저장
-                    SavePlaylistBottomSheet.show(context, ref);
-                  },
-                  borderRadius: BorderRadius.circular(50),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white30,
-                    radius: 28,
-                    child: Icon(
-                      Icons.format_list_bulleted_add,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                InkWell(
-                  onTap: () {
-                    final length = conditionState.recommendSongs.length;
-                    if (length == positionIndex) {
-                      return;
-                    }
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .setCurrentSong(
-                            conditionState.recommendSongs[positionIndex]);
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .setAudioPlayer(
-                            conditionState
-                                .recommendSongs[positionIndex].video.audioUrl,
-                            positionIndex);
-                    AudioBottomSheet.show(context, positionIndex);
-                  },
-                  borderRadius: BorderRadius.circular(50),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white30,
-                    radius: 28,
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                InkWell(
-                  onTap: () {
-                    final length = conditionState.recommendSongs.length;
-                    if (length == positionIndex) {
-                      return;
+                    if (length == 0) {
+                      return CardWidget(
+                        isEmpty: true,
+                        isError: true,
+                      );
                     }
 
-                    /// 보관함에 저장
-                    ref
-                        .read(saveSongBottomSheetViewModelProvider.notifier)
-                        .setSaveSong(
-                            conditionState.recommendSongs[positionIndex]);
-                    SaveSongBottomSheet.show(context, ref, textController);
+                    if (length == index) {
+                      return CardWidget(isEmpty: true);
+                    }
+
+                    final recommendSong = conditionState.recommendSongs[index];
+                    final title = recommendSong.title;
+                    final artist = recommendSong.artist;
+                    final imgUrl = recommendSong.imgUrl;
+                    return CardWidget(
+                      title: title,
+                      artist: artist,
+                      imgUrl: imgUrl,
+                    );
                   },
-                  borderRadius: BorderRadius.circular(50),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white30,
-                    radius: 28,
-                    child: Icon(
-                      Icons.bookmark,
-                      size: 24,
-                      color: Colors.white,
+                  itemCount: conditionState.recommendSongs == []
+                      ? 1
+                      : conditionState.recommendSongs.length + 1,
+                  viewportFraction: 0.5,
+                  scale: 0.5,
+                  fade: 0.3,
+                  onIndexChanged: (index) {
+                    ref
+                        .read(cardPositionProvider.notifier)
+                        .cardPositionIndex(index);
+                  },
+                ),
+              ),
+              Spacer(
+                flex: 2,
+              ),
+              positionIndex == conditionState.recommendSongs.length
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: SizedBox(
+                        height: 48,
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                disabledForegroundColor: Colors.grey[400],
+                                disabledBackgroundColor: Colors.grey[300],
+                                backgroundColor: Color(0xff40017e),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            onPressed: conditionState.event == false
+                                ? null
+                                : () async {
+                                    ref
+                                        .read(audioPlayerViewModelProvider
+                                            .notifier)
+                                        .toggleStop();
+                                    ref
+                                        .read(
+                                            conditionViewModelProvider.notifier)
+                                        .recommendMusic();
+                                  },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: Text(
+                                '새로운 음악 카드 받기',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )),
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            final length = conditionState.recommendSongs.length;
+                            if (length == positionIndex) {
+                              return;
+                            }
+
+                            // 음악 플레이리스트에 저장
+                            SavePlaylistBottomSheet.show(
+                                context,
+                                ref,
+                                textControllerPlaylistTitle,
+                                textControllerPlaylistDescription);
+                          },
+                          borderRadius: BorderRadius.circular(50),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white30,
+                            radius: 28,
+                            child: Icon(
+                              Icons.format_list_bulleted_add,
+                              size: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            final length = conditionState.recommendSongs.length;
+                            if (length == positionIndex) {
+                              return;
+                            }
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setCurrentSong(conditionState
+                                    .recommendSongs[positionIndex]);
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setAudioPlayer(
+                                    conditionState.recommendSongs[positionIndex]
+                                        .video.audioUrl,
+                                    positionIndex);
+                            AudioBottomSheet.show(context, positionIndex);
+                          },
+                          borderRadius: BorderRadius.circular(50),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white30,
+                            radius: 28,
+                            child: Icon(
+                              Icons.play_arrow,
+                              size: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            final length = conditionState.recommendSongs.length;
+                            if (length == positionIndex) {
+                              return;
+                            }
+
+                            /// 보관함에 저장
+                            ref
+                                .read(saveSongBottomSheetViewModelProvider
+                                    .notifier)
+                                .setSaveSong(conditionState
+                                    .recommendSongs[positionIndex]);
+                            SaveSongBottomSheet.show(
+                                context, ref, textControllerSaveSongMemo);
+                          },
+                          borderRadius: BorderRadius.circular(50),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white30,
+                            radius: 28,
+                            child: Icon(
+                              Icons.bookmark,
+                              size: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 32,
-            ),
-          ],
+              SizedBox(
+                height: 32,
+              ),
+            ],
+          ),
         ),
+        bottomNavigationBar: HomeBottomNavigation(),
       ),
-      bottomNavigationBar: HomeBottomNavigation(),
     );
   }
 
@@ -246,7 +313,10 @@ class _RecommendPageConditionTwoState
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Text(
             tag,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[900],
+                fontWeight: FontWeight.w600),
           ),
         ),
       ),
