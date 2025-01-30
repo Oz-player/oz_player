@@ -7,20 +7,26 @@ class RawSongSourceImpl implements RawSongSource {
 
   RawSongSourceImpl(this._firestore);
 
-  // Firebase/Song collection에서 객체를 가져오는 함수입니다
-  // 1. FirebaseSongEntity 생성
-  // 2. SongEntity에 값 전달 => LibraryEntity 값과 합쳐 SongEntity 생성
+  // Firebase/Song collection에서 객체를 가져오는 함수
   @override
   Future<RawSongDto?> getRawSong(String songId) async {
     try {
       final doc = await _firestore.collection('Song').doc(songId).get();
       if (doc.exists && doc.data() != null) {
-        return RawSongDto.fromJson(doc.data()!);
+        return RawSongDto.fromJson(doc.data()!, songId);
       }
       return null;
     } catch (e, stackTrace) {
       print('e: $e, stack: $stackTrace');
       return null;
     }
+  }
+
+  // TODO : Firebase에 영상 Duration 업로드
+  @override
+  Future<void> createRawSong(RawSongDto rawSongDto) async {
+    await _firestore.collection('Song').doc(rawSongDto.songId).set(
+          rawSongDto.toJson(),
+        );
   }
 }

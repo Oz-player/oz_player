@@ -33,6 +33,15 @@ class VideoInfoEntitiy {
           audioUrl: json['audioUrl'],
         );
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'url': url,
+      'audioUrl': audioUrl,
+    };
+  }
+
   VideoInfoEntitiy.empty()
       : this(
           id: '',
