@@ -16,7 +16,12 @@ class PlayListSourceImpl implements PlayListSource {
   Future<List<PlayListDTO>> getPlayLists(String userId) async {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
-      return (doc.data() as List).map((e) => PlayListDTO.fromJson(e)).toList();
+      if (doc.exists) {
+        return (doc.data() as List)
+            .map((e) => PlayListDTO.fromJson(e))
+            .toList();
+      }
+      return [];
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
       return [];
