@@ -15,7 +15,7 @@ class FirebaseSongDTO {
 
   factory FirebaseSongDTO.fromJson(Map<String, dynamic> json) {
     return FirebaseSongDTO(
-      video: json['videoInfo'],
+      video: VideoInfoEntitiy.fromJson(json['videoInfo']),
       title: json['title'],
       imgUrl: json['imgUrl'],
       artist: json['artist'],
