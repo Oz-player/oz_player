@@ -3,7 +3,7 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 
 abstract interface class PlayListRepository {
   Future<List<PlayListEntity>> getPlayLists(String userId);
-  Future<PlayListDTO?> getPlayList(String userId, String listName);
+  Future<PlayListEntity?> getPlayList(String userId, String listName);
   Future<void> addPlayList(String userId, PlayListDTO playListDTO);
   Future<void> addSong(String userId, String listName, String songId);
   Future<void> deletePlayList(String userId, String listName);

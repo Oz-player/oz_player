@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
-import 'package:oz_player/data/source/play_list/play_list_source.dart';
+import 'package:oz_player/data/source/saved/play_list_source.dart';
 
 class PlayListSourceImpl implements PlayListSource {
   final FirebaseFirestore _firestore;
@@ -16,7 +16,12 @@ class PlayListSourceImpl implements PlayListSource {
   Future<List<PlayListDTO>> getPlayLists(String userId) async {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
-      return (doc.data() as List).map((e) => PlayListDTO.fromJson(e)).toList();
+      if (doc.exists) {
+        return (doc.data() as List)
+            .map((e) => PlayListDTO.fromJson(e))
+            .toList();
+      }
+      return [];
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
       return [];

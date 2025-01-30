@@ -1,5 +1,5 @@
 import 'package:oz_player/data/dto/play_list_dto.dart';
-import 'package:oz_player/data/source/play_list/play_list_source.dart';
+import 'package:oz_player/data/source/saved/play_list_source.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/repository/play_list_repository.dart';
 
@@ -29,8 +29,10 @@ class PlayListRepositoryImpl implements PlayListRepository {
   }
 
   @override
-  Future<PlayListDTO?> getPlayList(String userId, String listName) async {
-    return await _source.getPlayList(userId, listName);
+  Future<PlayListEntity?> getPlayList(String userId, String listName) async {
+    final dto = await _source.getPlayList(userId, listName);
+    if (dto == null) return null;
+    return dto.toEntity();
   }
 
   @override

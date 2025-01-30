@@ -13,7 +13,7 @@ class PlayListUsecase {
     return await _repository.getPlayLists(userId);
   }
 
-  Future<PlayListDTO?> getPlayList(String userId, String listName) async {
+  Future<PlayListEntity?> getPlayList(String userId, String listName) async {
     return await _repository.getPlayList(userId, listName);
   }
 

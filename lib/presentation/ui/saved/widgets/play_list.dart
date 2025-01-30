@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
-class PlayList extends StatelessWidget {
+class PlayList extends ConsumerStatefulWidget {
   const PlayList({
     super.key,
   });
 
   @override
+  ConsumerState<PlayList> createState() => _PlayListState();
+}
+
+class _PlayListState extends ConsumerState<PlayList> {
+  @override
   Widget build(BuildContext context) {
+    final playListAsync = ref.watch(playListViewModelProvider);
+
     return SizedBox(
       width: double.infinity,
       height: 586,
