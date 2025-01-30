@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/library.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_list.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
@@ -109,15 +109,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
               height: 12,
             ),
             // 내용
-            isLibrary
-                ? SizedBox(
-                    width: double.infinity,
-                    height: 586,
-                    child: GridView.count(
-                      crossAxisCount: 3,
-                    ),
-                  )
-                : PlayList(),
+            isLibrary ? Library() : PlayList(),
           ],
         ),
       ),
