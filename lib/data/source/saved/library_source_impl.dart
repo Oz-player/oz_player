@@ -12,7 +12,9 @@ class LibrarySourceImpl implements LibrarySource {
     try {
       final doc = await _firestore.collection('Library').doc(userId).get();
       if (doc.exists) {
-        return (doc.data() as List).map((e) => LibraryDto.fromJson(e)).toList();
+        print('$userId의 라이브러리 목록을 찾았습니다!');
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return data.values.map((value) => LibraryDto.fromJson(value)).toList();
       }
       return [];
     } catch (e, stackTrace) {
