@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 
 class Library extends ConsumerStatefulWidget {
@@ -31,11 +32,16 @@ class _LibraryState extends ConsumerState<Library> {
             crossAxisSpacing: 16,
             childAspectRatio: 0.68,
             children: data.map((e) {
-              return Column(
-                children: [
-                  Text(
-                      '${e.createdAt.year}/${e.createdAt.month}/${e.createdAt.day}')
-                ],
+              return GestureDetector(
+                onTap: () {
+                  context.go('/saved/library');
+                },
+                child: Column(
+                  children: [
+                    Text(
+                        '${e.createdAt.year}/${e.createdAt.month}/${e.createdAt.day}')
+                  ],
+                ),
               );
             }).toList(),
           ));

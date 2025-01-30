@@ -9,10 +9,10 @@ class LibraryViewModel extends AsyncNotifier<List<LibraryEntity>> {
     return [];
   }
 
-  Future<void> getLibrary(String userId) async {
+  Future<void> getLibrary() async {
     state = const AsyncValue.loading();
-    state = AsyncValue.data(
-        await ref.read(libraryUsecaseProvider).getLibrary(userId));
+    state =
+        AsyncValue.data(await ref.read(libraryUsecaseProvider).getLibrary());
   }
 }
 
