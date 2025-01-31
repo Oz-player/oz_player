@@ -12,36 +12,51 @@ class PlayListSourceImpl implements PlayListSource {
   // Song 콜렉션이 명확하게 정해지고 나서 기능 추가 예정
 
   // 유저의 전체 플레이리스트를 가져옴
-  @override
-  Future<List<PlayListDTO>> getPlayLists(String userId) async {
-    try {
-      final doc = await _firestore.collection('Playlist').doc(userId).get();
-      if (doc.exists) {
-        print('$userId의 플레이리스트 목록을 찾았습니다!');
-        return (doc.data() as List)
+@override
+Future<List<PlayListDTO>> getPlayLists(String userId) async {
+  try {
+    final doc = await _firestore.collection('Playlist').doc(userId).get();
+
+    if (doc.exists && doc.data() != null) {
+      print('$userId의 플레이리스트 목록을 찾았습니다!');
+
+      final data = doc.data() as Map<String, dynamic>;
+
+      if (data.containsKey('playlists') && data['playlists'] is List) {
+        return (data['playlists'] as List)
             .map((value) => PlayListDTO.fromJson(value))
             .toList();
+      } else {
+        return [];
       }
-      print('$userId의 플레이리스트 목록이 없습니다');
-      return [];
-    } catch (e, stackTrace) {
-      print('playlist error: $e, stackTrace: $stackTrace');
-      return [];
     }
+
+    print('$userId의 플레이리스트 목록이 없습니다');
+    return [];
+  } catch (e, stackTrace) {
+    print('playlist error: $e, stackTrace: $stackTrace');
+    return [];
   }
+}
+
 
   // 유저의 전체 플레이리스트 중 이름이 일치하는 특정 플레이리스트를 가져옴
   @override
   Future<PlayListDTO?> getPlayList(String userId, String listName) async {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
-      if (doc.exists) {
-        final list =
-            (doc.data() as List).map((e) => PlayListDTO.fromJson(e)).toList();
-        for (var item in list) {
-          if (item.listName == listName) {
-            return item;
-          }
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlist') && data['playlist'] is List) {
+          final list = (data['playlist'] as List)
+              .map((e) => PlayListDTO.fromJson(e))
+              .toList();
+
+          return list.firstWhere(
+            (item) => item.listName == listName,
+          );
         }
       }
       return null;
@@ -70,22 +85,28 @@ class PlayListSourceImpl implements PlayListSource {
   Future<void> addSong(String userId, String listName, String songId) async {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
-      final addSongRef = _firestore.collection('Playlist').doc(userId);
+      final playlistRef = _firestore.collection('Playlist').doc(userId);
 
-      if (doc.exists) {
-        List playlist = doc.data() as List;
-        // title이 일치하는 플레이리스트 탐색
-        for (var item in playlist) {
-          if (item['title'] == listName) {
-            // 기존 item 삭제 후 재업로드
-            await addSongRef.update({
-              'playlist': FieldValue.arrayRemove([item]),
-            });
-            item['songIds'] = FieldValue.arrayUnion([songId]);
-            await addSongRef.update({
-              'playlist': FieldValue.arrayUnion([item])
-            });
-            break;
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlist') && data['playlist'] is List) {
+          List<dynamic> playlist = data['playlist'];
+
+          for (var item in playlist) {
+            if (item['title'] == listName) {
+              await playlistRef.update({
+                'playlist': FieldValue.arrayRemove([item]),
+              });
+
+              item['songIds'] = (item['songIds'] as List?) ?? [];
+              item['songIds'].add(songId);
+
+              await playlistRef.update({
+                'playlist': FieldValue.arrayUnion([item])
+              });
+              break;
+            }
           }
         }
       }
@@ -101,15 +122,19 @@ class PlayListSourceImpl implements PlayListSource {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
       final deleteRef = _firestore.collection('Playlist').doc(userId);
 
-      if (doc.exists) {
-        List playlist = doc.data() as List;
-        // title이 일치하는 플레이리스트 탐색
-        for (var item in playlist) {
-          if (item['title'] == listName) {
-            await deleteRef.update({
-              'playlist': FieldValue.arrayRemove([item]),
-            });
-            break;
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlist') && data['playlist'] is List) {
+          List<dynamic> playlist = data['playlist'];
+
+          for (var item in playlist) {
+            if (item['title'] == listName) {
+              await deleteRef.update({
+                'playlist': FieldValue.arrayRemove([item]),
+              });
+              break;
+            }
           }
         }
       }
@@ -125,20 +150,26 @@ class PlayListSourceImpl implements PlayListSource {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
       final deleteRef = _firestore.collection('Playlist').doc(userId);
 
-      if (doc.exists) {
-        List playlist = doc.data() as List;
-        // title이 일치하는 플레이리스트 탐색
-        for (var item in playlist) {
-          if (item['title'] == listName) {
-            // 기존 item 삭제 후 재업로드
-            await deleteRef.update({
-              'playlist': FieldValue.arrayRemove([item]),
-            });
-            item['songIds'] = FieldValue.arrayRemove([songId]);
-            await deleteRef.update({
-              'playlist': FieldValue.arrayUnion([item])
-            });
-            break;
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlist') && data['playlist'] is List) {
+          List<dynamic> playlist = data['playlist'];
+
+          for (var item in playlist) {
+            if (item['title'] == listName) {
+              await deleteRef.update({
+                'playlist': FieldValue.arrayRemove([item]),
+              });
+
+              item['songIds'] = (item['songIds'] as List?) ?? [];
+              item['songIds'].remove(songId);
+
+              await deleteRef.update({
+                'playlist': FieldValue.arrayUnion([item])
+              });
+              break;
+            }
           }
         }
       }

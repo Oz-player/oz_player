@@ -159,7 +159,9 @@ class HomePage extends ConsumerWidget {
                           width: 100,
                           height: 36,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.go('/home/ranking');
+                            },
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xff5902B0),
                                 shape: RoundedRectangleBorder(

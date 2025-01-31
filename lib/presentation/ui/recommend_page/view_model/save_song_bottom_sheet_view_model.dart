@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 
 class SaveSongBottomSheetState {
   SongEntitiy? savedSong;
@@ -21,6 +22,10 @@ class SaveSongBottomSheetViewModel
     return SaveSongBottomSheetState(null, 0);
   }
 
+  void reflash(){
+    state = state.copyWith();
+  }
+
   /// 보관함에 저장할 곡을 세팅
   void setSaveSong(SongEntitiy song) {
     state.savedSong = song;
@@ -29,6 +34,11 @@ class SaveSongBottomSheetViewModel
   /// 보관함에 곡을 보내기 직전, memo 정보 추가
   void setMemoInSong(String memo){
     state.savedSong!.memo = memo;
+  }
+
+  /// 곡을 저장후(RawSong), 라이브러리에(Libaray) 저장 
+  Future<void> saveSondInDB() async{
+    
   }
 
   /// 음악카드 저장 프로세스 진행

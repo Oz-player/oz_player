@@ -11,10 +11,17 @@ class LibrarySourceImpl implements LibrarySource {
   Future<List<LibraryDto>> getLibrary(String userId) async {
     try {
       final doc = await _firestore.collection('Library').doc(userId).get();
-      if (doc.exists) {
+
+      if (doc.exists && doc.data() != null) {
         print('$userId의 라이브러리 목록을 찾았습니다!');
-        List data = doc.data() as List;
-        return data.map((value) => LibraryDto.fromJson(value)).toList();
+
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('songs') && data['songs'] is List) {
+          return (data['songs'] as List)
+              .map((value) => LibraryDto.fromJson(value))
+              .toList();
+        }
       }
       return [];
     } catch (e, stackTrace) {
@@ -39,14 +46,20 @@ class LibrarySourceImpl implements LibrarySource {
     try {
       final doc = await _firestore.collection('Library').doc(userId).get();
       final deleteRef = _firestore.collection('Library').doc(userId);
-      if (doc.exists) {
-        List library = doc.data() as List;
-        for (var item in library) {
-          if (item['songId'] == songId) {
-            await deleteRef.update({
-              'library': FieldValue.arrayRemove([item])
-            });
-            break;
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('songs') && data['songs'] is List) {
+          List<dynamic> library = data['songs'];
+
+          for (var item in library) {
+            if (item['songId'] == songId) {
+              await deleteRef.update({
+                'songs': FieldValue.arrayRemove([item])
+              });
+              break;
+            }
           }
         }
       }

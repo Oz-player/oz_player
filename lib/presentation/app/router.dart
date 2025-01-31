@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
+import 'package:oz_player/presentation/ui/ranking_page/ranking_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_two.dart';
@@ -60,7 +61,11 @@ final router = GoRouter(
               builder: (context, state) => RecommendPageConditionTwo(),
             )
           ],
-        )
+        ),
+        GoRoute(
+          path: 'ranking',
+          builder: (context, state) => RankingPage(),
+        ),
       ],
     ),
     GoRoute(
