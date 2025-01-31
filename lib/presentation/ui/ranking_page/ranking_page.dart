@@ -114,6 +114,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
+                                    SizedBox(width: 10,),
                                     SizedBox(
                                         width: 28,
                                         height: 28,
@@ -133,30 +134,6 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                       children: [Text('음악제목'), Text('가수이름')],
                                     ),
                                     Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print('tap');
-                                      },
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        color: Colors.transparent,
-                                        alignment: Alignment.center,
-                                        child: Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            color: Colors.grey[300],
-                                          ),
-                                          child: Icon(
-                                            Icons.keyboard_arrow_down,
-                                            color: Colors.grey[500],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 );
                               },
@@ -173,6 +150,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
+                                    SizedBox(width: 10,),
                                     SizedBox(
                                         width: 28,
                                         height: 28,
@@ -192,30 +170,6 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                       children: [Text('음악제목'), Text('가수이름')],
                                     ),
                                     Spacer(),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print('tap');
-                                      },
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        color: Colors.transparent,
-                                        alignment: Alignment.center,
-                                        child: Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            color: Colors.grey[300],
-                                          ),
-                                          child: Icon(
-                                            Icons.keyboard_arrow_down,
-                                            color: Colors.grey[500],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 );
                               },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 
@@ -254,6 +255,7 @@ class SaveSongBottomSheet {
                                       .setMemoInSong(textController.text);
                                   // 카드 정보 보관함에 넘기기
                                   
+                                  context.pop();
                                 }
                               },
                               child: Text(

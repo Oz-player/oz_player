@@ -366,7 +366,7 @@ Widget playlistDialog(
                             shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8)))),
                         onPressed: () {
-                          // 플레이리스트 저장로직
+                          // 플레이리스트 저장로직 (RawSong)
                           
                         },
                         child: Text(
