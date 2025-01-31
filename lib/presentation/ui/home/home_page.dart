@@ -15,7 +15,7 @@ class HomePage extends ConsumerWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/images/background_3.png'),
+          image: AssetImage('assets/images/background.png'),
         ),
       ),
       child: Scaffold(

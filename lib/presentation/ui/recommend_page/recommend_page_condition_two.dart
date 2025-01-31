@@ -172,7 +172,7 @@ class _RecommendPageConditionTwoState
                             style: TextButton.styleFrom(
                                 disabledForegroundColor: Colors.grey[400],
                                 disabledBackgroundColor: Colors.grey[300],
-                                backgroundColor: Color(0xff40017e),
+                                backgroundColor: Colors.grey[800],
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8))),
                             onPressed: conditionState.event == false

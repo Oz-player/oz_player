@@ -16,20 +16,17 @@ class LoadingWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Spacer(),
+          SizedBox(height: 200,),
           Text(
             loadingState.loadingText[loadingState.index],
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Colors.white,
               decoration: TextDecoration.none,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 44),
-          Container(width: 180, height: 180, color: Colors.red,),
-          SizedBox(height: 80,),
           Spacer()
         ],
       ),

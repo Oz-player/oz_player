@@ -13,71 +13,82 @@ class RecommendExitAlertDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       backgroundColor: Colors.white,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      content: Stack(
+        clipBehavior: Clip.none,
         children: [
-          SizedBox(
-            height: 24,
-          ),
-          Text(
-            '음악 카드 추천받기를\n그만 하시겠어요?',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Text(
-            '지금까지의 기록은 저장되지 않아요',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-          ),
-          SizedBox(
-            height: 32,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(Color(0xfff2e6ff)),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)))),
-                  onPressed: () {
-                    ref
-                        .read(bottomNavigationProvider.notifier)
-                        .updatePage(destination);
-                    ref.read(cardPositionProvider.notifier).reset();
-                    if (destination == 0) {
-                      context.go('/saved');
-                    } else if (destination == 1) {
-                      context.go('/home');
-                    } else if (destination == 2) {
-                      context.go('/search');
-                    }
-                  },
-                  child: Text(
-                    '나중에 할게요',
-                    style: TextStyle(color: Colors.grey[600]),
-                  )),
               SizedBox(
-                width: 8,
+                height: 24,
               ),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(Color(0xff40017E)),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)))),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '이어서 할게요',
-                    style: TextStyle(color: Colors.white),
-                  )),
+              Text(
+                '음악 카드 추천받기를\n그만 하시겠어요?',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Text(
+                '지금까지의 기록은 저장되지 않아요',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(Color(0xfff2e6ff)),
+                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)))),
+                      onPressed: () {
+                        ref
+                            .read(bottomNavigationProvider.notifier)
+                            .updatePage(destination);
+                        ref.read(cardPositionProvider.notifier).reset();
+                        if (destination == 0) {
+                          context.go('/saved');
+                        } else if (destination == 1) {
+                          context.go('/home');
+                        } else if (destination == 2) {
+                          context.go('/search');
+                        }
+                      },
+                      child: Text(
+                        '나중에 할게요',
+                        style: TextStyle(color: Colors.grey[600]),
+                      )),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  TextButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(Color(0xff40017E)),
+                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)))),
+                      onPressed: () {
+                        context.pop();
+                      },
+                      child: Text(
+                        '이어서 할게요',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ],
+              ),
             ],
+          ),
+          Positioned(
+            top: -158,
+            left: 0,
+            right: 0,
+            child: Image.asset('assets/char/oz_2.png')
           ),
         ],
       ),
