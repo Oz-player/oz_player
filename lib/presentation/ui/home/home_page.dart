@@ -15,7 +15,7 @@ class HomePage extends ConsumerWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/images/background_3.png'),
+          image: AssetImage('assets/images/background.png'),
         ),
       ),
       child: Scaffold(
@@ -46,84 +46,139 @@ class HomePage extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: InkWell(
-                  onTap: () {
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .toggleStop();
-                    ref.read(bottomNavigationProvider.notifier).updatePage(4);
-                    context.go('/home/recommend');
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 160,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[600],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Color(0xffA54DFD),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      Positioned(
-                        left: 20,
-                        bottom: 18,
-                        child: Text(
-                          '음악 카드 추천',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                      top: 32,
+                      left: 24,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '오즈의 음악 카드',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '마법사 오즈가 추천하는 신비로운 음악 카드',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 25,
+                        left: 24,
+                        child: SizedBox(
+                          width: 100,
+                          height: 36,
+                          child: TextButton(
+                            onPressed: () {
+                              ref
+                                  .read(audioPlayerViewModelProvider.notifier)
+                                  .toggleStop();
+                              ref
+                                  .read(bottomNavigationProvider.notifier)
+                                  .updatePage(4);
+                              context.go('/home/recommend');
+                            },
+                            style: TextButton.styleFrom(
+                                backgroundColor: Color(0xff5902B0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            child: Text(
+                              '추천받기',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        )),
+                    Positioned(
+                        bottom: 6,
+                        right: 2,
+                        child: Image.asset('assets/char/oz_3.png')),
+                  ],
                 ),
               ),
               SizedBox(
                 height: 16,
               ),
-              InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      Stack(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey[400]!)),
+                    ),
+                    Positioned(
+                      top: 32,
+                      left: 24,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: (MediaQuery.sizeOf(context).width - 40) / 2 -
-                                10,
-                            height: 160,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[600],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                          Text(
+                            '뮤의 음악 랭킹',
+                            style: TextStyle(
+                                color: Colors.grey[900],
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Positioned(
-                            bottom: 18,
-                            left: 20,
-                            child: Center(
-                              child: Text(
-                                '추천 카드 랭킹',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
+                          Text(
+                            '고양이 뮤가 소개하는 인기 음악 순위',
+                            style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
-                      Spacer(),
-                      Container(
-                        width: (MediaQuery.sizeOf(context).width - 40) / 2 - 10,
-                        height: 160,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[600],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Positioned(
+                        bottom: 25,
+                        left: 24,
+                        child: SizedBox(
+                          width: 100,
+                          height: 36,
+                          child: TextButton(
+                            onPressed: () {},
+                            style: TextButton.styleFrom(
+                                backgroundColor: Color(0xff5902B0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            child: Text(
+                              '둘러보기',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        )),
+                    Positioned(
+                        bottom: 0,
+                        right: 18,
+                        child: Image.asset('assets/char/myu_1.png')),
+                  ],
                 ),
               ),
               Spacer(),

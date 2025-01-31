@@ -15,7 +15,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/images/background_3.png'),
+          image: AssetImage('assets/images/background.png'),
         ),
       ),
       child: Scaffold(
@@ -95,7 +95,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
                           style: TextButton.styleFrom(
                               disabledForegroundColor: Colors.grey[400],
                               disabledBackgroundColor: Colors.grey[300],
-                              backgroundColor: Color(0xff40017e),
+                              backgroundColor: Colors.grey[800],
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8))),
                           onPressed: conditionState.event == false ? null : () async {
