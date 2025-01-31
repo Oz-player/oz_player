@@ -1,5 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/domain/entitiy/library_entity.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/presentation/providers/library_provider.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 
 class SaveSongBottomSheetState {
   SongEntitiy? savedSong;
@@ -27,9 +31,34 @@ class SaveSongBottomSheetViewModel
   }
 
   /// 보관함에 곡을 보내기 직전, memo 정보 추가
-  void setMemoInSong(String memo){
+  void setMemoInSong(String memo) {
     state.savedSong!.memo = memo;
   }
+
+  void saveSongInDBLibrary() {
+    if (state.savedSong == null) return;
+    final rawSongEntity = RawSongEntity(
+      artist: state.savedSong!.artist,
+      countLibrary: 0,
+      countPlaylist: 0,
+      video: state.savedSong!.video,
+      title: state.savedSong!.title,
+      imgUrl: state.savedSong!.imgUrl,
+    );
+    final libraryEntity = LibraryEntity(
+      createdAt: DateTime.now(),
+      favoriteArtist: state.savedSong!.favoriteArtist,
+      genre: state.savedSong!.genre,
+      memo: state.savedSong!.memo,
+      mood: state.savedSong!.mood,
+      situation: state.savedSong!.situation,
+      songId: state.savedSong!.video.id,
+    );
+    ref.read(rawSongUsecaseProvider).updateRawSongByLibrary(rawSongEntity);
+    ref.read(libraryUsecaseProvider).createLibrary(libraryEntity);
+  }
+
+  void saveSongInDBPlaylist() {}
 
   /// 음악카드 저장 프로세스 진행
   void nextPage() {
@@ -37,7 +66,7 @@ class SaveSongBottomSheetViewModel
   }
 
   /// 페이지 초기화
-  void resetPage(){
+  void resetPage() {
     state = state.copyWith(page: 0);
   }
 }
