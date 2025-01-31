@@ -9,8 +9,8 @@ class PlayListRepositoryImpl implements PlayListRepository {
   PlayListRepositoryImpl(this._source);
 
   @override
-  Future<void> addPlayList(String userId, PlayListDTO playListDTO) async {
-    await _source.addPlayList(userId, playListDTO);
+  Future<bool> addPlayList(String userId, PlayListDTO playListDTO) async {
+    return await _source.addPlayList(userId, playListDTO);
   }
 
   @override

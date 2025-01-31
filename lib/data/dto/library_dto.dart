@@ -4,7 +4,7 @@ class LibraryDto {
   final DateTime createdAt;
   final String favoriteArtist;
   final String genre;
-  final String memo;
+  final String? memo;
   final String mood;
   final String situation;
   final String songId;
@@ -43,9 +43,19 @@ class LibraryDto {
     );
   }
 
+  LibraryDto.fromEntity(LibraryEntity entity)
+      : this(
+            createdAt: entity.createdAt,
+            favoriteArtist: entity.favoriteArtist,
+            genre: entity.genre,
+            memo: entity.memo,
+            mood: entity.mood,
+            situation: entity.situation,
+            songId: entity.songId);
+
   Map<String, dynamic> toJson() {
     return {
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
       'favoriteArtist': favoriteArtist,
       'genre': genre,
       'memo': memo,

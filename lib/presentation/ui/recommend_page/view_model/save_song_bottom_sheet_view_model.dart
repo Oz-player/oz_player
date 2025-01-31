@@ -1,6 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/domain/entitiy/library_entity.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/presentation/providers/library_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 
 class SaveSongBottomSheetState {
   SongEntitiy? savedSong;
@@ -22,7 +27,7 @@ class SaveSongBottomSheetViewModel
     return SaveSongBottomSheetState(null, 0);
   }
 
-  void reflash(){
+  void reflash() {
     state = state.copyWith();
   }
 
@@ -32,13 +37,38 @@ class SaveSongBottomSheetViewModel
   }
 
   /// 보관함에 곡을 보내기 직전, memo 정보 추가
-  void setMemoInSong(String memo){
+  void setMemoInSong(String memo) {
     state.savedSong!.memo = memo;
   }
 
-  /// 곡을 저장후(RawSong), 라이브러리에(Libaray) 저장 
-  Future<void> saveSondInDB() async{
-    
+  /// RawSong 객체 DB에 전송
+  Future<void> saveSongInDB() async {
+    if (state.savedSong == null) return;
+    final rawSongEntity = RawSongEntity(
+      artist: state.savedSong!.artist,
+      countLibrary: 0,
+      countPlaylist: 0,
+      video: state.savedSong!.video,
+      title: state.savedSong!.title,
+      imgUrl: state.savedSong!.imgUrl,
+    );
+    ref.read(rawSongUsecaseProvider).updateRawSongByLibrary(rawSongEntity);
+  }
+
+  // Library 객체 DB에 전송
+  void saveSongInLibrary() {
+    if (state.savedSong == null) return;
+    final libraryEntity = LibraryEntity(
+      createdAt: DateTime.now(),
+      favoriteArtist: state.savedSong!.favoriteArtist,
+      genre: state.savedSong!.genre,
+      memo: state.savedSong!.memo,
+      mood: state.savedSong!.mood,
+      situation: state.savedSong!.situation,
+      songId: state.savedSong!.video.id,
+    );
+    ref.read(libraryUsecaseProvider).createLibrary(libraryEntity);
+    ref.read(libraryViewModelProvider.notifier).getLibrary();
   }
 
   /// 음악카드 저장 프로세스 진행
@@ -47,7 +77,7 @@ class SaveSongBottomSheetViewModel
   }
 
   /// 페이지 초기화
-  void resetPage(){
+  void resetPage() {
     state = state.copyWith(page: 0);
   }
 }

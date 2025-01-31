@@ -54,9 +54,15 @@ class _PlayListState extends ConsumerState<PlayList> {
                                   height: 56,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
-                                    image: DecorationImage(
-                                      image: NetworkImage(data[index].imgUrl),
-                                    ),
+                                    image: data[index].imgUrl == null
+                                        ? DecorationImage(
+                                            image: AssetImage(
+                                                '/assets/images/muoz.png'),
+                                          )
+                                        : DecorationImage(
+                                            image: NetworkImage(
+                                                data[index].imgUrl!),
+                                          ),
                                   ),
                                 ),
                                 // 플레이리스트 내용

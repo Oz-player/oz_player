@@ -2,7 +2,7 @@ class LibraryEntity {
   final DateTime createdAt;
   final String favoriteArtist;
   final String genre;
-  final String memo;
+  final String? memo;
   final String mood;
   final String situation;
   final String songId;
