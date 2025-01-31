@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
-import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
@@ -86,9 +85,6 @@ class HomePage extends ConsumerWidget {
                           height: 36,
                           child: TextButton(
                             onPressed: () {
-                              ref
-                                  .read(audioPlayerViewModelProvider.notifier)
-                                  .toggleStop();
                               ref
                                   .read(bottomNavigationProvider.notifier)
                                   .updatePage(4);

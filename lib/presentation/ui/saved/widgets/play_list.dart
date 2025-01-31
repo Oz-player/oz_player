@@ -56,8 +56,8 @@ class _PlayListState extends ConsumerState<PlayList> {
                                     image: data[index].imgUrl == null
                                         ? DecorationImage(
                                             image: AssetImage(
-                                                '/assets/images/muoz.png'),
-                                          )
+                                                'assets/images/muoz.png'),
+                                            fit: BoxFit.contain)
                                         : DecorationImage(
                                             image: NetworkImage(
                                                 data[index].imgUrl!),

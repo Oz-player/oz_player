@@ -10,6 +10,8 @@ class GeminiSourceImpl implements AiSource {
   @override
   Future<RecommendMusicDto> getResponse(String prompt, String apiKey) async {
     try {
+      log('GEMINI 추천 시작');
+      
       final model = GenerativeModel(
         model: 'gemini-1.5-pro-latest',
         apiKey: apiKey,
@@ -36,6 +38,8 @@ class GeminiSourceImpl implements AiSource {
   Future<List<RecommendMusicDto>> getMultiResponse(
       String prompt, String apiKey) async {
     try {
+      log('GEMINI 추천 시작');
+      
       final model = GenerativeModel(
         model: 'gemini-1.5-pro-latest',
         apiKey: apiKey,
