@@ -18,8 +18,9 @@ class PlayListSourceImpl implements PlayListSource {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
       if (doc.exists) {
         print('$userId의 플레이리스트 목록을 찾았습니다!');
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return data.values.map((value) => PlayListDTO.fromJson(value)).toList();
+        return (doc.data() as List)
+            .map((value) => PlayListDTO.fromJson(value))
+            .toList();
       }
       print('$userId의 플레이리스트 목록이 없습니다');
       return [];
@@ -50,15 +51,15 @@ class PlayListSourceImpl implements PlayListSource {
     }
   }
 
-  // 문서에 새로운 플레이리스트 필드 추가
+  // 문서에 새로운 플레이리스트 추가
   @override
   Future<void> addPlayList(String userId, PlayListDTO playListDTO) async {
     try {
       await _firestore.collection('Playlist').doc(userId).set({
-        playListDTO.listName: [
+        'playlist': FieldValue.arrayUnion([
           playListDTO.toJson(),
-        ]
-      }, SetOptions(merge: true));
+        ])
+      });
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
     }
@@ -68,9 +69,26 @@ class PlayListSourceImpl implements PlayListSource {
   @override
   Future<void> addSong(String userId, String listName, String songId) async {
     try {
-      await _firestore.collection('Playlist').doc(userId).update({
-        '$listName.songIds': FieldValue.arrayUnion([songId])
-      });
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      final addSongRef = _firestore.collection('Playlist').doc(userId);
+
+      if (doc.exists) {
+        List playlist = doc.data() as List;
+        // title이 일치하는 플레이리스트 탐색
+        for (var item in playlist) {
+          if (item['title'] == listName) {
+            // 기존 item 삭제 후 재업로드
+            await addSongRef.update({
+              'playlist': FieldValue.arrayRemove([item]),
+            });
+            item['songIds'] = FieldValue.arrayUnion([songId]);
+            await addSongRef.update({
+              'playlist': FieldValue.arrayUnion([item])
+            });
+            break;
+          }
+        }
+      }
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
     }
@@ -80,10 +98,21 @@ class PlayListSourceImpl implements PlayListSource {
   @override
   Future<void> deletePlayList(String userId, String listName) async {
     try {
-      await _firestore
-          .collection('Playlist')
-          .doc(userId)
-          .update({listName: FieldValue.delete()});
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      final deleteRef = _firestore.collection('Playlist').doc(userId);
+
+      if (doc.exists) {
+        List playlist = doc.data() as List;
+        // title이 일치하는 플레이리스트 탐색
+        for (var item in playlist) {
+          if (item['title'] == listName) {
+            await deleteRef.update({
+              'playlist': FieldValue.arrayRemove([item]),
+            });
+            break;
+          }
+        }
+      }
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
     }
@@ -93,9 +122,26 @@ class PlayListSourceImpl implements PlayListSource {
   @override
   Future<void> deleteSong(String userId, String listName, String songId) async {
     try {
-      await _firestore.collection('Playlist').doc(userId).update({
-        '$listName.songIds': FieldValue.arrayRemove([songId])
-      });
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      final deleteRef = _firestore.collection('Playlist').doc(userId);
+
+      if (doc.exists) {
+        List playlist = doc.data() as List;
+        // title이 일치하는 플레이리스트 탐색
+        for (var item in playlist) {
+          if (item['title'] == listName) {
+            // 기존 item 삭제 후 재업로드
+            await deleteRef.update({
+              'playlist': FieldValue.arrayRemove([item]),
+            });
+            item['songIds'] = FieldValue.arrayRemove([songId]);
+            await deleteRef.update({
+              'playlist': FieldValue.arrayUnion([item])
+            });
+            break;
+          }
+        }
+      }
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
     }
