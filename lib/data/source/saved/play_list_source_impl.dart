@@ -17,13 +17,14 @@ class PlayListSourceImpl implements PlayListSource {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
       if (doc.exists) {
-        return (doc.data() as List)
-            .map((e) => PlayListDTO.fromJson(e))
-            .toList();
+        print('$userId의 플레이리스트 목록을 찾았습니다!');
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return data.values.map((value) => PlayListDTO.fromJson(value)).toList();
       }
+      print('$userId의 플레이리스트 목록이 없습니다');
       return [];
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      print('playlist error: $e, stackTrace: $stackTrace');
       return [];
     }
   }
