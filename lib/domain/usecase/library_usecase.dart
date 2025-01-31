@@ -1,5 +1,5 @@
 import 'package:oz_player/domain/entitiy/library_entity.dart';
-import 'package:oz_player/domain/repository/library_repository.dart';
+import 'package:oz_player/domain/repository/saved/library_repository.dart';
 
 class LibraryUsecase {
   final LibraryRepository _repository;

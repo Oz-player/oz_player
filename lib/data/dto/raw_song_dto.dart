@@ -39,6 +39,15 @@ class RawSongDto {
     );
   }
 
+  RawSongDto.fromEntity(RawSongEntity entity)
+      : this(
+          video: entity.video,
+          songId: entity.songId,
+          title: entity.title,
+          imgUrl: entity.imgUrl,
+          artist: entity.artist,
+        );
+
   Map<String, dynamic> toJson() {
     return {
       'video': video.toJson(),

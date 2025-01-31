@@ -21,7 +21,7 @@ class LibraryDto {
 
   factory LibraryDto.fromJson(Map<String, dynamic> json) {
     return LibraryDto(
-      createdAt: json['createdAt'],
+      createdAt: DateTime.parse(json['createdAt'] as String),
       favoriteArtist: json['favoriteArtist'],
       genre: json['genre'],
       memo: json['memo'],
