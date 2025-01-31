@@ -13,7 +13,7 @@ class RawSongSourceImpl implements RawSongSource {
     try {
       final doc = await _firestore.collection('Song').doc(songId).get();
       if (doc.exists && doc.data() != null) {
-        return RawSongDto.fromJson(doc.data()!, songId);
+        return RawSongDto.fromJson(doc.data()!);
       }
       return null;
     } catch (e, stackTrace) {
@@ -22,10 +22,9 @@ class RawSongSourceImpl implements RawSongSource {
     }
   }
 
-  // TODO : Firebase에 영상 Duration 업로드
   @override
   Future<void> createRawSong(RawSongDto rawSongDto) async {
-    await _firestore.collection('Song').doc(rawSongDto.songId).set(
+    await _firestore.collection('Song').doc(rawSongDto.video.id).set(
           rawSongDto.toJson(),
         );
   }

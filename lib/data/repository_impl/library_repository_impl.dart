@@ -1,6 +1,6 @@
 import 'package:oz_player/data/source/saved/library_source.dart';
 import 'package:oz_player/domain/entitiy/library_entity.dart';
-import 'package:oz_player/domain/repository/library_repository.dart';
+import 'package:oz_player/domain/repository/saved/library_repository.dart';
 
 class LibraryRepositoryImpl implements LibraryRepository {
   final LibrarySource _source;

@@ -1,3 +1,4 @@
+import 'package:oz_player/data/util/duration_parse.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class VideoInfoEntitiy {
@@ -28,7 +29,7 @@ class VideoInfoEntitiy {
       : this(
           id: json['id'],
           title: json['title'],
-          duration: null,
+          duration: durationParse(json['duration']),
           url: json['url'],
           audioUrl: json['audioUrl'],
         );
@@ -37,6 +38,7 @@ class VideoInfoEntitiy {
     return {
       'id': id,
       'title': title,
+      'duration': duration.toString(),
       'url': url,
       'audioUrl': audioUrl,
     };
