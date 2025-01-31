@@ -367,6 +367,7 @@ Widget playlistDialog(
                                 borderRadius: BorderRadius.circular(8)))),
                         onPressed: () {
                           // 플레이리스트 저장로직
+                          
                         },
                         child: Text(
                           '확인',
