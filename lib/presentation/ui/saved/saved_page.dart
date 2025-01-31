@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/library.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_list.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class SavedPage extends ConsumerStatefulWidget {
@@ -34,75 +35,87 @@ class _SavedPageState extends ConsumerState<SavedPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 탭 이동 버튼
-            Row(
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SavedTabButton(
-                  title: '라이브러리',
-                  isLibrary: isLibrary,
-                  onClicked: onButtonClicked,
-                ),
-                SavedTabButton(
-                  title: '플레이리스트',
-                  isLibrary: !isLibrary,
-                  onClicked: onButtonClicked,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            // 정렬 기준
-            SizedBox(
-              width: 340,
-              height: 40,
-              child: Row(
-                children: [
-                  Text(
-                    '정렬 기준',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                // 탭 이동 버튼
+                Row(
+                  children: [
+                    SavedTabButton(
+                      title: '라이브러리',
+                      isLibrary: isLibrary,
+                      onClicked: onButtonClicked,
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print('tap');
-                    },
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      color: Colors.transparent,
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.grey[300],
-                        ),
-                        child: Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey[500],
+                    SavedTabButton(
+                      title: '플레이리스트',
+                      isLibrary: !isLibrary,
+                      onClicked: onButtonClicked,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                // 정렬 기준
+                SizedBox(
+                  width: 340,
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Text(
+                        '정렬 기준',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
                         ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {
+                          print('tap');
+                        },
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          color: Colors.transparent,
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: Colors.grey[300],
+                            ),
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                // 내용
+                isLibrary ? Library() : PlayList(),
+              ],
             ),
-            const SizedBox(
-              height: 12,
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 24,
+            child: AudioPlayer(
+              colorMode: true,
             ),
-            // 내용
-            isLibrary ? Library() : PlayList(),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: HomeBottomNavigation(),
     );

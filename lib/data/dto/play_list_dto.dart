@@ -15,7 +15,7 @@ class PlayListDTO {
 
   factory PlayListDTO.fromJson(Map<String, dynamic> json) {
     return PlayListDTO(
-      listName: json['listName'],
+      listName: json['title'],
       imgUrl: json['imgUrl'],
       description: json['description'],
       songIds:

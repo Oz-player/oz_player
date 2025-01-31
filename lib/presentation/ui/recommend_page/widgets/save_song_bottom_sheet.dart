@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 
@@ -64,9 +65,7 @@ class SaveSongBottomSheet {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ...List.generate(
-                                  1,
-                                  (index) {
+                              ...List.generate(1, (index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 12),
                                   child: Container(
@@ -110,7 +109,7 @@ class SaveSongBottomSheet {
                                         borderRadius:
                                             BorderRadius.circular(8))),
                                 backgroundColor:
-                                    WidgetStatePropertyAll(Color(0xff40017e)),
+                                    WidgetStatePropertyAll(Colors.grey[800]),
                               ),
                               onPressed: () {
                                 ref
@@ -186,6 +185,12 @@ class SaveSongBottomSheet {
                               height: 140,
                               child: TextField(
                                 controller: textController,
+                                onChanged: (value) {
+                                  ref
+                                      .read(saveSongBottomSheetViewModelProvider
+                                          .notifier)
+                                      .reflash();
+                                },
                                 style: TextStyle(
                                   color: Colors.grey[900],
                                 ),
@@ -238,7 +243,7 @@ class SaveSongBottomSheet {
                                 backgroundColor: WidgetStatePropertyAll(
                                     textController.text.isEmpty
                                         ? Colors.grey[300]
-                                        : Color(0xff40017e)),
+                                        : Colors.grey[800]),
                               ),
                               onPressed: () {
                                 if (textController.text.isEmpty) {
@@ -249,6 +254,8 @@ class SaveSongBottomSheet {
                                           .notifier)
                                       .setMemoInSong(textController.text);
                                   // 카드 정보 보관함에 넘기기
+                                  
+                                  context.pop();
                                 }
                               },
                               child: Text(
