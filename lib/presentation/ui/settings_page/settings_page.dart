@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
+import 'package:oz_player/presentation/ui/settings_page/go_app_settings.dart';
+import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/sample_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/version_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
@@ -30,17 +32,14 @@ class SettingsPage extends StatelessWidget {
             SizedBox(height: 24),
             SubTitle(text: '알림'),
             SizedBox(height: 12),
-            SettingsButton(
-              text: '알림 설정',
-              goToThePage: SamplePage(),
-            ),
+            GoAppSettingsButton(),
             Divider(),
             SizedBox(height: 28),
             SubTitle(text: '약관·정보'),
             SizedBox(height: 12),
             SettingsButton(
               text: '개인정보 보호 방침',
-              goToThePage: SamplePage(),
+              goToThePage: PrivateInfoPage(),
             ),
             VersionInfo(),
             Divider(),
