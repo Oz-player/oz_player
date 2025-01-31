@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
 import 'package:oz_player/presentation/ui/ranking_page/ranking_page.dart';
@@ -36,7 +37,9 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: 'playlist',
-          builder: (context, state) => PlaylistPage(),
+          builder: (context, state) => PlaylistPage(
+            playlist: state.extra as PlayListEntity,
+          ),
         ),
         GoRoute(
           path: 'library',

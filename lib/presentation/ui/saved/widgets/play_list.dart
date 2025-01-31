@@ -36,7 +36,10 @@ class _PlayListState extends ConsumerState<PlayList> {
                       ref
                           .read(rawSongViewModelProvider.notifier)
                           .getRawSongs(data[index].songIds);
-                      context.go('/saved/playlist');
+                      context.go(
+                        '/saved/playlist',
+                        extra: data[index],
+                      );
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 12),

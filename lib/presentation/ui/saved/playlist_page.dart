@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends StatelessWidget {
-  const PlaylistPage({super.key});
+  final PlayListEntity playlist;
+
+  const PlaylistPage({super.key, required this.playlist});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,9 @@ class PlaylistPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // -------------------
+            // 플레이리스트 대표 이미지
+            // -------------------
             Container(
               width: double.infinity,
               height: 140,
@@ -35,7 +41,11 @@ class PlaylistPage extends StatelessWidget {
                     height: 120,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: AppColors.gray300,
+                      image: playlist.imgUrl == null
+                          ? DecorationImage(
+                              image: AssetImage('assets/images/muoz.png'))
+                          : DecorationImage(
+                              image: NetworkImage(playlist.imgUrl!)),
                     ),
                   ),
                   GestureDetector(
@@ -48,7 +58,7 @@ class PlaylistPage extends StatelessWidget {
                       color: Colors.transparent,
                       child: Icon(
                         Icons.more_vert,
-                        color: AppColors.gray300,
+                        color: AppColors.gray400,
                       ),
                     ),
                   ),
@@ -60,6 +70,7 @@ class PlaylistPage extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.only(bottom: 20),
+              width: double.infinity,
               decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
@@ -74,7 +85,7 @@ class PlaylistPage extends StatelessWidget {
                   // 플레이리스트 제목
                   // ---------------
                   Text(
-                    '제목이 비어있습니다 제목이 비어있습니다',
+                    playlist.listName,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -88,7 +99,7 @@ class PlaylistPage extends StatelessWidget {
                   // 플레이리스트 설명
                   // ---------------
                   Text(
-                    '설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다',
+                    playlist.description,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 12,
