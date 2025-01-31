@@ -109,7 +109,7 @@ class ExitButtons extends ConsumerWidget {
                       TextButton(
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 47, vertical: 10),
+                              horizontal: 21, vertical: 10),
                           backgroundColor: Color(0xFFF2E6FF),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -119,7 +119,7 @@ class ExitButtons extends ConsumerWidget {
                           Navigator.of(context).pop();
                         },
                         child: Text(
-                          '취소',
+                          '나중에 할게요',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -233,10 +233,10 @@ class VersionInfo extends StatelessWidget {
           Text(
             '버전 안내',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               color: Color(0xFF6B7684),
               fontWeight: FontWeight.w500,
-              height: 19 / 16,
+              height: 17 / 14,
             ),
           ),
           Spacer(),
