@@ -5,6 +5,7 @@ import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 import 'package:oz_player/presentation/providers/library_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 
 class SaveSongBottomSheetState {
   SongEntitiy? savedSong;
@@ -67,6 +68,7 @@ class SaveSongBottomSheetViewModel
       songId: state.savedSong!.video.id,
     );
     ref.read(libraryUsecaseProvider).createLibrary(libraryEntity);
+    ref.read(libraryViewModelProvider.notifier).getLibrary();
   }
 
   /// 음악카드 저장 프로세스 진행

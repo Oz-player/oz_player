@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/data/dto/play_list_dto.dart';
+import 'package:oz_player/presentation/providers/play_list_provider.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
 class SavePlaylistBottomSheet {
   static void show(BuildContext context, WidgetRef ref,
@@ -105,7 +108,8 @@ class SavePlaylistBottomSheet {
                                 width: double.infinity,
                                 height: 480,
                                 child: ListView.separated(
-                                  separatorBuilder: (context, index) => Divider(),
+                                  separatorBuilder: (context, index) =>
+                                      Divider(),
                                   itemCount: 10,
                                   itemBuilder: (context, index) => Container(
                                     padding: EdgeInsets.symmetric(vertical: 12),
@@ -343,8 +347,9 @@ Widget playlistDialog(
                         style: ButtonStyle(
                             backgroundColor:
                                 WidgetStatePropertyAll(Color(0xfff2e6ff)),
-                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)))),
+                            shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)))),
                         onPressed: () {
                           context.pop();
                           title.clear();
@@ -363,11 +368,26 @@ Widget playlistDialog(
                         style: ButtonStyle(
                             backgroundColor:
                                 WidgetStatePropertyAll(Color(0xff40017E)),
-                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)))),
-                        onPressed: () {
-                          // 플레이리스트 저장로직 (RawSong)
-                          
+                            shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () async {
+                          // 플레이리스트 생성 로직
+                          bool isSaved = await ref
+                              .read(playListsUsecaseProvider)
+                              .addPlayList(
+                                PlayListDTO(
+                                    listName: title.text,
+                                    imgUrl: null,
+                                    description: description.text,
+                                    songIds: []),
+                              );
+                          ref
+                              .read(playListViewModelProvider.notifier)
+                              .getPlayLists();
+                          context.pop();
+                          title.clear();
+                          description.clear();
                         },
                         child: Text(
                           '확인',
