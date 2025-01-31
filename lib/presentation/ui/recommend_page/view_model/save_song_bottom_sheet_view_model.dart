@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/library_entity.dart';
-import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 import 'package:oz_player/presentation/providers/library_provider.dart';
@@ -52,11 +51,11 @@ class SaveSongBottomSheetViewModel
       title: state.savedSong!.title,
       imgUrl: state.savedSong!.imgUrl,
     );
-    ref.read(rawSongUsecaseProvider).updateRawSongByLibrary(rawSongEntity);
+    await ref.read(rawSongUsecaseProvider).updateRawSongByLibrary(rawSongEntity);
   }
 
   // Library 객체 DB에 전송
-  void saveSongInLibrary() {
+  Future<void> saveSongInLibrary() async{
     if (state.savedSong == null) return;
     final libraryEntity = LibraryEntity(
       createdAt: DateTime.now(),
@@ -67,8 +66,8 @@ class SaveSongBottomSheetViewModel
       situation: state.savedSong!.situation,
       songId: state.savedSong!.video.id,
     );
-    ref.read(libraryUsecaseProvider).createLibrary(libraryEntity);
-    ref.read(libraryViewModelProvider.notifier).getLibrary();
+    await ref.read(libraryUsecaseProvider).createLibrary(libraryEntity);
+    await ref.read(libraryViewModelProvider.notifier).getLibrary();
   }
 
   /// 음악카드 저장 프로세스 진행

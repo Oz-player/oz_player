@@ -22,6 +22,9 @@ class LoadingViewModel extends Notifier<LoadingState> {
     List<String> loadingText = [
       '',
       '추천 음악 카드를 준비중\n잠시만 기다려주세요',
+      '음악 카드가 보관함에 저장되는 중입니다.\n잠시만 기다려주세요',
+      '새로운 플레이리스트를 생성하는 중입니다.\n잠시만 기다려주세요',
+      '플레이리스트에 음악 카드를 저장하는 중입니다.\n잠시만 기다려주세요'
     ];
 
     return LoadingState(false, loadingText, 0);
