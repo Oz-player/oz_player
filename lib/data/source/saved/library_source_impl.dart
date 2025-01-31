@@ -46,7 +46,7 @@ class LibrarySourceImpl implements LibrarySource {
             }
           }
           await _firestore.collection('Library').doc(userId).update({
-            'library': FieldValue.arrayUnion([dto.toJson()])
+            'songs': FieldValue.arrayUnion([dto.toJson()])
           });
           print('${dto.songId}을 라이브러리에 저장했습니다');
           return;

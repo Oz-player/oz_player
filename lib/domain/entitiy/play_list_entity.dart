@@ -1,6 +1,6 @@
 class PlayListEntity {
   String listName;
-  String imgUrl;
+  String? imgUrl;
   String description;
   List<String> songIds;
 
