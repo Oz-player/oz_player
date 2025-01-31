@@ -23,9 +23,26 @@ class RawSongSourceImpl implements RawSongSource {
   }
 
   @override
-  Future<void> createRawSong(RawSongDto rawSongDto) async {
-    await _firestore.collection('Song').doc(rawSongDto.video.id).set(
-          rawSongDto.toJson(),
-        );
+  Future<void> updateRawSongByLibrary(RawSongDto rawSongDto) async {
+    final doc =
+        await _firestore.collection('Song').doc(rawSongDto.video.id).get();
+    if (doc.exists) {
+      final count = (doc.data() as Map<String, dynamic>)['countLibrary'];
+      await _firestore.collection('Song').doc().update(
+        {
+          'countLibrary': count + 1,
+        },
+      );
+    } else {
+      await _firestore
+          .collection('Song')
+          .doc(rawSongDto.video.id)
+          .set(rawSongDto.toJson());
+    }
+  }
+
+  @override
+  Future<void> updateRawSongByPlaylist(RawSongDto rawSongDto) {
+    throw UnimplementedError();
   }
 }
