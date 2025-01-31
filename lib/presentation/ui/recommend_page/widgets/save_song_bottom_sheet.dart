@@ -254,7 +254,14 @@ class SaveSongBottomSheet {
                                           .notifier)
                                       .setMemoInSong(textController.text);
                                   // 카드 정보 보관함에 넘기기
-                                  
+                                  ref
+                                      .read(saveSongBottomSheetViewModelProvider
+                                          .notifier)
+                                      .saveSongInDB();
+                                  ref
+                                      .read(saveSongBottomSheetViewModelProvider
+                                          .notifier)
+                                      .saveSongInLibrary();
                                   context.pop();
                                 }
                               },

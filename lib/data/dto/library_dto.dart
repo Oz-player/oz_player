@@ -55,7 +55,7 @@ class LibraryDto {
 
   Map<String, dynamic> toJson() {
     return {
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
       'favoriteArtist': favoriteArtist,
       'genre': genre,
       'memo': memo,

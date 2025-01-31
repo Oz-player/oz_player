@@ -33,9 +33,31 @@ class LibrarySourceImpl implements LibrarySource {
   @override
   Future<void> createLibrary(LibraryDto dto, String userId) async {
     try {
-      await _firestore.collection('Library').doc(userId).update({
-        'library': FieldValue.arrayUnion([dto.toJson()])
+      // 1. 유저의 라이브러리 문서가 존재하는지 확인
+      final doc = await _firestore.collection('Library').doc(userId).get();
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+        // 2. 유저의 라이브러리 안에 동일한 곡이 존재하는지 확인
+        if (data.containsKey('songs') && data['songs'] is List) {
+          for (var item in data['songs']) {
+            if (item['songId'] == dto.songId) {
+              print('이미 존재하는 곡입니다.');
+              return;
+            }
+          }
+          await _firestore.collection('Library').doc(userId).update({
+            'library': FieldValue.arrayUnion([dto.toJson()])
+          });
+          print('${dto.songId}을 라이브러리에 저장했습니다');
+          return;
+        }
+      }
+      // 3. 유저의 라이브러리 문서가 존재하지 않는다면 생성
+      final docRef = _firestore.collection('Library').doc(userId);
+      await docRef.set({
+        'songs': [dto.toJson()]
       });
+      print('${dto.songId}을 라이브러리에 저장했습니다');
     } catch (e, stackTrace) {
       print('e: $e, stack: $stackTrace');
     }

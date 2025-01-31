@@ -33,11 +33,13 @@ class RawSongSourceImpl implements RawSongSource {
           'countLibrary': count + 1,
         },
       );
+      print('count가 증가하였습니다.');
     } else {
       await _firestore
           .collection('Song')
           .doc(rawSongDto.video.id)
           .set(rawSongDto.toJson());
+      print('${rawSongDto.video.id}을 Song에 저장하였습니다.');
     }
   }
 
