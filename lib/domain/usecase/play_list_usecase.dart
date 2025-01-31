@@ -18,8 +18,8 @@ class PlayListUsecase {
     return await _repository.getPlayList(userId, listName);
   }
 
-  Future<void> addPlayList(PlayListDTO playListDTO) async {
-    await _repository.addPlayList(userId, playListDTO);
+  Future<bool> addPlayList(PlayListDTO playListDTO) async {
+    return await _repository.addPlayList(userId, playListDTO);
   }
 
   Future<void> addSong(String listName, String songId) async {

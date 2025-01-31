@@ -2,7 +2,7 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 
 class PlayListDTO {
   final String listName;
-  final String imgUrl;
+  final String? imgUrl;
   final String description;
   final List<String> songIds;
 
@@ -15,7 +15,7 @@ class PlayListDTO {
 
   factory PlayListDTO.fromJson(Map<String, dynamic> json) {
     return PlayListDTO(
-      listName: json['title'],
+      listName: json['listName'],
       imgUrl: json['imgUrl'],
       description: json['description'],
       songIds:

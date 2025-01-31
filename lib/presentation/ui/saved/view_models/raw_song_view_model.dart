@@ -17,10 +17,6 @@ class RawSongViewModel extends AutoDisposeNotifier<List<RawSongEntity?>> {
     });
     state = list;
   }
-
-  Future<void> createRawSong(RawSongEntity entity) async {
-    await ref.read(rawSongUsecaseProvider).createRawSong(entity);
-  }
 }
 
 final rawSongViewModelProvider =

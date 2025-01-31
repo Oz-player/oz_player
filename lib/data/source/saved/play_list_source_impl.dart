@@ -7,38 +7,33 @@ class PlayListSourceImpl implements PlayListSource {
 
   PlayListSourceImpl(this._firestore);
 
-  // NOTICE : (add 관련) 플레이리스트에 음악을 넣을 때
-  // firebase-Song 콜렉션에도 추가해야 합니다
-  // Song 콜렉션이 명확하게 정해지고 나서 기능 추가 예정
-
   // 유저의 전체 플레이리스트를 가져옴
-@override
-Future<List<PlayListDTO>> getPlayLists(String userId) async {
-  try {
-    final doc = await _firestore.collection('Playlist').doc(userId).get();
+  @override
+  Future<List<PlayListDTO>> getPlayLists(String userId) async {
+    try {
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
 
-    if (doc.exists && doc.data() != null) {
-      print('$userId의 플레이리스트 목록을 찾았습니다!');
+      if (doc.exists && doc.data() != null) {
+        print('$userId의 플레이리스트 목록을 찾았습니다!');
 
-      final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data() as Map<String, dynamic>;
 
-      if (data.containsKey('playlists') && data['playlists'] is List) {
-        return (data['playlists'] as List)
-            .map((value) => PlayListDTO.fromJson(value))
-            .toList();
-      } else {
-        return [];
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          return (data['playlists'] as List)
+              .map((value) => PlayListDTO.fromJson(value))
+              .toList();
+        } else {
+          return [];
+        }
       }
+
+      print('$userId의 플레이리스트 목록이 없습니다');
+      return [];
+    } catch (e, stackTrace) {
+      print('playlist error: $e, stackTrace: $stackTrace');
+      return [];
     }
-
-    print('$userId의 플레이리스트 목록이 없습니다');
-    return [];
-  } catch (e, stackTrace) {
-    print('playlist error: $e, stackTrace: $stackTrace');
-    return [];
   }
-}
-
 
   // 유저의 전체 플레이리스트 중 이름이 일치하는 특정 플레이리스트를 가져옴
   @override
@@ -68,15 +63,36 @@ Future<List<PlayListDTO>> getPlayLists(String userId) async {
 
   // 문서에 새로운 플레이리스트 추가
   @override
-  Future<void> addPlayList(String userId, PlayListDTO playListDTO) async {
+  Future<bool> addPlayList(String userId, PlayListDTO dto) async {
     try {
-      await _firestore.collection('Playlist').doc(userId).set({
-        'playlist': FieldValue.arrayUnion([
-          playListDTO.toJson(),
-        ])
+      // 1. 유저의 플레이리스트 문서가 존재하는지 확인
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+        // 2. 유저의 플레이리스트 안에 동일한 제목이 존재하는지 확인
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          for (var item in data['playlists']) {
+            if (item['title'] == dto.listName) {
+              print('이미 존재하는 제목의 플레이리스트입니다.');
+              return false;
+            }
+          }
+          await _firestore.collection('Playlist').doc(userId).update({
+            'playlists': FieldValue.arrayUnion([dto.toJson()])
+          });
+          print('${dto.listName}을 플레이리스트에 저장했습니다');
+          return true;
+        }
+      }
+      // 3. 유저의 플레이리스트 문서가 존재하지 않는다면 생성
+      final docRef = _firestore.collection('Playlist').doc(userId);
+      await docRef.set({
+        'playlists': [dto.toJson()]
       });
+      return true;
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
+      return false;
     }
   }
 
