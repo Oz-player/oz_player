@@ -293,7 +293,7 @@ class VersionInfo extends StatelessWidget {
               color: Color(0xFFF2E6FF),
             ),
             child: Text(
-              '1.1.1',
+              '1.0.0+1',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

@@ -40,10 +40,10 @@ class KakaoButton extends ConsumerWidget {
             Image.asset(
               'assets/images/ic_kakao_logo.png',
               color: Colors.black,
-              height: 23,
+              height: 24,
               fit: BoxFit.fitHeight,
             ),
-            SizedBox(width: 12),
+            SizedBox(width: 10),
             Text('Kakao로 시작하기'),
           ],
         ),
