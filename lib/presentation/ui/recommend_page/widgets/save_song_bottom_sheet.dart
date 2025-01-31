@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class SaveSongBottomSheet {
   static void show(BuildContext context, WidgetRef ref,
@@ -245,24 +247,44 @@ class SaveSongBottomSheet {
                                         ? Colors.grey[300]
                                         : Colors.grey[800]),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                if (ref
+                                    .watch(loadingViewModelProvider)
+                                    .isLoading) {
+                                  return;
+                                }
+
                                 if (textController.text.isEmpty) {
                                   return;
                                 } else {
+                                  ref
+                                      .read(loadingViewModelProvider.notifier)
+                                      .startLoading(2);
+
                                   ref
                                       .read(saveSongBottomSheetViewModelProvider
                                           .notifier)
                                       .setMemoInSong(textController.text);
                                   // 카드 정보 보관함에 넘기기
-                                  ref
+
+                                  await ref
                                       .read(saveSongBottomSheetViewModelProvider
                                           .notifier)
                                       .saveSongInDB();
-                                  ref
+                                  await ref
                                       .read(saveSongBottomSheetViewModelProvider
                                           .notifier)
                                       .saveSongInLibrary();
-                                  context.pop();
+
+                                  if (context.mounted) {
+                                    context.pop();
+                                  }
+                                  ref
+                                      .read(cardPositionProvider.notifier)
+                                      .cardPositionIndex(0);
+                                  ref
+                                      .read(loadingViewModelProvider.notifier)
+                                      .endLoading();
                                 }
                               },
                               child: Text(

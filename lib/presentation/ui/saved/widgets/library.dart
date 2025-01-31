@@ -26,8 +26,7 @@ class _LibraryState extends ConsumerState<Library> {
           if (data.isEmpty) {
             return Container();
           }
-          return Expanded(
-              child: GridView.count(
+          return GridView.count(
             crossAxisCount: 3,
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
@@ -58,7 +57,7 @@ class _LibraryState extends ConsumerState<Library> {
                 ),
               );
             }).toList(),
-          ));
+          );
         },
         error: (error, stackTrace) => Container(),
         loading: () => Container(),
