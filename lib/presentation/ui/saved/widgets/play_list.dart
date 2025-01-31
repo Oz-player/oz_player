@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/raw_song_view_model.dart';
 
 class PlayList extends ConsumerStatefulWidget {
   const PlayList({
@@ -33,10 +32,10 @@ class _PlayListState extends ConsumerState<PlayList> {
                   // rawSongViewModel 상태 업데이트
                   return GestureDetector(
                     onTap: () {
-                      ref
-                          .read(rawSongViewModelProvider.notifier)
-                          .getRawSongs(data[index].songIds);
-                      context.go('/saved/playlist');
+                      context.go(
+                        '/saved/playlist',
+                        extra: data[index],
+                      );
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 12),

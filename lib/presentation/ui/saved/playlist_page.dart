@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
-class PlaylistPage extends StatelessWidget {
-  const PlaylistPage({super.key});
+class PlaylistPage extends ConsumerStatefulWidget {
+  final PlayListEntity playlist;
+
+  const PlaylistPage({super.key, required this.playlist});
 
   @override
+  ConsumerState<PlaylistPage> createState() => _PlaylistPageState();
+}
+
+class _PlaylistPageState extends ConsumerState<PlaylistPage> {
+  @override
   Widget build(BuildContext context) {
+    final songList = ref.watch(playlistSongsProvider(widget.playlist.songIds));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -22,6 +34,9 @@ class PlaylistPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // -------------------
+            // 플레이리스트 대표 이미지
+            // -------------------
             Container(
               width: double.infinity,
               height: 140,
@@ -35,7 +50,11 @@ class PlaylistPage extends StatelessWidget {
                     height: 120,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: AppColors.gray300,
+                      image: widget.playlist.imgUrl == null
+                          ? DecorationImage(
+                              image: AssetImage('assets/images/muoz.png'))
+                          : DecorationImage(
+                              image: NetworkImage(widget.playlist.imgUrl!)),
                     ),
                   ),
                   GestureDetector(
@@ -48,7 +67,7 @@ class PlaylistPage extends StatelessWidget {
                       color: Colors.transparent,
                       child: Icon(
                         Icons.more_vert,
-                        color: AppColors.gray300,
+                        color: AppColors.gray400,
                       ),
                     ),
                   ),
@@ -60,6 +79,7 @@ class PlaylistPage extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.only(bottom: 20),
+              width: double.infinity,
               decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
@@ -74,7 +94,7 @@ class PlaylistPage extends StatelessWidget {
                   // 플레이리스트 제목
                   // ---------------
                   Text(
-                    '제목이 비어있습니다 제목이 비어있습니다',
+                    widget.playlist.listName,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -88,7 +108,7 @@ class PlaylistPage extends StatelessWidget {
                   // 플레이리스트 설명
                   // ---------------
                   Text(
-                    '설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다 설명이 비어있습니다',
+                    widget.playlist.description,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 12,
@@ -128,7 +148,7 @@ class PlaylistPage extends StatelessWidget {
                 width: double.infinity,
                 height: 300,
                 child: ListView.separated(
-                  itemCount: 10,
+                  itemCount: songList.length,
                   separatorBuilder: (context, index) => Container(
                     width: double.infinity,
                     height: 1,
@@ -160,6 +180,10 @@ class PlaylistPage extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4),
                                       color: AppColors.gray600,
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            songList[index].imgUrl),
+                                      ),
                                     ),
                                   ),
                                   // -------
@@ -176,7 +200,7 @@ class PlaylistPage extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '노래 제목',
+                                            songList[index].title,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -184,7 +208,7 @@ class PlaylistPage extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            '가수 이름',
+                                            songList[index].artist,
                                             style: TextStyle(
                                               color: AppColors.gray600,
                                               fontWeight: FontWeight.w500,
