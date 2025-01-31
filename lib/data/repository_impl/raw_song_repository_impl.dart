@@ -16,6 +16,12 @@ class RawSongRepositoryImpl implements RawSongRepository {
   }
 
   @override
+  Future<List<RawSongEntity>> getRawSongs(List<String> songIds) async {
+    final list = await _source.getRawSongs(songIds);
+    return list.map((song) => song.toEntity()).toList();
+  }
+
+  @override
   Future<void> updateRawSongByLibrary(RawSongDto dto) async {
     await _source.updateRawSongByLibrary(dto);
   }
