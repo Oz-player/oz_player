@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/sample_page.dart';
+import 'package:oz_player/presentation/ui/settings_page/version_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -254,13 +255,15 @@ class ExitButtons extends ConsumerWidget {
 
 //==================================================================
 // 버전 위젯
-class VersionInfo extends StatelessWidget {
+class VersionInfo extends ConsumerWidget {
   const VersionInfo({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appVersion = ref.watch(versionViewModelProvider);
+
     return SizedBox(
       height: 64,
       width: double.infinity,
@@ -293,7 +296,7 @@ class VersionInfo extends StatelessWidget {
               color: Color(0xFFF2E6FF),
             ),
             child: Text(
-              '1.0.0+1',
+              appVersion,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
