@@ -4,7 +4,7 @@ import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/repository/saved/raw_song_repository.dart';
 
 class RawSongRepositoryImpl implements RawSongRepository {
-  RawSongSource _source;
+  final RawSongSource _source;
 
   RawSongRepositoryImpl(this._source);
 

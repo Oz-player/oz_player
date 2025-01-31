@@ -4,15 +4,17 @@ import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
 // Firebase에 기록된 Song 정보만 가져온 엔티티입니다
 
 class RawSongEntity {
+  int countLibrary;
+  int countPlaylist;
   VideoInfoEntitiy video;
-  String songId;
   String title;
   String imgUrl;
   String artist;
 
   RawSongEntity({
+    required this.countLibrary,
+    required this.countPlaylist,
     required this.video,
-    required this.songId,
     required this.title,
     required this.imgUrl,
     required this.artist,
