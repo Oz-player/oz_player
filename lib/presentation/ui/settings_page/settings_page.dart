@@ -145,7 +145,7 @@ class ExitButtons extends ConsumerWidget {
                                     padding: WidgetStateProperty.all<
                                             EdgeInsetsGeometry>(
                                         EdgeInsets.symmetric(
-                                            horizontal: 21, vertical: 10)),
+                                            horizontal: 47, vertical: 10)),
                                     backgroundColor: WidgetStatePropertyAll(
                                         Color(0xFFF2E6FF)),
                                     shape: WidgetStatePropertyAll(
@@ -156,7 +156,7 @@ class ExitButtons extends ConsumerWidget {
                                   context.pop();
                                 },
                                 child: Text(
-                                  '나중에 할게요',
+                                  '취소',
                                   style: TextStyle(
                                       fontSize: 14,
                                       color: Color(0xFF6B7684),
