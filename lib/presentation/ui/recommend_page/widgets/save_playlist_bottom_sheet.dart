@@ -196,7 +196,7 @@ class SavePlaylistBottomSheet {
                                         playlistDialog(title, description));
                               },
                               shape: CircleBorder(),
-                              backgroundColor: Color(0xff7303E3),
+                              backgroundColor: Colors.grey[800],
                               child: Icon(
                                 Icons.add,
                                 size: 28,

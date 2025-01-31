@@ -21,6 +21,10 @@ class SaveSongBottomSheetViewModel
     return SaveSongBottomSheetState(null, 0);
   }
 
+  void reflash(){
+    state = state.copyWith();
+  }
+
   /// 보관함에 저장할 곡을 세팅
   void setSaveSong(SongEntitiy song) {
     state.savedSong = song;

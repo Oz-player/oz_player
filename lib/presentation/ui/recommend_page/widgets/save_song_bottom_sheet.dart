@@ -64,9 +64,7 @@ class SaveSongBottomSheet {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ...List.generate(
-                                  1,
-                                  (index) {
+                              ...List.generate(1, (index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 12),
                                   child: Container(
@@ -110,7 +108,7 @@ class SaveSongBottomSheet {
                                         borderRadius:
                                             BorderRadius.circular(8))),
                                 backgroundColor:
-                                    WidgetStatePropertyAll(Color(0xff40017e)),
+                                    WidgetStatePropertyAll(Colors.grey[800]),
                               ),
                               onPressed: () {
                                 ref
@@ -186,6 +184,12 @@ class SaveSongBottomSheet {
                               height: 140,
                               child: TextField(
                                 controller: textController,
+                                onChanged: (value) {
+                                  ref
+                                      .read(saveSongBottomSheetViewModelProvider
+                                          .notifier)
+                                      .reflash();
+                                },
                                 style: TextStyle(
                                   color: Colors.grey[900],
                                 ),
@@ -238,7 +242,7 @@ class SaveSongBottomSheet {
                                 backgroundColor: WidgetStatePropertyAll(
                                     textController.text.isEmpty
                                         ? Colors.grey[300]
-                                        : Color(0xff40017e)),
+                                        : Colors.grey[800]),
                               ),
                               onPressed: () {
                                 if (textController.text.isEmpty) {
