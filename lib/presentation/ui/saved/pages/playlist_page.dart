@@ -84,11 +84,120 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                         ),
                       ),
                       // ----------------------------------------------------------
-                      // 메뉴 버튼
+                      // 플레이리스트 관리 메뉴 버튼
                       // ----------------------------------------------------------
                       GestureDetector(
                         onTap: () {
-                          print('menu');
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (context) => Container(
+                              height: 300,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          // -----------------------
+                                          // bottomsheet - 노래 이미지
+                                          // -----------------------
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child:
+                                                widget.playlist.imgUrl == null
+                                                    ? Image.asset(
+                                                        'assets/images/muoz.png',
+                                                        width: 48,
+                                                        height: 48,
+                                                        fit: BoxFit.scaleDown,
+                                                      )
+                                                    : Image.network(
+                                                        widget.playlist.imgUrl!,
+                                                        width: 48,
+                                                        height: 48,
+                                                        fit: BoxFit.scaleDown,
+                                                      ),
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          // ---------------------
+                                          // bottomsheet - 노래 제목
+                                          // ---------------------
+                                          Expanded(
+                                            child: Text(
+                                              widget.playlist.listName,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                          // ---------------------
+                                          // bottomsheet - 종료 버튼
+                                          // ---------------------
+                                          GestureDetector(
+                                            onTap: () => context.pop(),
+                                            child: Container(
+                                              padding: const EdgeInsets.all(10),
+                                              width: 48,
+                                              height: 48,
+                                              color: Colors.transparent,
+                                              child: Icon(Icons.close),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      // -------------------
+                                      // 음악 세부 메뉴
+                                      // -------------------
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      // 음악 재생
+                                      BottomSheetMenuButton(title: '셔플 재생'),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      // 음악을 다른 플레이리스트에 저장
+                                      BottomSheetMenuButton(
+                                        title: '플레이리스트 편집',
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      // 음악 삭제
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (context) =>
+                                                DeletePlayListAlertDialog(
+                                              listName:
+                                                  widget.playlist.listName,
+                                            ),
+                                          );
+                                        },
+                                        child: BottomSheetMenuButton(
+                                            title: '플레이리스트 삭제'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: 44,
@@ -292,9 +401,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       ],
                                     ),
                                   ),
-                                  // -------------
-                                  // 메뉴 버튼
-                                  // -------------
+                                  // ---------------
+                                  // 음악 세부 메뉴 버튼
+                                  // ---------------
                                   GestureDetector(
                                     onTap: () {
                                       showModalBottomSheet<void>(
@@ -368,9 +477,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                       )
                                                     ],
                                                   ),
-                                                  // -------------------
-                                                  // 음악 세부 메뉴
-                                                  // -------------------
+                                                  // -----------------------
+                                                  // 음악 세부 메뉴 bottomsheet
+                                                  // -----------------------
                                                   const SizedBox(
                                                     height: 24,
                                                   ),

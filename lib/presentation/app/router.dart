@@ -7,9 +7,10 @@ import 'package:oz_player/presentation/ui/ranking_page/ranking_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_two.dart';
-import 'package:oz_player/presentation/ui/saved/library_page.dart';
-import 'package:oz_player/presentation/ui/saved/playlist_page.dart';
-import 'package:oz_player/presentation/ui/saved/saved_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/library_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/saved_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/update_playlist_page.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
@@ -40,6 +41,13 @@ final router = GoRouter(
           builder: (context, state) => PlaylistPage(
             playlist: state.extra as PlayListEntity,
           ),
+          routes: [
+            GoRoute(
+              path: 'update',
+              builder: (context, state) =>
+                  UpdatePlaylistPage(playlist: state.extra as PlayListEntity),
+            ),
+          ],
         ),
         GoRoute(
           path: 'library',
