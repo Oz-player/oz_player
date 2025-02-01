@@ -166,8 +166,14 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                         height: 8,
                                       ),
                                       // 음악을 다른 플레이리스트에 저장
-                                      BottomSheetMenuButton(
-                                        title: '플레이리스트 편집',
+                                      GestureDetector(
+                                        onTap: () => context.go(
+                                          '/saved/playlist/update',
+                                          extra: widget.playlist,
+                                        ),
+                                        child: BottomSheetMenuButton(
+                                          title: '플레이리스트 편집',
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 8,
@@ -239,17 +245,20 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       // ---------------
                       // 플레이리스트 설명
                       // ---------------
-                      Text(
-                        widget.playlist.description,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: AppColors.gray600,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          widget.playlist.description,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: AppColors.gray600,
+                          ),
                         ),
                       ),
                       if (widget.playlist.songIds.isNotEmpty)
                         const SizedBox(
-                          height: 36,
+                          height: 18,
                         ),
                       // -----------------
                       // 플레이리스트 재생 버튼
