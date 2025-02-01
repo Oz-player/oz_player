@@ -105,28 +105,24 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                     children: [
                                       Row(
                                         children: [
-                                          // -----------------------
-                                          // bottomsheet - 노래 이미지
-                                          // -----------------------
+                                          // --------------------------------
+                                          // bottomsheet - 플레이리스트 대표 이미지
+                                          // --------------------------------
                                           Container(
+                                            width: 48,
+                                            height: 48,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(4),
+                                              image: widget.playlist.imgUrl ==
+                                                      null
+                                                  ? DecorationImage(
+                                                      image: AssetImage(
+                                                          'assets/images/muoz.png'))
+                                                  : DecorationImage(
+                                                      image: NetworkImage(widget
+                                                          .playlist.imgUrl!)),
                                             ),
-                                            child:
-                                                widget.playlist.imgUrl == null
-                                                    ? Image.asset(
-                                                        'assets/images/muoz.png',
-                                                        width: 48,
-                                                        height: 48,
-                                                        fit: BoxFit.scaleDown,
-                                                      )
-                                                    : Image.network(
-                                                        widget.playlist.imgUrl!,
-                                                        width: 48,
-                                                        height: 48,
-                                                        fit: BoxFit.scaleDown,
-                                                      ),
                                           ),
                                           const SizedBox(
                                             width: 16,
@@ -427,16 +423,20 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                       // bottomsheet - 노래 이미지
                                                       // -----------------------
                                                       Container(
+                                                        width: 48,
+                                                        height: 48,
                                                         decoration:
                                                             BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(4),
-                                                        ),
-                                                        child: Image.network(
-                                                          data[index].imgUrl,
-                                                          width: 48,
-                                                          height: 48,
+                                                          image:
+                                                              DecorationImage(
+                                                            image: NetworkImage(
+                                                              data[index]
+                                                                  .imgUrl,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                       const SizedBox(
@@ -475,9 +475,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                       )
                                                     ],
                                                   ),
-                                                  // -----------------------
+                                                  // -----------------------------------------
                                                   // 음악 세부 메뉴 bottomsheet
-                                                  // -----------------------
+                                                  // -----------------------------------------
                                                   const SizedBox(
                                                     height: 24,
                                                   ),
