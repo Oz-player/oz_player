@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
 class PlayList extends ConsumerStatefulWidget {
@@ -13,17 +14,19 @@ class PlayList extends ConsumerStatefulWidget {
 }
 
 class _PlayListState extends ConsumerState<PlayList> {
+  SortedType sortedType = SortedType.latest;
+
   @override
   Widget build(BuildContext context) {
     final playListAsync = ref.watch(playListViewModelProvider);
-
-    return SizedBox(
-      width: double.infinity,
-      height: 586,
+    // ---------------
+    // 플레이리스트
+    // ---------------
+    return Flexible(
       child: playListAsync.when(
           data: (data) {
             if (data.isEmpty) {
-              return Text('null');
+              return Image.asset('assets/images/playlist_empty.png');
             }
             return ListView.builder(
                 itemCount: data.length,

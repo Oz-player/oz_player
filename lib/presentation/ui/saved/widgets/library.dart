@@ -18,13 +18,11 @@ class _LibraryState extends ConsumerState<Library> {
   Widget build(BuildContext context) {
     final libraryAsync = ref.watch(libraryViewModelProvider);
 
-    return SizedBox(
-      width: double.infinity,
-      height: 586,
+    return Flexible(
       child: libraryAsync.when(
         data: (data) {
           if (data.isEmpty) {
-            return Container();
+            return Image.asset('assets/images/library_empty.png');
           }
           return GridView.count(
             crossAxisCount: 3,
