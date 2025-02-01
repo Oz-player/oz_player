@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
-  final PlayListEntity playlist;
+  PlayListEntity playlist;
 
-  const PlaylistPage({super.key, required this.playlist});
+  PlaylistPage({super.key, required this.playlist});
 
   @override
   ConsumerState<PlaylistPage> createState() => _PlaylistPageState();
@@ -16,8 +18,28 @@ class PlaylistPage extends ConsumerStatefulWidget {
 
 class _PlaylistPageState extends ConsumerState<PlaylistPage> {
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      await ref
+          .watch(playlistSongsProvider.notifier)
+          .loadSongs(widget.playlist.songIds);
+    });
+  }
+
+  void removeSongId(String songId) {
+    setState(() {
+      widget.playlist.songIds.remove(songId);
+    });
+    print('length: ${widget.playlist.songIds.length}');
+    ref
+        .watch(playlistSongsProvider.notifier)
+        .loadSongs(widget.playlist.songIds);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final songList = ref.watch(playlistSongsProvider(widget.playlist.songIds));
+    var songListAsync = ref.watch(playlistSongsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -154,107 +176,230 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                 // ---------------
                 SizedBox(
                   width: double.infinity,
-                  height: 216,
-                  child: ListView.separated(
-                    itemCount: songList.length,
-                    separatorBuilder: (context, index) => Container(
-                      width: double.infinity,
-                      height: 1,
-                      color: AppColors.border,
-                    ),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          print('song selected');
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 12),
+                  height: 300,
+                  child: songListAsync.when(
+                    data: (data) {
+                      return ListView.separated(
+                        itemCount: data.length,
+                        separatorBuilder: (context, index) => Container(
                           width: double.infinity,
-                          height: 72,
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // ---------
-                                    // 곡 이미지
-                                    // ---------
-                                    Container(
-                                      width: 48,
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: AppColors.gray600,
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              songList[index].imgUrl),
-                                        ),
-                                      ),
-                                    ),
-                                    // -------
-                                    // 곡 내용
-                                    // -------
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 18),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              songList[index].title,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            Text(
-                                              songList[index].artist,
-                                              style: TextStyle(
-                                                color: AppColors.gray600,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // -------------
-                              // 메뉴 버튼
-                              // -------------
-                              GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet<void>(
-                                    context: context,
-                                    builder: (context) => Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: 44,
-                                  height: 44,
-                                  color: Colors.transparent,
-                                  child: Icon(Icons.more_vert),
-                                ),
-                              )
-                            ],
-                          ),
+                          height: 1,
+                          color: AppColors.border,
                         ),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              print('song selected');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              width: double.infinity,
+                              height: 72,
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        // ---------
+                                        // 곡 이미지
+                                        // ---------
+                                        Container(
+                                          width: 48,
+                                          height: 48,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: AppColors.gray600,
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  data[index].imgUrl),
+                                            ),
+                                          ),
+                                        ),
+                                        // -------
+                                        // 곡 내용
+                                        // -------
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 18),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  data[index].title,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  data[index].artist,
+                                                  style: TextStyle(
+                                                    color: AppColors.gray600,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // -------------
+                                  // 메뉴 버튼
+                                  // -------------
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (context) => Container(
+                                          height: 300,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(20),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      // -----------------------
+                                                      // bottomsheet - 노래 이미지
+                                                      // -----------------------
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                        ),
+                                                        child: Image.network(
+                                                          data[index].imgUrl,
+                                                          width: 48,
+                                                          height: 48,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      // ---------------------
+                                                      // bottomsheet - 노래 제목
+                                                      // ---------------------
+                                                      Expanded(
+                                                        child: Text(
+                                                          data[index].title,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      // ---------------------
+                                                      // bottomsheet - 종료 버튼
+                                                      // ---------------------
+                                                      GestureDetector(
+                                                        onTap: () =>
+                                                            context.pop(),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10),
+                                                          width: 48,
+                                                          height: 48,
+                                                          color: Colors
+                                                              .transparent,
+                                                          child:
+                                                              Icon(Icons.close),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 24,
+                                                  ),
+                                                  BottomSheetMenuButton(
+                                                      title: '재생'),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  BottomSheetMenuButton(
+                                                    title: '플레이리스트에 저장',
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        barrierDismissible:
+                                                            false,
+                                                        builder: (context) =>
+                                                            DeleteAlertDialog(
+                                                          removeSongId: () =>
+                                                              removeSongId(
+                                                                  data[index]
+                                                                      .video
+                                                                      .id),
+                                                          listName: widget
+                                                              .playlist
+                                                              .listName,
+                                                          songId: data[index]
+                                                              .video
+                                                              .id,
+                                                        ),
+                                                      );
+                                                    },
+                                                    child:
+                                                        BottomSheetMenuButton(
+                                                            title: '음악 삭제'),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 44,
+                                      height: 44,
+                                      color: Colors.transparent,
+                                      child: Icon(Icons.more_vert),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       );
+                    },
+                    error: (error, stackTrace) {
+                      return Container();
+                    },
+                    loading: () {
+                      return Container();
                     },
                   ),
                 ),
@@ -264,6 +409,36 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
         ],
       ),
       bottomNavigationBar: HomeBottomNavigation(),
+    );
+  }
+}
+
+class BottomSheetMenuButton extends StatelessWidget {
+  final String title;
+
+  const BottomSheetMenuButton({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      width: double.infinity,
+      height: 44,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: AppColors.gray300,
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
     );
   }
 }

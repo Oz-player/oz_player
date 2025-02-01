@@ -44,8 +44,8 @@ class PlayListSourceImpl implements PlayListSource {
       if (doc.exists && doc.data() != null) {
         final data = doc.data() as Map<String, dynamic>;
 
-        if (data.containsKey('playlist') && data['playlist'] is List) {
-          final list = (data['playlist'] as List)
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          final list = (data['playlists'] as List)
               .map((e) => PlayListDTO.fromJson(e))
               .toList();
 
@@ -72,7 +72,7 @@ class PlayListSourceImpl implements PlayListSource {
         // 2. 유저의 플레이리스트 안에 동일한 제목이 존재하는지 확인
         if (data.containsKey('playlists') && data['playlists'] is List) {
           for (var item in data['playlists']) {
-            if (item['title'] == dto.listName) {
+            if (item['listName'] == dto.listName) {
               print('이미 존재하는 제목의 플레이리스트입니다.');
               return false;
             }
@@ -106,20 +106,20 @@ class PlayListSourceImpl implements PlayListSource {
       if (doc.exists && doc.data() != null) {
         final data = doc.data() as Map<String, dynamic>;
 
-        if (data.containsKey('playlist') && data['playlist'] is List) {
-          List<dynamic> playlist = data['playlist'];
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
 
           for (var item in playlist) {
-            if (item['title'] == listName) {
+            if (item['listName'] == listName) {
               await playlistRef.update({
-                'playlist': FieldValue.arrayRemove([item]),
+                'playlists': FieldValue.arrayRemove([item]),
               });
 
               item['songIds'] = (item['songIds'] as List?) ?? [];
               item['songIds'].add(songId);
 
               await playlistRef.update({
-                'playlist': FieldValue.arrayUnion([item])
+                'playlists': FieldValue.arrayUnion([item])
               });
               break;
             }
@@ -141,13 +141,13 @@ class PlayListSourceImpl implements PlayListSource {
       if (doc.exists && doc.data() != null) {
         final data = doc.data() as Map<String, dynamic>;
 
-        if (data.containsKey('playlist') && data['playlist'] is List) {
-          List<dynamic> playlist = data['playlist'];
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
 
           for (var item in playlist) {
-            if (item['title'] == listName) {
+            if (item['listName'] == listName) {
               await deleteRef.update({
-                'playlist': FieldValue.arrayRemove([item]),
+                'playlists': FieldValue.arrayRemove([item]),
               });
               break;
             }
@@ -169,21 +169,24 @@ class PlayListSourceImpl implements PlayListSource {
       if (doc.exists && doc.data() != null) {
         final data = doc.data() as Map<String, dynamic>;
 
-        if (data.containsKey('playlist') && data['playlist'] is List) {
-          List<dynamic> playlist = data['playlist'];
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
 
           for (var item in playlist) {
-            if (item['title'] == listName) {
+            if (item['listName'] == listName) {
+              print('$listName 리스트를 찾았습니다');
               await deleteRef.update({
-                'playlist': FieldValue.arrayRemove([item]),
+                'playlists': FieldValue.arrayRemove([item]),
               });
 
               item['songIds'] = (item['songIds'] as List?) ?? [];
               item['songIds'].remove(songId);
 
               await deleteRef.update({
-                'playlist': FieldValue.arrayUnion([item])
+                'playlists': FieldValue.arrayUnion([item])
               });
+              print('$songId 곡을 삭제했습니다');
+
               break;
             }
           }
