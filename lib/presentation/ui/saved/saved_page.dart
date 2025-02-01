@@ -5,14 +5,9 @@ import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.
 import 'package:oz_player/presentation/ui/saved/widgets/library.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_list.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/sorted_type_box.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
-
-// enum SortedType {
-//   final String string;
-//   latest(string: '최근 저장 순'), ascending(string: '가나다순');
-//   const SortedType({required this.string});
-//   }
 
 class SavedPage extends ConsumerStatefulWidget {
   const SavedPage({super.key});
@@ -31,11 +26,9 @@ class _SavedPageState extends ConsumerState<SavedPage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //ref.read(listSortViewModelProvider.notifier);
+  void setOverlayOn() {
+    setState(() {
+      isOverlayOn = !isOverlayOn;
     });
   }
 
@@ -114,53 +107,10 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                 // ---------------
                 // 정렬 기준 박스
                 // ---------------
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Container(
-                    height: 40,
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColors.main100,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          ref.watch(listSortViewModelProvider).stateString,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isOverlayOn = !isOverlayOn;
-                            });
-                          },
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                            ),
-                            child: Icon(
-                              !isOverlayOn
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up,
-                              color: AppColors.main600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                SortedTypeBox(
+                  ref: ref,
+                  isOverlayOn: isOverlayOn,
+                  setOverlayOn: setOverlayOn,
                 ),
                 // 내용
                 isLibrary ? Library() : PlayList(),
