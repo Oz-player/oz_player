@@ -395,7 +395,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                         barrierDismissible:
                                                             false,
                                                         builder: (context) =>
-                                                            DeleteAlertDialog(
+                                                            DeleteSongAlertDialog(
                                                           removeSongId: () =>
                                                               removeSongId(
                                                                   data[index]

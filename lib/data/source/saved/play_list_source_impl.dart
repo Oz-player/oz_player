@@ -146,9 +146,12 @@ class PlayListSourceImpl implements PlayListSource {
 
           for (var item in playlist) {
             if (item['listName'] == listName) {
+              print('$listName 을 찾았습니다');
               await deleteRef.update({
                 'playlists': FieldValue.arrayRemove([item]),
               });
+              print('$listName 을 삭제했습니다');
+
               break;
             }
           }
@@ -174,7 +177,6 @@ class PlayListSourceImpl implements PlayListSource {
 
           for (var item in playlist) {
             if (item['listName'] == listName) {
-              print('$listName 리스트를 찾았습니다');
               await deleteRef.update({
                 'playlists': FieldValue.arrayRemove([item]),
               });
@@ -185,7 +187,6 @@ class PlayListSourceImpl implements PlayListSource {
               await deleteRef.update({
                 'playlists': FieldValue.arrayUnion([item])
               });
-              print('$songId 곡을 삭제했습니다');
 
               break;
             }
