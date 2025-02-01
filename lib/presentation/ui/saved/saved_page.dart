@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/library.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_list.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
+
+enum SortedType { latest, ascending }
 
 class SavedPage extends ConsumerStatefulWidget {
   const SavedPage({super.key});
@@ -15,6 +18,7 @@ class SavedPage extends ConsumerStatefulWidget {
 
 class _SavedPageState extends ConsumerState<SavedPage> {
   bool isLibrary = true;
+  SortedType sortedType = SortedType.latest;
 
   void onButtonClicked() {
     setState(() {
@@ -42,6 +46,38 @@ class _SavedPageState extends ConsumerState<SavedPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: AppColors.gray300,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      Positioned(
+                        top: 35,
+                        left: 24,
+                        child: Text(
+                          '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹',
+                          style: TextStyle(
+                              color: AppColors.gray900,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Image.asset('assets/char/myu_2.png')),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
                 // 탭 이동 버튼
                 Row(
                   children: [
@@ -61,13 +97,18 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                   height: 16,
                 ),
                 // 정렬 기준
-                SizedBox(
-                  width: 340,
+                Container(
+                  width: 124,
                   height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.main100,
+                  ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        '정렬 기준',
+                        '최근 저장 순',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -78,21 +119,15 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                           print('tap');
                         },
                         child: Container(
-                          width: 40,
-                          height: 40,
-                          color: Colors.transparent,
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.grey[300],
-                            ),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.grey[500],
-                            ),
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: Colors.white,
+                          ),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: AppColors.main600,
                           ),
                         ),
                       ),

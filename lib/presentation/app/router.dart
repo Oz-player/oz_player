@@ -18,7 +18,7 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
-  initialLocation: '/settings/revoke',
+  initialLocation: '/login',
   navigatorKey: _rootNavigatorKey,
   routes: [
     GoRoute(

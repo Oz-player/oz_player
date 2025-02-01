@@ -23,7 +23,7 @@ class _PlayListState extends ConsumerState<PlayList> {
       child: playListAsync.when(
           data: (data) {
             if (data.isEmpty) {
-              return Text('null');
+              return Image.asset('assets/images/playlist_empty.png');
             }
             return ListView.builder(
                 itemCount: data.length,
