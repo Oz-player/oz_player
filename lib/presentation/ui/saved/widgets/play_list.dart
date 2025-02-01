@@ -22,7 +22,7 @@ class _PlayListState extends ConsumerState<PlayList> {
     // ---------------
     // 플레이리스트
     // ---------------
-    return Expanded(
+    return Flexible(
       child: playListAsync.when(
           data: (data) {
             if (data.isEmpty) {

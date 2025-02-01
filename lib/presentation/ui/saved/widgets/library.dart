@@ -18,7 +18,7 @@ class _LibraryState extends ConsumerState<Library> {
   Widget build(BuildContext context) {
     final libraryAsync = ref.watch(libraryViewModelProvider);
 
-    return Expanded(
+    return Flexible(
       child: libraryAsync.when(
         data: (data) {
           if (data.isEmpty) {
