@@ -144,28 +144,30 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                           color: AppColors.gray600,
                         ),
                       ),
-                      const SizedBox(
-                        height: 36,
-                      ),
+                      if (widget.playlist.songIds.isNotEmpty)
+                        const SizedBox(
+                          height: 36,
+                        ),
                       // -----------------
                       // 플레이리스트 재생 버튼
                       // -----------------
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 72,
-                          height: 72,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.main100,
-                          ),
-                          child: Icon(
-                            Icons.play_arrow,
-                            size: 44,
-                            color: AppColors.main600,
+                      if (widget.playlist.songIds.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 72,
+                            height: 72,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.main100,
+                            ),
+                            child: Icon(
+                              Icons.play_arrow,
+                              size: 44,
+                              color: AppColors.main600,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -180,6 +182,37 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                   height: 300,
                   child: songListAsync.when(
                     data: (data) {
+                      // 플레이리스트가 비었을 경우 검색 페이지로 redirecting 버튼
+                      if (data.isEmpty) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Image.asset(
+                                  'assets/images/no_songs_in_playlist.png'),
+                            ),
+                            GestureDetector(
+                              onTap: () => context.go('/search'),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 160,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppColors.gray800,
+                                ),
+                                child: Text(
+                                  '음악 추가하기',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
                       return ListView.separated(
                         itemCount: data.length,
                         separatorBuilder: (context, index) => Container(
