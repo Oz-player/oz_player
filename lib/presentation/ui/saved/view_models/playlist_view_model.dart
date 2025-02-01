@@ -15,6 +15,16 @@ class PlaylistViewModel extends AsyncNotifier<List<PlayListEntity>> {
         await ref.read(playListsUsecaseProvider).getPlayLists());
   }
 
+  Future<void> getPlayListsLatest() async {
+    state = AsyncData(
+        await ref.read(playListsUsecaseProvider).getPlayListsLatest());
+  }
+
+  Future<void> getPlayListsAscending() async {
+    state = AsyncData(
+        await ref.read(playListsUsecaseProvider).getPlayListsAscending());
+  }
+
   Future<PlayListEntity?> getPlayList(String listName) async {
     return await ref.read(playListsUsecaseProvider).getPlayList(listName);
   }

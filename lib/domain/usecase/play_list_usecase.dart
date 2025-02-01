@@ -14,6 +14,22 @@ class PlayListUsecase {
     return await _repository.getPlayLists(userId);
   }
 
+  Future<List<PlayListEntity>> getPlayListsAscending() async {
+    final list = await _repository.getPlayLists(userId);
+    list.sort((a, b) {
+      return a.listName.toLowerCase().compareTo(b.listName.toLowerCase());
+    });
+    return list;
+  }
+
+  Future<List<PlayListEntity>> getPlayListsLatest() async {
+    final list = await _repository.getPlayLists(userId);
+    list.sort((a, b) {
+      return b.createdAt.compareTo(a.createdAt);
+    });
+    return list;
+  }
+
   Future<PlayListEntity?> getPlayList(String listName) async {
     return await _repository.getPlayList(userId, listName);
   }

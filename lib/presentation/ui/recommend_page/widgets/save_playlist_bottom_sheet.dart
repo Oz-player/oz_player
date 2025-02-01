@@ -386,7 +386,7 @@ Widget playlistDialog(
                           if (ref.watch(loadingViewModelProvider).isLoading) {
                             return;
                           }
-                          
+
                           context.pop();
                           title.clear();
                           description.clear();
@@ -423,6 +423,7 @@ Widget playlistDialog(
                                     listName: title.text,
                                     imgUrl: null,
                                     description: description.text,
+                                    createdAt: DateTime.now(),
                                     songIds: []),
                               );
 

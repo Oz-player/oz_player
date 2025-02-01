@@ -19,50 +19,46 @@ class _LibraryState extends ConsumerState<Library> {
     final libraryAsync = ref.watch(libraryViewModelProvider);
 
     return Expanded(
-      child: SizedBox(
-        width: double.infinity,
-        height: 500,
-        child: libraryAsync.when(
-          data: (data) {
-            if (data.isEmpty) {
-              return Image.asset('assets/images/library_empty.png');
-            }
-            return GridView.count(
-              crossAxisCount: 3,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 0.7,
-              children: data.map((e) {
-                return GestureDetector(
-                  onTap: () {
-                    context.go('/saved/library');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          color: AppColors.gray400,
-                        ),
-                        Spacer(),
-                        Text(
-                            '${e.createdAt.year}/${e.createdAt.month}/${e.createdAt.day}')
-                      ],
-                    ),
+      child: libraryAsync.when(
+        data: (data) {
+          if (data.isEmpty) {
+            return Image.asset('assets/images/library_empty.png');
+          }
+          return GridView.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 0.7,
+            children: data.map((e) {
+              return GestureDetector(
+                onTap: () {
+                  context.go('/saved/library');
+                },
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.border),
                   ),
-                );
-              }).toList(),
-            );
-          },
-          error: (error, stackTrace) => Container(),
-          loading: () => Container(),
-        ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        color: AppColors.gray400,
+                      ),
+                      Spacer(),
+                      Text(
+                          '${e.createdAt.year}/${e.createdAt.month}/${e.createdAt.day}')
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        },
+        error: (error, stackTrace) => Container(),
+        loading: () => Container(),
       ),
     );
   }
