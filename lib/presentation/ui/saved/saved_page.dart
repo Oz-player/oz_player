@@ -198,20 +198,28 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                   : null,
             ),
           ),
-          // ----------------------------------------------------------
-          // 플레이리스트 새로 만들기 버튼
-          // ----------------------------------------------------------
-          if (!isLibrary)
-            CreatePlaylistButton(title: title, description: description),
-          // ----------------------------------------------------------
-          // 오디오 박스
-          // ----------------------------------------------------------
           Positioned(
             left: 0,
             right: 0,
             bottom: 24,
-            child: AudioPlayer(
-              colorMode: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // ----------------------------------------------------------
+                // 플레이리스트 새로 만들기 버튼
+                // ----------------------------------------------------------
+                if (!isLibrary)
+                  CreatePlaylistButton(title: title, description: description),
+                const SizedBox(
+                  height: 12,
+                ),
+                // ----------------------------------------------------------
+                // 오디오 박스
+                // ----------------------------------------------------------
+                AudioPlayer(
+                  colorMode: true,
+                ),
+              ],
             ),
           ),
         ],
