@@ -3,18 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
 class DeleteAlertDialog extends ConsumerWidget {
-  DeleteAlertDialog({
+  const DeleteAlertDialog({
     super.key,
     required this.listName,
     required this.songId,
     required this.removeSongId,
   });
 
-  void Function() removeSongId;
+  final void Function() removeSongId;
   final String listName;
   final String songId;
 
@@ -83,7 +82,6 @@ class DeleteAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
-
                           context.pop();
                           context.pop();
                         },

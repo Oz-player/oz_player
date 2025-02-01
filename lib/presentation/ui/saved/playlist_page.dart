@@ -8,9 +8,9 @@ import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
-  PlayListEntity playlist;
+  final PlayListEntity playlist;
 
-  PlaylistPage({super.key, required this.playlist});
+  const PlaylistPage({super.key, required this.playlist});
 
   @override
   ConsumerState<PlaylistPage> createState() => _PlaylistPageState();
@@ -27,6 +27,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
     });
   }
 
+  // 곡을 삭제할 때 songId를 삭제한 뒤 플레이리스트 화면 reload 하는 함수
   void removeSongId(String songId) {
     setState(() {
       widget.playlist.songIds.remove(songId);
@@ -334,20 +335,26 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                       )
                                                     ],
                                                   ),
+                                                  // -------------------
+                                                  // 음악 세부 메뉴
+                                                  // -------------------
                                                   const SizedBox(
                                                     height: 24,
                                                   ),
+                                                  // 음악 재생
                                                   BottomSheetMenuButton(
                                                       title: '재생'),
                                                   const SizedBox(
                                                     height: 8,
                                                   ),
+                                                  // 음악을 다른 플레이리스트에 저장
                                                   BottomSheetMenuButton(
                                                     title: '플레이리스트에 저장',
                                                   ),
                                                   const SizedBox(
                                                     height: 8,
                                                   ),
+                                                  // 음악 삭제
                                                   GestureDetector(
                                                     onTap: () {
                                                       showDialog(
