@@ -203,10 +203,8 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                           width: 44,
                           height: 44,
                           color: Colors.transparent,
-                          child: Icon(
-                            Icons.more_vert,
-                            color: AppColors.gray400,
-                          ),
+                          child:
+                              Image.asset('assets/images/menu_bold_icon.png'),
                         ),
                       ),
                     ],
@@ -534,7 +532,8 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       width: 44,
                                       height: 44,
                                       color: Colors.transparent,
-                                      child: Icon(Icons.more_vert),
+                                      child: Image.asset(
+                                          'assets/images/menu_thin_icon.png'),
                                     ),
                                   )
                                 ],

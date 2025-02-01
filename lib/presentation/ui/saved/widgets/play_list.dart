@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oz_player/presentation/ui/saved/playlist_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
@@ -221,7 +221,8 @@ class _PlayListState extends ConsumerState<PlayList> {
                             width: 44,
                             height: 44,
                             color: Colors.transparent,
-                            child: Icon(Icons.more_vert),
+                            child:
+                                Image.asset('assets/images/menu_thin_icon.png'),
                           ),
                         )
                       ],
