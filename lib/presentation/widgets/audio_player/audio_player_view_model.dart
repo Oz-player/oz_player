@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
   StreamSubscription? playerStateSubscription;
   bool isPlaying;
   int index;
-  SongEntitiy? currentSong;
+  SongEntity? currentSong;
   bool isbuffering;
 
   AudioPlayerState(this.audioPlayer, this.playerStateSubscription,
@@ -20,7 +20,7 @@ class AudioPlayerState {
           StreamSubscription? playerStateSubscription,
           bool? isPlaying,
           int? index,
-          SongEntitiy? currentSong,
+          SongEntity? currentSong,
           bool? isbuffering}) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
@@ -38,7 +38,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   }
 
   /// 오디오 플레이어에 현재 곡 정보 저장
-  void setCurrentSong(SongEntitiy song) {
+  void setCurrentSong(SongEntity song) {
     state.currentSong = song;
   }
 
