@@ -10,6 +10,7 @@ import 'package:oz_player/presentation/ui/saved/library_page.dart';
 import 'package:oz_player/presentation/ui/saved/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/saved_page.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
+import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
 import 'package:oz_player/presentation/ui/splash/splash.dart';
@@ -17,7 +18,7 @@ import 'package:oz_player/presentation/ui/splash/splash.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
-  initialLocation: '/settings/revoke',
+  initialLocation: '/',
   navigatorKey: _rootNavigatorKey,
   routes: [
     GoRoute(
@@ -27,6 +28,12 @@ final router = GoRouter(
         GoRoute(
           path: 'login',
           builder: (context, state) => LoginPage(),
+          routes: [
+            GoRoute(
+              path: 'private',
+              builder: (context, state) => PrivateInfoPage(),
+            ),
+          ],
         ),
       ],
     ),
