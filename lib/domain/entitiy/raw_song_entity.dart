@@ -1,4 +1,3 @@
-import 'package:oz_player/domain/entitiy/song_entitiy.dart';
 import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
 
 // SongEntity와 달리 분위기, 상황 태그 등을 제외하고

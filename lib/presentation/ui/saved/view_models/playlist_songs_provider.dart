@@ -1,20 +1,21 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
-import 'package:oz_player/domain/usecase/raw_song_usecase.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 
-class PlaylistSongsNotifier extends StateNotifier<List<RawSongEntity>> {
-  PlaylistSongsNotifier(this.rawSongUsecase) : super([]);
-
-  final RawSongUsecase rawSongUsecase;
+class PlaylistSongsNotifier extends AsyncNotifier<List<RawSongEntity>> {
+  @override
+  FutureOr<List<RawSongEntity>> build() {
+    return [];
+  }
 
   Future<void> loadSongs(List<String> songIds) async {
-    state = await rawSongUsecase.getRawSongs(songIds);
+    state = AsyncValue.data(
+        await ref.watch(rawSongUsecaseProvider).getRawSongs(songIds));
   }
 }
 
-final playlistSongsProvider = StateNotifierProvider.family<
-    PlaylistSongsNotifier, List<RawSongEntity>, List<String>>(
-  (ref, songIds) => PlaylistSongsNotifier(ref.watch(rawSongUsecaseProvider))
-    ..loadSongs(songIds),
+final playlistSongsProvider =
+    AsyncNotifierProvider<PlaylistSongsNotifier, List<RawSongEntity>>(
+  () => PlaylistSongsNotifier(),
 );
