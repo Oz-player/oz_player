@@ -76,7 +76,6 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
                           context.pop();
-                          context.pop();
                         },
                         child: Text(
                           '확인',
