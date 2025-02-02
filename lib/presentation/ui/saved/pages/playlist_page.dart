@@ -5,7 +5,7 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
-import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
@@ -54,7 +54,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
         ),
       ),
       body: Stack(
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -168,10 +168,13 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       ),
                                       // 음악을 다른 플레이리스트에 저장
                                       GestureDetector(
-                                        onTap: () => context.go(
-                                          '/saved/playlist/update',
-                                          extra: widget.playlist,
-                                        ),
+                                        onTap: () {
+                                          context.pop();
+                                          context.go(
+                                            '/saved/playlist/edit',
+                                            extra: widget.playlist,
+                                          );
+                                        },
                                         child: BottomSheetMenuButton(
                                           title: '플레이리스트 편집',
                                         ),
@@ -526,6 +529,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                   // 음악 삭제
                                                   GestureDetector(
                                                     onTap: () {
+                                                      context.pop();
                                                       showDialog(
                                                         context: context,
                                                         barrierDismissible:
@@ -581,6 +585,14 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 24,
+            child: AudioPlayer(
+              colorMode: true,
             ),
           ),
         ],
