@@ -1,5 +1,7 @@
 import 'package:oz_player/data/dto/play_list_dto.dart';
+import 'package:oz_player/data/dto/raw_song_dto.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/repository/saved/play_list_repository.dart';
 
 class PlayListUsecase {
@@ -18,12 +20,12 @@ class PlayListUsecase {
     return await _repository.getPlayList(userId, listName);
   }
 
-  Future<bool> addPlayList(PlayListDTO playListDTO) async {
-    return await _repository.addPlayList(userId, playListDTO);
+  Future<bool> addPlayList(PlayListDTO dto) async {
+    return await _repository.addPlayList(userId, dto);
   }
 
-  Future<void> addSong(String listName, String songId) async {
-    await _repository.addSong(userId, listName, songId);
+  Future<void> addSong(String listName, RawSongEntity entity) async {
+    await _repository.addSong(userId, listName, RawSongDto.fromEntity(entity));
   }
 
   Future<void> deletePlayList(String listName) async {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
+import 'package:oz_player/data/dto/raw_song_dto.dart';
 import 'package:oz_player/data/source/saved/play_list_source.dart';
 
 class PlayListSourceImpl implements PlayListSource {
@@ -98,7 +99,7 @@ class PlayListSourceImpl implements PlayListSource {
 
   // 이미 존재하는 플레이리스트 필드의 songIds 배열에 추가
   @override
-  Future<void> addSong(String userId, String listName, String songId) async {
+  Future<void> addSong(String userId, String listName, RawSongDto dto) async {
     try {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
       final playlistRef = _firestore.collection('Playlist').doc(userId);
@@ -116,7 +117,10 @@ class PlayListSourceImpl implements PlayListSource {
               });
 
               item['songIds'] = (item['songIds'] as List?) ?? [];
-              item['songIds'].add(songId);
+              item['songIds'].add(dto.video.id);
+              if (item['imgUrl'] == null) {
+                item['imgUrl'] = dto.imgUrl;
+              }
 
               await playlistRef.update({
                 'playlists': FieldValue.arrayUnion([item])

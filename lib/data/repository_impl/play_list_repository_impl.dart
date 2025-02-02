@@ -1,4 +1,5 @@
 import 'package:oz_player/data/dto/play_list_dto.dart';
+import 'package:oz_player/data/dto/raw_song_dto.dart';
 import 'package:oz_player/data/source/saved/play_list_source.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/repository/saved/play_list_repository.dart';
@@ -14,8 +15,8 @@ class PlayListRepositoryImpl implements PlayListRepository {
   }
 
   @override
-  Future<void> addSong(String userId, String listName, String songId) async {
-    await _source.addSong(userId, listName, songId);
+  Future<void> addSong(String userId, String listName, RawSongDto dto) async {
+    await _source.addSong(userId, listName, dto);
   }
 
   @override
