@@ -7,7 +7,8 @@ import 'package:oz_player/domain/entitiy/library_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
-import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/card_widget_library.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class LibraryPage extends ConsumerStatefulWidget {
@@ -21,7 +22,6 @@ class LibraryPage extends ConsumerStatefulWidget {
 }
 
 class _LibraryPageState extends ConsumerState<LibraryPage> {
-  // TODO positionIndex 설정
   int positionIndex = 0;
 
   @override
@@ -105,22 +105,22 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                       itemBuilder: (BuildContext context, int index) {
                         final length = widget.library.length;
                         if (length == 0) {
-                          return CardWidget(
-                            isEmpty: true,
+                          return CardWidgetLibrary(
                             isError: true,
                           );
                         }
                         if (length == index) {
-                          return CardWidget(isEmpty: true);
+                          return CardWidgetLibrary(
+                            isError: true,
+                          );
                         }
                         final currentSong = widget.library[index];
-                        final title = currentSong.title;
-                        final artist = currentSong.artist;
-                        final imgUrl = currentSong.imgUrl;
-                        return CardWidget(
-                          title: title,
-                          artist: artist,
-                          imgUrl: imgUrl,
+                        return CardWidgetLibrary(
+                          title: currentSong.title,
+                          artist: currentSong.artist,
+                          imgUrl: currentSong.imgUrl,
+                          memo: currentSong.memo,
+                          mood: currentSong.mood,
                         );
                       },
                       itemCount: widget.library.length,
@@ -141,6 +141,14 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     height: 32,
                   ),
                 ],
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 24,
+                child: AudioPlayer(
+                  colorMode: true,
+                ),
               ),
             ],
           ),
