@@ -45,9 +45,9 @@ final router = GoRouter(
           ),
           routes: [
             GoRoute(
-              path: 'update',
+              path: 'edit',
               builder: (context, state) =>
-                  UpdatePlaylistPage(playlist: state.extra as PlayListEntity),
+                  EditPlaylistPage(playlist: state.extra as PlayListEntity),
             ),
           ],
         ),

@@ -6,16 +6,16 @@ import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
-class UpdatePlaylistPage extends ConsumerStatefulWidget {
+class EditPlaylistPage extends ConsumerStatefulWidget {
   final PlayListEntity playlist;
 
-  const UpdatePlaylistPage({super.key, required this.playlist});
+  const EditPlaylistPage({super.key, required this.playlist});
 
   @override
-  ConsumerState<UpdatePlaylistPage> createState() => _UpdatePlaylistPageState();
+  ConsumerState<EditPlaylistPage> createState() => _EditPlaylistPageState();
 }
 
-class _UpdatePlaylistPageState extends ConsumerState<UpdatePlaylistPage> {
+class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   final listNameController = TextEditingController();
   final descriptionController = TextEditingController();
 
