@@ -134,9 +134,10 @@ class _SavedPageState extends ConsumerState<SavedPage> {
           // 정렬 방법 선택용 드롭다운
           // ----------------------------------------------------------
           Positioned(
-            top: 226,
+            top: 250,
             left: 20,
             child: SizedBox(
+              width: 110,
               child: isOverlayOn
                   ? Container(
                       padding: EdgeInsets.all(8),
@@ -160,6 +161,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                               isOverlayOn = false;
                             },
                             child: Container(
+                                width: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 color: ref.watch(listSortViewModelProvider) ==
@@ -170,6 +172,12 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                                   '최근 저장 순',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color:
+                                        ref.watch(listSortViewModelProvider) ==
+                                                SortedType.latest
+                                            ? AppColors.main600
+                                            : AppColors.gray600,
                                   ),
                                 )),
                           ),
@@ -179,6 +187,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                               isOverlayOn = false;
                             },
                             child: Container(
+                                width: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 color: ref.watch(listSortViewModelProvider) ==
@@ -189,6 +198,12 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                                   '가나다순',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color:
+                                        ref.watch(listSortViewModelProvider) ==
+                                                SortedType.ascending
+                                            ? AppColors.main600
+                                            : AppColors.gray600,
                                   ),
                                 )),
                           ),

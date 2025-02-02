@@ -61,6 +61,9 @@ class SaveSongBottomSheetViewModel
     if (state.savedSong == null) return;
     final libraryEntity = LibraryEntity(
       createdAt: DateTime.now(),
+      artist: state.savedSong!.artist,
+      imgUrl: state.savedSong!.imgUrl,
+      title: state.savedSong!.title,
       favoriteArtist: state.savedSong!.favoriteArtist,
       genre: state.savedSong!.genre,
       memo: state.savedSong!.memo,

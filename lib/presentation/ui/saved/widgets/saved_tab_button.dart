@@ -27,7 +27,7 @@ class SavedTabButton extends StatelessWidget {
               : null,
           backgroundColor: isLibrary ? AppColors.main800 : Colors.white,
         ),
-        onPressed: onClicked,
+        onPressed: !isLibrary ? onClicked : () {},
         child: Text(
           title,
           style: TextStyle(
