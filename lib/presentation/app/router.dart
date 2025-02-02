@@ -12,7 +12,7 @@ import 'package:oz_player/presentation/ui/recommend_page/recommend_page_conditio
 import 'package:oz_player/presentation/ui/saved/pages/library_page.dart';
 import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/pages/saved_page.dart';
-import 'package:oz_player/presentation/ui/saved/pages/update_playlist_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/edit_playlist_page.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
