@@ -7,4 +7,7 @@ abstract interface class PlayListSource {
   Future<void> addSong(String userId, String listName, String songId);
   Future<void> deletePlayList(String userId, String listName);
   Future<void> deleteSong(String userId, String listName, String songId);
+  Future<void> editListName(String userId, String listName, String newName);
+  Future<void> editDescription(
+      String userId, String listName, String newDescription);
 }

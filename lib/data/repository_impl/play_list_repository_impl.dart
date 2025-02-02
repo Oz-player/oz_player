@@ -40,4 +40,16 @@ class PlayListRepositoryImpl implements PlayListRepository {
     final dtos = await _source.getPlayLists(userId);
     return dtos.map((e) => e.toEntity()).toList();
   }
+
+  @override
+  Future<void> editListName(
+      String userId, String listName, String newName) async {
+    await _source.editListName(userId, listName, newName);
+  }
+
+  @override
+  Future<void> editDescription(
+      String userId, String listName, String newDescription) async {
+    await _source.editDescription(userId, listName, newDescription);
+  }
 }

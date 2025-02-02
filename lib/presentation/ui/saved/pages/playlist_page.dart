@@ -167,10 +167,13 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       ),
                                       // 음악을 다른 플레이리스트에 저장
                                       GestureDetector(
-                                        onTap: () => context.go(
-                                          '/saved/playlist/edit',
-                                          extra: widget.playlist,
-                                        ),
+                                        onTap: () {
+                                          context.pop();
+                                          context.go(
+                                            '/saved/playlist/edit',
+                                            extra: widget.playlist,
+                                          );
+                                        },
                                         child: BottomSheetMenuButton(
                                           title: '플레이리스트 편집',
                                         ),

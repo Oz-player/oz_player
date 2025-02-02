@@ -33,4 +33,12 @@ class PlayListUsecase {
   Future<void> deleteSong(String listName, String songId) async {
     await _repository.deleteSong(userId, listName, songId);
   }
+
+  Future<void> editListName(String listName, String newName) async {
+    await _repository.editListName(userId, listName, newName);
+  }
+
+  Future<void> editDescription(String listName, String newDescription) async {
+    await _repository.editListName(userId, listName, newDescription);
+  }
 }

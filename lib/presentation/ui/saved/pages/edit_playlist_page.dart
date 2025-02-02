@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
@@ -42,7 +43,6 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
     setState(() {
       widget.playlist.songIds.remove(songId);
     });
-    print('length: ${widget.playlist.songIds.length}');
     ref
         .watch(playlistSongsProvider.notifier)
         .loadSongs(widget.playlist.songIds);
@@ -55,6 +55,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
     descriptionController.text = widget.playlist.description;
     FocusNode titleFocus = FocusNode();
     FocusNode descriptionFocus = FocusNode();
+
+    final String currentName = widget.playlist.listName;
+    final String currentDescription = widget.playlist.description;
+    bool isEdited = false;
 
     return GestureDetector(
       onTap: () {
@@ -70,7 +74,21 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
             // --------------------
             child: GestureDetector(
               onTap: () {
-                // TODO : 플레이리스트 업데이트하는 로직
+                if (listNameController.text != currentName) {
+                  ref
+                      .watch(playListsUsecaseProvider)
+                      .editListName(currentName, listNameController.text);
+                  isEdited = true;
+                }
+                if (descriptionController.text != currentDescription) {
+                  ref.watch(playListsUsecaseProvider).editDescription(
+                      currentDescription, descriptionController.text);
+                  isEdited = true;
+                }
+                // 수정한 요소가 있다면 플레이리스트 리로드
+                if (isEdited) {
+                  ref.read(playListsUsecaseProvider).getPlayLists();
+                }
                 context.pop();
               },
               child: Container(
@@ -342,7 +360,6 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                               setState(() {
                                 dragHandleIndex = index;
                               });
-                              print('start: $dragHandleIndex');
                             },
                             onReorderEnd: (index) => setState(() {
                               dragHandleIndex = null;

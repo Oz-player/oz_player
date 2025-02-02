@@ -197,4 +197,76 @@ class PlayListSourceImpl implements PlayListSource {
       print('error: $e, stackTrace: $stackTrace');
     }
   }
+
+  // 플레이리스트 제목 수정
+  @override
+  Future<void> editListName(
+      String userId, String listName, String newName) async {
+    try {
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      final editRef = _firestore.collection('Playlist').doc(userId);
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
+
+          for (var item in playlist) {
+            if (item['listName'] == listName) {
+              await editRef.update({
+                'playlists': FieldValue.arrayRemove([item]),
+              });
+
+              item['listName'] = newName;
+
+              await editRef.update({
+                'playlists': FieldValue.arrayUnion([item])
+              });
+              print('$newName으로 업데이트에 성공했습니다');
+              break;
+            }
+          }
+        }
+      }
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
+    }
+  }
+
+  // 플레이리스트 설명 수정
+  @override
+  Future<void> editDescription(
+      String userId, String listName, String newDescription) async {
+    try {
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      final editRef = _firestore.collection('Playlist').doc(userId);
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
+
+          for (var item in playlist) {
+            if (item['listName'] == listName) {
+              await editRef.update({
+                'playlists': FieldValue.arrayRemove([item]),
+              });
+
+              item['description'] = newDescription;
+
+              await editRef.update({
+                'playlists': FieldValue.arrayUnion([item])
+              });
+              print('$newDescription 으로 업데이트에 성공했습니다');
+              break;
+            }
+          }
+        }
+      }
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
+    }
+  }
 }
