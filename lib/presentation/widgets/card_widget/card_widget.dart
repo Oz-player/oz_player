@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class CardWidget extends ConsumerWidget {
   const CardWidget(
@@ -24,11 +27,11 @@ class CardWidget extends ConsumerWidget {
     return Stack(
       children: [
         Container(
-          width: 205,
-          height: 300,
+          width: 220,
+          height: 320,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.white,
+              borderRadius: BorderRadius.circular(21.36),
+              color: AppColors.main200,
               boxShadow: isShade == true
                   ? [
                       BoxShadow(
@@ -38,78 +41,103 @@ class CardWidget extends ConsumerWidget {
                       ),
                     ]
                   : null),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color(0xffBF81FE)),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 12, left: 12, right: 12, bottom: 28),
-                child: isEmpty == true
-                    ? Center(
-                        child: isError == true
-                            ? Text(
-                                'AI가 음악 카드 추천에\n실패했습니다.\n\n잠시후 다시 시도해주시거나\n태그 조합을 바꾸어서\n시도해주세요.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            : Column(
-                                children: [
-                                  Spacer(
-                                    flex: 3,
-                                  ),
-                                  Text(
-                                    '새로운\n 추천 음악 카드',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(
-                                    height: 12,
-                                  ),
-                                  Image.asset('assets/images/new_card.png'),
-                                  Spacer(
-                                    flex: 1,
-                                  ),
-                                ],
-                              ))
-                    : Column(
+          child: isEmpty == true
+              ? Center(
+                  child: isError == true
+                      ? Text(
+                          'AI가 음악 카드 추천에\n실패했습니다.\n\n잠시후 다시 시도해주시거나\n태그 조합을 바꾸어서\n시도해주세요.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                        )
+                      : Column(
+                          children: [
+                            Spacer(
+                              flex: 3,
+                            ),
+                            Text(
+                              '새로운\n 추천 음악 카드',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Image.asset('assets/images/new_card.png'),
+                            Spacer(
+                              flex: 1,
+                            ),
+                          ],
+                        ))
+              : Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(21.36),
+                          image: DecorationImage(
+                            image: NetworkImage(imgUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(21.36),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(21.36),
+                                color: Colors.black.withValues(alpha: 0.32),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 24,
+                        left: 18,
+                        right: 18,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 160,
-                            height: 160,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[600],
-                                borderRadius: BorderRadius.circular(12)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                imgUrl,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  } else {
-                                    return Center(
-                                      child: CircularProgressIndicator(),
+                          // 카드 이미지
+                          Center(
+                            child: Container(
+                              width: 180,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  imgUrl,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    } else {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/muoz.png',
+                                      fit: BoxFit.contain,
                                     );
-                                  }
-                                },
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/muoz.png',
-                                    fit: BoxFit.contain,
-                                  );
-                                },
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -123,12 +151,12 @@ class CardWidget extends ConsumerWidget {
                             minFontSize: 12,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 21.36,
+                                fontWeight: FontWeight.w700,
                                 color: Colors.white),
                           ),
-                          SizedBox(
-                            height: 8,
+                          Spacer(
+                            flex: 1,
                           ),
                           AutoSizeText(
                             artist ?? '-',
@@ -136,16 +164,16 @@ class CardWidget extends ConsumerWidget {
                             maxLines: 1,
                             minFontSize: 8,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 17, color: Colors.white),
                           ),
                           Spacer(
-                            flex: 1,
+                            flex: 4,
                           ),
                         ],
                       ),
-              ),
-            ),
-          ),
+                    ),
+                  ],
+                ),
         ),
         isEmpty == true
             ? Positioned(
