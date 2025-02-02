@@ -509,6 +509,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                   // 음악 삭제
                                                   GestureDetector(
                                                     onTap: () {
+                                                      context.pop();
                                                       showDialog(
                                                         context: context,
                                                         barrierDismissible:

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class EditPlaylistPage extends ConsumerStatefulWidget {
@@ -124,118 +126,127 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
         ),
         body: Stack(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // -------------------
-                  // 플레이리스트 대표 이미지
-                  // -------------------
-                  Container(
-                    width: double.infinity,
-                    height: 140,
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: widget.playlist.imgUrl == null
-                                ? DecorationImage(
-                                    image: AssetImage('assets/images/muoz.png'))
-                                : DecorationImage(
-                                    image:
-                                        NetworkImage(widget.playlist.imgUrl!)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 20),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                        color: AppColors.main300,
-                        width: 1,
-                      )),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // ---------------
-                        // 플레이리스트 제목
-                        // ---------------
-                        TextField(
-                          controller: listNameController,
-                          focusNode: titleFocus,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 24,
-                          ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            hintText: widget.playlist.listName,
-                            hintStyle: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        // ---------------
-                        // 플레이리스트 설명
-                        // ---------------
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: TextField(
-                            controller: descriptionController,
-                            focusNode: descriptionFocus,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
-                            ),
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.zero,
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: widget.playlist.description,
-                              hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                                color: AppColors.gray600,
+            // 상단 요소 : 이미지, 제목, 메모
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // -------------------
+                // 플레이리스트 대표 이미지
+                // -------------------
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 140,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: widget.playlist.imgUrl == null
+                                    ? DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/muoz.png'))
+                                    : DecorationImage(
+                                        image: NetworkImage(
+                                            widget.playlist.imgUrl!)),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(bottom: 20),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                            color: AppColors.main300,
+                            width: 1,
+                          )),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // ---------------
+                            // 플레이리스트 제목
+                            // ---------------
+                            TextField(
+                              controller: listNameController,
+                              focusNode: titleFocus,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 24,
+                              ),
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.zero,
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                hintText: widget.playlist.listName,
+                                hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            // ---------------
+                            // 플레이리스트 설명
+                            // ---------------
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: TextField(
+                                controller: descriptionController,
+                                focusNode: descriptionFocus,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  hintText: widget.playlist.description,
+                                  hintStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppColors.gray600,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  // ---------------
-                  // 음악 목록
-                  // ---------------
-                  SizedBox(
+                ),
+                const SizedBox(
+                  height: 18,
+                ),
+                // ---------------
+                // 음악 목록
+                // ---------------
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: SizedBox(
                     width: double.infinity,
                     height: 300,
                     child: songListAsync.when(
@@ -261,8 +272,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                 ListTile(
                                   key: Key('$index'),
                                   visualDensity: VisualDensity(
-                                      horizontal: -4, vertical: 0),
+                                      horizontal: -4, vertical: 4),
                                   contentPadding: EdgeInsets.zero,
+                                  minVerticalPadding: 0,
+                                  minTileHeight: 72,
                                   leading: ReorderableDragStartListener(
                                     index: index,
                                     child: Container(
@@ -274,99 +287,124 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                   tileColor: index == dragHandleIndex
                                       ? Colors.black.withValues(alpha: 0.04)
                                       : Colors.white,
-                                  title: Container(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: AppColors.border,
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                  // -----------------------------
+                                  // 슬라이더 위젯
+                                  // -----------------------------
+                                  title: Slidable(
+                                    key: const ValueKey(0),
+                                    endActionPane: ActionPane(
+                                      extentRatio: 0.25,
+                                      motion: BehindMotion(),
                                       children: [
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              // ---------
-                                              // 곡 이미지
-                                              // ---------
-                                              Container(
-                                                width: 48,
-                                                height: 48,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  color: AppColors.gray600,
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        data[index].imgUrl),
-                                                  ),
-                                                ),
+                                        // ------------------------
+                                        // 삭제 버튼 클릭 시 액션
+                                        // ------------------------
+                                        SlidableAction(
+                                          flex: 1,
+                                          onPressed: (value) {
+                                            String id = data[index].video.id;
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  DeleteSongAlertDialog(
+                                                listName:
+                                                    widget.playlist.listName,
+                                                songId: id,
+                                                removeSongId: () =>
+                                                    removeSongId(id),
                                               ),
-                                              // -------
-                                              // 곡 내용
-                                              // -------
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 18),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        data[index].title,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        data[index].artist,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          color:
-                                                              AppColors.gray600,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            );
+                                          },
+                                          backgroundColor: AppColors.red,
+                                          foregroundColor: Colors.white,
+                                          label: '삭제',
                                         ),
-                                        // -------------
-                                        // 메뉴 버튼
-                                        // -------------
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Container(
-                                            width: 44,
-                                            height: 44,
+                                      ],
+                                    ),
+                                    child: SizedBox(
+                                      height: 72,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                // ---------
+                                                // 곡 이미지
+                                                // ---------
+                                                Container(
+                                                  width: 48,
+                                                  height: 48,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
+                                                    color: AppColors.gray600,
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          data[index].imgUrl),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // -------
+                                                // 곡 내용
+                                                // -------
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 18),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          data[index].title,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          data[index].artist,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            color: AppColors
+                                                                .gray600,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          // -------------
+                                          // 메뉴 버튼
+                                          // -------------
+                                          Container(
+                                            width: 60,
+                                            height: 60,
                                             color: Colors.transparent,
                                             child: Icon(Icons.more_vert),
                                           ),
-                                        )
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -404,8 +442,8 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                       },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
