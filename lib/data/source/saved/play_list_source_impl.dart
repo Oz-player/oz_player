@@ -269,4 +269,40 @@ class PlayListSourceImpl implements PlayListSource {
       print('error: $e, stackTrace: $stackTrace');
     }
   }
+
+  // 플레이리스트 곡 순서 재설정
+  @override
+  Future<void> editSongOrder(
+      String userId, String listName, List<String> songIds) async {
+    try {
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      final playlistRef = _firestore.collection('Playlist').doc(userId);
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
+          print('문서 발견');
+          for (var item in playlist) {
+            if (item['listName'] == listName) {
+              await playlistRef.update({
+                'playlists': FieldValue.arrayRemove([item]),
+              });
+
+              item['songIds'] = songIds;
+
+              await playlistRef.update({
+                'playlists': FieldValue.arrayUnion([item])
+              });
+              print('곡 순서를 새로고침했습니다');
+              break;
+            }
+          }
+        }
+      }
+    } catch (e, stackTrace) {
+      print('error: $e, stackTrace: $stackTrace');
+    }
+  }
 }

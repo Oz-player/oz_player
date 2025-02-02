@@ -52,4 +52,10 @@ class PlayListRepositoryImpl implements PlayListRepository {
       String userId, String listName, String newDescription) async {
     await _source.editDescription(userId, listName, newDescription);
   }
+
+  @override
+  Future<void> editSongOrder(
+      String userId, String listName, List<String> songIds) async {
+    await _source.editSongOrder(userId, listName, songIds);
+  }
 }

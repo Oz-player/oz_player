@@ -10,4 +10,6 @@ abstract interface class PlayListSource {
   Future<void> editListName(String userId, String listName, String newName);
   Future<void> editDescription(
       String userId, String listName, String newDescription);
+  Future<void> editSongOrder(
+      String userId, String listName, List<String> songIds);
 }

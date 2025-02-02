@@ -41,4 +41,8 @@ class PlayListUsecase {
   Future<void> editDescription(String listName, String newDescription) async {
     await _repository.editListName(userId, listName, newDescription);
   }
+
+  Future<void> editSongOrder(String listName, List<String> songIds) async {
+    await _repository.editSongOrder(userId, listName, songIds);
+  }
 }

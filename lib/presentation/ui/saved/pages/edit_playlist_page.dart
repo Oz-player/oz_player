@@ -5,6 +5,7 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class EditPlaylistPage extends ConsumerStatefulWidget {
@@ -20,6 +21,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   final listNameController = TextEditingController();
   final descriptionController = TextEditingController();
   int? dragHandleIndex;
+  List<String> currentOrder = [];
 
   @override
   void initState() {
@@ -73,21 +75,34 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
             // 완료 버튼
             // --------------------
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
+                // 제목을 수정한 경우
                 if (listNameController.text != currentName) {
-                  ref
+                  await ref
                       .watch(playListsUsecaseProvider)
                       .editListName(currentName, listNameController.text);
                   isEdited = true;
                 }
+                // 플레이리스트 설명을 수정한 경우
                 if (descriptionController.text != currentDescription) {
-                  ref.watch(playListsUsecaseProvider).editDescription(
+                  await ref.watch(playListsUsecaseProvider).editDescription(
                       currentDescription, descriptionController.text);
                   isEdited = true;
                 }
+                // 음악을 삭제하지 않고 플레이리스트 순서를 바꾼 경우
+                if (widget.playlist.songIds.length == currentOrder.length) {
+                  for (int i = 0; i < currentOrder.length; i++) {
+                    if (widget.playlist.songIds[i] != currentOrder[i]) {
+                      await ref.watch(playListsUsecaseProvider).editSongOrder(
+                          widget.playlist.listName, currentOrder);
+                      isEdited = true;
+                      break;
+                    }
+                  }
+                }
                 // 수정한 요소가 있다면 플레이리스트 리로드
                 if (isEdited) {
-                  ref.read(playListsUsecaseProvider).getPlayLists();
+                  ref.read(playListViewModelProvider.notifier).getPlayLists();
                 }
                 context.pop();
               },
@@ -361,15 +376,21 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                 dragHandleIndex = index;
                               });
                             },
-                            onReorderEnd: (index) => setState(() {
-                              dragHandleIndex = null;
-                            }),
+                            onReorderEnd: (index) {
+                              setState(() {
+                                dragHandleIndex = null;
+                              });
+                            },
                             onReorder: (int oldIndex, int newIndex) {
                               setState(() {
                                 if (oldIndex < newIndex) {
                                   newIndex -= 1;
                                 }
                                 data.insert(newIndex, data.removeAt(oldIndex));
+                                currentOrder.clear();
+                                for (var item in data) {
+                                  currentOrder.add(item.video.id);
+                                }
                               });
                             },
                           ),
