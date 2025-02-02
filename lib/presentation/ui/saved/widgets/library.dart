@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/library_songs_notifier.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_mini_widget.dart';
-import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 
 class Library extends ConsumerStatefulWidget {
   const Library({
@@ -29,7 +24,6 @@ class _LibraryState extends ConsumerState<Library> {
           if (data.isEmpty) {
             return Image.asset('assets/images/library_empty.png');
           }
-          final songList = ref.watch(librarySongsProvider(data));
           return ListView.separated(
               itemBuilder: (context, index) {
                 return Container(
@@ -44,9 +38,9 @@ class _LibraryState extends ConsumerState<Library> {
                           // 카드 위젯 : CardMiniWidget 사용
                           SizedBox(
                             child: CardMiniWidget(
-                              imgUrl: songList[index].imgUrl,
-                              title: songList[index].title,
-                              artist: songList[index].artist,
+                              imgUrl: data[index].imgUrl,
+                              title: data[index].title,
+                              artist: data[index].artist,
                               isError: false,
                             ),
                           ),
@@ -59,7 +53,7 @@ class _LibraryState extends ConsumerState<Library> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                songList[index].title,
+                                data[index].title,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
@@ -67,7 +61,7 @@ class _LibraryState extends ConsumerState<Library> {
                                 ),
                               ),
                               Text(
-                                songList[index].artist,
+                                data[index].artist,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
@@ -109,7 +103,7 @@ class _LibraryState extends ConsumerState<Library> {
                     width: double.infinity,
                     height: 1,
                   ),
-              itemCount: songList.length);
+              itemCount: data.length);
         },
         error: (error, stackTrace) => Container(),
         loading: () => Container(),
