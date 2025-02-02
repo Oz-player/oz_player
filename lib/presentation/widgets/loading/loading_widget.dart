@@ -27,7 +27,7 @@ class LoadingWidget extends ConsumerWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          Spacer()
+          Spacer(),
         ],
       ),
     );

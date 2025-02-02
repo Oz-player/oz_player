@@ -5,7 +5,6 @@ import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
-import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -304,7 +303,7 @@ class SavePlaylistBottomSheet {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 24),
-                                          child: Text(
+                                           child: Text(
                                             '새로운 음악 카드 받기',
                                             style: TextStyle(
                                                 color: Colors.white,
