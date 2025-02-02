@@ -83,15 +83,30 @@ class _LibraryState extends ConsumerState<Library> {
                           ),
                         ],
                       ),
+                      // ------------------------
+                      // 라이브러리 상세페이지 이동 버튼
+                      // ------------------------
                       GestureDetector(
                         onTap: () {
                           print('tap');
                         },
                         child: Container(
+                          padding: EdgeInsets.all(20),
                           width: 64,
                           height: 64,
                           color: Colors.transparent,
-                          child: Icon(Icons.arrow_forward_ios),
+                          child: Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.gray200),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                              color: AppColors.gray400,
+                            ),
+                          ),
                         ),
                       )
                     ],
