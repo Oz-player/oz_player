@@ -4,16 +4,18 @@ class LoadingState {
   bool isLoading;
   List<String> loadingText;
   int index;
+  List<String> loadingImage;
 
-  LoadingState(this.isLoading, this.loadingText, this.index);
+  LoadingState(this.isLoading, this.loadingText, this.index, this.loadingImage);
 
   LoadingState copyWith({
     bool? isLoading,
     List<String>? loadingText,
     int? index,
+    List<String>? loadingImage,
   }) =>
       LoadingState(isLoading ?? this.isLoading, loadingText ?? this.loadingText,
-          index ?? this.index);
+          index ?? this.index, loadingImage ?? this.loadingImage);
 }
 
 class LoadingViewModel extends Notifier<LoadingState> {
@@ -27,7 +29,15 @@ class LoadingViewModel extends Notifier<LoadingState> {
       '플레이리스트에 음악 카드를 저장하는 중입니다.\n잠시만 기다려주세요'
     ];
 
-    return LoadingState(false, loadingText, 0);
+    List<String> loadingImage = [
+      '',
+      'assets/char/oz_loading1.png',
+      'assets/char/oz_loading1.png',
+      'assets/char/oz_loading2.png',
+      'assets/char/oz_loading2.png',
+    ];
+
+    return LoadingState(false, loadingText, 0, loadingImage);
   }
 
   void startLoading(int index) {
