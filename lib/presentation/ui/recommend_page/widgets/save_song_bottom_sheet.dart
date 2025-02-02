@@ -57,7 +57,7 @@ class SaveSongBottomSheet {
                             height: 8,
                           ),
                           Text(
-                            '앞에서 선택한 현재 상태와 기분이 같이 기록되요!',
+                            '앞에서 선택한 현재 상태와 기분이 같이 기록돼요!',
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.grey[600]),
                           ),

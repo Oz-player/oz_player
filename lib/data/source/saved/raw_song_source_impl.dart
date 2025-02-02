@@ -23,6 +23,25 @@ class RawSongSourceImpl implements RawSongSource {
   }
 
   @override
+  Future<List<RawSongDto>> getRawSongs(List<String> songIds) async {
+    try {
+      final collection = _firestore.collection('Song');
+      final futures = songIds.map((songId) async {
+        final doc = await collection.doc(songId).get();
+        if (doc.exists && doc.data() != null) {
+          return RawSongDto.fromJson(doc.data()!);
+        }
+        return null;
+      });
+      final results = await Future.wait(futures);
+      return results.whereType<RawSongDto>().toList();
+    } catch (e, stackTrace) {
+      print('e: $e, stack: $stackTrace');
+      return [];
+    }
+  }
+
+  @override
   Future<void> updateRawSongByLibrary(RawSongDto rawSongDto) async {
     final doc =
         await _firestore.collection('Song').doc(rawSongDto.video.id).get();

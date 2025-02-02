@@ -25,7 +25,7 @@ class RawSongDto {
     return RawSongDto(
       countLibrary: json['countLibrary'] as int,
       countPlaylist: json['countPlaylist'] as int,
-      video: VideoInfoEntitiy.fromJson(json['videoInfo']),
+      video: VideoInfoEntitiy.fromJson(json['video']),
       title: json['title'],
       imgUrl: json['imgUrl'],
       artist: json['artist'],
