@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_songs_notifier.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_mini_widget.dart';
 
@@ -88,7 +91,15 @@ class _LibraryState extends ConsumerState<Library> {
                       // ------------------------
                       GestureDetector(
                         onTap: () {
+                          final songs = ref.watch(librarySongsProvider(data));
+                          ref
+                              .read(cardPositionProvider.notifier)
+                              .cardPositionIndex(index);
                           print('tap');
+                          context.go(
+                            '/saved/library',
+                            extra: [data, songs],
+                          );
                         },
                         child: Container(
                           padding: EdgeInsets.all(20),
