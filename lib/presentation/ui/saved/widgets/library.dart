@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_songs_notifier.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
+import 'package:oz_player/presentation/widgets/card_widget/card_mini_widget.dart';
+import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 
 class Library extends ConsumerStatefulWidget {
   const Library({
@@ -24,38 +29,87 @@ class _LibraryState extends ConsumerState<Library> {
           if (data.isEmpty) {
             return Image.asset('assets/images/library_empty.png');
           }
-          return GridView.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.7,
-            children: data.map((e) {
-              return GestureDetector(
-                onTap: () {
-                  context.go('/saved/library');
-                },
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Column(
+          final songList = ref.watch(librarySongsProvider(data));
+          return ListView.separated(
+              itemBuilder: (context, index) {
+                return Container(
+                  width: double.infinity,
+                  height: 94,
+                  color: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        color: AppColors.gray400,
+                      Row(
+                        children: [
+                          // 카드 위젯 : CardMiniWidget 사용
+                          SizedBox(
+                            child: CardMiniWidget(
+                              imgUrl: songList[index].imgUrl,
+                              title: songList[index].title,
+                              artist: songList[index].artist,
+                              isError: false,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 18,
+                          ),
+                          // text
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                songList[index].title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                songList[index].artist,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: AppColors.gray600,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                '${data[index].createdAt.year}.${data[index].createdAt.month}.${data[index].createdAt.day}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                  color: AppColors.gray400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      Spacer(),
-                      Text(
-                          '${e.createdAt.year}/${e.createdAt.month}/${e.createdAt.day}')
+                      GestureDetector(
+                        onTap: () {
+                          print('tap');
+                        },
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          color: Colors.transparent,
+                          child: Icon(Icons.arrow_forward_ios),
+                        ),
+                      )
                     ],
                   ),
-                ),
-              );
-            }).toList(),
-          );
+                );
+              },
+              separatorBuilder: (context, index) => Container(
+                    color: AppColors.border,
+                    width: double.infinity,
+                    height: 1,
+                  ),
+              itemCount: songList.length);
         },
         error: (error, stackTrace) => Container(),
         loading: () => Container(),
