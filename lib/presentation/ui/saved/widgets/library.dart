@@ -5,7 +5,6 @@ import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_songs_notifier.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
-import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_mini_widget.dart';
 
 class Library extends ConsumerStatefulWidget {
@@ -92,7 +91,7 @@ class _LibraryState extends ConsumerState<Library> {
                       // ------------------------
                       GestureDetector(
                         onTap: () {
-                          // 현재 문제 있음 (SongEntity의 video값이 안들어오고 있음 확인바람)
+                          // (SongEntity의 video값이 안들어오고 있음 확인바람)
                           final songs = ref.watch(librarySongsProvider(data));
 
                           ref

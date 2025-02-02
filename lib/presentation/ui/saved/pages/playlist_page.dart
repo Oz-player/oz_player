@@ -5,6 +5,7 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
@@ -265,7 +266,26 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       // -----------------
                       if (widget.playlist.songIds.isNotEmpty)
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            /* 플레이리스트에있는 SongEntity 정보들 가져와야 함
+
+                            List<SongEntity> songList = [];
+
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setCurrentSong(songList.first);
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setAudioPlayer(
+                                    songList.first.video.audioUrl, -1);
+
+                            audioplayerstate.nextSong.removeAt(0);
+
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setNextSongList(songList);
+                            */
+                          },
                           child: Container(
                             width: 72,
                             height: 72,
