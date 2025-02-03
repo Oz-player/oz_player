@@ -47,7 +47,7 @@ class RawSongSourceImpl implements RawSongSource {
         await _firestore.collection('Song').doc(rawSongDto.video.id).get();
     if (doc.exists) {
       final count = (doc.data() as Map<String, dynamic>)['countLibrary'];
-      await _firestore.collection('Song').doc().update(
+      await _firestore.collection('Song').doc(rawSongDto.video.id).update(
         {
           'countLibrary': count + 1,
         },

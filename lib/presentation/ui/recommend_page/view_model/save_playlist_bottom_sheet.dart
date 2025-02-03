@@ -2,20 +2,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SavePlaylistBottomSheetState {
   int? isClickedPlayList;
+  bool blind;
 
-  SavePlaylistBottomSheetState(this.isClickedPlayList);
+  SavePlaylistBottomSheetState(this.isClickedPlayList, this.blind);
 
   SavePlaylistBottomSheetState copyWith({
     int? isClickedPlayList,
+    bool? blind,
   }) =>
-      SavePlaylistBottomSheetState(isClickedPlayList ?? this.isClickedPlayList);
+      SavePlaylistBottomSheetState(isClickedPlayList ?? this.isClickedPlayList, blind ?? this.blind);
 }
 
 class SavePlaylistBottomSheet
     extends AutoDisposeNotifier<SavePlaylistBottomSheetState> {
   @override
   SavePlaylistBottomSheetState build() {
-    return SavePlaylistBottomSheetState(-1);
+    return SavePlaylistBottomSheetState(-1, false);
   }
 
   void isClickedPlayList(int index) {
@@ -24,6 +26,14 @@ class SavePlaylistBottomSheet
     } else {
       state = state.copyWith(isClickedPlayList: index);
     }
+  }
+
+  void isBlind(){
+    state = state.copyWith(blind: true);
+  }
+
+  void reflash(){
+    state = state.copyWith();
   }
 }
 
