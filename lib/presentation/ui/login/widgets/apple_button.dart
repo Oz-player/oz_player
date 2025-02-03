@@ -12,7 +12,7 @@ class AppleButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     // IOS에서만 보이게! 안드로이드에서는 빈공간 반환
-    if (!Platform.isIOS) return SizedBox(height: 70);
+    if (!Platform.isIOS) return SizedBox(height: 16);
 
     return Container(
       margin: EdgeInsets.only(top: 16),
