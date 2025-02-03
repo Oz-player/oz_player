@@ -72,10 +72,25 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (isEdited) {
+                showDialog(
+                  context: context,
+                  builder: (context) => CancleEditAlertDialog(),
+                );
+              } else {
+                context.pop();
+              }
+            },
+            icon: Icon(Icons.arrow_back),
+            color: Colors.grey[900],
+          ),
+          actions: [],
           title: Align(
             alignment: Alignment.centerRight,
             // --------------------
-            // 완료 버튼
+            // 저장 버튼
             // --------------------
             child: GestureDetector(
               onTap: () async {
@@ -115,7 +130,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 height: 44,
                 color: Colors.transparent,
                 child: Text(
-                  '완료',
+                  '저장',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -129,14 +144,13 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           children: <Widget>[
             // 상단 요소 : 이미지, 제목, 메모
             Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // -------------------
                 // 플레이리스트 대표 이미지
                 // -------------------
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
                   child: Column(
                     children: [
                       Container(
@@ -202,6 +216,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                   fontSize: 24,
                                 ),
                               ),
+                              onChanged: (value) => isEdited = true,
                             ),
                             const SizedBox(
                               height: 8,
@@ -231,6 +246,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                     color: AppColors.gray600,
                                   ),
                                 ),
+                                onChanged: (value) => isEdited = true,
                               ),
                             )
                           ],

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -57,13 +55,22 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
             fontSize: 18,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.push('/settings');
+              },
+              icon: Image.asset('assets/images/option_icon.png')),
+          SizedBox(
+            width: 8,
+          ),
+        ],
       ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // -------------------
@@ -103,7 +110,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                 color: Colors.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8),
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Column(
