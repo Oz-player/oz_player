@@ -63,7 +63,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                 context.push('/settings');
               },
               icon: Image.asset('assets/images/option_icon.png')),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
         ],
