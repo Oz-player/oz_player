@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 
+// 보관함 라이브러리 - 플레이리스트 간 전환 버튼
 class SavedTabButton extends StatelessWidget {
   const SavedTabButton({
     super.key,
