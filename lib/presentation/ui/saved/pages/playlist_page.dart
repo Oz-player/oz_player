@@ -274,8 +274,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       songListAsync.when(
                           data: (data) {
                             return GestureDetector(
-                              onTap: () {
-                                final nextSong = List<SongEntity>.from(data)..removeAt(0);
+                              onTap: () async {
+                                final nextSong = List<SongEntity>.from(data)
+                                  ..removeAt(0);
 
                                 // 플레이리스트에있는 SongEntity 정보들 가져와야 함
                                 ref
@@ -283,12 +284,12 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                     .setCurrentSong(data.first);
                                 ref
                                     .read(audioPlayerViewModelProvider.notifier)
+                                    .setNextSongList(nextSong);
+                                await ref
+                                    .read(audioPlayerViewModelProvider.notifier)
                                     .setAudioPlayer(
                                         data.first.video.audioUrl, -2);
 
-                                ref
-                                    .read(audioPlayerViewModelProvider.notifier)
-                                    .setNextSongList(nextSong);
                                 setState(() {});
                               },
                               child: PlayButton(),

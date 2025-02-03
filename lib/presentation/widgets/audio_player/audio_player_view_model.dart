@@ -58,6 +58,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
 
   /// 오디오 플레이어에 다음곡 무더기 저장
   void setNextSongList(List<SongEntity> songList) {
+    for (var list in songList) {
+      log('리스트 추가 : ${list.title}');
+    }
     state.nextSong.addAll(songList);
   }
 
@@ -89,12 +92,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
             await state.audioPlayer.seek(Duration.zero);
             await togglePause();
           } else {
+            state = state.copyWith(currentSong: state.nextSong.first);
             await state.audioPlayer
                 .setUrl(state.nextSong.first.video.audioUrl, preload: true);
-            state.currentSong = state.nextSong.first;
-            state.nextSong.removeAt(0);
-            state = state.copyWith();
             await togglePlay();
+            state.nextSong.removeAt(0);
           }
         }
         if (playerState.processingState == ProcessingState.buffering) {
@@ -160,11 +162,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       await state.audioPlayer.pause();
     }
 
-    final duration = state.audioPlayer.duration;
+    final duration = state.audioPlayer.duration! - Duration(milliseconds: 100);
     final currentPosition = state.audioPlayer.position;
     final newPosition = currentPosition + Duration(seconds: sec);
 
-    if (newPosition > duration!) {
+    if (newPosition > duration) {
       await state.audioPlayer.seek(duration);
     } else {
       await state.audioPlayer.seek(newPosition);
