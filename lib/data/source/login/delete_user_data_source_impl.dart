@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart' as kakao;
 import 'package:oz_player/data/source/login/delete_user_data_source.dart';
+import 'package:http/http.dart';
 
 class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   final auth.FirebaseAuth _auth;
@@ -33,10 +34,20 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   Future<void> reauthUser() async {
     auth.User? user = _auth.currentUser;
     if (user == null) throw Exception('$e');
-    
+
     final providerId = user.providerData.first.providerId;
     print('현재 로그인된 providerId: $providerId');
     auth.AuthCredential? credential;
+
+    final uid = user.uid;
+    final userDoc = await _firestore.collection('User').doc(uid).get();
+    final isKakaoUser = userDoc.exists && uid.startsWith('kakao');
+
+    if (isKakaoUser) {
+      print('카카오 로그인 사용자! 카카오 재인증 진행');
+      await reauthKakaoUser();
+      return;
+    }
 
     if (providerId == 'google.com') {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -51,9 +62,6 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
       }
     } else if (providerId == 'apple.com') {
       credential = auth.OAuthProvider('apple.com').credential();
-    } else if (providerId == 'kakao.com') {
-      await reauthKakaoUser();
-      return;
     }
     if (credential != null) {
       await user.reauthenticateWithCredential(credential);
@@ -78,13 +86,22 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
       final idToken = kakaoLoginResult.idToken;
       if (idToken == null) throw Exception('$e');
 
-      // 재인증은 카카오에서 받은 idToken으로 Firebase 인증
-      final cred = auth.OAuthProvider('kakao.com').credential(idToken: idToken);
-      await user.reauthenticateWithCredential(cred);
+      final httpClient = Client();
+      final httpResponse = await httpClient.post(
+        Uri.parse('https://kakaologin-erb5lhs57a-uc.a.run.app'),
+        body: {'idToken': idToken},
+      );
+      if (httpResponse.statusCode == 200) {
+        final customToken = httpResponse.body;
 
-      print('카카오 재인증 성공!');
+        //
+        await auth.FirebaseAuth.instance.signInWithCustomToken(customToken);
+        print('카카오 재인증 성공!');
+      } else {
+        throw Exception('$e');
+      }
     } catch (e) {
-      print('계정 재인증 실패!');
+      print('계정 재인증 실패!: $e');
     }
   }
 }

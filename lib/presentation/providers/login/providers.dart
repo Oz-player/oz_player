@@ -144,7 +144,9 @@ final deleteUserRepositoryProvider = Provider<DeleteUserRepository>((ref) {
 
 final deleteUserUseCaseProvider = Provider<DeleteUserUsecase>((ref) {
   final repository = ref.read(deleteUserRepositoryProvider);
-  return DeleteUserUsecase(repository);
+  final auth = ref.read(firebaseAuthProvider);
+  final firestore = ref.read(firestoreProvider);
+  return DeleteUserUsecase(repository, auth, firestore);
 });
 
 

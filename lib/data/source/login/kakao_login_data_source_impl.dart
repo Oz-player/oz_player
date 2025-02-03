@@ -80,7 +80,6 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
       final userDoc = _firestore.collection('User').doc(uid);
       await userDoc.set({
         'uid': uid,
-        'provider': 'kakao.com',
       }, SetOptions(merge: true));
       
       print('새로운 사용자 Firestore Database에 저장완료!: $uid');

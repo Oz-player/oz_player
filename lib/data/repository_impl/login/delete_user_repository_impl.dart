@@ -12,16 +12,16 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
   DeleteUserRepositoryImpl(this._dataSource);
 
   
+  @override
+  Future<void> reauthKakaoUser() async {
+    await _dataSource.reauthKakaoUser();
+  }
 
   @override
   Future<void> reauthUser() async {
     await _dataSource.reauthUser(); // provider 소셜 로그인 종류에 맞춰서 실행
   }
 
-  // @override
-  // Future<void> reauthKakaoUser() async {
-  //   await _dataSource.reauthKakaoUser(); // kakao 로그인 재인증
-  // }
 
   @override
   Future<void> deleteUser() async {
@@ -33,6 +33,8 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
       throw Exception('$e');
     }
   }
+  
+  
   
   
 
