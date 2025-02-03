@@ -5,6 +5,7 @@ import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/login/widgets/apple_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/google_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/kakao_button.dart';
+import 'package:oz_player/presentation/ui/login/widgets/private_info_button.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
@@ -56,6 +57,7 @@ class LoginPage extends ConsumerWidget {
                   GoogleButton(),
                   KakaoButton(),
                   AppleButton(), // IOS에서만 애플 로그인 버튼 보임
+                  PrivateInfoButton(), 
                   SizedBox(height: 32),
                 ],
               ),
@@ -66,3 +68,4 @@ class LoginPage extends ConsumerWidget {
     );
   }
 }
+
