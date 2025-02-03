@@ -2,6 +2,9 @@ import 'package:oz_player/domain/entitiy/library_entity.dart';
 
 class LibraryDto {
   final DateTime createdAt;
+  final String artist;
+  final String imgUrl;
+  final String title;
   final String favoriteArtist;
   final String genre;
   final String? memo;
@@ -11,6 +14,9 @@ class LibraryDto {
 
   LibraryDto({
     required this.createdAt,
+    required this.artist,
+    required this.imgUrl,
+    required this.title,
     required this.favoriteArtist,
     required this.genre,
     required this.memo,
@@ -22,6 +28,9 @@ class LibraryDto {
   factory LibraryDto.fromJson(Map<String, dynamic> json) {
     return LibraryDto(
       createdAt: DateTime.parse(json['createdAt'] as String),
+      artist: json['artist'],
+      imgUrl: json['imgUrl'],
+      title: json['title'],
       favoriteArtist: json['favoriteArtist'],
       genre: json['genre'],
       memo: json['memo'],
@@ -34,6 +43,9 @@ class LibraryDto {
   LibraryEntity toEntity() {
     return LibraryEntity(
       createdAt: createdAt,
+      artist: artist,
+      imgUrl: imgUrl,
+      title: title,
       favoriteArtist: favoriteArtist,
       genre: genre,
       memo: memo,
@@ -46,6 +58,9 @@ class LibraryDto {
   LibraryDto.fromEntity(LibraryEntity entity)
       : this(
             createdAt: entity.createdAt,
+            artist: entity.artist,
+            imgUrl: entity.imgUrl,
+            title: entity.title,
             favoriteArtist: entity.favoriteArtist,
             genre: entity.genre,
             memo: entity.memo,
@@ -56,6 +71,9 @@ class LibraryDto {
   Map<String, dynamic> toJson() {
     return {
       'createdAt': createdAt.toIso8601String(),
+      'artist': artist,
+      'imgUrl': imgUrl,
+      'title': title,
       'favoriteArtist': favoriteArtist,
       'genre': genre,
       'memo': memo,

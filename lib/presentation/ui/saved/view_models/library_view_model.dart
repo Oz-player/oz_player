@@ -14,6 +14,22 @@ class LibraryViewModel extends AsyncNotifier<List<LibraryEntity>> {
     state =
         AsyncValue.data(await ref.read(libraryUsecaseProvider).getLibrary());
   }
+
+  // 라이브러리를 최근 저장 순으로 정렬
+  void getLibraryLatest() {
+    if (state.value == null) return;
+    state = AsyncValue.data([...state.value!]..sort((a, b) {
+        return b.createdAt.compareTo(a.createdAt);
+      }));
+  }
+
+  // 라이브러리를 가나다순으로 정렬
+  void getLibraryAscending() {
+    if (state.value == null) return;
+    state = AsyncValue.data([...state.value!]..sort((a, b) {
+        return a.title.toLowerCase().compareTo(b.title.toLowerCase());
+      }));
+  }
 }
 
 final libraryViewModelProvider =

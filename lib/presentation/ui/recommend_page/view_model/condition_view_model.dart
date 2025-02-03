@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
@@ -20,7 +20,7 @@ class ConditionState {
   bool event;
   List<String> title;
   List<String> subtitle;
-  List<SongEntitiy> recommendSongs;
+  List<SongEntity> recommendSongs;
   List<String> exceptList;
 
   ConditionState(
@@ -54,7 +54,7 @@ class ConditionState {
     bool? event,
     List<String>? title,
     List<String>? subtitle,
-    List<SongEntitiy>? recommendSongs,
+    List<SongEntity>? recommendSongs,
     List<String>? exceptList,
   }) =>
       ConditionState(
@@ -329,15 +329,16 @@ $exceptlist
         }
         */
 
-        final searchSong = await spotifyDB.searchList(title!);
+        final searchSong = await spotifyDB.searchList('$artist - $title}');        
         final album = searchSong[0].album;
         final albumImges = album!['images'][0];
         imgUrl = albumImges['url'];
+        
 
         log('$title - $artist 검색성공');
-        final video = await videoEx.getVideoInfo(title, artist!);
+        final video = await videoEx.getVideoInfo(title!, artist!);
 
-        final song = SongEntitiy(
+        final song = SongEntity(
           video: video,
           title: title,
           imgUrl: imgUrl ?? '',

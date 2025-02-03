@@ -16,7 +16,9 @@ class LoadingWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 200,),
+          SizedBox(
+            height: 200,
+          ),
           Text(
             loadingState.loadingText[loadingState.index],
             style: TextStyle(
@@ -27,7 +29,13 @@ class LoadingWidget extends ConsumerWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          Spacer()
+          loadingState.loadingImage[loadingState.index].isEmpty
+              ? SizedBox.shrink()
+              : Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Image.asset(loadingState.loadingImage[loadingState.index]),
+              ),
+          Spacer(),
         ],
       ),
     );

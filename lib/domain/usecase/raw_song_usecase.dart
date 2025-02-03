@@ -11,6 +11,10 @@ class RawSongUsecase {
     return await _repository.getRawSong(songId);
   }
 
+  Future<List<RawSongEntity>> getRawSongs(List<String> songIds) async {
+    return await _repository.getRawSongs(songIds);
+  }
+
   Future<void> updateRawSongByLibrary(RawSongEntity entity) async {
     final dto = RawSongDto.fromEntity(entity);
     await _repository.updateRawSongByLibrary(dto);

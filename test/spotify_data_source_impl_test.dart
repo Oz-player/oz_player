@@ -6,7 +6,7 @@ void main() {
   test('spotify test', () async {
     await dotenv.load(fileName: ".env");
     SpotifyDataSourceImpl spotifyDataSourceImpl = SpotifyDataSourceImpl();
-    final search = await spotifyDataSourceImpl.searchList('적재');
+    final search = await spotifyDataSourceImpl.searchList('Make Up - 샘김');
     expect(search.isEmpty, false);
     print(search.length);
     for (var searchs in search) {
@@ -21,6 +21,8 @@ void main() {
       print("iexplicit : ${searchs.explicit}");
       print("previewUrl : ${searchs.previewUrl}");
       print("album : ${searchs.album}");
+      print("album_artist_name : ${searchs.album?['artists'][0]['name']}");
+      print("album_images : ${searchs.album?['images'][0]['url']}");
     }
   });
 }

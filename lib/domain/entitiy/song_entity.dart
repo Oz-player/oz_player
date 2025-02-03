@@ -1,6 +1,6 @@
 import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
 
-class SongEntitiy {
+class SongEntity {
   VideoInfoEntitiy video;
   String title;
   String imgUrl;
@@ -11,7 +11,7 @@ class SongEntitiy {
   String favoriteArtist;
   String? memo;
 
-  SongEntitiy({
+  SongEntity({
     required this.video,
     required this.title,
     required this.imgUrl,

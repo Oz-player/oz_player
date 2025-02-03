@@ -1,6 +1,6 @@
 import 'package:oz_player/data/dto/raw_song_dto.dart';
 import 'package:oz_player/domain/entitiy/library_entity.dart';
-import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
 
 // firebase의 song entity와 library collection의 정보를 합침
@@ -30,8 +30,8 @@ class SongDTO {
     memo = libraryEntity.memo;
   }
 
-  SongEntitiy toEntity() {
-    return SongEntitiy(
+  SongEntity toEntity() {
+    return SongEntity(
       video: video,
       title: title,
       imgUrl: imgUrl,

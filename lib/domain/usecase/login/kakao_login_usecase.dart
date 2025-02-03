@@ -15,8 +15,10 @@ class KakaoLoginUsecase {
       if (idToken == null) {
         throw Exception('$e');
       }
-
+      print('$idToken');
       final functionsIdToken = await repository.fetchKakaoIdToken(idToken);
+
+    
       final userCredential = await repository.signInWithFirebase(functionsIdToken);
       final uid = userCredential.user?.uid;
       if (uid == null) {

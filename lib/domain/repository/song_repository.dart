@@ -1,6 +1,6 @@
 import 'package:oz_player/domain/entitiy/library_entity.dart';
-import 'package:oz_player/domain/entitiy/song_entitiy.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 
 abstract interface class SongRepository {
-  Future<SongEntitiy?> getSong(String songId, LibraryEntity libraryEntity);
+  Future<SongEntity?> getSong(String songId, LibraryEntity libraryEntity);
 }

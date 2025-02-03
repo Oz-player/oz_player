@@ -40,10 +40,12 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
         Uri.parse('https://kakaologin-erb5lhs57a-uc.a.run.app'),
         body: {'idToken': idToken},
       );
+      print('${httpResponse.statusCode}');
       if (httpResponse.statusCode == 200) {
         return httpResponse.body;
       } else {
-        throw Exception('카카오 서버 통신 오류: 상태 코드 ${httpResponse.statusCode}, 응답: ${httpResponse.body}');
+        throw Exception(
+            '카카오 서버 통신 오류: 상태 코드 ${httpResponse.statusCode}, 응답: ${httpResponse.body}');
       }
     } catch (e) {
       rethrow;
@@ -55,10 +57,7 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
   @override
   Future<UserCredential> signInWithFirebase(String idToken) async {
     try {
-      final functionsIdToken = await fetchKakaoIdToken(idToken);
-
-      final userCredential =
-          await _auth.signInWithCustomToken(functionsIdToken);
+      final userCredential = await _auth.signInWithCustomToken(idToken);
       return userCredential;
     } catch (e) {
       rethrow;

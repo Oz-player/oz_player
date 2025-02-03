@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/domain/entitiy/library_entity.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/ui/home/home_page.dart';
 import 'package:oz_player/presentation/ui/login/login_page.dart';
 import 'package:oz_player/presentation/ui/ranking_page/ranking_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_one.dart';
 import 'package:oz_player/presentation/ui/recommend_page/recommend_page_condition_two.dart';
-import 'package:oz_player/presentation/ui/saved/library_page.dart';
-import 'package:oz_player/presentation/ui/saved/playlist_page.dart';
-import 'package:oz_player/presentation/ui/saved/saved_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/library_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/saved_page.dart';
+import 'package:oz_player/presentation/ui/saved/pages/edit_playlist_page.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
 import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
@@ -43,11 +47,23 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: 'playlist',
-          builder: (context, state) => PlaylistPage(),
+          builder: (context, state) => PlaylistPage(
+            playlist: state.extra as PlayListEntity,
+          ),
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (context, state) =>
+                  EditPlaylistPage(playlist: state.extra as PlayListEntity),
+            ),
+          ],
         ),
         GoRoute(
           path: 'library',
-          builder: (context, state) => LibraryPage(),
+          builder: (context, state) => LibraryPage(
+            library: (state.extra as List<dynamic>)[0] as List<LibraryEntity>,
+            songs: (state.extra as List<dynamic>)[1] as List<SongEntity>,
+          ),
         ),
       ],
     ),
