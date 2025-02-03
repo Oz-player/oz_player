@@ -9,6 +9,7 @@ import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provi
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class EditPlaylistPage extends ConsumerStatefulWidget {
@@ -21,10 +22,10 @@ class EditPlaylistPage extends ConsumerStatefulWidget {
 }
 
 class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
-  final listNameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  int? dragHandleIndex;
-  List<String> currentOrder = [];
+  final listNameController = TextEditingController(); // 플레이리스트 제목 컨트롤러
+  final descriptionController = TextEditingController(); // 플레이리스트 설명 컨트롤러
+  int? dragHandleIndex; // 현재 드래그중인 인덱스
+  List<String> currentOrder = []; // 플레이리스트 순서가 바뀔 때마다 저장
 
   @override
   void initState() {
@@ -58,12 +59,13 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
     var songListAsync = ref.watch(playlistSongsProvider);
     listNameController.text = widget.playlist.listName;
     descriptionController.text = widget.playlist.description;
+
     FocusNode titleFocus = FocusNode();
     FocusNode descriptionFocus = FocusNode();
 
     final String currentName = widget.playlist.listName;
     final String currentDescription = widget.playlist.description;
-    bool isEdited = false;
+    bool isEdited = false; // 수정이 발생한 적 있는지 확인
 
     return GestureDetector(
       onTap: () {
@@ -77,9 +79,12 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
               if (isEdited) {
                 showDialog(
                   context: context,
-                  builder: (context) => CancleEditAlertDialog(),
+                  builder: (context) => CancleEditAlertDialog(
+                    destination: null,
+                  ),
                 );
               } else {
+                ref.read(bottomNavigationProvider.notifier).updatePage(0);
                 context.pop();
               }
             },
@@ -122,7 +127,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 if (isEdited) {
                   ref.read(playListViewModelProvider.notifier).getPlayLists();
                 }
-                
+
                 if (context.mounted) {
                   context.pop();
                 }
@@ -286,6 +291,9 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                         return SizedBox(
                           width: double.infinity,
                           height: 300,
+                          // ------------------------------
+                          // 순서 재배치 가능한 리스트
+                          // ------------------------------
                           child: ReorderableListView(
                             children: <Widget>[
                               for (int index = 0; index < data.length; index++)
@@ -341,6 +349,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                         ),
                                       ],
                                     ),
+                                    // 리스트 블록 레이아웃
                                     child: SizedBox(
                                       height: 72,
                                       child: Row(

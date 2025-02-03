@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/domain/entitiy/library_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/library_songs_notifier.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_mini_widget.dart';
 
@@ -90,11 +90,15 @@ class _LibraryState extends ConsumerState<Library> {
                       // ------------------------
                       GestureDetector(
                         onTap: () {
-                          // (SongEntity의 video값이 안들어오고 있음 확인바람)
-                          final songs = ref.watch(librarySongsProvider(data));
+                          // 라이브러리 순서 재생성
+                          final trailerLibrary =
+                              data.sublist(index, data.length);
+                          final headerLibrary = data.sublist(0, index);
+                          List<LibraryEntity> newLibrary =
+                              List.from(trailerLibrary)..addAll(headerLibrary);
                           context.go(
                             '/saved/library',
-                            extra: [data, songs],
+                            extra: [newLibrary],
                           );
                         },
                         child: Container(
