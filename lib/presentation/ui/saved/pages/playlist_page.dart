@@ -54,11 +54,21 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
             fontSize: 18,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.push('/settings');
+              },
+              icon: Image.asset('assets/images/option_icon.png')),
+          SizedBox(
+            width: 8,
+          ),
+        ],
       ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
