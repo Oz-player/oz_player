@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oz_player/presentation/theme/theme.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class SavedTabButton extends StatelessWidget {
   const SavedTabButton({
@@ -21,17 +21,17 @@ class SavedTabButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           side: !isLibrary
               ? BorderSide(
-                  color: LightTheme().mainLight,
+                  color: AppColors.border,
                   width: 1,
                 )
               : null,
-          backgroundColor: isLibrary ? Colors.black : Colors.white,
+          backgroundColor: isLibrary ? AppColors.main800 : Colors.white,
         ),
-        onPressed: onClicked,
+        onPressed: !isLibrary ? onClicked : () {},
         child: Text(
           title,
           style: TextStyle(
-            color: isLibrary ? Colors.white : Colors.grey[600],
+            color: isLibrary ? Colors.white : AppColors.gray600,
           ),
         ),
       ),

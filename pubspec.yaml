@@ -58,7 +58,12 @@ dependencies:
   toggle_switch: ^2.3.0
   auto_size_text: ^3.0.0
   lottie: ^3.3.1
+  package_info_plus: ^8.1.4
   shared_preferences: ^2.5.1
+  url_launcher: ^6.3.1
+  android_intent_plus: ^5.2.2
+  intl: ^0.20.2
+  flutter_slidable: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -73,7 +78,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   change_app_package_name: ^1.4.0
-
+  mocktail: ^1.0.4
+ 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -83,6 +89,7 @@ flutter:
     - .env
     - assets/images/
     - assets/animation/
+    - assets/char/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

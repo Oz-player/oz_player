@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/login/widgets/apple_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/google_button.dart';
+import 'package:oz_player/presentation/ui/login/widgets/kakao_button.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
@@ -15,6 +18,8 @@ class LoginPage extends ConsumerWidget {
     // 로그인 상태가 success일 때, 페이지 이동
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (loginState == LoginState.success) {
+        ref.read(playListViewModelProvider.notifier).getPlayLists();
+        ref.read(libraryViewModelProvider.notifier).getLibrary();
         context.go('/home');
       }
     });
@@ -49,6 +54,7 @@ class LoginPage extends ConsumerWidget {
                   ),
                   Spacer(flex: 264),
                   GoogleButton(),
+                  KakaoButton(),
                   AppleButton(), // IOS에서만 애플 로그인 버튼 보임
                   SizedBox(height: 32),
                 ],

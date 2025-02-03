@@ -26,6 +26,22 @@ class _SearchWordPageState extends State<SearchWordPage> {
     });
   }
 
+  Future<void> _deleteSearchHistory(String searchTerm) async {
+    final prefs = await SharedPreferences.getInstance();
+    searchHistory.remove(searchTerm);
+    await prefs.setStringList('searchHistory', searchHistory);
+    setState(() {});
+  }
+
+  Future<void> _addSearchTerm(String searchTerm) async {
+    if (!searchHistory.contains(searchTerm)) {
+      final prefs = await SharedPreferences.getInstance();
+      searchHistory.add(searchTerm);
+      await prefs.setStringList('searchHistory', searchHistory);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -62,6 +78,12 @@ class _SearchWordPageState extends State<SearchWordPage> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete, size: 24, color: Colors.red),
+                          onPressed: () {
+                            _deleteSearchHistory(searchHistory[index]);
+                          },
                         ),
                       ],
                     ),
