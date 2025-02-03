@@ -122,7 +122,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 if (isEdited) {
                   ref.read(playListViewModelProvider.notifier).getPlayLists();
                 }
-                context.pop();
+                
+                if (context.mounted) {
+                  context.pop();
+                }
               },
               child: Container(
                 alignment: Alignment.center,
