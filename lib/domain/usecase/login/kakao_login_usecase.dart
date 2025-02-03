@@ -15,7 +15,7 @@ class KakaoLoginUsecase {
       if (idToken == null) {
         throw Exception('$e');
       }
-      print('$idToken');
+      
       final functionsIdToken = await repository.fetchKakaoIdToken(idToken);
 
     
@@ -30,7 +30,7 @@ class KakaoLoginUsecase {
         await repository.saveNewUser(uid);
       }
       print('카카오 로그인 성공! uid: $uid');
-      return ['/home', uid];
+      return [uid, '/home'];
 
     } catch (e) {
       print('$e');
