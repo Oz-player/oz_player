@@ -21,7 +21,7 @@ class CreatePlaylistButton extends StatelessWidget {
           showDialog(
               barrierDismissible: false,
               context: context,
-              builder: (context) => playlistDialog(title, description));
+              builder: (context) => playlistDialog(title, description, ));
         },
         child: Container(
           width: 120,
