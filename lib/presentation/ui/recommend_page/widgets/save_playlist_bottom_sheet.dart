@@ -277,8 +277,8 @@ class SavePlaylistBottomSheet {
                                 ),
                                 SizedBox(
                                   width: double.infinity,
-                                  height: data.length * 80.0 > 480
-                                      ? 480
+                                  height: data.length * 80.0 > 400
+                                      ? 400
                                       : data.length * 80.0,
                                   child: ListView.separated(
                                     shrinkWrap: true,
@@ -518,206 +518,212 @@ Widget playlistDialog(
     TextEditingController title, TextEditingController description) {
   return Consumer(
     builder: (context, ref, child) {
+      final loading = ref.watch(loadingViewModelProvider).isLoading;
       return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: AlertDialog(
-          backgroundColor: Colors.white,
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 28,
-              ),
-              Text(
-                '새로운 플레이리스트를\n생성합니다',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 40,
-                width: 260,
-                child: TextField(
-                  controller: title,
-                  style: TextStyle(
-                    color: Colors.grey[900],
-                  ),
-                  maxLines: 1,
-                  maxLength: 20,
-                  buildCounter: (context,
-                          {required currentLength,
-                          required isFocused,
-                          required maxLength}) =>
-                      null,
-                  cursorWidth: 2.0,
-                  cursorHeight: 20.0,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      hintText: '제목',
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
+        child: loading
+            ? SizedBox.shrink()
+            : AlertDialog(
+                backgroundColor: Colors.white,
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 28,
+                    ),
+                    Text(
+                      '새로운 플레이리스트를\n생성합니다',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      width: 260,
+                      child: TextField(
+                        controller: title,
+                        style: TextStyle(
+                          color: Colors.grey[900],
                         ),
+                        maxLines: 1,
+                        maxLength: 20,
+                        buildCounter: (context,
+                                {required currentLength,
+                                required isFocused,
+                                required maxLength}) =>
+                            null,
+                        cursorWidth: 2.0,
+                        cursorHeight: 20.0,
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            hintText: '제목',
+                            hintStyle: TextStyle(color: Colors.grey[600]),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            )),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    SizedBox(
+                      height: 80,
+                      width: 260,
+                      child: TextField(
+                        controller: description,
+                        style: TextStyle(
+                          color: Colors.grey[900],
                         ),
+                        maxLines: 3,
+                        cursorWidth: 2.0,
+                        cursorHeight: 20.0,
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            hintText: '설명추가',
+                            hintStyle: TextStyle(color: Colors.grey[600]),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            )),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(Color(0xfff2e6ff)),
+                                  shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8)))),
+                              onPressed: () {
+                                if (loading) {
+                                  return;
+                                }
+
+                                context.pop();
+                                title.clear();
+                                description.clear();
+                              },
+                              child: Text(
+                                '취소',
+                                style: TextStyle(color: Colors.grey[600]),
+                              )),
                         ),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      )),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(Color(0xff40017E)),
+                                  shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8)))),
+                              onPressed: () async {
+                                if (loading) {
+                                  return;
+                                }
+
+                                ref
+                                    .read(loadingViewModelProvider.notifier)
+                                    .startLoading(3);
+                                // 플레이리스트 생성 로직
+                                bool isSaved = await ref
+                                    .read(playListsUsecaseProvider)
+                                    .addPlayList(
+                                      PlayListDTO(
+                                          listName: title.text,
+                                          imgUrl: null,
+                                          description: description.text,
+                                          createdAt: DateTime.now(),
+                                          songIds: []),
+                                    );
+
+                                if (!isSaved) {
+                                  ref
+                                      .read(loadingViewModelProvider.notifier)
+                                      .endLoading();
+                                  // ToastMessage
+                                }
+
+                                await ref
+                                    .read(playListViewModelProvider.notifier)
+                                    .getPlayLists();
+                                if (context.mounted) {
+                                  context.pop();
+                                }
+                                title.clear();
+                                description.clear();
+                                ref
+                                    .read(cardPositionProvider.notifier)
+                                    .cardPositionIndex(0);
+                                ref
+                                    .read(loadingViewModelProvider.notifier)
+                                    .endLoading();
+                              },
+                              child: Text(
+                                '확인',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                height: 80,
-                width: 260,
-                child: TextField(
-                  controller: description,
-                  style: TextStyle(
-                    color: Colors.grey[900],
-                  ),
-                  maxLines: 3,
-                  cursorWidth: 2.0,
-                  cursorHeight: 20.0,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      hintText: '설명추가',
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      )),
-                ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStatePropertyAll(Color(0xfff2e6ff)),
-                            shape: WidgetStatePropertyAll(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)))),
-                        onPressed: () {
-                          if (ref.watch(loadingViewModelProvider).isLoading) {
-                            return;
-                          }
-
-                          context.pop();
-                          title.clear();
-                          description.clear();
-                        },
-                        child: Text(
-                          '취소',
-                          style: TextStyle(color: Colors.grey[600]),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStatePropertyAll(Color(0xff40017E)),
-                            shape: WidgetStatePropertyAll(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)))),
-                        onPressed: () async {
-                          if (ref.watch(loadingViewModelProvider).isLoading) {
-                            return;
-                          }
-
-                          ref
-                              .read(loadingViewModelProvider.notifier)
-                              .startLoading(3);
-                          // 플레이리스트 생성 로직
-                          bool isSaved = await ref
-                              .read(playListsUsecaseProvider)
-                              .addPlayList(
-                                PlayListDTO(
-                                    listName: title.text,
-                                    imgUrl: null,
-                                    description: description.text,
-                                    createdAt: DateTime.now(),
-                                    songIds: []),
-                              );
-
-                          if (!isSaved) {
-                            ref
-                                .read(loadingViewModelProvider.notifier)
-                                .endLoading();
-                            // ToastMessage
-                          }
-
-                          await ref
-                              .read(playListViewModelProvider.notifier)
-                              .getPlayLists();
-                          if (context.mounted) {
-                            context.pop();
-                          }
-                          title.clear();
-                          description.clear();
-                          ref
-                              .read(cardPositionProvider.notifier)
-                              .cardPositionIndex(0);
-                          ref
-                              .read(loadingViewModelProvider.notifier)
-                              .endLoading();
-                        },
-                        child: Text(
-                          '확인',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       );
     },
   );

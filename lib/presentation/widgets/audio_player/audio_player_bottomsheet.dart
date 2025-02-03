@@ -74,27 +74,30 @@ class AudioBottomSheet {
                             borderRadius: BorderRadius.circular(12)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: isValidUrl(
-                                  conditionState.recommendSongs[index].imgUrl)
-                              ? Image.network(
-                                  conditionState.recommendSongs[index].imgUrl,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                )
-                              : Image.asset(
-                                  'assets/images/muoz.png',
-                                  fit: BoxFit.contain,
-                                ),
+                          child: audioState.loadingAudio
+                              ? Center(child: CircularProgressIndicator())
+                              : isValidUrl(conditionState
+                                      .recommendSongs[index].imgUrl)
+                                  ? Image.network(
+                                      conditionState
+                                          .recommendSongs[index].imgUrl,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                    )
+                                  : Image.asset(
+                                      'assets/images/muoz.png',
+                                      fit: BoxFit.contain,
+                                    ),
                         ),
                       ),
                       SizedBox(
@@ -291,35 +294,39 @@ class AudioBottomSheet {
                             borderRadius: BorderRadius.circular(12)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: isValidUrl(audioState.currentSong!.imgUrl)
-                              ? Image.network(
-                                  audioState.currentSong!.imgUrl,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                )
-                              : Image.asset(
-                                  'assets/images/muoz.png',
-                                  fit: BoxFit.contain,
-                                ),
+                          child: audioState.loadingAudio
+                              ? Center(child: CircularProgressIndicator())
+                              : isValidUrl(audioState.currentSong!.imgUrl)
+                                  ? Image.network(
+                                      audioState.currentSong!.imgUrl,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                    )
+                                  : Image.asset(
+                                      'assets/images/muoz.png',
+                                      fit: BoxFit.contain,
+                                    ),
                         ),
                       ),
                       SizedBox(
                         height: 12,
                       ),
                       AutoSizeText(
-                        audioState.currentSong!.title,
+                        audioState.loadingAudio ? '음악 로딩중' : audioState.currentSong!.title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
+                        minFontSize: 14,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 24,
                             color: Colors.black,
@@ -329,10 +336,11 @@ class AudioBottomSheet {
                         height: 4,
                       ),
                       AutoSizeText(
-                        audioState.currentSong!.artist,
+                        audioState.loadingAudio ? '잠시만 기다려주세요' : audioState.currentSong!.artist,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         minFontSize: 12,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                       SizedBox(

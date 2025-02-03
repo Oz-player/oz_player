@@ -59,7 +59,7 @@ class _RecommendPageConditionTwoState
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/images/background_2.png'),
+          image: AssetImage('assets/images/background_1.png'),
         ),
       ),
       child: Scaffold(
@@ -219,7 +219,7 @@ class _RecommendPageConditionTwoState
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
-                            backgroundColor: Colors.white30,
+                            backgroundColor: Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
                               Icons.format_list_bulleted_add,
@@ -251,7 +251,7 @@ class _RecommendPageConditionTwoState
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
-                            backgroundColor: Colors.white30,
+                            backgroundColor: Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
                               Icons.play_arrow,
@@ -281,7 +281,7 @@ class _RecommendPageConditionTwoState
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
-                            backgroundColor: Colors.white30,
+                            backgroundColor: Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
                               Icons.bookmark,
