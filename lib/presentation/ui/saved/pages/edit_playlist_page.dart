@@ -9,6 +9,7 @@ import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provi
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class EditPlaylistPage extends ConsumerStatefulWidget {
@@ -78,9 +79,12 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
               if (isEdited) {
                 showDialog(
                   context: context,
-                  builder: (context) => CancleEditAlertDialog(),
+                  builder: (context) => CancleEditAlertDialog(
+                    destination: null,
+                  ),
                 );
               } else {
+                ref.read(bottomNavigationProvider.notifier).updatePage(0);
                 context.pop();
               }
             },

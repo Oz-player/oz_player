@@ -9,6 +9,7 @@ import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart
 import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
@@ -226,6 +227,10 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       GestureDetector(
                                         onTap: () {
                                           context.pop();
+                                          ref
+                                              .read(bottomNavigationProvider
+                                                  .notifier)
+                                              .updatePage(5);
                                           context.go(
                                             '/saved/playlist/edit',
                                             extra: widget.playlist,
