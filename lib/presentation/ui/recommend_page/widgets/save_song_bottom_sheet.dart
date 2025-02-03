@@ -18,6 +18,11 @@ class SaveSongBottomSheet {
           return Consumer(
             builder: (context, ref, child) {
               final saveState = ref.watch(saveSongBottomSheetViewModelProvider);
+              final loading = ref.watch(loadingViewModelProvider).isLoading;
+              
+              if (saveState.blind) {
+                return SizedBox.shrink();
+              }
               if (saveState.page == 0) {
                 return Container(
                   decoration: BoxDecoration(
@@ -248,9 +253,7 @@ class SaveSongBottomSheet {
                                         : Colors.grey[800]),
                               ),
                               onPressed: () async {
-                                if (ref
-                                    .watch(loadingViewModelProvider)
-                                    .isLoading) {
+                                if (loading) {
                                   return;
                                 }
 

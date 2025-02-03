@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
@@ -85,35 +86,50 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     try {
       await state.audioPlayer.setUrl(audioUrl, preload: true);
 
-      state.playerStateSubscription ??=
-          state.audioPlayer.playerStateStream.listen((playerState) async {
-        if (playerState.processingState == ProcessingState.completed) {
-          if (state.nextSong.isEmpty) {
-            await state.audioPlayer.seek(Duration.zero);
-            await togglePause();
-          } else {
-            state = state.copyWith(currentSong: state.nextSong.first);
-            await state.audioPlayer
-                .setUrl(state.nextSong.first.video.audioUrl, preload: true);
-            await togglePlay();
-            state.nextSong.removeAt(0);
-          }
-        }
-        if (playerState.processingState == ProcessingState.buffering) {
-          state.isbuffering = true;
-        }
-        if (playerState.processingState == ProcessingState.loading) {
-          state.isbuffering = true;
-        }
-        if (playerState.processingState == ProcessingState.ready) {
-          state.isbuffering = false;
-        }
-      });
-
+      setSubscription();
       await togglePlay();
     } catch (e) {
-      log('잘못된 오디오 url 이거나, 인터넷 연결 문제 \n$e');
+      try {
+        final videoEx = ref.read(videoInfoUsecaseProvider);
+        final video = await videoEx.getVideoInfo(
+            state.currentSong!.title, state.currentSong!.artist);
+        log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 다시 받음');
+        await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+        setSubscription();
+        await togglePlay();
+
+        
+      } catch (e) {
+        log('인터넷 연결이 안됨');
+      }
     }
+  }
+
+  void setSubscription() {
+    state.playerStateSubscription ??=
+        state.audioPlayer.playerStateStream.listen((playerState) async {
+      if (playerState.processingState == ProcessingState.completed) {
+        if (state.nextSong.isEmpty) {
+          await state.audioPlayer.seek(Duration.zero);
+          await togglePause();
+        } else {
+          state = state.copyWith(currentSong: state.nextSong.first);
+          await state.audioPlayer
+              .setUrl(state.nextSong.first.video.audioUrl, preload: true);
+          await togglePlay();
+          state.nextSong.removeAt(0);
+        }
+      }
+      if (playerState.processingState == ProcessingState.buffering) {
+        state.isbuffering = true;
+      }
+      if (playerState.processingState == ProcessingState.loading) {
+        state.isbuffering = true;
+      }
+      if (playerState.processingState == ProcessingState.ready) {
+        state.isbuffering = false;
+      }
+    });
   }
 
   /// 오디오 재생

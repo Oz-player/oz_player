@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -274,7 +272,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       songListAsync.when(
                           data: (data) {
                             return GestureDetector(
-                              onTap: () async {
+                              onTap: () {
                                 final nextSong = List<SongEntity>.from(data)
                                   ..removeAt(0);
 
@@ -285,7 +283,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                 ref
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .setNextSongList(nextSong);
-                                await ref
+                                ref
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .setAudioPlayer(
                                         data.first.video.audioUrl, -2);

@@ -8,7 +8,6 @@ import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -79,37 +78,6 @@ class SavePlaylistBottomSheet {
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Row(
                                   children: [
-                                    /*
-                                        SortedTypeBox(
-                                          ref: ref,
-                                          isOverlayOn: isOverlayOn,
-                                          setOverlayOn: setOverlayOn,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            print('tap');
-                                          },
-                                          child: Container(
-                                            width: 40,
-                                            height: 40,
-                                            color: Colors.transparent,
-                                            alignment: Alignment.center,
-                                            child: Container(
-                                              width: 24,
-                                              height: 24,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                color: Colors.grey[300],
-                                              ),
-                                              child: Icon(
-                                                Icons.keyboard_arrow_down,
-                                                color: Colors.grey[500],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        */
                                     Spacer(),
                                     TextButton(
                                       style: ButtonStyle(
@@ -255,37 +223,6 @@ class SavePlaylistBottomSheet {
                                       horizontal: 20),
                                   child: Row(
                                     children: [
-                                      /*
-                                      SortedTypeBox(
-                                        ref: ref,
-                                        isOverlayOn: isOverlayOn,
-                                        setOverlayOn: setOverlayOn,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print('tap');
-                                        },
-                                        child: Container(
-                                          width: 40,
-                                          height: 40,
-                                          color: Colors.transparent,
-                                          alignment: Alignment.center,
-                                          child: Container(
-                                            width: 24,
-                                            height: 24,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              color: Colors.grey[300],
-                                            ),
-                                            child: Icon(
-                                              Icons.keyboard_arrow_down,
-                                              color: Colors.grey[500],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      */
                                       Spacer(),
                                       TextButton(
                                         style: ButtonStyle(
