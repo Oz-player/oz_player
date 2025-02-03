@@ -20,4 +20,24 @@ class SongRepositoryImpl implements SongRepository {
       return null;
     }
   }
+
+  @override
+  Future<List<SongEntity>> getSongs(List<String> songIds) async {
+    LibraryEntity libraryEntity = LibraryEntity(
+        createdAt: DateTime.now(),
+        artist: 'artist',
+        imgUrl: 'imgUrl',
+        title: 'title',
+        favoriteArtist: 'favoriteArtist',
+        genre: 'genre',
+        memo: ' memo',
+        mood: 'mood',
+        situation: 'situation',
+        songId: 'songId');
+    final firebase = await _rawSongSource.getRawSongs(songIds);
+    return firebase
+        .map((e) =>
+            SongDTO(rawSongDto: e, libraryEntity: libraryEntity).toEntity())
+        .toList();
+  }
 }

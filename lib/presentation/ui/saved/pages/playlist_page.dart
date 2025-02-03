@@ -5,7 +5,9 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
@@ -260,49 +262,37 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                           ),
                         ),
                       ),
-                      if (widget.playlist.songIds.isNotEmpty)
-                        const SizedBox(
-                          height: 18,
-                        ),
-                      // -----------------
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      // ---------------------------
                       // 플레이리스트 재생 버튼
-                      // -----------------
-                      if (widget.playlist.songIds.isNotEmpty)
-                        GestureDetector(
-                          onTap: () {
-                            /* 플레이리스트에있는 SongEntity 정보들 가져와야 함
+                      // ---------------------------
+                      songListAsync.when(
+                          data: (data) {
+                            return GestureDetector(
+                              onTap: () {
+                                // 플레이리스트에있는 SongEntity 정보들 가져와야 함
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .setCurrentSong(data.first);
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .setAudioPlayer(
+                                        data.first.video.audioUrl, -1);
 
-                            List<SongEntity> songList = [];
+                                // audioplayerstate.nextSong.removeAt(0);
 
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setCurrentSong(songList.first);
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setAudioPlayer(
-                                    songList.first.video.audioUrl, -1);
-
-                            audioplayerstate.nextSong.removeAt(0);
-
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setNextSongList(songList);
-                            */
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .setNextSongList(data);
+                              },
+                              child: PlayButton(),
+                            );
                           },
-                          child: Container(
-                            width: 72,
-                            height: 72,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.main100,
-                            ),
-                            child: Icon(
-                              Icons.play_arrow,
-                              size: 44,
-                              color: AppColors.main600,
-                            ),
-                          ),
-                        ),
+                          // 오류 시 회색 버튼 출력
+                          error: (error, stackTrace) => PlayButtonDisabled(),
+                          loading: () => PlayButtonDisabled()),
                     ],
                   ),
                 ),
@@ -601,6 +591,10 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
     );
   }
 }
+
+// ---------------------------------------
+// 페이지 위젯
+// ---------------------------------------
 
 class BottomSheetMenuButton extends StatelessWidget {
   final String title;

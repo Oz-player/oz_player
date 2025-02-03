@@ -1,8 +1,8 @@
 import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class CardMiniWidget extends ConsumerWidget {
   const CardMiniWidget(
@@ -28,7 +28,7 @@ class CardMiniWidget extends ConsumerWidget {
           height: 70,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(3.43),
-            color: Colors.red,
+            color: AppColors.gray200,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(),
