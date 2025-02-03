@@ -329,13 +329,14 @@ $exceptlist
         }
         */
 
-        final searchSong = await spotifyDB.searchList(title!);
+        final searchSong = await spotifyDB.searchList('$artist - $title}');        
         final album = searchSong[0].album;
         final albumImges = album!['images'][0];
         imgUrl = albumImges['url'];
+        
 
         log('$title - $artist 검색성공');
-        final video = await videoEx.getVideoInfo(title, artist!);
+        final video = await videoEx.getVideoInfo(title!, artist!);
 
         final song = SongEntity(
           video: video,

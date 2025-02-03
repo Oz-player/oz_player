@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -19,13 +20,14 @@ class SavePlaylistBottomSheet {
           return Consumer(
             builder: (context, ref, child) {
               final playListAsync = ref.watch(playListViewModelProvider);
+              final playListState = ref.watch(savePlaylistBottomSheetProvider);
 
               return playListAsync.when(
                 error: (error, stackTrace) => Container(),
                 loading: () => Container(),
                 data: (data) {
                   if (data.isEmpty) {
-                    return Text('null');
+                    return Image.asset('assets/images/playlist_empty.png');
                   }
                   return Container(
                     decoration: BoxDecoration(
@@ -71,16 +73,11 @@ class SavePlaylistBottomSheet {
                                       horizontal: 20),
                                   child: Row(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12, right: 8),
-                                        child: Text(
-                                          '정렬 기준',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                          ),
-                                        ),
+                                      /*
+                                      SortedTypeBox(
+                                        ref: ref,
+                                        isOverlayOn: isOverlayOn,
+                                        setOverlayOn: setOverlayOn,
                                       ),
                                       GestureDetector(
                                         onTap: () {
@@ -106,29 +103,90 @@ class SavePlaylistBottomSheet {
                                           ),
                                         ),
                                       ),
+                                      */
+                                      Spacer(),
+                                      TextButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                                  Colors.grey[800]),
+                                        ),
+                                        onPressed: () {
+                                          context.pop();
+                                          showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (context) =>
+                                                  playlistDialog(
+                                                      title, description));
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 4),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                '새로 만들기',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Icon(
+                                                Icons.add,
+                                                size: 20,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: 480,
-                                    child: ListView.separated(
-                                      separatorBuilder: (context, index) =>
-                                          Divider(),
-                                      itemCount: data.length,
-                                      itemBuilder: (context, index) =>
-                                          Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 12),
-                                        height: 80,
-                                        child: InkWell(
-                                          onTap: () {},
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: data.length * 80.0 > 480
+                                      ? 480
+                                      : data.length * 80.0,
+                                  child: ListView.separated(
+                                    shrinkWrap: true,
+                                    separatorBuilder: (context, index) =>
+                                        Divider(
+                                      height: 0,
+                                      color:
+                                          Colors.black.withValues(alpha: 0.1),
+                                    ),
+                                    itemCount: data.length,
+                                    itemBuilder: (context, index) => Container(
+                                      decoration: BoxDecoration(
+                                        color:
+                                            playListState.isClickedPlayList ==
+                                                    index
+                                                ? Colors.black
+                                                    .withValues(alpha: 0.1)
+                                                : Colors.white,
+                                      ),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 12),
+                                      height: 80,
+                                      child: InkWell(
+                                        onTap: () {
+                                          ref
+                                              .read(
+                                                  savePlaylistBottomSheetProvider
+                                                      .notifier)
+                                              .isClickedPlayList(index);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -213,30 +271,53 @@ class SavePlaylistBottomSheet {
                                   ),
                                 ),
                                 SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 4, horizontal: 20),
+                                  child: SizedBox(
+                                    width: double.maxFinite,
+                                    height: 48,
+                                    child: TextButton(
+                                        style: TextButton.styleFrom(
+                                            disabledForegroundColor:
+                                                Colors.grey[400],
+                                            disabledBackgroundColor:
+                                                Colors.grey[300],
+                                            backgroundColor: playListState
+                                                        .isClickedPlayList ==
+                                                    -1
+                                                ? Colors.grey[300]
+                                                : Colors.grey[800],
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8))),
+                                        onPressed: () {
+                                          if(playListState.isClickedPlayList == -1){
+                                            return;
+                                          }
+
+                                          // 플레이리스트에 곡 추가 로직
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 24),
+                                           child: Text(
+                                            '새로운 음악 카드 받기',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(
                                   height: 32,
                                 ),
                               ],
                             ),
-                            Positioned(
-                                right: 20,
-                                bottom: 32,
-                                child: FloatingActionButton(
-                                  onPressed: () {
-                                    context.pop();
-                                    showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (context) =>
-                                            playlistDialog(title, description));
-                                  },
-                                  shape: CircleBorder(),
-                                  backgroundColor: Colors.grey[800],
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 28,
-                                    color: Colors.white,
-                                  ),
-                                )),
                           ],
                         ),
                       ],

@@ -269,7 +269,26 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       // -----------------
                       if (widget.playlist.songIds.isNotEmpty)
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            /* 플레이리스트에있는 SongEntity 정보들 가져와야 함
+
+                            List<SongEntity> songList = [];
+
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setCurrentSong(songList.first);
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setAudioPlayer(
+                                    songList.first.video.audioUrl, -1);
+
+                            audioplayerstate.nextSong.removeAt(0);
+
+                            ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .setNextSongList(songList);
+                            */
+                          },
                           child: Container(
                             width: 72,
                             height: 72,

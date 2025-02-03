@@ -91,11 +91,23 @@ class _LibraryState extends ConsumerState<Library> {
                       // ------------------------
                       GestureDetector(
                         onTap: () {
+                          // (SongEntity의 video값이 안들어오고 있음 확인바람)
                           final songs = ref.watch(librarySongsProvider(data));
+
                           ref
                               .read(cardPositionProvider.notifier)
                               .cardPositionIndex(index);
-                          print('tap');
+                          
+                          /*
+                          ref
+                              .read(audioPlayerViewModelProvider.notifier)
+                              .setCurrentSong(songs[index]);
+                          ref
+                              .read(audioPlayerViewModelProvider.notifier)
+                              .setAudioPlayer(songs[index].video.audioUrl, -1);
+                          */
+
+                          print(songs[index].video.audioUrl);
                           context.go(
                             '/saved/library',
                             extra: [data, songs],

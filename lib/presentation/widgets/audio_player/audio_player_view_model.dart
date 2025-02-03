@@ -10,10 +10,17 @@ class AudioPlayerState {
   bool isPlaying;
   int index;
   SongEntity? currentSong;
+  List<SongEntity> nextSong;
   bool isbuffering;
 
-  AudioPlayerState(this.audioPlayer, this.playerStateSubscription,
-      this.isPlaying, this.index, this.currentSong, this.isbuffering);
+  AudioPlayerState(
+      this.audioPlayer,
+      this.playerStateSubscription,
+      this.isPlaying,
+      this.index,
+      this.currentSong,
+      this.nextSong,
+      this.isbuffering);
 
   AudioPlayerState copyWith(
           {AudioPlayer? audioPlayer,
@@ -21,6 +28,7 @@ class AudioPlayerState {
           bool? isPlaying,
           int? index,
           SongEntity? currentSong,
+          List<SongEntity>? nextSong,
           bool? isbuffering}) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
@@ -28,18 +36,29 @@ class AudioPlayerState {
           isPlaying ?? this.isPlaying,
           index ?? this.index,
           currentSong ?? this.currentSong,
+          nextSong ?? this.nextSong,
           isbuffering ?? this.isPlaying);
 }
 
 class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
-    return AudioPlayerState(AudioPlayer(), null, false, -1, null, false);
+    return AudioPlayerState(AudioPlayer(), null, false, -1, null, [], false);
   }
 
   /// 오디오 플레이어에 현재 곡 정보 저장
   void setCurrentSong(SongEntity song) {
     state.currentSong = song;
+  }
+
+  /// 오디오 플레이어에 다음곡 정보 저장
+  void setNextSong(SongEntity song) {
+    state.nextSong.add(song);
+  }
+
+  /// 오디오 플레이어에 다음곡 무더기 저장
+  void setNextSongList(List<SongEntity> songList) {
+    state.nextSong.addAll(songList);
   }
 
   /// 오디오 연결 + 스트림 연결 및 자동재생
@@ -61,8 +80,16 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       state.playerStateSubscription ??=
           state.audioPlayer.playerStateStream.listen((playerState) async {
         if (playerState.processingState == ProcessingState.completed) {
-          await state.audioPlayer.seek(Duration.zero);
-          await togglePause();
+          if (state.nextSong.isEmpty) {
+            await state.audioPlayer.seek(Duration.zero);
+            await togglePause();
+          } else {
+            await state.audioPlayer
+                .setUrl(state.nextSong.first.video.audioUrl, preload: true);
+            state.currentSong = state.nextSong.first;
+            state.nextSong.removeAt(0);
+            await togglePlay();
+          }
         }
         if (playerState.processingState == ProcessingState.buffering) {
           state.isbuffering = true;
@@ -116,7 +143,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     } catch (e) {
       print("오디오 스트림 취소시 오류 $e");
     } finally {
-      state = state.copyWith(index: -1);
+      state = state.copyWith(index: -1, currentSong: null);
     }
   }
 
