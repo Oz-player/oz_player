@@ -30,4 +30,9 @@ class RawSongRepositoryImpl implements RawSongRepository {
   Future<void> updateRawSongByPlaylist(RawSongDto dto) async {
     await _source.updateRawSongByPlaylist(dto);
   }
+
+  @override
+  Future<void> updateVideo(RawSongDto dto) async {
+    await _source.updateVideo(dto);
+  }
 }
