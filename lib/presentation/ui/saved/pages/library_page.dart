@@ -28,6 +28,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
   void initState() {
     super.initState();
     Future.microtask(() async {
+      ref.read(cardPositionProvider.notifier).cardPositionIndex(0);
       positionIndex = await ref.watch(cardPositionProvider);
     });
   }
@@ -101,7 +102,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   SizedBox(
                     height: 340,
                     child: Swiper(
-                      loop: false,
+                      loop: true,
                       itemBuilder: (BuildContext context, int index) {
                         final length = widget.library.length;
                         if (length == 0) {
