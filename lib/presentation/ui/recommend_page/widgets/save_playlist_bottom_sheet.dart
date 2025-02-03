@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
+import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
@@ -21,13 +25,22 @@ class SavePlaylistBottomSheet {
             builder: (context, ref, child) {
               final playListAsync = ref.watch(playListViewModelProvider);
               final playListState = ref.watch(savePlaylistBottomSheetProvider);
+              final loading = ref.watch(loadingViewModelProvider).isLoading;
+              final songEntity = ref
+                  .watch(conditionViewModelProvider)
+                  .recommendSongs[ref.watch(cardPositionProvider)];
 
               return playListAsync.when(
                 error: (error, stackTrace) => Container(),
                 loading: () => Container(),
                 data: (data) {
+                  String playlistTitle;
+
                   if (data.isEmpty) {
                     return Image.asset('assets/images/playlist_empty.png');
+                  }
+                  if (playListState.blind) {
+                    return SizedBox.shrink();
                   }
                   return Container(
                     decoration: BoxDecoration(
@@ -112,6 +125,12 @@ class SavePlaylistBottomSheet {
                                                   Colors.grey[800]),
                                         ),
                                         onPressed: () {
+                                          if (ref
+                                              .watch(loadingViewModelProvider)
+                                              .isLoading) {
+                                            return;
+                                          }
+
                                           context.pop();
                                           showDialog(
                                               barrierDismissible: false,
@@ -293,18 +312,65 @@ class SavePlaylistBottomSheet {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8))),
-                                        onPressed: () {
-                                          if(playListState.isClickedPlayList == -1){
+                                        onPressed: () async {
+                                          if (playListState.isClickedPlayList ==
+                                              -1) {
                                             return;
                                           }
 
+                                          if (loading) {
+                                            return;
+                                          }
+
+                                          playlistTitle = data[playListState.isClickedPlayList!].listName;
+
+                                          ref
+                                              .read(loadingViewModelProvider
+                                                  .notifier)
+                                              .startLoading(4);
+
+                                          ref
+                                              .read(
+                                                  savePlaylistBottomSheetProvider
+                                                      .notifier)
+                                              .isBlind();
+
+                                          final entity = RawSongEntity(
+                                              countLibrary: 0,
+                                              countPlaylist: 0,
+                                              video: songEntity.video,
+                                              title: songEntity.title,
+                                              imgUrl: songEntity.imgUrl,
+                                              artist: songEntity.artist);
+
                                           // 플레이리스트에 곡 추가 로직
+                                          await ref
+                                              .read(rawSongUsecaseProvider)
+                                              .updateRawSongByLibrary(entity);
+
+                                          await ref
+                                              .read(playListsUsecaseProvider)
+                                              .addSong(playlistTitle, entity);
+
+                                          await ref
+                                              .read(libraryViewModelProvider
+                                                  .notifier)
+                                              .getLibrary();
+
+                                          if (context.mounted) {
+                                            context.pop();
+                                            ref.read(savePlaylistBottomSheetProvider.notifier).reflash();
+                                            ref
+                                                .read(loadingViewModelProvider
+                                                    .notifier)
+                                                .endLoading();
+                                          }
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 24),
-                                           child: Text(
-                                            '새로운 음악 카드 받기',
+                                          child: Text(
+                                            '플레이리스트에 음악카드 추가하기',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
