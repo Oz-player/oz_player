@@ -454,7 +454,7 @@ class SavePlaylistBottomSheet {
                                           // 플레이리스트에 곡 추가 로직
                                           await ref
                                               .read(rawSongUsecaseProvider)
-                                              .updateRawSongByLibrary(entity);
+                                              .updateRawSongByPlaylist(entity);
 
                                           await ref
                                               .read(playListsUsecaseProvider)

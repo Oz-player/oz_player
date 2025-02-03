@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
@@ -93,12 +95,20 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         final videoEx = ref.read(videoInfoUsecaseProvider);
         final video = await videoEx.getVideoInfo(
             state.currentSong!.title, state.currentSong!.artist);
-        log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 다시 받음');
+        final update = RawSongEntity(
+            countLibrary: 0,
+            countPlaylist: 0,
+            video: video,
+            title: '',
+            imgUrl: '',
+            artist: '');
+
+        ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+        log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
         await state.audioPlayer.setUrl(video.audioUrl, preload: true);
         setSubscription();
         await togglePlay();
-
-        
       } catch (e) {
         log('인터넷 연결이 안됨');
       }
@@ -114,9 +124,34 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
           await togglePause();
         } else {
           state = state.copyWith(currentSong: state.nextSong.first);
-          await state.audioPlayer
-              .setUrl(state.nextSong.first.video.audioUrl, preload: true);
-          await togglePlay();
+          try {
+            await state.audioPlayer
+                .setUrl(state.nextSong.first.video.audioUrl, preload: true);
+            await togglePlay();
+          } catch (e) {
+            try {
+              final videoEx = ref.read(videoInfoUsecaseProvider);
+              final video = await videoEx.getVideoInfo(
+                  state.currentSong!.title, state.currentSong!.artist);
+              final update = RawSongEntity(
+                  countLibrary: 0,
+                  countPlaylist: 0,
+                  video: video,
+                  title: '',
+                  imgUrl: '',
+                  artist: '');
+
+              ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+              log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
+              await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+              setSubscription();
+              await togglePlay();
+            } catch (e) {
+              log('인터넷 연결이 안됨');
+            }
+          }
+
           state.nextSong.removeAt(0);
         }
       }
