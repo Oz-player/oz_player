@@ -73,7 +73,6 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
           Padding(
             padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // -------------------
@@ -113,7 +112,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                 color: Colors.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8),
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Column(

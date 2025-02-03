@@ -129,7 +129,6 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           children: <Widget>[
             // 상단 요소 : 이미지, 제목, 메모
             Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // -------------------
