@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
@@ -281,21 +284,23 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       songListAsync.when(
                           data: (data) {
                             return GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                final nextSong = List<SongEntity>.from(data)
+                                  ..removeAt(0);
+
                                 // 플레이리스트에있는 SongEntity 정보들 가져와야 함
                                 ref
                                     .read(audioPlayerViewModelProvider.notifier)
                                     .setCurrentSong(data.first);
                                 ref
                                     .read(audioPlayerViewModelProvider.notifier)
-                                    .setAudioPlayer(
-                                        data.first.video.audioUrl, -1);
-
-                                // audioplayerstate.nextSong.removeAt(0);
-
-                                ref
+                                    .setNextSongList(nextSong);
+                                await ref
                                     .read(audioPlayerViewModelProvider.notifier)
-                                    .setNextSongList(data);
+                                    .setAudioPlayer(
+                                        data.first.video.audioUrl, -2);
+
+                                setState(() {});
                               },
                               child: PlayButton(),
                             );
