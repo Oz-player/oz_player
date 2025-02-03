@@ -42,6 +42,20 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
         .loadSongs(widget.playlist.songIds);
   }
 
+  // AudioPlayer에 리스트를 넣어서 재생하는 기능
+  Future<void> addListInAudioPlayer(List<SongEntity> data) async {
+    final nextSong = List<SongEntity>.from(data)..removeAt(0);
+
+    // 플레이리스트에있는 SongEntity 정보들 가져와야 함
+    ref.read(audioPlayerViewModelProvider.notifier).setCurrentSong(data.first);
+    ref.read(audioPlayerViewModelProvider.notifier).setNextSongList(nextSong);
+    await ref
+        .read(audioPlayerViewModelProvider.notifier)
+        .setAudioPlayer(data.first.video.audioUrl, -2);
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var songListAsync = ref.watch(playlistSongsProvider);
@@ -168,17 +182,43 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                         ],
                                       ),
                                       // -------------------
-                                      // 음악 세부 메뉴
+                                      // 플레이리스트 세부 메뉴
+                                      // -------------------
+                                      // -------------------
+                                      // 1. 셔플 재생
                                       // -------------------
                                       const SizedBox(
                                         height: 24,
                                       ),
                                       // 음악 재생
-                                      BottomSheetMenuButton(title: '셔플 재생'),
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.pop();
+                                          songListAsync.when(
+                                            data: (data) async {
+                                              List<SongEntity> list = [];
+                                              for (var item in data) {
+                                                list.add(item);
+                                              }
+                                              list.shuffle();
+                                              for (var item in list) {
+                                                print(item.title);
+                                              }
+                                              await addListInAudioPlayer(list);
+                                            },
+                                            error: (error, stackTrace) {},
+                                            loading: () {},
+                                          );
+                                        },
+                                        child: BottomSheetMenuButton(
+                                            title: '셔플 재생'),
+                                      ),
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      // 음악을 다른 플레이리스트에 저장
+                                      // -------------------
+                                      // 2. 플레이리스트 편집
+                                      // -------------------
                                       GestureDetector(
                                         onTap: () {
                                           context.pop();
@@ -194,7 +234,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      // 음악 삭제
+                                      // -------------------
+                                      // 3. 플레이리스트 삭제
+                                      // -------------------
                                       GestureDetector(
                                         onTap: () {
                                           showDialog(
@@ -282,22 +324,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                           data: (data) {
                             return GestureDetector(
                               onTap: () async {
-                                final nextSong = List<SongEntity>.from(data)
-                                  ..removeAt(0);
-
-                                // 플레이리스트에있는 SongEntity 정보들 가져와야 함
-                                ref
-                                    .read(audioPlayerViewModelProvider.notifier)
-                                    .setCurrentSong(data.first);
-                                ref
-                                    .read(audioPlayerViewModelProvider.notifier)
-                                    .setNextSongList(nextSong);
-                                await ref
-                                    .read(audioPlayerViewModelProvider.notifier)
-                                    .setAudioPlayer(
-                                        data.first.video.audioUrl, -2);
-
-                                setState(() {});
+                                await addListInAudioPlayer(data);
                               },
                               child: PlayButton(),
                             );
