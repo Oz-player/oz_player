@@ -102,7 +102,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 12,
+                    height: 32,
                   ),
                   // -------------------------------------------------------
                   // Swiper 위젯
