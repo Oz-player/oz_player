@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:oz_player/domain/entitiy/library_entity.dart';
-import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/card_widget_library.dart';
@@ -12,10 +11,9 @@ import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class LibraryPage extends ConsumerStatefulWidget {
-  const LibraryPage({super.key, required this.library, required this.songs});
+  const LibraryPage({super.key, required this.library});
 
   final List<LibraryEntity> library;
-  final List<SongEntity> songs;
 
   @override
   ConsumerState<LibraryPage> createState() => _LibraryPageState();
@@ -27,7 +25,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
   @override
   void initState() {
     super.initState();
+    // 최초 인덱스 0으로 설정
     Future.microtask(() async {
+      ref.read(cardPositionProvider.notifier).cardPositionIndex(0);
       positionIndex = await ref.watch(cardPositionProvider);
     });
   }
@@ -75,6 +75,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   SizedBox(
                     height: 8,
                   ),
+                  // -------------------------------------------------------
+                  // 카드 생성일
+                  // -------------------------------------------------------
                   Text(
                     DateFormat('yyyy.MM.dd').format(widget
                         .library[ref.watch(cardPositionProvider)].createdAt),
@@ -84,6 +87,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   SizedBox(
                     height: 16,
                   ),
+                  // -------------------------------------------------------
+                  // 태그 박스
+                  // -------------------------------------------------------
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -98,10 +104,13 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   SizedBox(
                     height: 12,
                   ),
+                  // -------------------------------------------------------
+                  // Swiper 위젯
+                  // -------------------------------------------------------
                   SizedBox(
                     height: 340,
                     child: Swiper(
-                      loop: false,
+                      loop: true,
                       itemBuilder: (BuildContext context, int index) {
                         final length = widget.library.length;
                         if (length == 0) {
@@ -142,6 +151,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   ),
                 ],
               ),
+              // -------------------------------------------------------
+              // 오디오 플레이어
+              // -------------------------------------------------------
               Positioned(
                 left: 0,
                 right: 0,

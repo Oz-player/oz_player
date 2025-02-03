@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
@@ -12,6 +15,7 @@ class AudioPlayerState {
   SongEntity? currentSong;
   List<SongEntity> nextSong;
   bool isbuffering;
+  bool loadingAudio;
 
   AudioPlayerState(
       this.audioPlayer,
@@ -20,7 +24,8 @@ class AudioPlayerState {
       this.index,
       this.currentSong,
       this.nextSong,
-      this.isbuffering);
+      this.isbuffering,
+      this.loadingAudio);
 
   AudioPlayerState copyWith(
           {AudioPlayer? audioPlayer,
@@ -29,7 +34,8 @@ class AudioPlayerState {
           int? index,
           SongEntity? currentSong,
           List<SongEntity>? nextSong,
-          bool? isbuffering}) =>
+          bool? isbuffering,
+          bool? loadingAudio}) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
           playerStateSubscription ?? this.playerStateSubscription,
@@ -37,13 +43,15 @@ class AudioPlayerState {
           index ?? this.index,
           currentSong ?? this.currentSong,
           nextSong ?? this.nextSong,
-          isbuffering ?? this.isPlaying);
+          isbuffering ?? this.isPlaying,
+          loadingAudio ?? this.loadingAudio);
 }
 
 class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
-    return AudioPlayerState(AudioPlayer(), null, false, -1, null, [], false);
+    return AudioPlayerState(
+        AudioPlayer(), null, false, -1, null, [], false, false);
   }
 
   /// 오디오 플레이어에 현재 곡 정보 저장
@@ -62,6 +70,14 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       log('리스트 추가 : ${list.title}');
     }
     state.nextSong.addAll(songList);
+  }
+
+  void isStartLoadingAudioPlayer() {
+    state = state.copyWith(loadingAudio: true);
+  }
+
+  void isEndLoadingAudioPlayer() {
+    state = state.copyWith(loadingAudio: false);
   }
 
   /// 오디오 연결 + 스트림 연결 및 자동재생
@@ -85,35 +101,83 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     try {
       await state.audioPlayer.setUrl(audioUrl, preload: true);
 
-      state.playerStateSubscription ??=
-          state.audioPlayer.playerStateStream.listen((playerState) async {
-        if (playerState.processingState == ProcessingState.completed) {
-          if (state.nextSong.isEmpty) {
-            await state.audioPlayer.seek(Duration.zero);
-            await togglePause();
-          } else {
-            state = state.copyWith(currentSong: state.nextSong.first);
+      setSubscription();
+      await togglePlay();
+    } catch (e) {
+      try {
+        final videoEx = ref.read(videoInfoUsecaseProvider);
+        final video = await videoEx.getVideoInfo(
+            state.currentSong!.title, state.currentSong!.artist);
+        final update = RawSongEntity(
+            countLibrary: 0,
+            countPlaylist: 0,
+            video: video,
+            title: '',
+            imgUrl: '',
+            artist: '');
+
+        ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+        log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
+        await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+        setSubscription();
+        await togglePlay();
+      } catch (e) {
+        log('인터넷 연결이 안됨');
+      }
+    }
+  }
+
+  void setSubscription() {
+    state.playerStateSubscription ??=
+        state.audioPlayer.playerStateStream.listen((playerState) async {
+      if (playerState.processingState == ProcessingState.completed) {
+        if (state.nextSong.isEmpty) {
+          await state.audioPlayer.seek(Duration.zero);
+          await togglePause();
+        } else {
+          state = state.copyWith(currentSong: state.nextSong.first);
+          try {
             await state.audioPlayer
                 .setUrl(state.nextSong.first.video.audioUrl, preload: true);
             await togglePlay();
-            state.nextSong.removeAt(0);
-          }
-        }
-        if (playerState.processingState == ProcessingState.buffering) {
-          state.isbuffering = true;
-        }
-        if (playerState.processingState == ProcessingState.loading) {
-          state.isbuffering = true;
-        }
-        if (playerState.processingState == ProcessingState.ready) {
-          state.isbuffering = false;
-        }
-      });
+          } catch (e) {
+            try {
+              final videoEx = ref.read(videoInfoUsecaseProvider);
+              final video = await videoEx.getVideoInfo(
+                  state.currentSong!.title, state.currentSong!.artist);
+              final update = RawSongEntity(
+                  countLibrary: 0,
+                  countPlaylist: 0,
+                  video: video,
+                  title: '',
+                  imgUrl: '',
+                  artist: '');
 
-      await togglePlay();
-    } catch (e) {
-      log('잘못된 오디오 url 이거나, 인터넷 연결 문제 \n$e');
-    }
+              ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+              log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
+              await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+              setSubscription();
+              await togglePlay();
+            } catch (e) {
+              log('인터넷 연결이 안됨');
+            }
+          }
+
+          state.nextSong.removeAt(0);
+        }
+      }
+      if (playerState.processingState == ProcessingState.buffering) {
+        state.isbuffering = true;
+      }
+      if (playerState.processingState == ProcessingState.loading) {
+        state.isbuffering = true;
+      }
+      if (playerState.processingState == ProcessingState.ready) {
+        state.isbuffering = false;
+      }
+    });
   }
 
   /// 오디오 재생

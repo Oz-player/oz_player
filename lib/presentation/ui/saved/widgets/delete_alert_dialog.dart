@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 // 플레이리스트 - 노래 삭제 BottomSheet
 class DeleteSongAlertDialog extends ConsumerWidget {
@@ -75,7 +76,10 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
-                          context.pop();
+
+                          if (context.mounted) {
+                            context.pop();
+                          }
                         },
                         child: Text(
                           '확인',
@@ -162,9 +166,12 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
-                          context.pop();
-                          context.pop();
-                          context.pop();
+
+                          if (context.mounted) {
+                            context.pop();
+                            context.pop();
+                            context.pop();
+                          }
                         },
                         child: Text(
                           '확인',
@@ -186,10 +193,14 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
   }
 }
 
+// 플레이리스트 편집 - 화면 벗어날 시 알림
 class CancleEditAlertDialog extends ConsumerWidget {
   const CancleEditAlertDialog({
     super.key,
+    this.destination,
   });
+
+  final int? destination;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -233,10 +244,30 @@ class CancleEditAlertDialog extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(8)))),
                         onPressed: () {
                           context.pop();
-                          context.pop();
+                          // 플레이리스트 수정 중에 bottomNavigation 탭 클릭한 경우
+                          if (destination != null) {
+                            ref
+                                .read(bottomNavigationProvider.notifier)
+                                .updatePage(destination!);
+                          }
+                          // edit 페이지에서 뒤로가기 버튼 클릭한 경우
+                          else {
+                            ref
+                                .read(bottomNavigationProvider.notifier)
+                                .updatePage(0);
+                          }
+                          if (destination == 0) {
+                            context.go('/saved');
+                          } else if (destination == 1) {
+                            context.go('/home');
+                          } else if (destination == 2) {
+                            context.go('/search');
+                          } else {
+                            context.pop();
+                          }
                         },
                         child: Text(
-                          '나중에 할게요',
+                          '그만 할게요',
                           style: TextStyle(color: AppColors.gray600),
                         )),
                   ),
