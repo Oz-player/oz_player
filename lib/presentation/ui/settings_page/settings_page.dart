@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/go_app_settings.dart';
 import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
-import 'package:oz_player/presentation/ui/settings_page/sample_page.dart';
+import 'package:oz_player/presentation/ui/settings_page/ask_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/version_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
 
@@ -48,7 +48,7 @@ class SettingsPage extends StatelessWidget {
             SizedBox(height: 12),
             SettingsButton(
               text: '문의하기',
-              goToThePage: SamplePage(),
+              goToThePage: AskPage(),
             ),
             ExitButtons(),
           ],

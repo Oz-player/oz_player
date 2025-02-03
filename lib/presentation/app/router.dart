@@ -13,6 +13,7 @@ import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/pages/saved_page.dart';
 import 'package:oz_player/presentation/ui/saved/pages/edit_playlist_page.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
+import 'package:oz_player/presentation/ui/settings_page/ask_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
@@ -101,6 +102,10 @@ final router = GoRouter(
         GoRoute(
           path: 'revoke',
           builder: (context, state) => RevokePage(),
+        ),
+        GoRoute(
+          path: 'ask',
+          builder: (context, state) => AskPage(),
         ),
       ],
     ),
