@@ -9,21 +9,24 @@ import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.d
 class SaveSongBottomSheetState {
   SongEntity? savedSong;
   int page;
+  bool blind;
 
-  SaveSongBottomSheetState(this.savedSong, this.page);
+  SaveSongBottomSheetState(this.savedSong, this.page, this.blind);
 
   SaveSongBottomSheetState copyWith({
     SongEntity? savedSong,
     int? page,
+    bool? blind,
   }) =>
-      SaveSongBottomSheetState(savedSong ?? this.savedSong, page ?? this.page);
+      SaveSongBottomSheetState(
+          savedSong ?? this.savedSong, page ?? this.page, blind ?? this.blind);
 }
 
 class SaveSongBottomSheetViewModel
     extends AutoDisposeNotifier<SaveSongBottomSheetState> {
   @override
   SaveSongBottomSheetState build() {
-    return SaveSongBottomSheetState(null, 0);
+    return SaveSongBottomSheetState(null, 0, false);
   }
 
   void reflash() {
@@ -83,6 +86,10 @@ class SaveSongBottomSheetViewModel
   /// 페이지 초기화
   void resetPage() {
     state = state.copyWith(page: 0);
+  }
+
+  void isBlind() {
+    state = state.copyWith(blind: true);
   }
 }
 

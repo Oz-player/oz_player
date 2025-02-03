@@ -24,4 +24,9 @@ class RawSongUsecase {
     final dto = RawSongDto.fromEntity(entity);
     await _repository.updateRawSongByPlaylist(dto);
   }
+
+  Future<void> updateVideo(RawSongEntity entitiy) async {
+    final dto = RawSongDto.fromEntity(entitiy);
+    await _repository.updateVideo(dto);
+  }
 }

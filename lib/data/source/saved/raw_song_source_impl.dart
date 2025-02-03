@@ -32,7 +32,7 @@ class RawSongSourceImpl implements RawSongSource {
           return RawSongDto.fromJson(doc.data()!);
         }
         return null;
-      });
+      }).toList();
       final results = await Future.wait(futures);
       return results.whereType<RawSongDto>().toList();
     } catch (e, stackTrace) {
@@ -41,13 +41,14 @@ class RawSongSourceImpl implements RawSongSource {
     }
   }
 
+  // DB에 Song 저장하고 countLibrary 증가
   @override
   Future<void> updateRawSongByLibrary(RawSongDto rawSongDto) async {
     final doc =
         await _firestore.collection('Song').doc(rawSongDto.video.id).get();
     if (doc.exists) {
       final count = (doc.data() as Map<String, dynamic>)['countLibrary'];
-      await _firestore.collection('Song').doc().update(
+      await _firestore.collection('Song').doc(rawSongDto.video.id).update(
         {
           'countLibrary': count + 1,
         },
@@ -62,8 +63,40 @@ class RawSongSourceImpl implements RawSongSource {
     }
   }
 
+  // DB에 Song 저장하고 countPlaylist 증가
   @override
-  Future<void> updateRawSongByPlaylist(RawSongDto rawSongDto) {
-    throw UnimplementedError();
+  Future<void> updateRawSongByPlaylist(RawSongDto rawSongDto) async {
+    final doc =
+        await _firestore.collection('Song').doc(rawSongDto.video.id).get();
+    if (doc.exists) {
+      final count = (doc.data() as Map<String, dynamic>)['countLibrary'];
+      await _firestore.collection('Song').doc(rawSongDto.video.id).update(
+        {
+          'countPlaylist': count + 1,
+        },
+      );
+      print('count가 증가하였습니다.');
+    } else {
+      await _firestore
+          .collection('Song')
+          .doc(rawSongDto.video.id)
+          .set(rawSongDto.toJson());
+      print('${rawSongDto.video.id}을 Song에 저장하였습니다.');
+    }
+  }
+
+  @override
+  Future<void> updateVideo(RawSongDto dto) async {
+    final doc = await _firestore.collection('Song').doc(dto.video.id).get();
+    if (doc.exists) {
+      final updateRef = _firestore.collection('Song').doc(dto.video.id);
+      await updateRef.update({
+        'video': FieldValue.delete(),
+      });
+      await updateRef.update({
+        'video': dto.video.toJson(),
+      });
+      print('video를 업데이트하였습니다.');
+    }
   }
 }

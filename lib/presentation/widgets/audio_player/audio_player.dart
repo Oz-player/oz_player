@@ -8,7 +8,7 @@ class AudioPlayer extends StatelessWidget {
   const AudioPlayer({super.key, this.colorMode});
 
   // 회색(하얀배경일때) : true, 하얀색(검은배경일때) : false
-  final colorMode;
+  final dynamic colorMode;
 
   @override
   Widget build(BuildContext context) {

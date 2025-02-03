@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TextBoxWidgets extends StatelessWidget {
-  const TextBoxWidgets({super.key, this.state});
-  final state;
+  const TextBoxWidgets({super.key, required this.state});
+  final dynamic state;
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 
 class AudioPlayerState {
   AudioPlayer audioPlayer;
@@ -58,6 +61,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
 
   /// 오디오 플레이어에 다음곡 무더기 저장
   void setNextSongList(List<SongEntity> songList) {
+    for (var list in songList) {
+      log('리스트 추가 : ${list.title}');
+    }
     state.nextSong.addAll(songList);
   }
 
@@ -72,40 +78,93 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       await toggleStop();
     }
 
-    state.index = index;
+    // -1 : 아무 곡도 할당되지 않은 상태
+    // -2 : 플레이리스트 연속 재생 상태 (재생버튼 눌렀을 경우 다시 처음부터 재생되도록)
+    // 0 ~ 4 : Card 추천곡 트는 상태 (같은곡을 재생했을 경우 재생상태 이어가기)
+    if (index != -2) {
+      state.index = index;
+    }
 
     try {
       await state.audioPlayer.setUrl(audioUrl, preload: true);
 
-      state.playerStateSubscription ??=
-          state.audioPlayer.playerStateStream.listen((playerState) async {
-        if (playerState.processingState == ProcessingState.completed) {
-          if (state.nextSong.isEmpty) {
-            await state.audioPlayer.seek(Duration.zero);
-            await togglePause();
-          } else {
-            await state.audioPlayer
-                .setUrl(state.nextSong.first.video.audioUrl, preload: true);
-            state.currentSong = state.nextSong.first;
-            state.nextSong.removeAt(0);
-            await togglePlay();
-          }
-        }
-        if (playerState.processingState == ProcessingState.buffering) {
-          state.isbuffering = true;
-        }
-        if (playerState.processingState == ProcessingState.loading) {
-          state.isbuffering = true;
-        }
-        if (playerState.processingState == ProcessingState.ready) {
-          state.isbuffering = false;
-        }
-      });
-
+      setSubscription();
       await togglePlay();
     } catch (e) {
-      log('잘못된 오디오 url 이거나, 인터넷 연결 문제 \n$e');
+      try {
+        final videoEx = ref.read(videoInfoUsecaseProvider);
+        final video = await videoEx.getVideoInfo(
+            state.currentSong!.title, state.currentSong!.artist);
+        final update = RawSongEntity(
+            countLibrary: 0,
+            countPlaylist: 0,
+            video: video,
+            title: '',
+            imgUrl: '',
+            artist: '');
+
+        ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+        log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
+        await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+        setSubscription();
+        await togglePlay();
+      } catch (e) {
+        log('인터넷 연결이 안됨');
+      }
     }
+  }
+
+  void setSubscription() {
+    state.playerStateSubscription ??=
+        state.audioPlayer.playerStateStream.listen((playerState) async {
+      if (playerState.processingState == ProcessingState.completed) {
+        if (state.nextSong.isEmpty) {
+          await state.audioPlayer.seek(Duration.zero);
+          await togglePause();
+        } else {
+          state = state.copyWith(currentSong: state.nextSong.first);
+          try {
+            await state.audioPlayer
+                .setUrl(state.nextSong.first.video.audioUrl, preload: true);
+            await togglePlay();
+          } catch (e) {
+            try {
+              final videoEx = ref.read(videoInfoUsecaseProvider);
+              final video = await videoEx.getVideoInfo(
+                  state.currentSong!.title, state.currentSong!.artist);
+              final update = RawSongEntity(
+                  countLibrary: 0,
+                  countPlaylist: 0,
+                  video: video,
+                  title: '',
+                  imgUrl: '',
+                  artist: '');
+
+              ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+              log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
+              await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+              setSubscription();
+              await togglePlay();
+            } catch (e) {
+              log('인터넷 연결이 안됨');
+            }
+          }
+
+          state.nextSong.removeAt(0);
+        }
+      }
+      if (playerState.processingState == ProcessingState.buffering) {
+        state.isbuffering = true;
+      }
+      if (playerState.processingState == ProcessingState.loading) {
+        state.isbuffering = true;
+      }
+      if (playerState.processingState == ProcessingState.ready) {
+        state.isbuffering = false;
+      }
+    });
   }
 
   /// 오디오 재생
@@ -143,7 +202,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     } catch (e) {
       print("오디오 스트림 취소시 오류 $e");
     } finally {
-      state = state.copyWith(index: -1, currentSong: null);
+      state = state.copyWith(index: -1, currentSong: null, nextSong: []);
     }
   }
 
@@ -154,11 +213,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       await state.audioPlayer.pause();
     }
 
-    final duration = state.audioPlayer.duration;
+    final duration = state.audioPlayer.duration! - Duration(milliseconds: 100);
     final currentPosition = state.audioPlayer.position;
     final newPosition = currentPosition + Duration(seconds: sec);
 
-    if (newPosition > duration!) {
+    if (newPosition > duration) {
       await state.audioPlayer.seek(duration);
     } else {
       await state.audioPlayer.seek(newPosition);

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 
+// 보관함 요소 정렬 방법 상태 관리
 class SortedTypeBox extends StatelessWidget {
   const SortedTypeBox({
     super.key,

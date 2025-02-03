@@ -32,7 +32,7 @@ class LoadingWidget extends ConsumerWidget {
           loadingState.loadingImage[loadingState.index].isEmpty
               ? SizedBox.shrink()
               : Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 100),
                 child: Image.asset(loadingState.loadingImage[loadingState.index]),
               ),
           Spacer(),

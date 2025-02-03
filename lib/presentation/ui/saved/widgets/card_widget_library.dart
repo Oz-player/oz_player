@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 
+// 라이브러리 페이지에서 쓰는 CardWidget
 class CardWidgetLibrary extends ConsumerWidget {
   const CardWidgetLibrary({
     super.key,

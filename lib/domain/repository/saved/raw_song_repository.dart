@@ -12,4 +12,7 @@ abstract interface class RawSongRepository {
 
   // 플레이리스트에서 DB에 Song 객체 업로드
   Future<void> updateRawSongByPlaylist(RawSongDto dto);
+
+  // video 객체 업데이트
+  Future<void> updateVideo(RawSongDto dto);
 }

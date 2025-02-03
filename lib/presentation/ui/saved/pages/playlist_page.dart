@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
@@ -39,8 +43,23 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
         .loadSongs(widget.playlist.songIds);
   }
 
+  // AudioPlayer에 리스트를 넣어서 재생하는 기능
+  Future<void> addListInAudioPlayer(List<SongEntity> data) async {
+    final nextSong = List<SongEntity>.from(data)..removeAt(0);
+
+    // 플레이리스트에있는 SongEntity 정보들 가져와야 함
+    ref.read(audioPlayerViewModelProvider.notifier).setCurrentSong(data.first);
+    ref.read(audioPlayerViewModelProvider.notifier).setNextSongList(nextSong);
+    await ref
+        .read(audioPlayerViewModelProvider.notifier)
+        .setAudioPlayer(data.first.video.audioUrl, -2);
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    // 플레이리스트의 음악 목록 Async
     var songListAsync = ref.watch(playlistSongsProvider);
 
     return Scaffold(
@@ -52,18 +71,27 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
             fontSize: 18,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.push('/settings');
+              },
+              icon: Image.asset('assets/images/option_icon.png')),
+          SizedBox(
+            width: 8,
+          ),
+        ],
       ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // -------------------
+                // ------------------------------------------------------
                 // 플레이리스트 대표 이미지
-                // -------------------
+                // ------------------------------------------------------
                 Container(
                   width: double.infinity,
                   height: 140,
@@ -98,7 +126,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                 color: Colors.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8),
                                 child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Column(
@@ -107,7 +135,10 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       Row(
                                         children: [
                                           // --------------------------------
-                                          // bottomsheet - 플레이리스트 대표 이미지
+                                          // bottomsheet
+                                          // --------------------------------
+                                          // --------------------------------
+                                          // bottomSheet : 1. 플레이리스트 대표 이미지
                                           // --------------------------------
                                           Container(
                                             width: 48,
@@ -128,9 +159,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                           const SizedBox(
                                             width: 16,
                                           ),
-                                          // ---------------------
-                                          // bottomsheet - 노래 제목
-                                          // ---------------------
+                                          // --------------------------------
+                                          // bottomSheet : 2. 노래 제목
+                                          // --------------------------------
                                           Expanded(
                                             child: Text(
                                               widget.playlist.listName,
@@ -140,9 +171,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                               ),
                                             ),
                                           ),
-                                          // ---------------------
-                                          // bottomsheet - 종료 버튼
-                                          // ---------------------
+                                          // --------------------------------
+                                          // bottomSheet : 3. 종료 버튼
+                                          // --------------------------------
                                           GestureDetector(
                                             onTap: () => context.pop(),
                                             child: Container(
@@ -156,20 +187,50 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                         ],
                                       ),
                                       // -------------------
-                                      // 음악 세부 메뉴
+                                      // 플레이리스트 세부 메뉴
                                       // -------------------
+                                      // --------------------------------
+                                      // playlist menu : 1. 셔플 재생
+                                      // --------------------------------
                                       const SizedBox(
                                         height: 24,
                                       ),
                                       // 음악 재생
-                                      BottomSheetMenuButton(title: '셔플 재생'),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      // 음악을 다른 플레이리스트에 저장
                                       GestureDetector(
                                         onTap: () {
                                           context.pop();
+                                          songListAsync.when(
+                                            data: (data) async {
+                                              List<SongEntity> list = [];
+                                              for (var item in data) {
+                                                list.add(item);
+                                              }
+                                              list.shuffle();
+                                              for (var item in list) {
+                                                print(item.title);
+                                              }
+                                              await addListInAudioPlayer(list);
+                                            },
+                                            error: (error, stackTrace) {},
+                                            loading: () {},
+                                          );
+                                        },
+                                        child: BottomSheetMenuButton(
+                                            title: '셔플 재생'),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      // --------------------------------
+                                      // playlist menu : 2. 플레이리스트 편집
+                                      // --------------------------------
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.pop();
+                                          ref
+                                              .read(bottomNavigationProvider
+                                                  .notifier)
+                                              .updatePage(5);
                                           context.go(
                                             '/saved/playlist/edit',
                                             extra: widget.playlist,
@@ -182,7 +243,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      // 음악 삭제
+                                      // --------------------------------
+                                      // playlist menu : 3. 플레이리스트 삭제
+                                      // --------------------------------
                                       GestureDetector(
                                         onTap: () {
                                           showDialog(
@@ -219,6 +282,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                 const SizedBox(
                   height: 12,
                 ),
+                // ------------------------------------------------------
+                // 플레이리스트 본문
+                // ------------------------------------------------------
                 Container(
                   padding: EdgeInsets.only(bottom: 20),
                   width: double.infinity,
@@ -260,49 +326,24 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                           ),
                         ),
                       ),
-                      if (widget.playlist.songIds.isNotEmpty)
-                        const SizedBox(
-                          height: 18,
-                        ),
-                      // -----------------
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      // ------------------
                       // 플레이리스트 재생 버튼
-                      // -----------------
-                      if (widget.playlist.songIds.isNotEmpty)
-                        GestureDetector(
-                          onTap: () {
-                            /* 플레이리스트에있는 SongEntity 정보들 가져와야 함
-
-                            List<SongEntity> songList = [];
-
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setCurrentSong(songList.first);
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setAudioPlayer(
-                                    songList.first.video.audioUrl, -1);
-
-                            audioplayerstate.nextSong.removeAt(0);
-
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setNextSongList(songList);
-                            */
+                      // ------------------
+                      songListAsync.when(
+                          data: (data) {
+                            return GestureDetector(
+                              onTap: () async {
+                                await addListInAudioPlayer(data);
+                              },
+                              child: PlayButton(),
+                            );
                           },
-                          child: Container(
-                            width: 72,
-                            height: 72,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.main100,
-                            ),
-                            child: Icon(
-                              Icons.play_arrow,
-                              size: 44,
-                              color: AppColors.main600,
-                            ),
-                          ),
-                        ),
+                          // 오류 시 회색 버튼 출력
+                          error: (error, stackTrace) => PlayButtonDisabled(),
+                          loading: () => PlayButtonDisabled()),
                     ],
                   ),
                 ),
@@ -602,6 +643,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
   }
 }
 
+// ---------------------------------------
+// bottomSheet 위젯
+// ---------------------------------------
 class BottomSheetMenuButton extends StatelessWidget {
   final String title;
 

@@ -15,9 +15,9 @@ class CardWidget extends ConsumerWidget {
       this.isError,
       this.isShade});
 
-  final imgUrl;
-  final title;
-  final artist;
+  final String? imgUrl;
+  final String? title;
+  final String? artist;
   final bool? isEmpty;
   final bool? isError;
   final bool? isShade;
@@ -81,7 +81,7 @@ class CardWidget extends ConsumerWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(21.36),
                           image: DecorationImage(
-                            image: NetworkImage(imgUrl),
+                            image: NetworkImage(imgUrl!),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -118,7 +118,7 @@ class CardWidget extends ConsumerWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.network(
-                                  imgUrl,
+                                  imgUrl!,
                                   fit: BoxFit.cover,
                                   loadingBuilder: (BuildContext context,
                                       Widget child,

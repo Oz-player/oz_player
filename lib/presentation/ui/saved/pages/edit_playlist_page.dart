@@ -9,6 +9,7 @@ import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provi
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class EditPlaylistPage extends ConsumerStatefulWidget {
@@ -21,10 +22,10 @@ class EditPlaylistPage extends ConsumerStatefulWidget {
 }
 
 class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
-  final listNameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  int? dragHandleIndex;
-  List<String> currentOrder = [];
+  final listNameController = TextEditingController(); // 플레이리스트 제목 컨트롤러
+  final descriptionController = TextEditingController(); // 플레이리스트 설명 컨트롤러
+  int? dragHandleIndex; // 현재 드래그중인 인덱스
+  List<String> currentOrder = []; // 플레이리스트 순서가 바뀔 때마다 저장
 
   @override
   void initState() {
@@ -58,12 +59,13 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
     var songListAsync = ref.watch(playlistSongsProvider);
     listNameController.text = widget.playlist.listName;
     descriptionController.text = widget.playlist.description;
+
     FocusNode titleFocus = FocusNode();
     FocusNode descriptionFocus = FocusNode();
 
     final String currentName = widget.playlist.listName;
     final String currentDescription = widget.playlist.description;
-    bool isEdited = false;
+    bool isEdited = false; // 수정이 발생한 적 있는지 확인
 
     return GestureDetector(
       onTap: () {
@@ -72,10 +74,28 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (isEdited) {
+                showDialog(
+                  context: context,
+                  builder: (context) => CancleEditAlertDialog(
+                    destination: null,
+                  ),
+                );
+              } else {
+                ref.read(bottomNavigationProvider.notifier).updatePage(0);
+                context.pop();
+              }
+            },
+            icon: Icon(Icons.arrow_back),
+            color: Colors.grey[900],
+          ),
+          actions: [],
           title: Align(
             alignment: Alignment.centerRight,
             // --------------------
-            // 완료 버튼
+            // 저장 버튼
             // --------------------
             child: GestureDetector(
               onTap: () async {
@@ -107,7 +127,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 if (isEdited) {
                   ref.read(playListViewModelProvider.notifier).getPlayLists();
                 }
-                context.pop();
+
+                if (context.mounted) {
+                  context.pop();
+                }
               },
               child: Container(
                 alignment: Alignment.center,
@@ -115,7 +138,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 height: 44,
                 color: Colors.transparent,
                 child: Text(
-                  '완료',
+                  '저장',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -129,14 +152,13 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           children: <Widget>[
             // 상단 요소 : 이미지, 제목, 메모
             Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // -------------------
                 // 플레이리스트 대표 이미지
                 // -------------------
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
                   child: Column(
                     children: [
                       Container(
@@ -202,6 +224,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                   fontSize: 24,
                                 ),
                               ),
+                              onChanged: (value) => isEdited = true,
                             ),
                             const SizedBox(
                               height: 8,
@@ -231,6 +254,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                     color: AppColors.gray600,
                                   ),
                                 ),
+                                onChanged: (value) => isEdited = true,
                               ),
                             )
                           ],
@@ -267,6 +291,9 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                         return SizedBox(
                           width: double.infinity,
                           height: 300,
+                          // ------------------------------
+                          // 순서 재배치 가능한 리스트
+                          // ------------------------------
                           child: ReorderableListView(
                             children: <Widget>[
                               for (int index = 0; index < data.length; index++)
@@ -322,6 +349,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                         ),
                                       ],
                                     ),
+                                    // 리스트 블록 레이아웃
                                     child: SizedBox(
                                       height: 72,
                                       child: Row(

@@ -1,1 +1,46 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"oz-player","appId":"1:1030920972906:android:9830aa6d177db910b77813","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"oz-player","configurations":{"android":"1:1030920972906:android:9830aa6d177db910b77813","ios":"1:1030920972906:ios:daabf72d390e4ebeb77813"}}},"ios":{"default":{"projectId":"oz-player","appId":"1:1030920972906:ios:daabf72d390e4ebeb77813","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "oz-player",
+          "appId": "1:1030920972906:android:9830aa6d177db910b77813",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "oz-player",
+          "configurations": {
+            "android": "1:1030920972906:android:9830aa6d177db910b77813",
+            "ios": "1:1030920972906:ios:daabf72d390e4ebeb77813"
+          }
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "oz-player",
+          "appId": "1:1030920972906:ios:daabf72d390e4ebeb77813",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"functions\" run build"
+      ]
+    }
+  ]
+}

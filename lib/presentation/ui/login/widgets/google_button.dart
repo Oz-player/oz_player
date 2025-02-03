@@ -33,7 +33,8 @@ class GoogleButton extends ConsumerWidget {
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(double.infinity, 54),
           padding: EdgeInsets.zero,
-          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, height: 19/16),
+          textStyle: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.w500, height: 19 / 16),
           minimumSize: Size.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
