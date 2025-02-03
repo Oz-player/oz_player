@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 
+// 플레이리스트 페이지 재생 버튼
 class PlayButton extends StatelessWidget {
   const PlayButton({
     super.key,
@@ -24,6 +25,7 @@ class PlayButton extends StatelessWidget {
   }
 }
 
+// 재생 불가능 시 비활성된 재생버튼
 class PlayButtonDisabled extends StatelessWidget {
   const PlayButtonDisabled({
     super.key,

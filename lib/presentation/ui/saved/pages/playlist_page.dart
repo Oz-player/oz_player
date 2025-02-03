@@ -58,6 +58,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 플레이리스트의 음악 목록 Async
     var songListAsync = ref.watch(playlistSongsProvider);
 
     return Scaffold(
@@ -87,9 +88,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // -------------------
+                // ------------------------------------------------------
                 // 플레이리스트 대표 이미지
-                // -------------------
+                // ------------------------------------------------------
                 Container(
                   width: double.infinity,
                   height: 140,
@@ -133,7 +134,10 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       Row(
                                         children: [
                                           // --------------------------------
-                                          // bottomsheet - 플레이리스트 대표 이미지
+                                          // bottomsheet
+                                          // --------------------------------
+                                          // --------------------------------
+                                          // bottomSheet : 1. 플레이리스트 대표 이미지
                                           // --------------------------------
                                           Container(
                                             width: 48,
@@ -154,9 +158,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                           const SizedBox(
                                             width: 16,
                                           ),
-                                          // ---------------------
-                                          // bottomsheet - 노래 제목
-                                          // ---------------------
+                                          // --------------------------------
+                                          // bottomSheet : 2. 노래 제목
+                                          // --------------------------------
                                           Expanded(
                                             child: Text(
                                               widget.playlist.listName,
@@ -166,9 +170,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                               ),
                                             ),
                                           ),
-                                          // ---------------------
-                                          // bottomsheet - 종료 버튼
-                                          // ---------------------
+                                          // --------------------------------
+                                          // bottomSheet : 3. 종료 버튼
+                                          // --------------------------------
                                           GestureDetector(
                                             onTap: () => context.pop(),
                                             child: Container(
@@ -184,9 +188,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       // -------------------
                                       // 플레이리스트 세부 메뉴
                                       // -------------------
-                                      // -------------------
-                                      // 1. 셔플 재생
-                                      // -------------------
+                                      // --------------------------------
+                                      // playlist menu : 1. 셔플 재생
+                                      // --------------------------------
                                       const SizedBox(
                                         height: 24,
                                       ),
@@ -216,9 +220,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      // -------------------
-                                      // 2. 플레이리스트 편집
-                                      // -------------------
+                                      // --------------------------------
+                                      // playlist menu : 2. 플레이리스트 편집
+                                      // --------------------------------
                                       GestureDetector(
                                         onTap: () {
                                           context.pop();
@@ -234,9 +238,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      // -------------------
-                                      // 3. 플레이리스트 삭제
-                                      // -------------------
+                                      // --------------------------------
+                                      // playlist menu : 3. 플레이리스트 삭제
+                                      // --------------------------------
                                       GestureDetector(
                                         onTap: () {
                                           showDialog(
@@ -273,6 +277,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                 const SizedBox(
                   height: 12,
                 ),
+                // ------------------------------------------------------
+                // 플레이리스트 본문
+                // ------------------------------------------------------
                 Container(
                   padding: EdgeInsets.only(bottom: 20),
                   width: double.infinity,
@@ -317,9 +324,9 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       const SizedBox(
                         height: 18,
                       ),
-                      // ---------------------------
+                      // ------------------
                       // 플레이리스트 재생 버튼
-                      // ---------------------------
+                      // ------------------
                       songListAsync.when(
                           data: (data) {
                             return GestureDetector(
@@ -632,9 +639,8 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
 }
 
 // ---------------------------------------
-// 페이지 위젯
+// bottomSheet 위젯
 // ---------------------------------------
-
 class BottomSheetMenuButton extends StatelessWidget {
   final String title;
 
