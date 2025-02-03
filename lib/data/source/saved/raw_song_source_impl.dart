@@ -32,7 +32,7 @@ class RawSongSourceImpl implements RawSongSource {
           return RawSongDto.fromJson(doc.data()!);
         }
         return null;
-      });
+      }).toList();
       final results = await Future.wait(futures);
       return results.whereType<RawSongDto>().toList();
     } catch (e, stackTrace) {
