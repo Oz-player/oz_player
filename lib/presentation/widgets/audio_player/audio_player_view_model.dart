@@ -15,6 +15,7 @@ class AudioPlayerState {
   SongEntity? currentSong;
   List<SongEntity> nextSong;
   bool isbuffering;
+  bool loadingAudio;
 
   AudioPlayerState(
       this.audioPlayer,
@@ -23,7 +24,8 @@ class AudioPlayerState {
       this.index,
       this.currentSong,
       this.nextSong,
-      this.isbuffering);
+      this.isbuffering,
+      this.loadingAudio);
 
   AudioPlayerState copyWith(
           {AudioPlayer? audioPlayer,
@@ -32,7 +34,8 @@ class AudioPlayerState {
           int? index,
           SongEntity? currentSong,
           List<SongEntity>? nextSong,
-          bool? isbuffering}) =>
+          bool? isbuffering,
+          bool? loadingAudio}) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
           playerStateSubscription ?? this.playerStateSubscription,
@@ -40,13 +43,15 @@ class AudioPlayerState {
           index ?? this.index,
           currentSong ?? this.currentSong,
           nextSong ?? this.nextSong,
-          isbuffering ?? this.isPlaying);
+          isbuffering ?? this.isPlaying,
+          loadingAudio ?? this.loadingAudio);
 }
 
 class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
-    return AudioPlayerState(AudioPlayer(), null, false, -1, null, [], false);
+    return AudioPlayerState(
+        AudioPlayer(), null, false, -1, null, [], false, false);
   }
 
   /// 오디오 플레이어에 현재 곡 정보 저장
@@ -65,6 +70,14 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       log('리스트 추가 : ${list.title}');
     }
     state.nextSong.addAll(songList);
+  }
+
+  void isStartLoadingAudioPlayer() {
+    state = state.copyWith(loadingAudio: true);
+  }
+
+  void isEndLoadingAudioPlayer() {
+    state = state.copyWith(loadingAudio: false);
   }
 
   /// 오디오 연결 + 스트림 연결 및 자동재생
