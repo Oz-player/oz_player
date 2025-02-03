@@ -75,7 +75,10 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
-                          context.pop();
+
+                          if (context.mounted) {
+                            context.pop();
+                          }
                         },
                         child: Text(
                           '확인',
@@ -162,9 +165,12 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
-                          context.pop();
-                          context.pop();
-                          context.pop();
+
+                          if (context.mounted) {
+                            context.pop();
+                            context.pop();
+                            context.pop();
+                          }
                         },
                         child: Text(
                           '확인',

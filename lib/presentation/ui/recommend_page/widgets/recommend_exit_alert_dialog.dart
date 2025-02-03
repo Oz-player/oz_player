@@ -7,7 +7,7 @@ import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_m
 class RecommendExitAlertDialog extends ConsumerWidget {
   const RecommendExitAlertDialog({super.key, this.destination});
 
-  final destination;
+  final int? destination;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +50,7 @@ class RecommendExitAlertDialog extends ConsumerWidget {
                       onPressed: () {
                         ref
                             .read(bottomNavigationProvider.notifier)
-                            .updatePage(destination);
+                            .updatePage(destination!);
                         ref.read(cardPositionProvider.notifier).reset();
                         if (destination == 0) {
                           context.go('/saved');
