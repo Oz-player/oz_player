@@ -1,7 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SearchWordPage extends StatelessWidget {
+class SearchWordPage extends StatefulWidget {
   const SearchWordPage({super.key});
+
+  @override
+  State<SearchWordPage> createState() => _SearchWordPageState();
+}
+
+class _SearchWordPageState extends State<SearchWordPage> {
+  List<String> searchHistory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSearchHistory();
+    print(searchHistory.length);
+  }
+
+  Future<void> _loadSearchHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      searchHistory =
+          prefs.getStringList('searchHistory') ?? []; // 검색어 리스트 불러오기
+    });
+  }
+
+  Future<void> _deleteSearchHistory(String searchTerm) async {
+    final prefs = await SharedPreferences.getInstance();
+    searchHistory.remove(searchTerm);
+    await prefs.setStringList('searchHistory', searchHistory);
+    setState(() {});
+  }
+
+  Future<void> _addSearchTerm(String searchTerm) async {
+    if (!searchHistory.contains(searchTerm)) {
+      final prefs = await SharedPreferences.getInstance();
+      searchHistory.add(searchTerm);
+      await prefs.setStringList('searchHistory', searchHistory);
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +62,8 @@ class SearchWordPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) { 
+                itemCount: searchHistory.length,
+                itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -34,16 +73,22 @@ class SearchWordPage extends StatelessWidget {
                           width: 20,
                         ),
                         Text(
-                          '태연$index',
+                          searchHistory[index],
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                        IconButton(
+                          icon: Icon(Icons.delete, size: 24, color: Colors.red),
+                          onPressed: () {
+                            _deleteSearchHistory(searchHistory[index]);
+                          },
+                        ),
                       ],
                     ),
                   );
-                 },
+                },
               ),
             ),
           ),

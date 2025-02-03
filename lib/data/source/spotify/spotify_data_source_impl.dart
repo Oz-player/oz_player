@@ -48,7 +48,7 @@ class SpotifyDataSourceImpl implements SpotifyDataSource {
     final client = Client();
     final token = await _getToken();
     final response = await client.get(
-      Uri.parse('https://api.spotify.com/v1/search?q=$query&type=artist%2Ctrack&locale=ko-KR&limit=10'),
+      Uri.parse('https://api.spotify.com/v1/search?q=$query&type=artist%2Ctrack&locale=ko-KR'),
       headers: {
         'Authorization': 'Bearer $token',
       },
