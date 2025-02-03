@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oz_player/presentation/ui/search/widgets/search_naver_result.dart';
-import 'package:oz_player/presentation/ui/search/widgets/search_spotify_result.dart';
+import 'package:oz_player/presentation/ui/search/widgets/search_result_naver.dart';
+import 'package:oz_player/presentation/ui/search/widgets/search_result_spotify.dart';
 
 class SearchResultPage extends ConsumerStatefulWidget {
   const SearchResultPage({super.key});
@@ -26,13 +26,14 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/background.png'),
+              image: AssetImage('assets/images/background_3.png'),
               
               fit: BoxFit.fitWidth),
         ),
@@ -96,7 +97,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
               height: 10,
             ),
             Expanded(
-              child: titleButton ? SearchSpotifyResult() : SearchNaverResult(),
+              child: titleButton ? SearchResultSpotify() : SearchResultNaver(),
             ),
           ],
         ),

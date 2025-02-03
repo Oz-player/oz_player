@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_naver_view_model.dart';
 
-class SearchNaverResult extends ConsumerStatefulWidget {
-  const SearchNaverResult({super.key});
+class SearchResultNaver extends ConsumerStatefulWidget {
+  const SearchResultNaver({super.key});
 
   @override
-  ConsumerState<SearchNaverResult> createState() => _SearchNaverResultState();
+  ConsumerState<SearchResultNaver> createState() => _SearchNaverResultState();
 }
 
-class _SearchNaverResultState extends ConsumerState<SearchNaverResult> {
+class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
   @override
   Widget build(BuildContext context) {
     final naverResults = ref.watch(searchNaverViewModel);

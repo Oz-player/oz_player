@@ -38,7 +38,7 @@ class _SearchState extends State<Search> {
               // 검색어가 없으면 기본 화면, 있으면 검색 결과 화면
               searchText == null
                   ? SearchWordPage() // 기본 화면
-                  : SearchResultPage()
+                  : SearchResultPage(),
             ],
           ),
         ),

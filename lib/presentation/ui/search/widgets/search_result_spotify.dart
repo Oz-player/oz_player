@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_spotify_view_model.dart';
 
-class SearchSpotifyResult extends ConsumerStatefulWidget {
-  const SearchSpotifyResult({super.key});
+class SearchResultSpotify extends ConsumerStatefulWidget {
+  const SearchResultSpotify({super.key});
 
   @override
-  ConsumerState<SearchSpotifyResult> createState() =>
+  ConsumerState<SearchResultSpotify> createState() =>
       _SearchSpotifyResultState();
 }
 
-class _SearchSpotifyResultState extends ConsumerState<SearchSpotifyResult> {
+class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
   @override
   Widget build(BuildContext context) {
     final spotifyResults = ref.watch(searchSpotifyListViewModel);
 
+    final tracks = spotifyResults!.where((result) => result.type == 'track').toList();
+    final atrist = spotifyResults.where((result) => result.type == 'artist').toList(); 
+
     return ListView.separated(
-      itemCount: spotifyResults!.length,
+      itemCount: spotifyResults.length,
       itemBuilder: (context, index) {
         final result = spotifyResults[index]; // SpotifyEntity
         return Padding(
