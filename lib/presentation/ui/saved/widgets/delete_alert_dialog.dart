@@ -185,3 +185,91 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
     );
   }
 }
+
+class CancleEditAlertDialog extends ConsumerWidget {
+  const CancleEditAlertDialog({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      content: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 24,
+              ),
+              Text(
+                '플레이리스트 편집을\n그만 하시겠어요?',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Text(
+                '저장되지 않은 변경 사항이 있어요',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Color(0xfff2e6ff)),
+                            shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () {
+                          context.pop();
+                          context.pop();
+                        },
+                        child: Text(
+                          '나중에 할게요',
+                          style: TextStyle(color: AppColors.gray600),
+                        )),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Color(0xff40017E)),
+                            shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: Text(
+                          '이어서 할게요',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Positioned(
+              top: -158,
+              left: 0,
+              right: 0,
+              child: Image.asset('assets/char/oz_2.png')),
+        ],
+      ),
+    );
+  }
+}
