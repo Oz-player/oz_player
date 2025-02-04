@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/ui/ranking_page/widgets/speech_bubble_widget.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
@@ -30,6 +31,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
         ),
       ),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text(
             '뮤의 음악 랭킹',
@@ -61,7 +63,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                         top: 35,
                         left: 24,
                         child: Text(
-                          '다른 사용자들이 좋아하는\n음악들을 모아봤다냥',
+                          '가장 인기있는 TOP3를\n소개한다냥',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               color: Colors.white,
@@ -106,79 +108,65 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                 SizedBox(
                   height: 16,
                 ),
-                isLibrary
-                    ? Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ListView.separated(
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    SizedBox(width: 10,),
-                                    SizedBox(
-                                        width: 28,
-                                        height: 28,
-                                        child: Text('$index')),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Container(
-                                      width: 56,
-                                      height: 56,
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      width: 18,
-                                    ),
-                                    Column(
-                                      children: [Text('음악제목'), Text('가수이름')],
-                                    ),
-                                    Spacer(),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider();
-                              },
-                              itemCount: 10),
-                        ),
-                      )
-                    : Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ListView.separated(
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    SizedBox(width: 10,),
-                                    SizedBox(
-                                        width: 28,
-                                        height: 28,
-                                        child: Text('$index')),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Container(
-                                      width: 56,
-                                      height: 56,
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      width: 18,
-                                    ),
-                                    Column(
-                                      children: [Text('음악제목'), Text('가수이름')],
-                                    ),
-                                    Spacer(),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider();
-                              },
-                              itemCount: 10),
-                        ),
-                      )
+                Expanded(
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: -96,
+                          child: Image.asset(
+                            'assets/images/ranking_background.png',
+                            fit: BoxFit.fill,
+                          )),
+                      Positioned(
+                          right: 30,
+                          bottom: 80,
+                          child: Image.asset('assets/images/ranking_myu.png')),
+                      Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 164,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                child: Image.asset(
+                                    'assets/images/ranking_shadow.png'),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Image.asset(
+                                          'assets/images/prize_two_1.png'),
+                                      Image.asset(
+                                          'assets/images/prize_one_0.png'),
+                                      Image.asset(
+                                          'assets/images/prize_three_1.png'),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  )
+                                ],
+                              ),
+                            ],
+                          )),
+                      Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 260,
+                          child: SpeechBubbleWidget()),
+                    ],
+                  ),
+                )
               ],
             ),
             Positioned(

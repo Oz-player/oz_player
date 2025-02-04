@@ -103,6 +103,7 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                             : result.genres!.isNotEmpty
                                 ? result.genres.toString()
                                 : '',
+                        title: result.name,
                       );
                     },
                   );

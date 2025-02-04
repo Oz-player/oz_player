@@ -47,14 +47,12 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
   Future<void> addListInAudioPlayer(List<SongEntity> data) async {
     final nextSong = List<SongEntity>.from(data)..removeAt(0);
 
-    // 플레이리스트에있는 SongEntity 정보들 가져와야 함
+    ref.read(audioPlayerViewModelProvider.notifier).isStartLoadingAudioPlayer();
     ref.read(audioPlayerViewModelProvider.notifier).setCurrentSong(data.first);
     ref.read(audioPlayerViewModelProvider.notifier).setNextSongList(nextSong);
     await ref
         .read(audioPlayerViewModelProvider.notifier)
         .setAudioPlayer(data.first.video.audioUrl, -2);
-
-    setState(() {});
   }
 
   @override

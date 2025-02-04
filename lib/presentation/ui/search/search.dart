@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:oz_player/presentation/ui/search/widgets/search_area.dart';
 import 'package:oz_player/presentation/ui/search/widgets/search_page.dart';
 import 'package:oz_player/presentation/ui/search/widgets/result/search_result_page.dart';
-import 'package:oz_player/presentation/ui/search/widgets/search_word_page.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 

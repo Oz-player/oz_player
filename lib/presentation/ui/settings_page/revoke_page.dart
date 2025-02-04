@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/revoke_reason_button.dart';
 
-class RevokePage extends StatefulWidget {
+class RevokePage extends ConsumerStatefulWidget {
   const RevokePage({super.key});
 
   @override
-  State<RevokePage> createState() => _RevokePageState();
+  ConsumerState<RevokePage> createState() => _RevokePageState();
 }
 
-class _RevokePageState extends State<RevokePage> {
+class _RevokePageState extends ConsumerState<RevokePage> {
   int selectedButtonIndex = -1;
 
   void _selectButton(int index) {
@@ -19,6 +21,8 @@ class _RevokePageState extends State<RevokePage> {
 
   @override
   Widget build(BuildContext context) {
+    final deleteUserViewModel = ref.read(loginViewModelProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -100,7 +104,7 @@ class _RevokePageState extends State<RevokePage> {
                 onPressed: selectedButtonIndex == -1
                     ? null
                     : () {
-                        print('탈퇴하기 선택됨');
+                        deleteUserViewModel.deleteUser(context, selectedButtonIndex);
                       },
                 child: Text('탈퇴하기'),
               ),
