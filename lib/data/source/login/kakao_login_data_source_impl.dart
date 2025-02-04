@@ -55,6 +55,7 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
   @override
   Future<UserCredential> signInWithFirebase(String idToken) async {
     try {
+      // Custom Token으로 로그인
       final userCredential = await _auth.signInWithCustomToken(idToken);
       return userCredential;
     } catch (e) {
@@ -79,7 +80,8 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
       final userDoc = _firestore.collection('User').doc(uid);
       await userDoc.set({
         'uid': uid,
-      });
+      }, SetOptions(merge: true));
+      
       print('새로운 사용자 Firestore Database에 저장완료!: $uid');
     } catch (e) {
       print('새로운 사용자 Firestore Database에 저장 실패!: $e');
