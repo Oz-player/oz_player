@@ -104,7 +104,7 @@ class AudioBottomSheet {
                         height: 12,
                       ),
                       AutoSizeText(
-                        conditionState.recommendSongs[index].title,
+                        audioState.loadingAudio ? '음악 로딩중' : conditionState.recommendSongs[index].title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         style: TextStyle(
@@ -116,7 +116,7 @@ class AudioBottomSheet {
                         height: 4,
                       ),
                       AutoSizeText(
-                        conditionState.recommendSongs[index].artist,
+                        audioState.loadingAudio ? '잠시만 기다려주세요' : conditionState.recommendSongs[index].artist,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         minFontSize: 12,

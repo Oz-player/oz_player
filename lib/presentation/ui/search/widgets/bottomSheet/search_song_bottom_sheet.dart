@@ -91,9 +91,6 @@ class SearchSongBottomSheet extends StatelessWidget {
                             .read(audioPlayerViewModelProvider.notifier)
                             .setCurrentSong(song);
 
-                        ref
-                            .read(audioPlayerViewModelProvider.notifier)
-                            .isEndLoadingAudioPlayer();
                         await ref
                             .read(audioPlayerViewModelProvider.notifier)
                             .setAudioPlayer(song.video.audioUrl, -2);
