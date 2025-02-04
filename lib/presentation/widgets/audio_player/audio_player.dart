@@ -21,64 +21,77 @@ class AudioPlayer extends StatelessWidget {
     return Consumer(
       builder: (context, ref, child) {
         final audioState = ref.watch(audioPlayerViewModelProvider);
-        if (audioState.playerStateSubscription == null ||
-            audioState.currentSong == null) {
-          return SizedBox.shrink();
+
+        if (audioState.loadingAudio) {
+          return audioBox(audioState, ref, context);
+        } else {
+          if (audioState.playerStateSubscription == null ||
+              audioState.currentSong == null) {
+            return SizedBox.shrink();
+          }
+          return audioBox(audioState, ref, context);
         }
-        return Dismissible(
-          key: Key('audio_player'),
-          direction: DismissDirection.horizontal,
-          onDismissed: (direction) {
-            ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
-          },
-          child: GestureDetector(
-            onTap: () {
-              AudioBottomSheet.showCurrentAudio(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(
-                            sigmaX: 10, sigmaY: 10), // 블러 강도 조정
-                        child: Container(
-                          width: double.infinity,
-                          height: 60, // 높이 설정
-                          color: colorMode
-                              ? Colors.black.withValues(alpha: 0.3)
-                              : Colors.white
-                                  .withValues(alpha: 0.3), // 흐림 효과 배경 색상
-                        ),
-                      ),
+      },
+    );
+  }
+
+  Widget audioBox(
+      AudioPlayerState audioState, WidgetRef ref, BuildContext context) {
+    return Dismissible(
+      key: Key('audio_player'),
+      direction: DismissDirection.horizontal,
+      onDismissed: (direction) {
+        ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
+      },
+      child: GestureDetector(
+        onTap: () {
+          AudioBottomSheet.showCurrentAudio(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: BackdropFilter(
+                    filter:
+                        ImageFilter.blur(sigmaX: 10, sigmaY: 10), // 블러 강도 조정
+                    child: Container(
+                      width: double.infinity,
+                      height: 60, // 높이 설정
+                      color: colorMode
+                          ? Colors.black.withValues(alpha: 0.3)
+                          : Colors.white.withValues(alpha: 0.3), // 흐림 효과 배경 색상
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[600],
-                                borderRadius: BorderRadius.circular(12)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: isValidUrl(
-                                      audioState.currentSong!.imgUrl)
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[600],
+                            borderRadius: BorderRadius.circular(12)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: audioState.loadingAudio
+                              ? Center(child: CircularProgressIndicator())
+                              : isValidUrl(audioState.currentSong!.imgUrl)
                                   ? Image.network(
                                       audioState.currentSong!.imgUrl,
                                       fit: BoxFit.cover,
@@ -89,8 +102,7 @@ class AudioPlayer extends StatelessWidget {
                                           return child;
                                         } else {
                                           return Center(
-                                            child:
-                                                CircularProgressIndicator(),
+                                            child: CircularProgressIndicator(),
                                           );
                                         }
                                       },
@@ -99,69 +111,65 @@ class AudioPlayer extends StatelessWidget {
                                       'assets/images/muoz.png',
                                       fit: BoxFit.contain,
                                     ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  audioState.currentSong!.title,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                      color: Colors.white),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(
-                                  height: 2,
-                                ),
-                                Text(
-                                  audioState.currentSong!.artist,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Colors.white),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Spacer(),
-                          IconButton(
-                              onPressed: () {
-                                if (audioState.isPlaying) {
-                                  ref
-                                      .read(audioPlayerViewModelProvider
-                                          .notifier)
-                                      .togglePause();
-                                } else {
-                                  ref
-                                      .read(audioPlayerViewModelProvider
-                                          .notifier)
-                                      .togglePlay();
-                                }
-                              },
-                              icon: Icon(
-                                audioState.isPlaying
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
-                                color: Colors.white,
-                                size: 38,
-                              )),
-                        ],
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              audioState.loadingAudio ? '음악 로딩중' : audioState.currentSong!.title,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              audioState.loadingAudio ? '잠시만 기다려주세요' : audioState.currentSong!.artist,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                  color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            if (audioState.isPlaying) {
+                              ref
+                                  .read(audioPlayerViewModelProvider.notifier)
+                                  .togglePause();
+                            } else {
+                              ref
+                                  .read(audioPlayerViewModelProvider.notifier)
+                                  .togglePlay();
+                            }
+                          },
+                          icon: Icon(
+                            audioState.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            color: Colors.white,
+                            size: 38,
+                          )),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

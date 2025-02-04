@@ -102,6 +102,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       await state.audioPlayer.setUrl(audioUrl, preload: true);
 
       setSubscription();
+      isEndLoadingAudioPlayer();
       await togglePlay();
     } catch (e) {
       try {
@@ -121,9 +122,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
         await state.audioPlayer.setUrl(video.audioUrl, preload: true);
         setSubscription();
+        isEndLoadingAudioPlayer();
         await togglePlay();
       } catch (e) {
         log('인터넷 연결이 안됨');
+        isEndLoadingAudioPlayer();
       }
     }
   }
