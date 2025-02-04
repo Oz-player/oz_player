@@ -269,206 +269,215 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 // ---------------
                 // 음악 목록
                 // ---------------
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 300,
-                    child: songListAsync.when(
-                      data: (data) {
-                        if (data.isEmpty) {
-                          return Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: Image.asset(
-                                    'assets/images/no_songs_in_playlist.png'),
-                              ),
-                            ],
-                          );
-                        }
-                        return SizedBox(
-                          width: double.infinity,
-                          height: 300,
-                          // ------------------------------
-                          // 순서 재배치 가능한 리스트
-                          // ------------------------------
-                          child: ReorderableListView(
-                            children: <Widget>[
-                              for (int index = 0; index < data.length; index++)
-                                ListTile(
-                                  key: Key('$index'),
-                                  visualDensity: VisualDensity(
-                                      horizontal: -4, vertical: 4),
-                                  contentPadding: EdgeInsets.zero,
-                                  minVerticalPadding: 0,
-                                  minTileHeight: 72,
-                                  leading: ReorderableDragStartListener(
-                                    index: index,
-                                    child: Container(
-                                        width: 44,
-                                        height: 44,
-                                        color: Colors.transparent,
-                                        child: Icon(Icons.drag_handle)),
-                                  ),
-                                  tileColor: index == dragHandleIndex
-                                      ? Colors.black.withValues(alpha: 0.04)
-                                      : Colors.white,
-                                  // -----------------------------
-                                  // 슬라이더 위젯
-                                  // -----------------------------
-                                  title: Slidable(
-                                    key: const ValueKey(0),
-                                    endActionPane: ActionPane(
-                                      extentRatio: 0.25,
-                                      motion: BehindMotion(),
-                                      children: [
-                                        // ------------------------
-                                        // 삭제 버튼 클릭 시 액션
-                                        // ------------------------
-                                        SlidableAction(
-                                          flex: 1,
-                                          onPressed: (value) {
-                                            String id = data[index].video.id;
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  DeleteSongAlertDialog(
-                                                listName:
-                                                    widget.playlist.listName,
-                                                songId: id,
-                                                removeSongId: () =>
-                                                    removeSongId(id),
-                                              ),
-                                            );
-                                          },
-                                          backgroundColor: AppColors.red,
-                                          foregroundColor: Colors.white,
-                                          label: '삭제',
-                                        ),
-                                      ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 300,
+                      child: songListAsync.when(
+                        data: (data) {
+                          if (data.isEmpty) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Image.asset(
+                                      'assets/images/no_songs_in_playlist.png'),
+                                ),
+                              ],
+                            );
+                          }
+                          return SizedBox(
+                            width: double.infinity,
+                            height: 300,
+                            // ------------------------------
+                            // 순서 재배치 가능한 리스트
+                            // ------------------------------
+                            child: ReorderableListView(
+                              children: <Widget>[
+                                for (int index = 0;
+                                    index < data.length;
+                                    index++)
+                                  ListTile(
+                                    key: Key('$index'),
+                                    visualDensity: VisualDensity(
+                                        horizontal: -4, vertical: 4),
+                                    contentPadding: EdgeInsets.zero,
+                                    minVerticalPadding: 0,
+                                    minTileHeight: 72,
+                                    leading: ReorderableDragStartListener(
+                                      index: index,
+                                      child: Container(
+                                          width: 44,
+                                          height: 44,
+                                          color: Colors.transparent,
+                                          child: Icon(Icons.drag_handle)),
                                     ),
-                                    // 리스트 블록 레이아웃
-                                    child: SizedBox(
-                                      height: 72,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                    tileColor: index == dragHandleIndex
+                                        ? Colors.black.withValues(alpha: 0.04)
+                                        : Colors.white,
+                                    // -----------------------------
+                                    // 슬라이더 위젯
+                                    // -----------------------------
+                                    title: Slidable(
+                                      key: const ValueKey(0),
+                                      endActionPane: ActionPane(
+                                        extentRatio: 0.25,
+                                        motion: BehindMotion(),
                                         children: [
-                                          Expanded(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                // ---------
-                                                // 곡 이미지
-                                                // ---------
-                                                Container(
-                                                  width: 48,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    color: AppColors.gray600,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          data[index].imgUrl),
-                                                    ),
-                                                  ),
+                                          // ------------------------
+                                          // 삭제 버튼 클릭 시 액션
+                                          // ------------------------
+                                          SlidableAction(
+                                            flex: 1,
+                                            onPressed: (value) {
+                                              String id = data[index].video.id;
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    DeleteSongAlertDialog(
+                                                  listName:
+                                                      widget.playlist.listName,
+                                                  songId: id,
+                                                  removeSongId: () =>
+                                                      removeSongId(id),
                                                 ),
-                                                // -------
-                                                // 곡 내용
-                                                // -------
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 18),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          data[index].title,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 16,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          data[index].artist,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            color: AppColors
-                                                                .gray600,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          // -------------
-                                          // 메뉴 버튼
-                                          // -------------
-                                          Container(
-                                            width: 60,
-                                            height: 60,
-                                            color: Colors.transparent,
-                                            child: Icon(Icons.more_vert),
+                                              );
+                                            },
+                                            backgroundColor: AppColors.red,
+                                            foregroundColor: Colors.white,
+                                            label: '삭제',
                                           ),
                                         ],
                                       ),
+                                      // 리스트 블록 레이아웃
+                                      child: SizedBox(
+                                        height: 72,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  // ---------
+                                                  // 곡 이미지
+                                                  // ---------
+                                                  Container(
+                                                    width: 48,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      color: AppColors.gray600,
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            data[index].imgUrl),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // -------
+                                                  // 곡 내용
+                                                  // -------
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 18),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            data[index].title,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 16,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            data[index].artist,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .gray600,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            // -------------
+                                            // 메뉴 버튼
+                                            // -------------
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              color: Colors.transparent,
+                                              child: Icon(Icons.more_vert),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
-                            onReorderStart: (index) {
-                              setState(() {
-                                dragHandleIndex = index;
-                              });
-                            },
-                            onReorderEnd: (index) {
-                              setState(() {
-                                dragHandleIndex = null;
-                              });
-                            },
-                            onReorder: (int oldIndex, int newIndex) {
-                              setState(() {
-                                if (oldIndex < newIndex) {
-                                  newIndex -= 1;
-                                }
-                                data.insert(newIndex, data.removeAt(oldIndex));
-                                currentOrder.clear();
-                                for (var item in data) {
-                                  currentOrder.add(item.video.id);
-                                }
-                              });
-                            },
-                          ),
-                        );
-                      },
-                      error: (error, stackTrace) {
-                        return Container();
-                      },
-                      loading: () {
-                        return Container();
-                      },
+                              ],
+                              onReorderStart: (index) {
+                                setState(() {
+                                  dragHandleIndex = index;
+                                });
+                              },
+                              onReorderEnd: (index) {
+                                setState(() {
+                                  dragHandleIndex = null;
+                                });
+                              },
+                              onReorder: (int oldIndex, int newIndex) {
+                                setState(() {
+                                  if (oldIndex < newIndex) {
+                                    newIndex -= 1;
+                                  }
+                                  data.insert(
+                                      newIndex, data.removeAt(oldIndex));
+                                  currentOrder.clear();
+                                  for (var item in data) {
+                                    currentOrder.add(item.video.id);
+                                  }
+                                });
+                              },
+                            ),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return Container();
+                        },
+                        loading: () {
+                          return Container();
+                        },
+                      ),
                     ),
                   ),
                 ),
