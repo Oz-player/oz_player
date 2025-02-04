@@ -73,7 +73,11 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                       child: Text(
                         result.name, // SpotifyEntity의 title 속성 사용
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -85,6 +89,9 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                               : '',
                       style: TextStyle(
                         fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
                       ),
                       overflow: TextOverflow.ellipsis,
                     ), // SpotifyEntity의 artist 속성 사용

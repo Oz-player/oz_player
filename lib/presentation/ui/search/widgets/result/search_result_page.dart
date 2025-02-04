@@ -54,6 +54,9 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   child: Text(
                     '제목 검색',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                       color: titleButton ? Colors.white : Colors.grey[600],
                     ),
                   ),
@@ -79,6 +82,9 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   child: Text(
                     '가사 검색',
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
                       color: lyricsButton ? Colors.white : Colors.grey[600],
                     ),
                   ),

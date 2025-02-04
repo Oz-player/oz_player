@@ -37,12 +37,15 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        SizedBox(
-                          child: Text(
-                            song,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: SizedBox(
+                            child: Text(
+                              song,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),

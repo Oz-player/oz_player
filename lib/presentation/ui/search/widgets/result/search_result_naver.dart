@@ -15,86 +15,105 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
   @override
   Widget build(BuildContext context) {
     final naverResults = ref.watch(searchNaverViewModel);
-    final screenWidth = MediaQuery.of(context).size.width; // 화면의 가로 크기
 
+    final filteredResults = naverResults!
+        .where(
+            (result) => !result.lyrics.contains('로그인<\/a> 후 이용할 수 있는 컨텐츠입니다.'))
+        .toList();
 
-    if(naverResults!.isEmpty){
+    if (filteredResults.isEmpty) {
       return Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/search_result.png'),
-              alignment: Alignment(0, -0.5)
-            )
-          )
+          image: DecorationImage(
+            image: AssetImage('assets/images/search_result.png'),
+            alignment: Alignment(0, -0.5),
+          ),
+        ),
       );
     }
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ListView.separated(
-        itemCount: naverResults.length,
+        itemCount: filteredResults.length,
         itemBuilder: (context, index) {
-          final result = naverResults[index];
+          final result = filteredResults[index];
           return Row(
             children: [
-              Column(
-                children: [
-                  SizedBox(
-                    width: 300,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 100,
-                          child: Text(
-                            result.title, // SpotifyEntity의 title 속성 사용
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              child: Text(
+                                result.title, // SpotifyEntity의 title 속성 사용
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          result.artist,
-                          style: TextStyle(fontSize: 14),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            result.artist,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[600],
+                                overflow: TextOverflow.ellipsis,
+                                ),
+                            
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: screenWidth-80,
-                    height: 40,
-                    child: Text(
-                      //성인 등급의 노래인 경우 naver에서 인증이 필요해서 로그인 문구가 뜨는것을 없앰
-                      result.lyrics.contains('로그인 후 이용할 수 있는 컨텐츠입니다.')
-                          ? '청소년 이용 불가 노래입니다'
-                          : parse(result.lyrics).body!.text ,
+                    SizedBox(
+                      height: 40,
+                      child: Text(
+                        textAlign: TextAlign.start,
+                        //성인 등급의 노래인 경우 naver에서 인증이 필요해서 로그인 문구가 뜨는것을 없앰
+                        result.lyrics.contains('로그인<\/a> 후 이용할 수 있는 컨텐츠입니다.')
+                            ? '청소년 이용 불가 노래입니다'
+                            : parse(result.lyrics).body!.text,
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
                       return SearchLyicsBottomSheet(
                         song: result.title,
                         artist: result.artist,
                         lyrics: result.lyrics,
-                    );
-                  },
-                );
-              },
-              icon: Image.asset(
-                'assets/images/menu_thin_icon.png',
+                      );
+                    },
+                  );
+                },
+                icon: Image.asset(
+                  'assets/images/menu_thin_icon.png',
+                ),
               ),
-            ),
             ],
           );
         },

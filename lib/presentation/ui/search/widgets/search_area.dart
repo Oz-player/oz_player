@@ -36,51 +36,67 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SizedBox(
-          width: 300,
-          height: 38,
-          child: TextFormField(
-            controller: _textEditingController,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.black12,
-              hintText: '제목 또는 가사 검색',
-              hintStyle: TextStyle(
-                fontSize: 16,
+        Expanded(
+          child: SizedBox(
+            height: 45,
+            child: TextFormField(
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w600,
+                fontSize: 16
               ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(12)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(12)),
-              suffixIcon: _textEditingController.text.isNotEmpty
-                  ? IconButton(
-                      icon: Image.asset('assets/images/icon_delete.png'),
-                      onPressed: clearText, // 검색어 지우기
-                    )
-                  : null,
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.black12,
+                hintText: '제목 또는 가사 검색',
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w600
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(12)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(12)),
+                suffixIcon: _textEditingController.text.isNotEmpty
+                    ? IconButton(
+                        icon: Image.asset('assets/images/icon_delete.png'),
+                        onPressed: clearText, // 검색어 지우기
+                      )
+                    : null,
+              ),
+              onFieldSubmitted: (text) {
+                if (text.isNotEmpty) {
+                  widget.onSearch(text);
+                  saveSearchText(text);
+                  ref.read(searchSpotifyListViewModel.notifier).fetchSpotify(text);
+                  ref.read(searchNaverViewModel.notifier).fetchNaver(text);
+                  print('onsearch 호출됨');
+                } else {
+                  // 검색어가 비어있을 때 clearText 호출
+                  widget.onSearch('');
+                }
+              },
             ),
-            onFieldSubmitted: (text) {
-              if (text.isNotEmpty) {
-                widget.onSearch(text);
-                saveSearchText(text);
-                ref.read(searchSpotifyListViewModel.notifier).fetchSpotify(text);
-                ref.read(searchNaverViewModel.notifier).fetchNaver(text);
-                print('onsearch 호출됨');
-              } else {
-                // 검색어가 비어있을 때 clearText 호출
-                widget.onSearch('');
-              }
-            },
           ),
         ),
         TextButton(
           onPressed: () {
             context.go('/search');
           },
-          child: Text('취소'),
+          child: Text(
+            '취소',
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+          ),
         ),
       ],
     );

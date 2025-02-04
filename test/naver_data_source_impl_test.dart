@@ -7,7 +7,7 @@ void main() {
     NaverSearchDataSourceImpl naverSearchDataSourceImpl = NaverSearchDataSourceImpl();
     
     // Fetch the search results
-    final searchResults = await naverSearchDataSourceImpl.fetchNaver('사실 나는 사막에');
+    final searchResults = await naverSearchDataSourceImpl.fetchNaver("Switch my whip, came back in black");
     
     // Validate that the result is not empty
     expect(searchResults.isEmpty, false);

@@ -9,11 +9,12 @@ import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_mo
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class SearchSongBottomSheet extends StatelessWidget {
-  const SearchSongBottomSheet(
-      {super.key,
-      required this.imgUrl,
-      required this.artist,
-      required this.title});
+  const SearchSongBottomSheet({
+    super.key,
+    required this.imgUrl,
+    required this.artist,
+    required this.title,
+  });
 
   final String imgUrl;
   final String artist;
@@ -40,24 +41,43 @@ class SearchSongBottomSheet extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(3.43),
-                          child: Image.network(
-                            imgUrl,
-                            width: 56,
-                            height: 56,
+                          child: Image.network(imgUrl,
+                              width: 56, height: 56, fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/char/oz_3.png',
+                              width: 56,
+                              height: 56,
+                              fit: BoxFit.fill,
+                            );
+                          }),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 250,
+                                height: 20,
+                                child: Text(
+                                  title, // SpotifyEntity의 title 속성 사용
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Text(
+                                artist,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ), // SpotifyEntity의 artist 속성 사용
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        SizedBox(
-                          child: Text(
-                            artist,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
                       ],
                     ),
                     SizedBox(height: 25),
