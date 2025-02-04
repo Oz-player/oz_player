@@ -147,10 +147,6 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         state.audioPlayer.positionStream.listen((position) async {
       Duration totalDuration = state.audioPlayer.duration ?? Duration.zero;
 
-      if (state.audioPlayer.position != position) {
-        return;
-      }
-
       if (position >=
               Duration(milliseconds: totalDuration.inMilliseconds ~/ 2) &&
           Platform.isIOS) {
