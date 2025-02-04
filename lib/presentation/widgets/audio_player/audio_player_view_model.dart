@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
@@ -134,6 +135,15 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   void setSubscription() {
     state.playerStateSubscription ??=
         state.audioPlayer.playerStateStream.listen((playerState) async {
+      if (state.audioPlayer.duration! >=
+              Duration(
+                  milliseconds:
+                      state.audioPlayer.duration!.inMilliseconds ~/ 2) &&
+          Platform.isIOS) {
+        await state.audioPlayer
+            .seek(state.audioPlayer.duration! - Duration(milliseconds: 100));
+      }
+
       if (playerState.processingState == ProcessingState.completed) {
         if (state.nextSong.isEmpty) {
           await state.audioPlayer.seek(Duration.zero);
@@ -234,7 +244,13 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     final newPosition = currentPosition + Duration(seconds: sec);
 
     if (newPosition > duration) {
-      await state.audioPlayer.seek(duration);
+      if (Platform.isIOS) {
+        await state.audioPlayer.seek(Duration(
+                milliseconds: state.audioPlayer.duration!.inMilliseconds ~/ 2) -
+            Duration(milliseconds: 100));
+      } else {
+        await state.audioPlayer.seek(duration);
+      }
     } else {
       await state.audioPlayer.seek(newPosition);
     }
