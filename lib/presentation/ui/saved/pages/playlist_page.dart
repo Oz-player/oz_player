@@ -359,17 +359,29 @@ class MainScaffold extends StatelessWidget {
                       // ---------------
                       // 플레이리스트 설명
                       // ---------------
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          widget.playlist.description,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: AppColors.gray600,
+                      SizedBox(
+                        width: 335,
+                        height: 40,
+                        child: Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.playlist.description,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppColors.gray600,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
+
                       const SizedBox(
                         height: 18,
                       ),

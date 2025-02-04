@@ -129,7 +129,7 @@ class HomeBottomNavigation extends StatelessWidget {
                         context: context,
                         barrierDismissible: false,
                         builder: (context) => CancleEditAlertDialog(
-                          destination: 1,
+                          destination: 2,
                         ),
                       );
                       break;

@@ -5,6 +5,7 @@ import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class PlayList extends ConsumerStatefulWidget {
   const PlayList({
@@ -109,7 +110,7 @@ class _PlayListState extends ConsumerState<PlayList> {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (context) => Container(
-                                height: 300,
+                                height: 248,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(24),
                                   color: Colors.white,
@@ -128,23 +129,21 @@ class _PlayListState extends ConsumerState<PlayList> {
                                             // bottomsheet - 노래 이미지
                                             // -----------------------
                                             Container(
+                                              width: 48,
+                                              height: 48,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(4),
+                                                image: data[index].imgUrl ==
+                                                        null
+                                                    ? DecorationImage(
+                                                        image: AssetImage(
+                                                            'assets/images/muoz.png'))
+                                                    : DecorationImage(
+                                                        image: NetworkImage(
+                                                            data[index]
+                                                                .imgUrl!)),
                                               ),
-                                              child: data[index].imgUrl == null
-                                                  ? Image.asset(
-                                                      'assets/images/muoz.png',
-                                                      width: 48,
-                                                      height: 48,
-                                                      fit: BoxFit.scaleDown,
-                                                    )
-                                                  : Image.network(
-                                                      data[index].imgUrl!,
-                                                      width: 48,
-                                                      height: 48,
-                                                      fit: BoxFit.scaleDown,
-                                                    ),
                                             ),
                                             const SizedBox(
                                               width: 16,
@@ -183,19 +182,26 @@ class _PlayListState extends ConsumerState<PlayList> {
                                         const SizedBox(
                                           height: 24,
                                         ),
-                                        // 음악 재생
-                                        BottomSheetMenuButton(title: '재생'),
+                                        // 플레이리스트 편집
+                                        GestureDetector(
+                                          onTap: () {
+                                            context.pop();
+                                            ref
+                                                .read(bottomNavigationProvider
+                                                    .notifier)
+                                                .updatePage(5);
+                                            context.go(
+                                              '/saved/playlist/edit',
+                                              extra: data[index],
+                                            );
+                                          },
+                                          child: BottomSheetMenuButton(
+                                              title: '플레이리스트 편집'),
+                                        ),
                                         const SizedBox(
                                           height: 8,
                                         ),
-                                        // 음악을 다른 플레이리스트에 저장
-                                        BottomSheetMenuButton(
-                                          title: '셔플 재생',
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        // 음악 삭제
+                                        // 플레이리스트
                                         GestureDetector(
                                           onTap: () {
                                             showDialog(

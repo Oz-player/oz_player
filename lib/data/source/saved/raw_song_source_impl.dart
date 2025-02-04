@@ -55,6 +55,8 @@ class RawSongSourceImpl implements RawSongSource {
       );
       print('count가 증가하였습니다.');
     } else {
+      // 존재하지 않던 곡일 경우 곡을 생성하고 count 값을 1로 설정
+      rawSongDto.countLibrary = 1;
       await _firestore
           .collection('Song')
           .doc(rawSongDto.video.id)
@@ -76,7 +78,9 @@ class RawSongSourceImpl implements RawSongSource {
         },
       );
       print('count가 증가하였습니다.');
+      // 존재하지 않던 곡일 경우 곡을 생성하고 count 값을 1로 설정
     } else {
+      rawSongDto.countPlaylist = 1;
       await _firestore
           .collection('Song')
           .doc(rawSongDto.video.id)
