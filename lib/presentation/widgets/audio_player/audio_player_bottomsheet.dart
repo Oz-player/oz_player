@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +106,9 @@ class AudioBottomSheet {
                         height: 12,
                       ),
                       AutoSizeText(
-                        audioState.loadingAudio ? '음악 로딩중' : conditionState.recommendSongs[index].title,
+                        audioState.loadingAudio
+                            ? '음악 로딩중'
+                            : conditionState.recommendSongs[index].title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         style: TextStyle(
@@ -116,7 +120,9 @@ class AudioBottomSheet {
                         height: 4,
                       ),
                       AutoSizeText(
-                        audioState.loadingAudio ? '잠시만 기다려주세요' : conditionState.recommendSongs[index].artist,
+                        audioState.loadingAudio
+                            ? '잠시만 기다려주세요'
+                            : conditionState.recommendSongs[index].artist,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         minFontSize: 12,
@@ -130,11 +136,23 @@ class AudioBottomSheet {
                         child: StreamBuilder(
                             stream: audioState.audioPlayer.positionStream,
                             builder: (context, snapshot) {
+                              Duration total =
+                                  audioState.audioPlayer.duration ??
+                                      const Duration(seconds: 0);
+                              if (Platform.isIOS) {
+                                if (total >
+                                    Duration(
+                                        milliseconds:
+                                            total.inMilliseconds ~/ 2)) {
+                                  total = Duration(
+                                      milliseconds: total.inMilliseconds ~/ 2);
+                                }
+                              }
+
                               return ProgressBar(
                                 progress:
                                     snapshot.data ?? const Duration(seconds: 0),
-                                total: audioState.audioPlayer.duration ??
-                                    const Duration(seconds: 0),
+                                total: total,
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
@@ -322,7 +340,9 @@ class AudioBottomSheet {
                         height: 12,
                       ),
                       AutoSizeText(
-                        audioState.loadingAudio ? '음악 로딩중' : audioState.currentSong!.title,
+                        audioState.loadingAudio
+                            ? '음악 로딩중'
+                            : audioState.currentSong!.title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         minFontSize: 14,
@@ -336,7 +356,9 @@ class AudioBottomSheet {
                         height: 4,
                       ),
                       AutoSizeText(
-                        audioState.loadingAudio ? '잠시만 기다려주세요' : audioState.currentSong!.artist,
+                        audioState.loadingAudio
+                            ? '잠시만 기다려주세요'
+                            : audioState.currentSong!.artist,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         minFontSize: 12,
@@ -351,11 +373,23 @@ class AudioBottomSheet {
                         child: StreamBuilder(
                             stream: audioState.audioPlayer.positionStream,
                             builder: (context, snapshot) {
+                              Duration total =
+                                  audioState.audioPlayer.duration ??
+                                      const Duration(seconds: 0);
+                              if (Platform.isIOS) {
+                                if (total >
+                                    Duration(
+                                        milliseconds:
+                                            total.inMilliseconds ~/ 2)) {
+                                  total = Duration(
+                                      milliseconds: total.inMilliseconds ~/ 2);
+                                }
+                              }
+
                               return ProgressBar(
                                 progress:
                                     snapshot.data ?? const Duration(seconds: 0),
-                                total: audioState.audioPlayer.duration ??
-                                    const Duration(seconds: 0),
+                                total: total,
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
