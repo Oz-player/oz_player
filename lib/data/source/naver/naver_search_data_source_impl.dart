@@ -48,7 +48,8 @@ class NaverSearchDataSourceImpl implements NaverSearchDataSource {
     return elements.map((element) {
       final title = element.querySelector('.music_title a')?.text ?? '제목 없음';
       final artist = element.querySelector('.sub_text')?.text ?? '아티스트 없음';
-      final lyrics = element.querySelector('.lyrics')?.text ?? '가사 없음';
+      final lyricsElement = element.querySelector('.lyrics');
+      final lyrics = lyricsElement != null ? lyricsElement.innerHtml : '가사 없음';
       final link = element.querySelector('.music_title a')?.attributes['href'] ?? '';
 
       return NaverSearchDto(
