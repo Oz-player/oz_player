@@ -215,11 +215,13 @@ class _RecommendPageConditionTwoState
                                 context,
                                 ref,
                                 textControllerPlaylistTitle,
-                                textControllerPlaylistDescription);
+                                textControllerPlaylistDescription,
+                                null);
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
-                            backgroundColor: Colors.black.withValues(alpha: 0.32),
+                            backgroundColor:
+                                Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
                               Icons.format_list_bulleted_add,
@@ -251,7 +253,8 @@ class _RecommendPageConditionTwoState
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
-                            backgroundColor: Colors.black.withValues(alpha: 0.32),
+                            backgroundColor:
+                                Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
                               Icons.play_arrow,
@@ -281,7 +284,8 @@ class _RecommendPageConditionTwoState
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
-                            backgroundColor: Colors.black.withValues(alpha: 0.32),
+                            backgroundColor:
+                                Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
                               Icons.bookmark,

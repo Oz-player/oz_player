@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/saved/pages/library_page.dart';
 
 // 라이브러리 페이지에서 쓰는 CardWidget
 class CardWidgetLibrary extends ConsumerWidget {
@@ -214,103 +215,116 @@ Widget memoDialog(String title, String memo, String mood) {
           FocusScope.of(context).unfocus();
         },
         child: AlertDialog(
+          contentPadding: EdgeInsets.zero,
           backgroundColor: Colors.transparent,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 28,
-                    ),
-                    Text(
-                      '내가 남긴 메모',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.main100,
-                      ),
-                      child: Text(
-                        mood,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: AppColors.gray900,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Flexible(
-                      child: Container(
-                        height: 60,
-                        width: double.infinity,
+          content: SizedBox(
+            width: 400,
+            height: 650,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 86,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 300,
+                        height: 378,
                         padding: const EdgeInsets.only(
-                          top: 10,
-                          bottom: 28,
+                          top: 38,
                           left: 20,
                           right: 20,
+                          bottom: 20,
                         ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: AppColors.gray200,
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white,
                         ),
-                        child: Text(
-                          memo,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: AppColors.gray900,
+                        child: Column(
+                          children: [
+                            Text(
+                              '내가 남긴 메모',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            tagBox(mood),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Flexible(
+                              child: Container(
+                                width: 259,
+                                height: 224,
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                  left: 20,
+                                  right: 20,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: AppColors.gray200,
+                                ),
+                                child: ListView(
+                                  children: [
+                                    Text(
+                                      memo,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        color: AppColors.gray900,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 28,
+                      ),
+                      GestureDetector(
+                        onTap: () => context.pop(),
+                        child: Container(
+                          width: 58,
+                          height: 58,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withValues(alpha: 0.32),
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/icon_close.png'),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 28,
-              ),
-              GestureDetector(
-                onTap: () => context.pop(),
-                child: Container(
-                  width: 58,
-                  height: 58,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: 0.32),
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/icon_close.png'),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 533,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/char/oz_2.png'),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
