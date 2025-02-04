@@ -23,10 +23,10 @@ class LoadingViewModel extends Notifier<LoadingState> {
   LoadingState build() {
     List<String> loadingText = [
       '',
-      '추천 음악 카드를 준비중\n잠시만 기다려주세요',
-      '음악 카드가 보관함에 저장되는중\n잠시만 기다려주세요',
-      '새로운 플레이리스트를 생성하는중\n잠시만 기다려주세요',
-      '플레이리스트에 음악 카드를 저장하는중\n잠시만 기다려주세요'
+      '추천 음악 카드를 준비 중\n잠시만 기다려주세요',
+      '음악 카드가 보관함에 저장되는 중\n잠시만 기다려주세요',
+      '새로운 플레이리스트를 생성하는 중\n잠시만 기다려주세요',
+      '플레이리스트에 음악을 저장하는 중\n잠시만 기다려주세요'
     ];
 
     List<String> loadingImage = [

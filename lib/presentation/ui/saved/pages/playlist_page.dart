@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
@@ -11,6 +12,8 @@ import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_widget.dart';
 
 class PlaylistPage extends ConsumerStatefulWidget {
   final PlayListEntity playlist;
@@ -59,7 +62,49 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
   Widget build(BuildContext context) {
     // 플레이리스트의 음악 목록 Async
     var songListAsync = ref.watch(playlistSongsProvider);
+    final loadingState = ref.watch(loadingViewModelProvider);
 
+    return loadingState.isLoading
+        ? Stack(
+            children: [
+              MainScaffold(
+                widget: widget,
+                songListAsync: songListAsync,
+                ref: ref,
+                removeSongId: removeSongId,
+                addListInAudioPlayer: addListInAudioPlayer,
+              ),
+              LoadingWidget(),
+            ],
+          )
+        : MainScaffold(
+            widget: widget,
+            songListAsync: songListAsync,
+            ref: ref,
+            removeSongId: removeSongId,
+            addListInAudioPlayer: addListInAudioPlayer,
+          );
+  }
+}
+
+class MainScaffold extends StatelessWidget {
+  const MainScaffold({
+    super.key,
+    required this.widget,
+    required this.songListAsync,
+    required this.ref,
+    required this.removeSongId,
+    required this.addListInAudioPlayer,
+  });
+
+  final void Function(String songId) removeSongId;
+  final void Function(List<SongEntity> data) addListInAudioPlayer;
+  final PlaylistPage widget;
+  final AsyncValue<List<SongEntity>> songListAsync;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -207,7 +252,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                               for (var item in list) {
                                                 print(item.title);
                                               }
-                                              await addListInAudioPlayer(list);
+                                              addListInAudioPlayer(list);
                                             },
                                             error: (error, stackTrace) {},
                                             loading: () {},
@@ -246,6 +291,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                       // --------------------------------
                                       GestureDetector(
                                         onTap: () {
+                                          context.pop();
                                           showDialog(
                                             context: context,
                                             barrierDismissible: false,
@@ -333,9 +379,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                       songListAsync.when(
                           data: (data) {
                             return GestureDetector(
-                              onTap: () async {
-                                await addListInAudioPlayer(data);
-                              },
+                              onTap: () => addListInAudioPlayer(data),
                               child: PlayButton(),
                             );
                           },
@@ -553,14 +597,42 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                                                     height: 24,
                                                   ),
                                                   // 음악 재생
-                                                  BottomSheetMenuButton(
-                                                      title: '재생'),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      context.pop();
+                                                      addListInAudioPlayer(
+                                                          [data[index]]);
+                                                    },
+                                                    child:
+                                                        BottomSheetMenuButton(
+                                                            title: '재생'),
+                                                  ),
                                                   const SizedBox(
                                                     height: 8,
                                                   ),
                                                   // 음악을 다른 플레이리스트에 저장
-                                                  BottomSheetMenuButton(
-                                                    title: '플레이리스트에 저장',
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      context.pop();
+                                                      TextEditingController
+                                                          titleController =
+                                                          TextEditingController();
+                                                      TextEditingController
+                                                          descriptionController =
+                                                          TextEditingController();
+                                                      SavePlaylistBottomSheet
+                                                          .show(
+                                                        context,
+                                                        ref,
+                                                        titleController,
+                                                        descriptionController,
+                                                        data[index],
+                                                      );
+                                                    },
+                                                    child:
+                                                        BottomSheetMenuButton(
+                                                      title: '플레이리스트에 저장',
+                                                    ),
                                                   ),
                                                   const SizedBox(
                                                     height: 8,

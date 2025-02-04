@@ -24,7 +24,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: SearchArea(onSearch: _updateSearchText), // 검색 콜백 전달
           backgroundColor: Colors.white,
