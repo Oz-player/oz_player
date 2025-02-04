@@ -19,18 +19,20 @@ class LyricsBottom extends StatelessWidget {
       height: 800,
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Row(
               children: [
-                SizedBox(
-                  child: Text(
-                    song,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Pretendard-SemiBold'
+                Expanded(
+                  child: SizedBox(
+                    child: Text(
+                      song,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Pretendard',
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
@@ -43,16 +45,26 @@ class LyricsBottom extends StatelessWidget {
                     artist,
                     style: TextStyle(
                       fontSize: 14,
-                      fontFamily: 'Pretendard-Medium'
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 )
               ],
             ),
             Text(
-              parse(lyrics).body!.innerHtml.replaceAll('<br>', '\n'), //가사에 <br>로 줄 바꿈
-              style: TextStyle(fontSize: 14, fontFamily: 'Pretendard-Medium'),
-            )
+              parse(lyrics)
+                  .body!
+                  .innerHtml
+                  .replaceAll('<br>', '\n'), //가사에 <br>로 줄 바꿈
+              style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: 'Pretendard',
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[900]),
+            ),
           ],
         ),
       ),
