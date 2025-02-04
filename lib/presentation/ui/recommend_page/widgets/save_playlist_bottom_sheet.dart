@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
@@ -12,8 +13,12 @@ import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class SavePlaylistBottomSheet {
-  static void show(BuildContext context, WidgetRef ref,
-      TextEditingController title, TextEditingController description) async {
+  static void show(
+      BuildContext context,
+      WidgetRef ref,
+      TextEditingController title,
+      TextEditingController description,
+      SongEntity? entity) async {
     final openSheet = await showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -25,9 +30,14 @@ class SavePlaylistBottomSheet {
               final playListAsync = ref.watch(playListViewModelProvider);
               final playListState = ref.watch(savePlaylistBottomSheetProvider);
               final loading = ref.watch(loadingViewModelProvider).isLoading;
-              final songEntity = ref
-                  .watch(conditionViewModelProvider)
-                  .recommendSongs[ref.watch(cardPositionProvider)];
+              SongEntity songEntity;
+              if (entity == null) {
+                songEntity = ref
+                    .watch(conditionViewModelProvider)
+                    .recommendSongs[ref.watch(cardPositionProvider)];
+              } else {
+                songEntity = entity;
+              }
 
               return playListAsync.when(
                 error: (error, stackTrace) => Container(),
@@ -158,7 +168,7 @@ class SavePlaylistBottomSheet {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 24),
                                         child: Text(
-                                          '플레이리스트에 음악카드 추가하기',
+                                          '플레이리스트에 음악 추가하기',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,

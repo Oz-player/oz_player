@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
 import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/bottom_sheet_button.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_widget.dart';
 
 class SearchSongBottomSheet extends StatelessWidget {
   const SearchSongBottomSheet(
@@ -97,7 +99,38 @@ class SearchSongBottomSheet extends StatelessWidget {
                       }
                     }),
                     SizedBox(height: 10),
-                    bottomSheetButton(context, '플레이리스트에 저장', () {}),
+                    bottomSheetButton(
+                      context,
+                      '플레이리스트에 저장',
+                      () async {
+                        //ref.watch(playListsUsecaseProvider).addSong(listName, entity)
+                        final videoEx = ref.read(videoInfoUsecaseProvider);
+                        final video = await videoEx.getVideoInfo(title, artist);
+
+                        TextEditingController titleController =
+                            TextEditingController();
+                        TextEditingController descriptionController =
+                            TextEditingController();
+                        final newEntity = SongEntity(
+                            video: video,
+                            title: title,
+                            imgUrl: imgUrl,
+                            artist: artist,
+                            mood: 'mood',
+                            situation: 'situation',
+                            genre: 'genre',
+                            favoriteArtist: 'favoriteArtist');
+                        if (context.mounted) {
+                          SavePlaylistBottomSheet.show(
+                              context,
+                              ref,
+                              titleController,
+                              descriptionController,
+                              newEntity);
+                          LoadingWidget();
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
