@@ -136,11 +136,23 @@ class AudioBottomSheet {
                         child: StreamBuilder(
                             stream: audioState.audioPlayer.positionStream,
                             builder: (context, snapshot) {
+                              Duration total =
+                                  audioState.audioPlayer.duration ??
+                                      const Duration(seconds: 0);
+                              if (Platform.isIOS) {
+                                if (total >
+                                    Duration(
+                                        milliseconds:
+                                            total.inMilliseconds ~/ 2)) {
+                                  total = Duration(
+                                      milliseconds: total.inMilliseconds ~/ 2);
+                                }
+                              }
+
                               return ProgressBar(
                                 progress:
                                     snapshot.data ?? const Duration(seconds: 0),
-                                total: audioState.audioPlayer.duration ??
-                                    const Duration(seconds: 0),
+                                total: total,
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
@@ -361,7 +373,6 @@ class AudioBottomSheet {
                         child: StreamBuilder(
                             stream: audioState.audioPlayer.positionStream,
                             builder: (context, snapshot) {
-
                               Duration total =
                                   audioState.audioPlayer.duration ??
                                       const Duration(seconds: 0);
@@ -374,7 +385,7 @@ class AudioBottomSheet {
                                       milliseconds: total.inMilliseconds ~/ 2);
                                 }
                               }
-                              
+
                               return ProgressBar(
                                 progress:
                                     snapshot.data ?? const Duration(seconds: 0),

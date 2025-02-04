@@ -147,6 +147,10 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         state.audioPlayer.positionStream.listen((position) async {
       Duration totalDuration = state.audioPlayer.duration ?? Duration.zero;
 
+      if (state.audioPlayer.position != position) {
+        return;
+      }
+
       if (position >=
               Duration(milliseconds: totalDuration.inMilliseconds ~/ 2) &&
           Platform.isIOS) {
@@ -272,10 +276,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       state.isPlaying = false;
 
       await state.playerStateSubscription?.cancel();
+      state.playerStateSubscription = null;
       if (Platform.isIOS) {
         await state.iosStream?.cancel();
+        state.iosStream = null;
       }
-      state.playerStateSubscription = null;
     } catch (e) {
       print("오디오 스트림 취소시 오류 $e");
     } finally {
