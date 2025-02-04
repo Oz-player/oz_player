@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:html/parser.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/bottom_sheet_button.dart';
@@ -10,12 +8,11 @@ import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottoms
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 
 class SearchLyicsBottomSheet extends StatelessWidget {
-  const SearchLyicsBottomSheet({
-    super.key,
-    required this.song,
-    required this.artist,
-    required this.lyrics
-  });
+  const SearchLyicsBottomSheet(
+      {super.key,
+      required this.song,
+      required this.artist,
+      required this.lyrics});
 
   final String song;
   final String artist;
@@ -72,7 +69,8 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                           context: context,
                           isScrollControlled: true,
                           builder: (BuildContext context) {
-                            return LyricsBottom(song: song, artist: artist, lyrics: lyrics);
+                            return LyricsBottom(
+                                song: song, artist: artist, lyrics: lyrics);
                           });
                     }),
                     SizedBox(height: 10),
@@ -134,4 +132,3 @@ class SearchLyicsBottomSheet extends StatelessWidget {
     );
   }
 }
-
