@@ -1,34 +1,32 @@
-<p align="center"><img src="assets/images/muoz.png"></img></p>
+![header](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=200&text=Oz&fontColor=ffffff&fontSize=60&fontAlign=90&animation=scaleIn)     
+<img src="assets/images/mu_1.png" height="50">     
 
-##### <div align=center><h1>😈 STACKS </h1></div>
+<img src="assets/images/muoz.png" height="100"></img>    
 
-<div align=center>
-    <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
-    <img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">
-    <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> 
-<br>
-    <img src="https://img.shields.io/badge/spotify-1ED760?style=for-the-badge&logo=spotify&logoColor=black">
-    <img src="https://img.shields.io/badge/googlegemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white">
- 
-<br>
-</div>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <span style="flex-grow: 1; text-align: center; font-size: 25px; font-weight: bold;">"우리가 당신만의<br> 신비로운 음악을 찾아줄게"</span>
+  <img src="assets/images/oz_3.png" height="150">
+</div>        
+<p align="center"><img src="assets/images/card_1.png" height="200"></img></p>     
+<p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
+<p align="center"><img src="assets/images/app_tree.png"></img></p>     
 
 ## 프로젝트 개요
 ### “MUOZ" 는 새로운 음악을 만나고 싶은 사람들을 위한 음악 추천형 오디오 플레이어입니다.
 #### 'MUOZ'는 다음과 같은 분들을 위해 탄생되었습니다.
 
-> 💚 취향에 맞는 새로운 음악을 추천받아 보고 싶으신 분들
+> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 취향에 맞는 새로운 음악을 추천받아 보고 싶으신 분들</p>
 > 
 
-> 🌟 현재 상황에 어울리는 음악을 찾고 있으신 분들
+> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 현재 상황에 어울리는 음악을 찾고 있으신 분들</p>
 > 
 
-> 🏞 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들
+> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들</p>
 > 
 
 
 
-라이브러리(맨아래)
+
 핵심 기술, 기능(젤위로) 상세하게 적기
 각페이지별 기능
 팀원들 기능
@@ -37,55 +35,7 @@
 트러블슈팅[페이지 따로만들어서 링크]
 연결된 기술들
 
----
-### 라이브러리
 
-<img src="https://img.shields.io/badge/dart-0175C2?style=for-the-badge">
-<img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge">
-<br>
-
-[flutter_card_swiper | Flutter package](https://pub.dev/packages/flutter_card_swiper)
-[flutter_slider_drawer | Flutter package](https://pub.dev/packages/flutter_slider_drawer)
-[audio_service | Flutter package](https://pub.dev/packages/audio_service)
-[loading_indicator | Flutter package](https://pub.dev/packages/loading_indicator)
-[animated_toggle_switch | Flutter package](https://pub.dev/packages/animated_toggle_switch)
-[auto_animated | Flutter package](https://pub.dev/packages/auto_animated)
-[auto_size_text | Flutter package](https://pub.dev/packages/auto_size_text)
-[flutter_native_splash | Flutter package](https://pub.dev/packages/flutter_native_splash)
-[circular_reveal_animation | Flutter package](https://pub.dev/packages/circular_reveal_animation)
-[badges | Flutter package](https://pub.dev/packages/badges)
-[flutter_styled_toast | Flutter package](https://pub.dev/packages/flutter_styled_toast)
-[drop_down_list | Flutter package](https://pub.dev/packages/drop_down_list)
-[url_launcher | Flutter package](https://pub.dev/packages/url_launcher)
-[animate_do | Flutter package](https://pub.dev/packages/animate_do)
-[chewie | Flutter package](https://pub.dev/packages/chewie)
-[expandable_page_view | Flutter package](https://pub.dev/packages/expandable_page_view)
-[in_app_update | Flutter package](https://pub.dev/packages/in_app_update)
-[tab_container | Flutter package](https://pub.dev/packages/tab_container)
-[floating | Flutter package](https://pub.dev/packages/floating)
-[flutter_gen_runner | Dart package](https://pub.dev/packages/flutter_gen_runner)
-[flutter_adaptive_scaffold | Flutter package](https://pub.dev/packages/flutter_adaptive_scaffold)
-[spotify_sdk example | Flutter package](https://pub.dev/packages/spotify_sdk/example)
-[spotify | Dart package](https://pub.dev/packages/spotify)
-[realm | Flutter package](https://pub.dev/packages/realm)
-[youtube_player_flutter | Flutter package](https://pub.dev/packages/youtube_player_flutter)
-[youtube_explode_dart | Dart package](https://pub.dev/packages/youtube_explode_dart)
-[google_sign_in | Flutter package](https://pub.dev/packages/google_sign_in)
-[firebase_auth | Flutter package](https://pub.dev/packages/firebase_auth)
-[cloud_firestore | Flutter package](https://pub.dev/packages/cloud_firestore)
-[google_generative_ai | Dart package](https://pub.dev/packages/google_generative_ai)
-[just_audio | Flutter package](https://pub.dev/packages/just_audio)
-[audio_video_progress_bar | Flutter package](https://pub.dev/packages/audio_video_progress_bar)
-[sign_in_with_apple | Flutter package](https://pub.dev/packages/sign_in_with_apple)
-[http | Dart package](https://pub.dev/packages/http)
-[xml2json | Dart package](https://pub.dev/packages/xml2json)
-[html | Dart package](https://pub.dev/packages/html)
-[toggle_switch | Flutter package](https://pub.dev/packages/toggle_switch)
-[auto_size_text | Flutter package](https://pub.dev/packages/auto_size_text)
-[cupertino_icons | Dart package](https://pub.dev/packages/cupertino_icons)
-[go_router | Flutter package](https://pub.dev/packages/go_router)
-[flutter_riverpod | Flutter package](https://pub.dev/packages/flutter_riverpod)
-[firebase_core | Flutter package](https://pub.dev/packages/firebase_core)
 
 ### ⏱️ 프로젝트 기간
 `2025. 1. 16 - 진행중`
@@ -125,7 +75,8 @@
 
 ### 🛡 소셜로그인 (google, kakao, apple)
 
-> * 수정중
+> * firebase auth와 flutter package를 이용해서 google, apple 로그인 구현
+> * kakao 로그인은 firebase auth와 functions를 이용해서 구현
 
 <details>
 <summary>미리보기</summary>
@@ -198,3 +149,52 @@
 ## 🚨 Trouble Shooting
 
 > 추가 예정
+
+---
+### 라이브러리
+<div style="display: flex;">
+  <img src="https://img.shields.io/badge/dart-0175C2?style=for-the-badge">
+  <img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge">
+</div>
+<br>  
+
+[flutter_card_swiper](https://pub.dev/packages/flutter_card_swiper)       
+[animated_toggle_switch](https://pub.dev/packages/animated_toggle_switch)      
+[auto_animated](https://pub.dev/packages/auto_animated)     
+[auto_size_text](https://pub.dev/packages/auto_size_text)             
+[url_launcher](https://pub.dev/packages/url_launcher)                            
+[youtube_explode_dart](https://pub.dev/packages/youtube_explode_dart)     
+[google_sign_in](https://pub.dev/packages/google_sign_in)     
+[firebase_auth](https://pub.dev/packages/firebase_auth)     
+[cloud_firestore](https://pub.dev/packages/cloud_firestore)     
+[google_generative_ai](https://pub.dev/packages/google_generative_ai)    
+[just_audio](https://pub.dev/packages/just_audio)    
+[audio_video_progress_bar](https://pub.dev/packages/audio_video_progress_bar)    
+[sign_in_with_apple](https://pub.dev/packages/sign_in_with_apple)    
+[http](https://pub.dev/packages/http)    
+[xml2json](https://pub.dev/packages/xml2json)    
+[html](https://pub.dev/packages/html)    
+[toggle_switch](https://pub.dev/packages/toggle_switch)     
+[auto_size_text](https://pub.dev/packages/auto_size_text)    
+[cupertino_icons](https://pub.dev/packages/cupertino_icons)    
+[go_router](https://pub.dev/packages/go_router)     
+[flutter_riverpod](https://pub.dev/packages/flutter_riverpod)    
+[firebase_core](https://pub.dev/packages/firebase_core)      
+[flutter_dotenv](https://pub.dev/packages/flutter_dotenv)       
+[lottie](https://pub.dev/packages/lottie)        
+[package_info_plus](https://pub.dev/packages/package_info_plus)        
+[shared_preferences](https://pub.dev/packages/shared_preferences)       
+[android_intent_plus](https://pub.dev/packages/android_intent_plus)       
+[kakao_flutter_sdk](https://pub.dev/packages/kakao_flutter_sdk)      
+[easy_rich_text](https://pub.dev/packages/easy_rich_text)      
+[intl](https://pub.dev/packages/intl)        
+[flutter_slidable](https://pub.dev/packages/flutter_slidable)        
+[mockito](https://pub.dev/packages/mockito)        
+[build_runner](https://pub.dev/packages/build_runner)       
+[flutter_lints](https://pub.dev/packages/flutter_lints)      
+[change_app_package_name](https://pub.dev/packages/change_app_package_name)        
+[mocktail](https://pub.dev/packages/mocktail)       
+
+
+
+![footer](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=150&section=footer&text=황상진%20권유진%20차부곤%20홍의정%20나영은&fontSize=20&fontColor=BF81FE&fontAlign=80&fontAlignY=80)
