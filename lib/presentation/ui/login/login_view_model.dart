@@ -14,6 +14,7 @@ class LoginViewModel extends Notifier<LoginState> {
   late final _kakaoLoginUseCase = ref.read(kakaoLoginUseCaseProvider);
   late final _logoutUseCase = ref.read(logoutUseCaseProvider);
   late final _deleteUserUseCase = ref.read(deleteUserUseCaseProvider);
+  late final _revokeReasonUsecase = ref.read(revokeReasonUsecaseProvider);
 
   LoginViewModel();
 
@@ -76,9 +77,10 @@ class LoginViewModel extends Notifier<LoginState> {
     }
   }
 
-  Future<void> deleteUser(BuildContext context) async {
+  Future<void> deleteUser(BuildContext context, int index) async {
     state = LoginState.loading;
     try {
+      await updateRevokeReason(index);
       await _deleteUserUseCase.execute();
 
       ref.read(userViewModelProvider.notifier).initUser();
@@ -89,6 +91,10 @@ class LoginViewModel extends Notifier<LoginState> {
     } catch (e) {
       state = LoginState.error;
     }
+  }
+
+  Future<void> updateRevokeReason(int index) async {
+    await _revokeReasonUsecase.execute(index);
   }
 }
 

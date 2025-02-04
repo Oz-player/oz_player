@@ -104,7 +104,7 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                 onPressed: selectedButtonIndex == -1
                     ? null
                     : () {
-                        deleteUserViewModel.deleteUser(context);
+                        deleteUserViewModel.deleteUser(context, selectedButtonIndex);
                       },
                 child: Text('탈퇴하기'),
               ),
