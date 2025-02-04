@@ -6,7 +6,7 @@ import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_b
 import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/bottom_sheet_button.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
-import 'package:oz_player/presentation/widgets/loading/loading_widget.dart';
+import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class SearchSongBottomSheet extends StatelessWidget {
   const SearchSongBottomSheet(
@@ -127,7 +127,9 @@ class SearchSongBottomSheet extends StatelessWidget {
                               titleController,
                               descriptionController,
                               newEntity);
-                          LoadingWidget();
+                          ref
+                              .read(loadingViewModelProvider.notifier)
+                              .endLoading();
                         }
                       },
                     ),

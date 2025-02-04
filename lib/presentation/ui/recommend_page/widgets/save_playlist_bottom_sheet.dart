@@ -492,7 +492,7 @@ class SavePlaylistBottomSheet {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 24),
                                           child: Text(
-                                            '플레이리스트에 음악카드 추가하기',
+                                            '플레이리스트에 음악 추가하기',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
