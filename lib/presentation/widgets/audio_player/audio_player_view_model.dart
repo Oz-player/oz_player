@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
@@ -16,6 +17,7 @@ class AudioPlayerState {
   List<SongEntity> nextSong;
   bool isbuffering;
   bool loadingAudio;
+  StreamSubscription<Duration>? iosStream;
 
   AudioPlayerState(
       this.audioPlayer,
@@ -25,7 +27,8 @@ class AudioPlayerState {
       this.currentSong,
       this.nextSong,
       this.isbuffering,
-      this.loadingAudio);
+      this.loadingAudio,
+      this.iosStream);
 
   AudioPlayerState copyWith(
           {AudioPlayer? audioPlayer,
@@ -35,7 +38,8 @@ class AudioPlayerState {
           SongEntity? currentSong,
           List<SongEntity>? nextSong,
           bool? isbuffering,
-          bool? loadingAudio}) =>
+          bool? loadingAudio,
+          StreamSubscription<Duration>? iosStream}) =>
       AudioPlayerState(
           audioPlayer ?? this.audioPlayer,
           playerStateSubscription ?? this.playerStateSubscription,
@@ -44,14 +48,15 @@ class AudioPlayerState {
           currentSong ?? this.currentSong,
           nextSong ?? this.nextSong,
           isbuffering ?? this.isPlaying,
-          loadingAudio ?? this.loadingAudio);
+          loadingAudio ?? this.loadingAudio,
+          iosStream ?? this.iosStream);
 }
 
 class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
     return AudioPlayerState(
-        AudioPlayer(), null, false, -1, null, [], false, false);
+        AudioPlayer(), null, false, -1, null, [], false, false, null);
   }
 
   /// 오디오 플레이어에 현재 곡 정보 저장
@@ -101,6 +106,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     try {
       await state.audioPlayer.setUrl(audioUrl, preload: true);
 
+      if (Platform.isIOS) {
+        iosStream();
+      }
       setSubscription();
       isEndLoadingAudioPlayer();
       await togglePlay();
@@ -121,6 +129,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
 
         log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
         await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+        if (Platform.isIOS) {
+          iosStream();
+        }
         setSubscription();
         isEndLoadingAudioPlayer();
         await togglePlay();
@@ -129,6 +140,53 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         isEndLoadingAudioPlayer();
       }
     }
+  }
+
+  void iosStream() {
+    state.iosStream ??=
+        state.audioPlayer.positionStream.listen((position) async {
+      Duration totalDuration = state.audioPlayer.duration ?? Duration.zero;
+
+      if (position >=
+              Duration(milliseconds: totalDuration.inMilliseconds ~/ 2) &&
+          Platform.isIOS) {
+        if (state.nextSong.isEmpty) {
+          await state.audioPlayer.seek(Duration.zero);
+          await togglePause();
+        } else {
+          state = state.copyWith(currentSong: state.nextSong.first);
+          try {
+            await state.audioPlayer
+                .setUrl(state.nextSong.first.video.audioUrl, preload: true);
+            await togglePlay();
+          } catch (e) {
+            try {
+              final videoEx = ref.read(videoInfoUsecaseProvider);
+              final video = await videoEx.getVideoInfo(
+                  state.currentSong!.title, state.currentSong!.artist);
+              final update = RawSongEntity(
+                  countLibrary: 0,
+                  countPlaylist: 0,
+                  video: video,
+                  title: '',
+                  imgUrl: '',
+                  artist: '');
+
+              ref.read(rawSongUsecaseProvider).updateVideo(update);
+
+              log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
+              await state.audioPlayer.setUrl(video.audioUrl, preload: true);
+              setSubscription();
+              await togglePlay();
+            } catch (e) {
+              log('인터넷 연결이 안됨');
+            }
+          }
+
+          state.nextSong.removeAt(0);
+        }
+      }
+    });
   }
 
   void setSubscription() {
@@ -215,6 +273,10 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
 
       await state.playerStateSubscription?.cancel();
       state.playerStateSubscription = null;
+      if (Platform.isIOS) {
+        await state.iosStream?.cancel();
+        state.iosStream = null;
+      }
     } catch (e) {
       print("오디오 스트림 취소시 오류 $e");
     } finally {
@@ -234,7 +296,13 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     final newPosition = currentPosition + Duration(seconds: sec);
 
     if (newPosition > duration) {
-      await state.audioPlayer.seek(duration);
+      if (Platform.isIOS) {
+        await state.audioPlayer.seek(Duration(
+                milliseconds: state.audioPlayer.duration!.inMilliseconds ~/ 2) -
+            Duration(milliseconds: 100));
+      } else {
+        await state.audioPlayer.seek(duration);
+      }
     } else {
       await state.audioPlayer.seek(newPosition);
     }
