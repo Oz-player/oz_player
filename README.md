@@ -1,7 +1,5 @@
 <p align="center"><img src="assets/images/muoz.png"></img></p>
 
-
-
 ##### <div align=center><h1>😈 STACKS </h1></div>
 
 <div align=center>
