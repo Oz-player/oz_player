@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:html/parser.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_naver_view_model.dart';
 import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/search_lyics_bottom_sheet.dart';
 
@@ -61,7 +62,7 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                           result.artist,
                           style: TextStyle(fontSize: 14),
                           overflow: TextOverflow.ellipsis,
-                        ), // SpotifyEntity의 artist 속성 사용
+                        ),
                       ],
                     ),
                   ),
@@ -72,7 +73,7 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                       //성인 등급의 노래인 경우 naver에서 인증이 필요해서 로그인 문구가 뜨는것을 없앰
                       result.lyrics.contains('로그인 후 이용할 수 있는 컨텐츠입니다.')
                           ? '청소년 이용 불가 노래입니다'
-                          : result.lyrics,
+                          : parse(result.lyrics).body!.text ,
                     ),
                   ),
                 ],
@@ -85,6 +86,7 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                       return SearchLyicsBottomSheet(
                         song: result.title,
                         artist: result.artist,
+                        lyrics: result.lyrics,
                     );
                   },
                 );

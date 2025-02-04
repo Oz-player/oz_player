@@ -63,15 +63,15 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
                   : null,
             ),
             onFieldSubmitted: (text) {
-              final text = _textEditingController.text;
               if (text.isNotEmpty) {
                 widget.onSearch(text);
                 saveSearchText(text);
-                ref
-                    .read(searchSpotifyListViewModel.notifier)
-                    .fetchSpotify(text);
+                ref.read(searchSpotifyListViewModel.notifier).fetchSpotify(text);
                 ref.read(searchNaverViewModel.notifier).fetchNaver(text);
                 print('onsearch 호출됨');
+              } else {
+                // 검색어가 비어있을 때 clearText 호출
+                widget.onSearch('');
               }
             },
           ),
