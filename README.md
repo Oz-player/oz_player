@@ -1,7 +1,10 @@
 
-![header](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=200&text=Oz&fontColor=ffffff&fontSize=60&fontAlign=90&animation=scaleIn)     
+![header](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=200&text=Oz&fontColor=ffffff&fontSize=60&fontAlign=90&animation=scaleIn)    
 
-<img src="assets/images/muoz_2.png" height="120"></img>    
+---
+<p align="center"><img src="assets/images/screen.png"></img></p>
+
+<!-- <img src="assets/images/muoz_2.png" height="120"></img>     -->
 
 <div align="center">
   <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid white;">
@@ -18,7 +21,7 @@
 
 <p align="center"><img src="assets/images/card_1.png" height="200"></img></p>     
 <p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
-<p align="center"><img src="assets/images/app_tree.png"></img></p>
+<p align="center"><img src="assets/images/app_tree.png"></img></p>  
 
 ## 프로젝트 개요
 
@@ -38,13 +41,22 @@
 
 ### ⏱️ 프로젝트 기간
 
-`2025. 1. 16 - 진행중`
+`2025. 1. 16 - 진행중`  
+
 
 ### 👥 개발 멤버
 
 | **황상진** | **권유진** | **차부곤** | **홍의정** | **나영은** |
 | :--------: | :--------: | :--------: | :--------: | :--------: |
-|     TL     |     SL     |     M      |     M      |  Designer  |
+|     [@Hamiric](https://github.com/Hamiric)     |     [@UooUzzz](https://github.com/UooUzzz)    |     [@Dev-Combu](https://github.com/Dev-Combu)     |     [@marion419](https://github.com/marion419)      |  []() |
+|     TL     |     SL     |     M      |     M      |  Designer  |    
+
+
+
+#### [프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)
+#### [프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)    
+
+
 
 <<<<<<< HEAD
 ### 👨‍👩‍👧‍👦 역할 분담
