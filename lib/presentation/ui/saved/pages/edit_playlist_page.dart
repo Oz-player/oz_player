@@ -113,6 +113,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
             // --------------------
             child: GestureDetector(
               onTap: () async {
+                // 제목은 비워둘 수 없게 설정
+                if (listNameController.text == '') {
+                  listNameController.text = widget.playlist.listName;
+                }
                 // 제목을 수정한 경우
                 if (listNameController.text != currentName) {
                   await ref
