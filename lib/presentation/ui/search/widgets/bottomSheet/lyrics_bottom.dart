@@ -15,7 +15,11 @@ class LyricsBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        color: Colors.white,
+      ),
       height: 800,
       child: Padding(
         padding: const EdgeInsets.all(24),
