@@ -428,30 +428,42 @@ class MainScaffold extends StatelessWidget {
                       data: (data) {
                         // 플레이리스트가 비었을 경우 검색 페이지로 redirecting 버튼
                         if (data.isEmpty) {
-                          return Column(
+                          return Stack(
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
+                              Positioned(
+                                top: 20,
+                                left: 0,
+                                right: 0,
                                 child: Image.asset(
                                     'assets/images/no_songs_in_playlist.png'),
                               ),
-                              GestureDetector(
-                                onTap: () => context.go('/search'),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 160,
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: AppColors.gray800,
-                                  ),
-                                  child: Text(
-                                    '음악 추가하기',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                        color: Colors.white),
+                              Positioned(
+                                left: 60,
+                                right: 60,
+                                bottom: 32,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .watch(
+                                            bottomNavigationProvider.notifier)
+                                        .updatePage(2);
+                                    context.go('/search');
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 160,
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: AppColors.gray800,
+                                    ),
+                                    child: Text(
+                                      '음악 추가하기',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
