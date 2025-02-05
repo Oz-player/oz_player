@@ -26,6 +26,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   final descriptionController = TextEditingController(); // 플레이리스트 설명 컨트롤러
   int? dragHandleIndex; // 현재 드래그중인 인덱스
   List<String> currentOrder = []; // 플레이리스트 순서가 바뀔 때마다 저장
+  bool isEdited = false;
 
   @override
   void initState() {
@@ -65,8 +66,6 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
 
     final String currentName = widget.playlist.listName;
     final String currentDescription = widget.playlist.description;
-    bool isEdited = false; // 수정이 발생한 적 있는지 확인
-
     return GestureDetector(
       onTap: () {
         titleFocus.unfocus();
@@ -76,6 +75,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
+              print('end: $isEdited');
               if (isEdited) {
                 showDialog(
                   context: context,
@@ -467,6 +467,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                     currentOrder.add(item.video.id);
                                   }
                                 });
+                                isEdited = true;
                               },
                             ),
                           );

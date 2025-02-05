@@ -249,9 +249,6 @@ class MainScaffold extends StatelessWidget {
                                                 list.add(item);
                                               }
                                               list.shuffle();
-                                              for (var item in list) {
-                                                print(item.title);
-                                              }
                                               addListInAudioPlayer(list);
                                             },
                                             error: (error, stackTrace) {},

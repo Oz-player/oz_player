@@ -6,6 +6,7 @@ import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
@@ -651,7 +652,7 @@ Widget playlistDialog(
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor:
-                                      WidgetStatePropertyAll(Color(0xfff2e6ff)),
+                                      WidgetStatePropertyAll(AppColors.gray200),
                                   shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius:
