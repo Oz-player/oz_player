@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
@@ -202,9 +203,13 @@ class CancleEditAlertDialog extends ConsumerWidget {
   const CancleEditAlertDialog({
     super.key,
     this.destination,
+    this.newEntity,
+    this.initialList,
   });
 
   final int? destination;
+  final PlayListEntity? newEntity;
+  final List<String>? initialList;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -267,7 +272,14 @@ class CancleEditAlertDialog extends ConsumerWidget {
                           } else if (destination == 2) {
                             context.go('/search');
                           } else {
-                            context.pop();
+                            context.pop(
+                              PlayListEntity(
+                                  listName: newEntity!.listName,
+                                  createdAt: newEntity!.createdAt,
+                                  imgUrl: newEntity!.imgUrl,
+                                  description: newEntity!.description,
+                                  songIds: initialList!),
+                            );
                           }
                         },
                         child: Text(
