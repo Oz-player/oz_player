@@ -232,7 +232,7 @@ Widget memoDialog(String title, String memo, String mood) {
                     children: [
                       Container(
                         width: 300,
-                        height: 378,
+                        height: 406,
                         padding: const EdgeInsets.only(
                           top: 38,
                           left: 20,
@@ -262,7 +262,7 @@ Widget memoDialog(String title, String memo, String mood) {
                             Flexible(
                               child: Container(
                                 width: 259,
-                                height: 224,
+                                height: 170,
                                 padding: const EdgeInsets.only(
                                   top: 10,
                                   bottom: 10,
@@ -270,9 +270,11 @@ Widget memoDialog(String title, String memo, String mood) {
                                   right: 20,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: AppColors.gray200,
-                                ),
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      width: 1,
+                                      color: AppColors.border,
+                                    )),
                                 child: ListView(
                                   children: [
                                     Text(
@@ -287,24 +289,31 @@ Widget memoDialog(String title, String memo, String mood) {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 28,
-                      ),
-                      GestureDetector(
-                        onTap: () => context.pop(),
-                        child: Container(
-                          width: 58,
-                          height: 58,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.32),
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/icon_close.png'),
+                            const SizedBox(
+                              height: 24,
                             ),
-                          ),
+                            SizedBox(
+                              width: 246,
+                              height: 40,
+                              child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                        AppColors.main700),
+                                    shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  child: Text(
+                                    '확인',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                            ),
+                          ],
                         ),
                       ),
                     ],

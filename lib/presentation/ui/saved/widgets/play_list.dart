@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
-import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 
 class PlayList extends ConsumerStatefulWidget {
   const PlayList({
@@ -18,6 +20,17 @@ class PlayList extends ConsumerStatefulWidget {
 
 class _PlayListState extends ConsumerState<PlayList> {
   SortedType sortedType = SortedType.latest;
+
+  Future<void> addListInAudioPlayer(List<SongEntity> data) async {
+    final nextSong = List<SongEntity>.from(data)..removeAt(0);
+
+    ref.read(audioPlayerViewModelProvider.notifier).isStartLoadingAudioPlayer();
+    ref.read(audioPlayerViewModelProvider.notifier).setCurrentSong(data.first);
+    ref.read(audioPlayerViewModelProvider.notifier).setNextSongList(nextSong);
+    await ref
+        .read(audioPlayerViewModelProvider.notifier)
+        .setAudioPlayer(data.first.video.audioUrl, -2);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +123,7 @@ class _PlayListState extends ConsumerState<PlayList> {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (context) => Container(
-                                height: 248,
+                                height: 300,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(24),
                                   color: Colors.white,
@@ -182,28 +195,75 @@ class _PlayListState extends ConsumerState<PlayList> {
                                         const SizedBox(
                                           height: 24,
                                         ),
-                                        // 플레이리스트 편집
+                                        // -------------------
+                                        // 플레이리스트 세부 메뉴
+                                        // -------------------
+                                        // --------------------------------
+                                        // playlist menu : 1. 재생
+                                        // --------------------------------
                                         GestureDetector(
-                                          onTap: () {
+                                          onTap: () async {
                                             context.pop();
-                                            ref
-                                                .read(bottomNavigationProvider
+                                            // 음악 리스트 받아오기
+                                            await ref
+                                                .read(playlistSongsProvider
                                                     .notifier)
-                                                .updatePage(5);
-                                            context.go(
-                                              '/saved/playlist/edit',
-                                              extra: data[index],
+                                                .loadSongs(data[index].songIds);
+                                            final songListAsync = ref
+                                                .watch(playlistSongsProvider);
+                                            songListAsync.when(
+                                              data: (data) async {
+                                                addListInAudioPlayer(data);
+                                              },
+                                              error: (error, stackTrace) {},
+                                              loading: () {},
                                             );
                                           },
                                           child: BottomSheetMenuButton(
-                                              title: '플레이리스트 편집'),
+                                              title: '재생'),
                                         ),
                                         const SizedBox(
                                           height: 8,
                                         ),
-                                        // 플레이리스트
+                                        // --------------------------------
+                                        // playlist menu : 2. 셔플 재생
+                                        // --------------------------------
+                                        GestureDetector(
+                                          onTap: () async {
+                                            context.pop();
+                                            // 음악 리스트 받아오기
+                                            await ref
+                                                .read(playlistSongsProvider
+                                                    .notifier)
+                                                .loadSongs(data[index].songIds);
+                                            final songListAsync = ref
+                                                .watch(playlistSongsProvider);
+                                            songListAsync.when(
+                                              data: (data) async {
+                                                // 셔플
+                                                List<SongEntity> list = [];
+                                                for (var item in data) {
+                                                  list.add(item);
+                                                }
+                                                list.shuffle();
+                                                addListInAudioPlayer(list);
+                                              },
+                                              error: (error, stackTrace) {},
+                                              loading: () {},
+                                            );
+                                          },
+                                          child: BottomSheetMenuButton(
+                                              title: '셔플 재생'),
+                                        ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        // --------------------------------
+                                        // playlist menu : 3. 삭제
+                                        // --------------------------------
                                         GestureDetector(
                                           onTap: () {
+                                            context.pop();
                                             showDialog(
                                               context: context,
                                               barrierDismissible: false,
