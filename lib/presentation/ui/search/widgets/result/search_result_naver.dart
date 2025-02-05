@@ -32,20 +32,19 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ListView.separated(
-        itemCount: filteredResults.length,
-        itemBuilder: (context, index) {
-          final result = filteredResults[index];
-          return Row(
-            children: [
-              Expanded(
+    return ListView.separated(
+      itemCount: filteredResults.length,
+      itemBuilder: (context, index) {
+        final result = filteredResults[index];
+        return Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24,0,0,0),
                 child: Column(
                   children: [
                     SizedBox(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: SizedBox(
@@ -64,16 +63,18 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                           SizedBox(
                             width: 10,
                           ),
-                          Text(
-                            result.artist,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey[600],
-                                overflow: TextOverflow.ellipsis,
-                                ),
-                            
+                          Expanded(
+                            child: Text(
+                              result.artist,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Pretendard',
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey[600],
+                                  overflow: TextOverflow.ellipsis,
+                                  ),
+                              
+                            ),
                           ),
                         ],
                       ),
@@ -97,30 +98,30 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SearchLyicsBottomSheet(
-                        song: result.title,
-                        artist: result.artist,
-                        lyrics: result.lyrics,
-                      );
-                    },
-                  );
-                },
-                icon: Image.asset(
-                  'assets/images/menu_thin_icon.png',
-                ),
+            ),
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SearchLyicsBottomSheet(
+                      song: result.title,
+                      artist: result.artist,
+                      lyrics: result.lyrics,
+                    );
+                  },
+                );
+              },
+              icon: Image.asset(
+                'assets/images/menu_thin_icon.png',
               ),
-            ],
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider();
-        },
-      ),
+            ),
+          ],
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Divider();
+      },
     );
   }
 }
