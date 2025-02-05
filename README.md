@@ -98,7 +98,9 @@
 
 ### 🚀  Google Gemini를 이용한 음악 추천 기능
  
-> * 수정중
+> * 현재 상태, 상황, 음악장르, 선호 아티스트 등의 태그들을 활용하여 Gemini에게 음악 추천을 받습니다.
+> * 추천받은 음악은 SPOTIFY 를 통해 검색 후, 음악 카드로써 가공되서 사용자에게 보여집니다.
+> * 각 음악카드들은 보관함이나 플레이리스트에 저장할 수 있습니다.
 
 <details>
 <summary>미리보기</summary>
@@ -112,7 +114,9 @@
 
 ### 🔊 음악 재생 (오디오 플레이어)
  
-> * 수정중
+> * 음악카드에 저장된 곡들을 재생합니다.
+> * 재생되는 음원은 Youtube Explode 를 통해 제공됩니다.
+> * 10초 건너뛰기, 위치 건너뛰기 등의 기능들을 제공합니다.
 
 <details>
 <summary>미리보기</summary>
@@ -156,7 +160,10 @@
 
 ## 🚨 Trouble Shooting
 
-> 추가 예정
+> 사용하려던 domain 변경 [notion>](https://teamsparta.notion.site/domain-17d2dc3ef51481dea802d9bf863319e0)
+> IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)
+> IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)
+> Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)
 
 ---
 ### 라이브러리
