@@ -3,10 +3,19 @@
 
 <img src="assets/images/muoz.png" height="100"></img>    
 
-<div style="display: flex; justify-content: center; align-items: center;">
-  <span style="flex-grow: 1; text-align: center; font-size: 25px; font-weight: bold;">"우리가 당신만의<br> 신비로운 음악을 찾아줄게"</span>
-  <img src="assets/images/oz_3.png" height="150">
-</div>        
+<div align="center">
+  <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid white;">
+    <tr>
+      <td align="center" style="font-size: 25px; font-weight: bold; border: 1px solid white;">
+        "우리가 당신만의<br> 신비로운 음악을 찾아줄게"
+      </td>
+      <td style="border: 1px solid white;">
+        <img src="assets/images/oz_3.png" height="150">
+      </td>
+    </tr>
+  </table>
+</div>      
+
 <p align="center"><img src="assets/images/card_1.png" height="200"></img></p>     
 <p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
 <p align="center"><img src="assets/images/app_tree.png"></img></p>     
@@ -29,10 +38,6 @@
 
 핵심 기술, 기능(젤위로) 상세하게 적기
 각페이지별 기능
-팀원들 기능
-이슈들
-개발 기간
-트러블슈팅[페이지 따로만들어서 링크]
 연결된 기술들
 
 
@@ -59,6 +64,7 @@
 
 **나영은** : UX / UI 디자인
 
+<img src="assets/images/muoz.png" height="100"></img>
 
 
 ### 🛠️ 기술 스택
@@ -75,18 +81,22 @@
 
 ### 🛡 소셜로그인 (google, kakao, apple)
 
-> * firebase auth와 flutter package를 이용해서 google, apple 로그인 구현
-> * kakao 로그인은 firebase auth와 functions를 이용해서 구현
+> * firebase auth와 flutter package를 이용해서 google, apple 로그인 구현      
+> * kakao 로그인은 firebase auth와 functions를 이용해서 구현         
 
 <details>
 <summary>미리보기</summary>
 <div markdown="1">
 
-> ![로그인](gif)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ca52511f-0e66-49c3-b95c-d7e3a8db6807" width="200">
+  <img src="https://github.com/user-attachments/assets/e616440c-914a-4722-8a0e-7ca4c3c54934" width="200">
+</p>
 
-<br>
 </div>
 </details>
+
+
 
 ### 🚀  Google Gemini를 이용한 음악 추천 기능
  
@@ -98,9 +108,14 @@
 <summary>미리보기</summary>
 <div markdown="1">
 
-![음악 카드 추천](gif)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8509a535-5300-4e7c-b385-62baee1caeca" width="200">
+  <img src="https://github.com/user-attachments/assets/e86d5b70-cc65-4780-a574-1b910a962b1e" width="200">
+  <img src="https://github.com/user-attachments/assets/77fada6d-13c6-45de-b67d-467aa6e87e62" width="200">
+  <img src="https://github.com/user-attachments/assets/320ec36e-d45c-494d-968c-fe993b4b6e13" width="200">
+  
+</p>
 
- <br>
 </div>
 </details>
 
@@ -114,9 +129,11 @@
 <summary>미리보기</summary>
 <div markdown="1">
 
-![오디오플레이어](gif)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f0801b96-68f2-473f-9637-100b9be77905" width="200">
+  <img src="https://github.com/user-attachments/assets/87a55e2b-3407-4c57-a124-9763bea57e3b" width="200">
+</p>
 
- <br>
 </div>
 </details>
 
@@ -127,25 +144,30 @@
 <details>
 <summary>미리보기</summary>
 <div markdown="1">
- 
-![보관함 - 라이브러리](gif)
-![보관함 - 플레이리스트](gif)
 
-<br>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/97414c8c-203e-42bb-8188-9b0b8affb7b2" width="200">
+  <img src="https://github.com/user-attachments/assets/f25b5dc6-3964-48ed-92d2-2f90243143e4" width="200">
+</p>
+
 </div>
 </details>
 
 ### 🔍 검색 기능 (제목 검색, 가사 검색)
 
-> * 수정중
+> * Spotify web Api를 사용한 제목 검색 기능
+> * Naver 가사검색 기능을 사용한 가사 검색 기능
 
 <details>
 <summary>미리보기</summary>
 <div markdown="1">
 
-![음악검색](gif)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5ebbec2e-539c-412e-bcad-a7f2fcc94eac" width="200">
+  <img src="https://github.com/user-attachments/assets/3fc42757-d7e4-460a-9460-0c8a84786318" width="200">
+  <img src="https://github.com/user-attachments/assets/59f40626-d962-49df-a22c-156c5c4f5ffa" width="200">
+</p>
 
- <br>
 </div>
 </details>
 
