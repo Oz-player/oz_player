@@ -3,10 +3,19 @@
 
 <img src="assets/images/muoz.png" height="100"></img>    
 
-<div style="display: flex; justify-content: center; align-items: center;">
-  <span style="flex-grow: 1; text-align: center; font-size: 25px; font-weight: bold;">"우리가 당신만의<br> 신비로운 음악을 찾아줄게"</span>
-  <img src="assets/images/oz_3.png" height="150">
-</div>        
+<div align="center">
+  <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid white;">
+    <tr>
+      <td align="center" style="font-size: 25px; font-weight: bold; border: 1px solid white;">
+        "우리가 당신만의<br> 신비로운 음악을 찾아줄게"
+      </td>
+      <td style="border: 1px solid white;">
+        <img src="assets/images/oz_3.png" height="150">
+      </td>
+    </tr>
+  </table>
+</div>      
+
 <p align="center"><img src="assets/images/card_1.png" height="200"></img></p>     
 <p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
 <p align="center"><img src="assets/images/app_tree.png"></img></p>     
@@ -29,7 +38,6 @@
 
 핵심 기술, 기능(젤위로) 상세하게 적기
 각페이지별 기능
-팀원들 기능
 이슈들
 개발 기간
 트러블슈팅[페이지 따로만들어서 링크]
