@@ -91,6 +91,10 @@ class SaveSongBottomSheetViewModel
   void isBlind() {
     state = state.copyWith(blind: true);
   }
+
+    void isNotBlind() {
+    state = state.copyWith(blind: false);
+  }
 }
 
 final saveSongBottomSheetViewModelProvider = AutoDisposeNotifierProvider<

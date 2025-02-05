@@ -279,6 +279,7 @@ class _RecommendPageConditionTwoState
                                     .notifier)
                                 .setSaveSong(conditionState
                                     .recommendSongs[positionIndex]);
+                            ref.read(saveSongBottomSheetViewModelProvider.notifier).isNotBlind();
                             SaveSongBottomSheet.show(
                                 context, ref, textControllerSaveSongMemo);
                           },

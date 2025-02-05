@@ -124,6 +124,13 @@ class SearchSongBottomSheet extends StatelessWidget {
                       '플레이리스트에 저장',
                       () async {
                         //ref.watch(playListsUsecaseProvider).addSong(listName, entity)
+                        if(ref.watch(loadingViewModelProvider).isLoading){
+                          return;
+                        }
+                        
+                        ref
+                            .read(loadingViewModelProvider.notifier)
+                            .startLoading(4);
                         final videoEx = ref.read(videoInfoUsecaseProvider);
                         final video = await videoEx.getVideoInfo(title, artist);
 
