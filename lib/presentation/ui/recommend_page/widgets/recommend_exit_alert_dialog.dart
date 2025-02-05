@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
@@ -44,7 +45,7 @@ class RecommendExitAlertDialog extends ConsumerWidget {
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              WidgetStatePropertyAll(Color(0xfff2e6ff)),
+                              WidgetStatePropertyAll(AppColors.gray200),
                           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)))),
                       onPressed: () {
@@ -70,7 +71,7 @@ class RecommendExitAlertDialog extends ConsumerWidget {
                   TextButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              WidgetStatePropertyAll(Color(0xff40017E)),
+                              WidgetStatePropertyAll(AppColors.main700),
                           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)))),
                       onPressed: () {
@@ -85,11 +86,10 @@ class RecommendExitAlertDialog extends ConsumerWidget {
             ],
           ),
           Positioned(
-            top: -158,
-            left: 0,
-            right: 0,
-            child: Image.asset('assets/char/oz_2.png')
-          ),
+              top: -158,
+              left: 0,
+              right: 0,
+              child: Image.asset('assets/char/oz_2.png')),
         ],
       ),
     );
