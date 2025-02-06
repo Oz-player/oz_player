@@ -4,20 +4,19 @@ import 'package:oz_player/domain/repository/saved/library_repository.dart';
 
 class LibraryUsecase {
   final LibraryRepository _repository;
-  final String userId;
 
-  LibraryUsecase(this._repository, this.userId);
+  LibraryUsecase(this._repository);
 
-  Future<List<LibraryEntity>> getLibrary() async {
+  Future<List<LibraryEntity>> getLibrary(String userId) async {
     return await _repository.getLibrary(userId);
   }
 
-  Future<void> createLibrary(LibraryEntity entity) async {
+  Future<void> createLibrary(String userId, LibraryEntity entity) async {
     final dto = LibraryDto.fromEntity(entity);
     return await _repository.createLibrary(dto, userId);
   }
 
-  Future<void> deleteLibrary(String songId) async {
+  Future<void> deleteLibrary(String userId, String songId) async {
     return await _repository.deleteLibrary(songId, userId);
   }
 }

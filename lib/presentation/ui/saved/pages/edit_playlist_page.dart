@@ -8,6 +8,7 @@ import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
@@ -119,15 +120,18 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 }
                 // 제목을 수정한 경우
                 if (listNameController.text != currentName) {
-                  await ref
-                      .watch(playListsUsecaseProvider)
-                      .editListName(currentName, listNameController.text);
+                  await ref.watch(playListsUsecaseProvider).editListName(
+                      ref.read(userViewModelProvider.notifier).getUserId(),
+                      currentName,
+                      listNameController.text);
                   isEdited = true;
                 }
                 // 플레이리스트 설명을 수정한 경우
                 if (descriptionController.text != currentDescription) {
                   await ref.watch(playListsUsecaseProvider).editDescription(
-                      currentDescription, descriptionController.text);
+                      ref.read(userViewModelProvider.notifier).getUserId(),
+                      currentDescription,
+                      descriptionController.text);
                   isEdited = true;
                 }
                 // 음악을 삭제하지 않고 플레이리스트 순서를 바꾼 경우
@@ -135,7 +139,9 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                   for (int i = 0; i < currentOrder.length; i++) {
                     if (widget.playlist.songIds[i] != currentOrder[i]) {
                       await ref.watch(playListsUsecaseProvider).editSongOrder(
-                          widget.playlist.listName, currentOrder);
+                          ref.read(userViewModelProvider.notifier).getUserId(),
+                          widget.playlist.listName,
+                          currentOrder);
                       isEdited = true;
                       break;
                     }
@@ -251,6 +257,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                 hintStyle: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 24,
+                                  color: AppColors.gray400,
                                 ),
                               ),
                               onChanged: (value) => isEdited = true,
@@ -276,11 +283,11 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                   border: InputBorder.none,
                                   enabledBorder: InputBorder.none,
                                   focusedBorder: InputBorder.none,
-                                  hintText: widget.playlist.description,
+                                  hintText: '플레이리스트 설명을 입력하세요',
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
-                                    color: AppColors.gray600,
+                                    color: AppColors.gray400,
                                   ),
                                 ),
                                 onChanged: (value) => isEdited = true,

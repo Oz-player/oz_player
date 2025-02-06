@@ -5,6 +5,7 @@ import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/library_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
 class SaveSongBottomSheetState {
   SongEntity? savedSong;
@@ -74,7 +75,10 @@ class SaveSongBottomSheetViewModel
       situation: state.savedSong!.situation,
       songId: state.savedSong!.video.id,
     );
-    await ref.read(libraryUsecaseProvider).createLibrary(libraryEntity);
+    await ref.read(libraryUsecaseProvider).createLibrary(
+          ref.read(userViewModelProvider.notifier).getUserId(),
+          libraryEntity,
+        );
     await ref.read(libraryViewModelProvider.notifier).getLibrary();
   }
 
@@ -92,7 +96,7 @@ class SaveSongBottomSheetViewModel
     state = state.copyWith(blind: true);
   }
 
-    void isNotBlind() {
+  void isNotBlind() {
     state = state.copyWith(blind: false);
   }
 }
