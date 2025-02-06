@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1030920972906-lmrobs01kau10bqi70jpm61lvv060gm8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1030920972906-lmrobs01kau10bqi70jpm61lvv060gm8</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1030920972906-s84q0hspn0gl972qa5h8cmgvgel0b0nh.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCRFztM8Mkb14nmRdvsrFIPEgMNRSr0kWc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1030920972906</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.oz.ozplayer</string>
+	<key>PROJECT_ID</key>
+	<string>oz-player</string>
+	<key>STORAGE_BUCKET</key>
+	<string>oz-player.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1030920972906:ios:daabf72d390e4ebeb77813</string>
+</dict>
+</plist>
