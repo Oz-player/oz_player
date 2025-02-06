@@ -18,13 +18,13 @@
   </table>
 </div>
 
+
 <p align="center"><img src="assets/images/card_1.png" height="200"></img></p>     
 <p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
 <p align="center"><img src="assets/images/app_tree.png"></img></p>  
 
-## 프로젝트 개요   
-
-### “MUOZ" 는 새로운 음악을<br> 만나고 싶은 사람들을 위한<br> 음악 추천형 오디오 플레이어입니다.
+## ♒ 프로젝트 개요    
+### 'MUOZ' 는 새로운 음악을<br> 만나고 싶은 사람들을 위한<br> 음악 추천형 오디오 플레이어입니다.
 
 #### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다.
 
@@ -32,18 +32,17 @@
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 현재 상황에 어울리는 음악을 찾고 있으신 분들</p>
 
-> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들</p>
+> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들</p>     
 
-핵심 기술, 기능(젤위로) 상세하게 적기
-각페이지별 기능
-연결된 기술들
+
 
 ### ⏱️ 프로젝트 기간
 
-`2025. 1. 16 - 진행중`  
+`2025. 1. 16 - 진행중`     
 
 
-### 👥 개발 멤버
+
+### 💟 개발 멤버
 
 | **황상진** | **권유진** | **차부곤** | **홍의정** | **나영은** |
 | :--------: | :--------: | :--------: | :--------: | :--------: |
@@ -52,29 +51,13 @@
 
 
 
-##### [프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)     
-##### [프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)     
+##### [💜 프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)     
+##### [💜 프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)        
 
 
-
-<<<<<<< HEAD
-### 👨‍👩‍👧‍👦 역할 분담
-
-**황상진** : AI 음악 추천 / 오디오 플레이어
-
-**권유진** : 로그인 / 앱 설정
-
-**차부곤** : 음악 검색 / Spotify / ManiaDB / Naver 가사 검색
-
-**홍의정** : 음악 보관함 / DB / 플레이리스트
-
-**나영은** : UX / UI 디자인
-
-<img src="assets/images/muoz.png" height="100"></img>
-=======
-### 👨‍👩‍👧‍👦 역할 분담    
+### 💟 역할 분담    
 <img src="assets/images/members.png" height="350"></img>
->>>>>>> 88116b542387d052190a5140ee9be108de78a820
+
 
 ### 🛠️ 기술 스택
 
@@ -83,12 +66,12 @@
 | Firebase | <img src="https://img.shields.io/badge/Authentication-4285F4"> <img src="https://img.shields.io/badge/Firestore-854C1D">                                                                                                                                                                                                                                                                                                                        |
 | 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube Explode-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |
 
-## 💡 어떻게 사용하나요?
+## ♒ MuOz 기능
 
-| ![login](gif) | ![home-chat](gif) | ![run](gif) |
-| ------------- | ----------------- | ----------- |
+| ![메인 미리보기](gif) |       
+| ------------- |     
 
-### 🛡 소셜로그인 (google, kakao, apple)
+### ➿ 소셜로그인 (google, kakao, apple)
 
 > - 세 가지 종류의 소설 로그인 기능을 지원합니다.
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
@@ -106,7 +89,7 @@
 </div>
 </details>
 
-### 🚀 Google Gemini를 이용한 음악 추천 기능
+### ➿ Google Gemini를 이용한 음악 추천 기능
 
 > - 현재 상태, 상황, 음악장르, 선호 아티스트 등의 태그들을 활용하여 Google Gemini에게 음악 추천을 받습니다.
 > - 음악을 추천받아 SPOTIFY API를 거쳐 데이터를 정제한 후, 사용자에게 카드 형태 UI를 제공합니다.
@@ -128,7 +111,7 @@
 </div>
 </details>
 
-### 🔊 음악 재생 (오디오 플레이어)
+### ➿ 음악 재생 (오디오 플레이어)
 
 > - YouTube Explode 패키지를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
 > - 10초 건너뛰기, 타임라인 선택 등의 기능을 제공합니다.
@@ -145,7 +128,7 @@
 </div>
 </details>
 
-### 📝 음악 보관함 (플레이리스트)
+### ➿ 음악 보관함 (플레이리스트)
 
 > - 지금까지 저장한 음악 카드를 살펴볼 수 있습니다.
 > - 플레이리스트를 생성하거나 저장한 플레이리스트를 열람, 재생합니다.
@@ -164,7 +147,7 @@
 </div>
 </details>
 
-### 🔍 검색 기능 (제목 검색, 가사 검색)
+### ➿ 검색 기능 (제목 검색, 가사 검색)
 
 > - Spotify web Api를 사용하여 음악 제목을 겁색합니다.
 > - Naver 가사검색 기능을 사용하여 검색어에 해당하는 가사를 포함하는 곡을 보여줍니다.
@@ -182,13 +165,13 @@
 </div>
 </details>
 
-## 🚨 Trouble Shooting
+## ♒ Trouble Shooting
 
 
-> 사용하려던 domain 변경 [notion>](https://teamsparta.notion.site/domain-17d2dc3ef51481dea802d9bf863319e0)  
-> IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
-> IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
-> Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
+> ✔ 사용하려던 domain 변경 [notion>](https://teamsparta.notion.site/domain-17d2dc3ef51481dea802d9bf863319e0)  
+> ✔ IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
+> ✔ IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
+> ✔ Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
 
 ---
 
