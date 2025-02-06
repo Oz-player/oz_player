@@ -1,6 +1,6 @@
 
 ![header](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=200&text=Oz&fontColor=ffffff&fontSize=60&fontAlign=90&animation=scaleIn)    
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=BF81FE&width=435&lines=Hello!+We+are+Oz...;Welcome+to+our+world+of+music!)](https://git.io/typing-svg)    
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=BF81FE&width=435&lines=Hello!+We+are+Oz+⭐;Welcome+to+our+world+of+music+⭐)](https://git.io/typing-svg)    
 <p align="center"><img src="assets/images/screen.png"></img></p>     
 
 <!-- <img src="assets/images/muoz_2.png" height="120"></img>     -->
@@ -24,9 +24,11 @@
 <p align="center"><img src="assets/images/app_tree.png"></img></p>  
 
 ## ♒ 프로젝트 개요    
-### 'MUOZ' 는 새로운 음악을<br> 만나고 싶은 사람들을 위한<br> 음악 추천형 오디오 플레이어입니다.
+### 'MUOZ' 는 새로운 음악🎵을<br> 🎶 만나고 싶은 사람들을 위한<br> 음악 추천형🎵 오디오 플레이어입니다.
 
-#### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다.
+#### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다 !
+<img src="assets/images/oz_1.png" height="100"></img>   
+
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 취향에 맞는 새로운 음악을 추천받아 보고 싶으신 분들</p>
 
@@ -34,43 +36,48 @@
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들</p>     
 
-
+&nbsp;
 
 ### ⏱️ 프로젝트 기간
 
 `2025. 1. 16 - 진행중`     
 
-
+&nbsp;
 
 ### 💟 개발 멤버
 
 | **황상진** | **권유진** | **차부곤** | **홍의정** | **나영은** |
 | :--------: | :--------: | :--------: | :--------: | :--------: |
 |     [@Hamiric](https://github.com/Hamiric)     |     [@UooUzzz](https://github.com/UooUzzz)    |     [@Dev-Combu](https://github.com/Dev-Combu)     |     [@marion419](https://github.com/marion419)      |  []() |
-|     TL     |     SL     |     M      |     M      |  Designer  |    
+|     TL     |     SL     |     M      |     M      |  Designer  |       
+
 
 
 
 ##### [💜 프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)     
 ##### [💜 프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)        
 
-
+&nbsp;
 ### 💟 역할 분담    
-<img src="assets/images/members.png" height="350"></img>
+| <img src="assets/images/members.png" height="350"></img> |       
+| ------------- |        
 
+&nbsp;
 
-### 🛠️ 기술 스택
+### 👾 기술 스택
 
 | 분류     | 이름                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Firebase | <img src="https://img.shields.io/badge/Authentication-4285F4"> <img src="https://img.shields.io/badge/Firestore-854C1D">                                                                                                                                                                                                                                                                                                                        |
-| 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube Explode-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |
+| 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube Explode-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |        
 
+&nbsp;
 ## ♒ MuOz 기능
 
-| ![메인 미리보기](gif) |       
-| ------------- |     
+| <img src="assets/images/info.png" width="800"></img> |       
+| ------------- |        
 
+&nbsp;
 ### ➿ 소셜로그인 (google, kakao, apple)
 
 > - 세 가지 종류의 소설 로그인 기능을 지원합니다.
@@ -87,7 +94,8 @@
 </p>
 
 </div>
-</details>
+</details>    
+&nbsp;
 
 ### ➿ Google Gemini를 이용한 음악 추천 기능
 
@@ -109,8 +117,9 @@
 </p>
 
 </div>
-</details>
+</details>     
 
+&nbsp;
 ### ➿ 음악 재생 (오디오 플레이어)
 
 > - YouTube Explode 패키지를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
@@ -118,7 +127,7 @@
 
 <details>
 <summary>미리보기</summary>
-<div markdown="1">
+<div markdown="1">     
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/f0801b96-68f2-473f-9637-100b9be77905" width="200">
@@ -126,8 +135,9 @@
 </p>
 
 </div>
-</details>
-
+</details>     
+     
+&nbsp;
 ### ➿ 음악 보관함 (플레이리스트)
 
 > - 지금까지 저장한 음악 카드를 살펴볼 수 있습니다.
@@ -145,7 +155,8 @@
 </p>
 
 </div>
-</details>
+</details>       
+&nbsp;
 
 ### ➿ 검색 기능 (제목 검색, 가사 검색)
 
@@ -163,7 +174,9 @@
 </p>
 
 </div>
-</details>
+</details>     
+
+&nbsp;
 
 ## ♒ Trouble Shooting
 
@@ -172,6 +185,10 @@
 > ✔ IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
 > ✔ IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
 > ✔ Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
+> ✔ gorouter 파라미터 문제 [notion>](https://www.notion.so/teamsparta/go-router-497180bd5ebc474b80f7cc114a8a3039)     
+
+
+&nbsp;
 
 ---
 
