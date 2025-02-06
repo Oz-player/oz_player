@@ -124,6 +124,8 @@ class MainScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: Text(
           '플레이리스트',
           style: TextStyle(
