@@ -26,6 +26,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   final descriptionController = TextEditingController(); // 플레이리스트 설명 컨트롤러
   int? dragHandleIndex; // 현재 드래그중인 인덱스
   List<String> currentOrder = []; // 플레이리스트 순서가 바뀔 때마다 저장
+  List<String> initialOrder = [];
   bool isEdited = false;
 
   @override
@@ -36,6 +37,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           .watch(playlistSongsProvider.notifier)
           .loadSongs(widget.playlist.songIds);
     });
+    listNameController.text = widget.playlist.listName;
+    descriptionController.text = widget.playlist.description;
+    initialOrder =
+        widget.playlist.songIds.sublist(0, widget.playlist.songIds.length);
   }
 
   @override
@@ -58,8 +63,6 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   @override
   Widget build(BuildContext context) {
     var songListAsync = ref.watch(playlistSongsProvider);
-    listNameController.text = widget.playlist.listName;
-    descriptionController.text = widget.playlist.description;
 
     FocusNode titleFocus = FocusNode();
     FocusNode descriptionFocus = FocusNode();
@@ -73,19 +76,30 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          // ------------------------
+          // 뒤로가기 버튼
+          // ------------------------
           leading: IconButton(
             onPressed: () {
-              print('end: $isEdited');
               if (isEdited) {
                 showDialog(
                   context: context,
                   builder: (context) => CancleEditAlertDialog(
                     destination: null,
+                    newEntity: widget.playlist,
+                    initialList: initialOrder,
                   ),
                 );
               } else {
                 ref.read(bottomNavigationProvider.notifier).updatePage(0);
-                context.pop();
+                context.pop(
+                  PlayListEntity(
+                      listName: widget.playlist.listName,
+                      createdAt: widget.playlist.createdAt,
+                      imgUrl: widget.playlist.imgUrl,
+                      description: widget.playlist.description,
+                      songIds: initialOrder),
+                );
               }
             },
             icon: Icon(Icons.arrow_back),
@@ -99,6 +113,10 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
             // --------------------
             child: GestureDetector(
               onTap: () async {
+                // 제목은 비워둘 수 없게 설정
+                if (listNameController.text == '') {
+                  listNameController.text = widget.playlist.listName;
+                }
                 // 제목을 수정한 경우
                 if (listNameController.text != currentName) {
                   await ref
@@ -129,7 +147,18 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 }
 
                 if (context.mounted) {
-                  context.pop();
+                  context.pop(
+                    PlayListEntity(
+                      listName: listNameController.text,
+                      createdAt: widget.playlist.createdAt,
+                      imgUrl: widget.playlist.imgUrl,
+                      description: descriptionController.text,
+                      songIds: currentOrder.isEmpty
+                          ? widget.playlist.songIds
+                          : currentOrder,
+                    ),
+                  );
+                  ref.watch(bottomNavigationProvider.notifier).updatePage(0);
                 }
               },
               child: Container(

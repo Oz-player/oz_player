@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/app/logic/isvaildurl.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+//import 'package:toggle_switch/toggle_switch.dart';
 
 class AudioBottomSheet {
   static void show(BuildContext context, int index) {
@@ -46,6 +46,7 @@ class AudioBottomSheet {
                       SizedBox(
                         height: 28,
                       ),
+                      /*
                       ToggleSwitch(
                         minWidth: 67,
                         cornerRadius: 8,
@@ -68,6 +69,7 @@ class AudioBottomSheet {
                       SizedBox(
                         height: 32,
                       ),
+                      */
                       Container(
                         width: 300,
                         height: 300,
@@ -282,6 +284,7 @@ class AudioBottomSheet {
                       SizedBox(
                         height: 28,
                       ),
+                      /*
                       ToggleSwitch(
                         minWidth: 67,
                         cornerRadius: 8,
@@ -304,6 +307,7 @@ class AudioBottomSheet {
                       SizedBox(
                         height: 32,
                       ),
+                      */
                       Container(
                         width: 300,
                         height: 300,

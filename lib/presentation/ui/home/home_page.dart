@@ -114,6 +114,7 @@ class HomePage extends ConsumerWidget {
               SizedBox(
                 height: 16,
               ),
+              /*
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Stack(
@@ -179,6 +180,7 @@ class HomePage extends ConsumerWidget {
                   ],
                 ),
               ),
+              */
               Spacer(),
               AudioPlayer(
                 colorMode: true,

@@ -62,40 +62,41 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                   );
                 }),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 250,
-                      height: 20,
-                      child: Text(
-                        result.name, // SpotifyEntity의 title 속성 사용
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                        child: Text(
+                          result.name, // SpotifyEntity의 title 속성 사용
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        result.type == 'track'
+                            ? result.album!['artists'].first['name']
+                            : result.genres!.isNotEmpty
+                                ? result.genres.toString()
+                                : '',
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
                         ),
                         overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Text(
-                      result.type == 'track'
-                          ? result.album!['artists'].first['name']
-                          : result.genres!.isNotEmpty
-                              ? result.genres.toString()
-                              : '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey[600],
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ), // SpotifyEntity의 artist 속성 사용
-                  ],
+                      ), // SpotifyEntity의 artist 속성 사용
+                    ],
+                  ),
                 ),
               ),
               IconButton(

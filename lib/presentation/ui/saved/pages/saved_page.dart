@@ -49,6 +49,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: Text(
           '보관함',
           style: TextStyle(
