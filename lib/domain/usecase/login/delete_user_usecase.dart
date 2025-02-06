@@ -19,12 +19,17 @@ class DeleteUserUsecase {
     final userDoc = await _firestore.collection('User').doc(uid).get();
     final isKakaoUser = userDoc.exists && uid.startsWith('kakao');
 
-    final isAppleUser = user.providerData.any((provider) => provider.providerId == 'apple.com');
+    final isAppleUser =
+        user.providerData.any((provider) => provider.providerId == 'apple.com');
 
     if (isKakaoUser) {
       await _repository.reauthKakaoUser();
     } else if (isAppleUser) {
-      await _repository.revokeAppleAccount();
+      final credential = await _repository.reauthUser();
+
+      final authorizationCode = credential!.accessToken;
+
+      await _repository.revokeAppleAccount(authorizationCode!);
     } else {
       await _repository.reauthUser();
     }

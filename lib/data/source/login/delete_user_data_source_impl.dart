@@ -1,18 +1,15 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart' as kakao;
 import 'package:oz_player/data/source/login/delete_user_data_source.dart';
 import 'package:http/http.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   final auth.FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
-  final FirebaseFunctions _functions = FirebaseFunctions.instance;
-  
-  
 
   DeleteUserDataSourceImpl({
     required auth.FirebaseAuth auth,
@@ -35,7 +32,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   }
 
   @override
-  Future<void> reauthUser() async {
+  Future<auth.AuthCredential?> reauthUser() async {
     auth.User? user = _auth.currentUser;
     if (user == null) throw Exception('$e');
 
@@ -50,7 +47,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
     if (isKakaoUser) {
       print('카카오 로그인 사용자! 카카오 재인증 진행');
       await reauthKakaoUser();
-      return;
+      return null;
     }
 
     if (providerId == 'google.com') {
@@ -65,11 +62,28 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
         );
       }
     } else if (providerId == 'apple.com') {
-      credential = auth.OAuthProvider('apple.com').credential();
+      try {
+        final appleCredential = await SignInWithApple.getAppleIDCredential(
+          scopes: [AppleIDAuthorizationScopes.email],
+        );
+
+        if (appleCredential.identityToken == null) {
+          throw Exception('$e');
+        }
+
+        credential = auth.OAuthProvider('apple.com').credential(
+          idToken: appleCredential.identityToken,
+          accessToken: appleCredential.authorizationCode,
+        );
+      } catch (e) {
+        print('애플로그인 재인증 실패! $e');
+      }
     }
     if (credential != null) {
+      
       await user.reauthenticateWithCredential(credential);
       print('재인증 성공!');
+      return credential;
     } else {
       throw Exception('재인증 실패');
     }
@@ -108,18 +122,34 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
       print('계정 재인증 실패!: $e');
     }
   }
-  
-  @override
-  Future<void> revokeAppleAccount() async {
-    try {
-      final callable = _functions.httpsCallable('revokeAppleAccount');
-      final response = await callable.call();
 
-      if (response.data['success'] != true) {
-        throw Exception('$e');
-      }
+  @override
+  Future<void> revokeAppleAccount(String authorizationCode) async {
+    try {
+      await _auth.revokeTokenWithAuthorizationCode(authorizationCode);
+      print('애플 탈퇴 성공!');
     } catch (e) {
-      throw Exception('Firebase Functions 오류! $e');
+      //
+      print('애츨 탈퇴 실패! $e');
+      throw Exception();
     }
   }
 }
+
+
+
+  // functions 연동문제
+  // @override
+  // Future<void> revokeAppleAccount() async {
+   
+  //   try {
+  //     final callable = _functions.httpsCallable('revokeAppleAccount');
+  //     final response = await callable.call();
+
+  //     if (response.data['success'] != true) {
+  //       throw Exception('$e');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Firebase Functions 오류! $e');
+  //   }
+  // }
