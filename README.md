@@ -78,7 +78,7 @@
 | ------------- |        
 
 &nbsp;
-### ➿ 소셜로그인 (google, kakao, apple)
+### ➿ 소셜로그인 (google, kakao, apple) <img src="assets/images/mu_1.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 세 가지 종류의 소설 로그인 기능을 지원합니다.
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
@@ -97,7 +97,7 @@
 </details>    
 &nbsp;
 
-### ➿ Google Gemini를 이용한 음악 추천 기능
+### ➿ Google Gemini를 이용한 음악 추천 기능 <img src="assets/images/mu_3.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 현재 상태, 상황, 음악장르, 선호 아티스트 등의 태그들을 활용하여 Google Gemini에게 음악 추천을 받습니다.
 > - 음악을 추천받아 SPOTIFY API를 거쳐 데이터를 정제한 후, 사용자에게 카드 형태 UI를 제공합니다.
@@ -120,7 +120,7 @@
 </details>     
 
 &nbsp;
-### ➿ 음악 재생 (오디오 플레이어)
+### ➿ 음악 재생 (오디오 플레이어) <img src="assets/images/mu_2.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - YouTube Explode 패키지를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
 > - 10초 건너뛰기, 타임라인 선택 등의 기능을 제공합니다.
@@ -138,7 +138,7 @@
 </details>     
      
 &nbsp;
-### ➿ 음악 보관함 (플레이리스트)
+### ➿ 음악 보관함 (플레이리스트) <img src="assets/images/mu_4.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 지금까지 저장한 음악 카드를 살펴볼 수 있습니다.
 > - 플레이리스트를 생성하거나 저장한 플레이리스트를 열람, 재생합니다.
@@ -158,7 +158,7 @@
 </details>       
 &nbsp;
 
-### ➿ 검색 기능 (제목 검색, 가사 검색)
+### ➿ 검색 기능 (제목 검색, 가사 검색) <img src="assets/images/mu_5.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - Spotify web Api를 사용하여 음악 제목을 겁색합니다.
 > - Naver 가사검색 기능을 사용하여 검색어에 해당하는 가사를 포함하는 곡을 보여줍니다.
