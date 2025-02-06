@@ -1,8 +1,7 @@
 
 ![header](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=200&text=Oz&fontColor=ffffff&fontSize=60&fontAlign=90&animation=scaleIn)    
-
----
-<p align="center"><img src="assets/images/screen.png"></img></p>
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=BF81FE&width=435&lines=Hello!+We+are+Oz...;Welcome+to+our+world+of+music!)](https://git.io/typing-svg)    
+<p align="center"><img src="assets/images/screen.png"></img></p>     
 
 <!-- <img src="assets/images/muoz_2.png" height="120"></img>     -->
 
@@ -23,11 +22,11 @@
 <p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
 <p align="center"><img src="assets/images/app_tree.png"></img></p>  
 
-## 프로젝트 개요
+## 프로젝트 개요   
 
-### “MUOZ" 는 새로운 음악을 만나고 싶은 사람들을 위한 음악 추천형 오디오 플레이어입니다.
+### “MUOZ" 는 새로운 음악을<br> 만나고 싶은 사람들을 위한<br> 음악 추천형 오디오 플레이어입니다.
 
-#### 'MUOZ'는 다음과 같은 분들을 위해 탄생되었습니다.
+#### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다.
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 취향에 맞는 새로운 음악을 추천받아 보고 싶으신 분들</p>
 
@@ -53,8 +52,8 @@
 
 
 
-#### [프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)
-#### [프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)    
+##### [프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)     
+##### [프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)     
 
 
 

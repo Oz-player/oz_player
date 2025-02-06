@@ -34,6 +34,11 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
     }
   }
   
+  @override
+  Future<void> revokeAppleAccount() async {
+    await _dataSource.revokeAppleAccount();
+  }
+  
   
   
   

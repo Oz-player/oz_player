@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart' as kakao;
@@ -9,6 +10,9 @@ import 'package:http/http.dart';
 class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   final auth.FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  final FirebaseFunctions _functions = FirebaseFunctions.instance;
+  
+  
 
   DeleteUserDataSourceImpl({
     required auth.FirebaseAuth auth,
@@ -102,6 +106,20 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
       }
     } catch (e) {
       print('계정 재인증 실패!: $e');
+    }
+  }
+  
+  @override
+  Future<void> revokeAppleAccount() async {
+    try {
+      final callable = _functions.httpsCallable('revokeAppleAccount');
+      final response = await callable.call();
+
+      if (response.data['success'] != true) {
+        throw Exception('$e');
+      }
+    } catch (e) {
+      throw Exception('Firebase Functions 오류! $e');
     }
   }
 }
