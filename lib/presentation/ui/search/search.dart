@@ -27,7 +27,7 @@ class _SearchState extends ConsumerState<Search> {
     });
   }
 
-    void _resetSearch() {
+  void _resetSearch() {
     setState(() {
       searchText = null; // 검색어 초기화
       isSearching = false; // 검색 모드 해제
@@ -45,9 +45,8 @@ class _SearchState extends ConsumerState<Search> {
                   resizeToAvoidBottomInset: false, // 배경화면의 이미지가 키보드에 영향을 받지 않음
                   appBar: AppBar(
                     title: SearchArea(
-                      onSearch: (text) {
-                        _updateSearchText(text);
-                      },
+                      onSearch: _updateSearchText,
+                      onCancel: _resetSearch, // 취소 콜백 추가
                     ),
                     backgroundColor: Colors.white,
                   ),
@@ -82,9 +81,8 @@ class _SearchState extends ConsumerState<Search> {
             resizeToAvoidBottomInset: false, // 배경화면의 이미지가 키보드에 영향을 받지 않음
             appBar: AppBar(
               title: SearchArea(
-                onSearch: (text) {
-                  _updateSearchText(text);
-                },
+                onSearch: _updateSearchText,
+                onCancel: _resetSearch, // 취소 콜백 추가
               ),
               backgroundColor: Colors.white,
               scrolledUnderElevation: 0,
