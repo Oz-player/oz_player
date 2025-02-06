@@ -18,8 +18,8 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
   }
 
   @override
-  Future<void> reauthUser() async {
-    await _dataSource.reauthUser(); // provider 소셜 로그인 종류에 맞춰서 실행
+  Future<AuthCredential?> reauthUser() async {
+    return await _dataSource.reauthUser(); // provider 소셜 로그인 종류에 맞춰서 실행
   }
 
 
@@ -32,6 +32,11 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
     } else {
       throw Exception('$e');
     }
+  }
+  
+  @override
+  Future<void> revokeAppleAccount(String authorizationCode) async {
+    await _dataSource.revokeAppleAccount(authorizationCode);
   }
   
   
