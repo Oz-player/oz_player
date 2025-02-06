@@ -5,6 +5,7 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 // 플레이리스트 - 노래 삭제 BottomSheet
@@ -70,9 +71,12 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8)))),
                         onPressed: () async {
-                          await ref
-                              .read(playListsUsecaseProvider)
-                              .deleteSong(listName, songId);
+                          await ref.read(playListsUsecaseProvider).deleteSong(
+                              ref
+                                  .read(userViewModelProvider.notifier)
+                                  .getUserId(),
+                              listName,
+                              songId);
                           removeSongId();
                           ref
                               .read(playListViewModelProvider.notifier)
@@ -167,13 +171,16 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                         onPressed: () async {
                           await ref
                               .read(playListsUsecaseProvider)
-                              .deletePlayList(listName);
+                              .deletePlayList(
+                                  ref
+                                      .read(userViewModelProvider.notifier)
+                                      .getUserId(),
+                                  listName);
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
 
                           if (context.mounted) {
-                            context.pop();
                             context.pop();
                             context.pop();
                           }

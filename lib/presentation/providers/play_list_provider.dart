@@ -5,7 +5,6 @@ import 'package:oz_player/data/source/saved/play_list_source_impl.dart';
 import 'package:oz_player/data/source/saved/play_list_source.dart';
 import 'package:oz_player/domain/repository/saved/play_list_repository.dart';
 import 'package:oz_player/domain/usecase/play_list_usecase.dart';
-import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
 final _playListSourceProvider = Provider<PlayListSource>((ref) {
   return PlayListSourceImpl(FirebaseFirestore.instance);
@@ -18,6 +17,5 @@ final _playListRepositoryProvider = Provider<PlayListRepository>((ref) {
 final playListsUsecaseProvider = Provider((ref) {
   return PlayListUsecase(
     ref.watch(_playListRepositoryProvider),
-    ref.read(userViewModelProvider.notifier).getUserId(),
   );
 });

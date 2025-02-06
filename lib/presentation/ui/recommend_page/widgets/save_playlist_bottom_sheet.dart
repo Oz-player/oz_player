@@ -11,6 +11,7 @@ import 'package:oz_player/presentation/ui/recommend_page/view_model/card_positio
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class SavePlaylistBottomSheet {
@@ -469,7 +470,14 @@ class SavePlaylistBottomSheet {
 
                                           await ref
                                               .read(playListsUsecaseProvider)
-                                              .addSong(playlistTitle, entity);
+                                              .addSong(
+                                                  ref
+                                                      .read(
+                                                          userViewModelProvider
+                                                              .notifier)
+                                                      .getUserId(),
+                                                  playlistTitle,
+                                                  entity);
 
                                           await ref
                                               .read(playListViewModelProvider
@@ -695,6 +703,9 @@ Widget playlistDialog(
                                 bool isSaved = await ref
                                     .read(playListsUsecaseProvider)
                                     .addPlayList(
+                                      ref
+                                          .read(userViewModelProvider.notifier)
+                                          .getUserId(),
                                       PlayListDTO(
                                           listName: title.text,
                                           imgUrl: null,

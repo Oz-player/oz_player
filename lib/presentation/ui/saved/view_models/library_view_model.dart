@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/library_entity.dart';
 import 'package:oz_player/presentation/providers/library_provider.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
 class LibraryViewModel extends AsyncNotifier<List<LibraryEntity>> {
   @override
@@ -11,8 +12,9 @@ class LibraryViewModel extends AsyncNotifier<List<LibraryEntity>> {
 
   Future<void> getLibrary() async {
     state = const AsyncValue.loading();
-    state =
-        AsyncValue.data(await ref.read(libraryUsecaseProvider).getLibrary());
+    state = AsyncValue.data(await ref
+        .read(libraryUsecaseProvider)
+        .getLibrary(ref.read(userViewModelProvider.notifier).getUserId()));
   }
 
   // 라이브러리를 최근 저장 순으로 정렬

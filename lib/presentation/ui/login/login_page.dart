@@ -19,8 +19,8 @@ class LoginPage extends ConsumerWidget {
     // 로그인 상태가 success일 때, 페이지 이동
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (loginState == LoginState.success) {
-        ref.read(playListViewModelProvider.notifier).getPlayLists();
-        ref.read(libraryViewModelProvider.notifier).getLibrary();
+        ref.watch(playListViewModelProvider.notifier).getPlayLists();
+        ref.watch(libraryViewModelProvider.notifier).getLibrary();
         context.go('/home');
       }
     });
@@ -57,7 +57,7 @@ class LoginPage extends ConsumerWidget {
                   GoogleButton(),
                   KakaoButton(),
                   AppleButton(), // IOS에서만 애플 로그인 버튼 보임
-                  PrivateInfoButton(), 
+                  PrivateInfoButton(),
                   SizedBox(height: 32),
                 ],
               ),
@@ -68,4 +68,3 @@ class LoginPage extends ConsumerWidget {
     );
   }
 }
-

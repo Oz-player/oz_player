@@ -263,7 +263,6 @@ class _PlayListState extends ConsumerState<PlayList> {
                                         // --------------------------------
                                         GestureDetector(
                                           onTap: () {
-                                            context.pop();
                                             showDialog(
                                               context: context,
                                               barrierDismissible: false,
