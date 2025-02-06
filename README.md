@@ -1,6 +1,6 @@
 
 ![header](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=200&text=Oz&fontColor=ffffff&fontSize=60&fontAlign=90&animation=scaleIn)    
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=BF81FE&width=435&lines=Hello!+We+are+Oz...;Welcome+to+our+world+of+music!)](https://git.io/typing-svg)    
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=BF81FE&width=435&lines=Hello!+We+are+Oz+⭐;Welcome+to+our+world+of+music+⭐)](https://git.io/typing-svg)    
 <p align="center"><img src="assets/images/screen.png"></img></p>     
 
 <!-- <img src="assets/images/muoz_2.png" height="120"></img>     -->
@@ -18,77 +18,67 @@
   </table>
 </div>
 
+
 <p align="center"><img src="assets/images/card_1.png" height="200"></img></p>     
 <p align="center"><img src="assets/images/oz_2.png" height="100"></img></p>     
 <p align="center"><img src="assets/images/app_tree.png"></img></p>  
 
-## 프로젝트 개요   
+## ♒ 프로젝트 개요    
+### 'MUOZ' 는 새로운 음악🎵을<br> 🎶 만나고 싶은 사람들을 위한<br> 음악 추천형🎵 오디오 플레이어입니다.
 
-### “MUOZ" 는 새로운 음악을<br> 만나고 싶은 사람들을 위한<br> 음악 추천형 오디오 플레이어입니다.
+#### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다 !
+<img src="assets/images/oz_1.png" height="100"></img>   
 
-#### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다.
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 취향에 맞는 새로운 음악을 추천받아 보고 싶으신 분들</p>
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 현재 상황에 어울리는 음악을 찾고 있으신 분들</p>
 
-> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들</p>
+> <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 여러 음악 카드를 플레이리스트로 가지고 싶으신 분들</p>     
 
-핵심 기술, 기능(젤위로) 상세하게 적기
-각페이지별 기능
-연결된 기술들
+&nbsp;
 
 ### ⏱️ 프로젝트 기간
 
-`2025. 1. 16 - 진행중`  
+`2025. 1. 16 - 진행중`     
 
+&nbsp;
 
-### 👥 개발 멤버
+### 💟 개발 멤버
 
 | **황상진** | **권유진** | **차부곤** | **홍의정** | **나영은** |
 | :--------: | :--------: | :--------: | :--------: | :--------: |
 |     [@Hamiric](https://github.com/Hamiric)     |     [@UooUzzz](https://github.com/UooUzzz)    |     [@Dev-Combu](https://github.com/Dev-Combu)     |     [@marion419](https://github.com/marion419)      |  []() |
-|     TL     |     SL     |     M      |     M      |  Designer  |    
+|     TL     |     SL     |     M      |     M      |  Designer  |       
 
 
 
-##### [프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)     
-##### [프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)     
 
+##### [💜 프로젝트 노션으로!](https://www.notion.so/teamsparta/MuOz-9fb16264f6db47e8b810e86e0a7828b7)     
+##### [💜 프로젝트 깃허브로!](https://github.com/Oz-player/oz_player)        
 
+&nbsp;
+### 💟 역할 분담    
+| <img src="assets/images/members.png" height="350"></img> |       
+| ------------- |        
 
-<<<<<<< HEAD
-### 👨‍👩‍👧‍👦 역할 분담
+&nbsp;
 
-**황상진** : AI 음악 추천 / 오디오 플레이어
-
-**권유진** : 로그인 / 앱 설정
-
-**차부곤** : 음악 검색 / Spotify / ManiaDB / Naver 가사 검색
-
-**홍의정** : 음악 보관함 / DB / 플레이리스트
-
-**나영은** : UX / UI 디자인
-
-<img src="assets/images/muoz.png" height="100"></img>
-=======
-### 👨‍👩‍👧‍👦 역할 분담    
-<img src="assets/images/members.png" height="350"></img>
->>>>>>> 88116b542387d052190a5140ee9be108de78a820
-
-### 🛠️ 기술 스택
+### 👾 기술 스택
 
 | 분류     | 이름                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Firebase | <img src="https://img.shields.io/badge/Authentication-4285F4"> <img src="https://img.shields.io/badge/Firestore-854C1D">                                                                                                                                                                                                                                                                                                                        |
-| 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube Explode-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |
+| 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube Explode-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |        
 
-## 💡 어떻게 사용하나요?
+&nbsp;
+## ♒ MuOz 기능
 
-| ![login](gif) | ![home-chat](gif) | ![run](gif) |
-| ------------- | ----------------- | ----------- |
+| <img src="assets/images/info.png" width="800"></img> |       
+| ------------- |        
 
-### 🛡 소셜로그인 (google, kakao, apple)
+&nbsp;
+### ➿ 소셜로그인 (google, kakao, apple) <img src="assets/images/mu_1.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 세 가지 종류의 소설 로그인 기능을 지원합니다.
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
@@ -104,9 +94,10 @@
 </p>
 
 </div>
-</details>
+</details>    
+&nbsp;
 
-### 🚀 Google Gemini를 이용한 음악 추천 기능
+### ➿ Google Gemini를 이용한 음악 추천 기능 <img src="assets/images/mu_3.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 현재 상태, 상황, 음악장르, 선호 아티스트 등의 태그들을 활용하여 Google Gemini에게 음악 추천을 받습니다.
 > - 음악을 추천받아 SPOTIFY API를 거쳐 데이터를 정제한 후, 사용자에게 카드 형태 UI를 제공합니다.
@@ -126,16 +117,17 @@
 </p>
 
 </div>
-</details>
+</details>     
 
-### 🔊 음악 재생 (오디오 플레이어)
+&nbsp;
+### ➿ 음악 재생 (오디오 플레이어) <img src="assets/images/mu_2.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - YouTube Explode 패키지를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
 > - 10초 건너뛰기, 타임라인 선택 등의 기능을 제공합니다.
 
 <details>
 <summary>미리보기</summary>
-<div markdown="1">
+<div markdown="1">     
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/f0801b96-68f2-473f-9637-100b9be77905" width="200">
@@ -143,9 +135,10 @@
 </p>
 
 </div>
-</details>
-
-### 📝 음악 보관함 (플레이리스트)
+</details>     
+     
+&nbsp;
+### ➿ 음악 보관함 (플레이리스트) <img src="assets/images/mu_4.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 지금까지 저장한 음악 카드를 살펴볼 수 있습니다.
 > - 플레이리스트를 생성하거나 저장한 플레이리스트를 열람, 재생합니다.
@@ -162,9 +155,10 @@
 </p>
 
 </div>
-</details>
+</details>       
+&nbsp;
 
-### 🔍 검색 기능 (제목 검색, 가사 검색)
+### ➿ 검색 기능 (제목 검색, 가사 검색) <img src="assets/images/mu_5.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - Spotify web Api를 사용하여 음악 제목을 겁색합니다.
 > - Naver 가사검색 기능을 사용하여 검색어에 해당하는 가사를 포함하는 곡을 보여줍니다.
@@ -180,15 +174,21 @@
 </p>
 
 </div>
-</details>
+</details>     
 
-## 🚨 Trouble Shooting
+&nbsp;
+
+## ♒ Trouble Shooting
 
 
-> 사용하려던 domain 변경 [notion>](https://teamsparta.notion.site/domain-17d2dc3ef51481dea802d9bf863319e0)  
-> IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
-> IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
-> Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
+> ✔ 사용하려던 domain 변경 [notion>](https://teamsparta.notion.site/domain-17d2dc3ef51481dea802d9bf863319e0)  
+> ✔ IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
+> ✔ IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
+> ✔ Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
+> ✔ gorouter 파라미터 문제 [notion>](https://www.notion.so/teamsparta/go-router-497180bd5ebc474b80f7cc114a8a3039)     
+
+
+&nbsp;
 
 ---
 
