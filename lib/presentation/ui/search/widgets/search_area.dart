@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_naver_view_model.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_spotify_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchArea extends ConsumerStatefulWidget {
   final Function(String) onSearch;
+  final VoidCallback onCancel;
 
-  const SearchArea({super.key, required this.onSearch});
+  const SearchArea({super.key, required this.onSearch, required this.onCancel});
 
   @override
   ConsumerState<SearchArea> createState() => _SearchAreaState();
@@ -86,7 +86,9 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
         ),
         TextButton(
           onPressed: () {
-            context.go('/search');
+    _textEditingController.clear(); // 텍스트 필드 비우기
+    widget.onCancel(); // 검색 모드 해제 호출
+    print('취소 호출됨');
           },
           child: Text(
             '취소',
