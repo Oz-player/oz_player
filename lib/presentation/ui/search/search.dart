@@ -80,6 +80,7 @@ class _SearchState extends ConsumerState<Search> {
                 },
               ),
               backgroundColor: Colors.white,
+              scrolledUnderElevation: 0,
             ),
             body: SafeArea(
               child: GestureDetector(
