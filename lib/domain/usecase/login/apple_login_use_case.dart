@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:oz_player/domain/repository/login/apple_login_repository.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AppleLoginUseCase {
   final AppleLoginRepository _appleLoginRepository;
+
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   AppleLoginUseCase(this._appleLoginRepository);
 
@@ -30,9 +33,9 @@ class AppleLoginUseCase {
         accessToken: appleCredential.authorizationCode,
       );
 
-
       // 받은 Token 이용해서 Apple 계정으로 인증받은 사용자 정보 Firebase Auth에 등록
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(appleOAuthCredential);
+      final userCredential = await FirebaseAuth.instance
+          .signInWithCredential(appleOAuthCredential);
       final firebaseUid = userCredential.user?.uid;
 
       if (firebaseUid == null) {
@@ -40,7 +43,6 @@ class AppleLoginUseCase {
       }
 
       final firebaseEmail = userCredential.user?.email ?? email;
-
 
       // 기존 사용자 찾기
       final isExistUser = await _appleLoginRepository.isExistUser(firebaseUid);
@@ -54,6 +56,12 @@ class AppleLoginUseCase {
         await _appleLoginRepository.createUser(firebaseUid, firebaseEmail);
         print('createUser 호출 완료');
       }
+
+      // 자동 로그인에 필요(로그인 성공 후 uid 저장)
+      await _storage.write(
+        key: 'user_uid',
+        value: firebaseUid,
+      );
 
       return ['/home', firebaseUid];
     } catch (e) {
