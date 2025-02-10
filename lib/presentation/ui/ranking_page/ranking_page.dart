@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
-import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/ranking_page/view_model/ranking_view_model.dart';
 import 'package:oz_player/presentation/ui/ranking_page/widgets/speech_bubble_widget.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
@@ -21,6 +20,7 @@ class RankingPage extends ConsumerStatefulWidget {
 
 class _RankingPageState extends ConsumerState<RankingPage> {
   bool isLibrary = true;
+  double btnPosition = 50;
 
   void onButtonClicked() {
     setState(() {
@@ -173,6 +173,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                           children: [
                                             InkWell(
                                               onTap: () {
+                                                btnPosition = 0;
                                                 // 2위 클릭
                                                 ref
                                                     .read(
@@ -190,6 +191,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                             ),
                                             InkWell(
                                               onTap: () {
+                                                btnPosition = 50;
                                                 // 1위 클릭
                                                 ref
                                                     .read(
@@ -207,6 +209,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                             ),
                                             InkWell(
                                               onTap: () {
+                                                btnPosition = 100;
                                                 // 3위 클릭
                                                 ref
                                                     .read(
@@ -247,27 +250,42 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                           left: 0,
                                           right: 50,
                                           bottom: 160,
-                                          child: SpeechBubbleWidget(
-                                            nipLocation: NipLocation.bottomLeft,
-                                          )),
+                                          child: isLibrary
+                                              ? SpeechBubbleWidget(
+                                                  nipLocation:
+                                                      NipLocation.bottomLeft,
+                                                  song: data.cardRanking[1],
+                                                )
+                                              : SpeechBubbleWidget(
+                                                  nipLocation:
+                                                      NipLocation.bottomLeft,
+                                                  song: data.playlistRanking[1],
+                                                )),
                                     if (data.focusIndex ==
                                         FocusIndex.thirdPrice)
                                       Positioned(
                                           left: 50,
                                           right: 0,
                                           bottom: 160,
-                                          child: SpeechBubbleWidget(
-                                            nipLocation:
-                                                NipLocation.bottomRight,
-                                          )),
+                                          child: isLibrary
+                                              ? SpeechBubbleWidget(
+                                                  nipLocation:
+                                                      NipLocation.bottomRight,
+                                                  song: data.cardRanking[2],
+                                                )
+                                              : SpeechBubbleWidget(
+                                                  nipLocation:
+                                                      NipLocation.bottomRight,
+                                                  song: data.playlistRanking[2],
+                                                )),
                                   ],
                                 )),
                             Positioned(
                                 right: 0,
-                                left: 180,
+                                left: 130 + btnPosition,
                                 bottom: 160,
                                 top: 0,
-                                child: InkWell(
+                                child: GestureDetector(
                                   onTap: () async {
                                     RawSongEntity? song;
 
