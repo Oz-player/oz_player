@@ -117,14 +117,14 @@ class SpeechBalloon extends StatelessWidget {
       case NipLocation.bottomLeft:
         final value = offset - rotatedNipHalfHeight;
         nipOffset = this.offset + Offset(value, value);
-        innerNipOffset = this.offset + Offset(value * hM + 40, value * vM);
+        innerNipOffset = this.offset + Offset(value * hM + 20, value * vM);
         alignment = Alignment.bottomLeft;
         break;
       case NipLocation.bottomRight:
         final value1 = -offset + rotatedNipHalfHeight;
         final value2 = offset - rotatedNipHalfHeight;
         nipOffset = this.offset + Offset(value1, value2);
-        innerNipOffset = this.offset + Offset(value1 * hM - 40, value2 * vM);
+        innerNipOffset = this.offset + Offset(value1 * hM - 20, value2 * vM);
         alignment = Alignment.bottomRight;
         break;
       case NipLocation.topLeft:
