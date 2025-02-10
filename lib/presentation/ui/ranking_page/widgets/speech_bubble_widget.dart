@@ -2,6 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
+import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/speech_ballon/speech_ballon.dart';
 
 class SpeechBubbleWidget extends ConsumerWidget {
