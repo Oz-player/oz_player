@@ -122,13 +122,14 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                           )),
                       Positioned(
                           right: 30,
-                          bottom: 80,
+                          bottom: 70,
                           child: Image.asset('assets/images/ranking_myu.png')),
                       Positioned(
                           left: 0,
                           right: 0,
-                          bottom: 164,
+                          bottom: 144,
                           child: Stack(
+                            clipBehavior: Clip.none,
                             children: [
                               Positioned(
                                 left: 0,
@@ -156,14 +157,13 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                   )
                                 ],
                               ),
+                              Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 150,
+                                  child: SpeechBubbleWidget()),
                             ],
                           )),
-                      Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          bottom: 260,
-                          child: SpeechBubbleWidget()),
                     ],
                   ),
                 )
