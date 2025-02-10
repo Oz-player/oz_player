@@ -87,6 +87,37 @@ class SpeechBubbleWidget extends ConsumerWidget {
                 Spacer(),
               ],
             ),
+            Positioned(
+                right: 16,
+                bottom: 8,
+                child: GestureDetector(
+                  onTap: () {
+                    AudioBottomSheet.showCurrentAudio(context);
+
+                    SongEntity playSong = SongEntity(
+                        video: song!.video,
+                        title: song!.title,
+                        imgUrl: song!.imgUrl,
+                        artist: song!.artist,
+                        mood: '',
+                        situation: '',
+                        genre: '',
+                        favoriteArtist: '');
+
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setCurrentSong(playSong);
+
+                    ref
+                        .read(audioPlayerViewModelProvider.notifier)
+                        .setAudioPlayer(playSong.video.audioUrl, -2);
+                  },
+                  child: Icon(
+                    Icons.play_circle_outline,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                )),
           ],
         ));
   }
