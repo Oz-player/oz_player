@@ -28,6 +28,48 @@ class _RankingPageState extends ConsumerState<RankingPage> {
     });
   }
 
+  Future<void> playMusic(RankingState data) async {
+    RawSongEntity? song;
+
+    if (isLibrary) {
+      if (data.focusIndex == FocusIndex.firstPrice) {
+        song = data.cardRanking[0];
+      } else if (data.focusIndex == FocusIndex.secondPrice) {
+        song = data.cardRanking[1];
+      } else if (data.focusIndex == FocusIndex.thirdPrice) {
+        song = data.cardRanking[2];
+      }
+    } else {
+      if (data.focusIndex == FocusIndex.firstPrice) {
+        song = data.playlistRanking[0];
+      } else if (data.focusIndex == FocusIndex.secondPrice) {
+        song = data.playlistRanking[1];
+      } else if (data.focusIndex == FocusIndex.thirdPrice) {
+        song = data.playlistRanking[2];
+      }
+    }
+
+    AudioBottomSheet.showCurrentAudio(context);
+
+    ref.read(audioPlayerViewModelProvider.notifier).isStartLoadingAudioPlayer();
+
+    SongEntity playSong = SongEntity(
+        video: song!.video,
+        title: song.title,
+        imgUrl: song.imgUrl,
+        artist: song.artist,
+        mood: '',
+        situation: '',
+        genre: '',
+        favoriteArtist: '');
+
+    ref.read(audioPlayerViewModelProvider.notifier).setCurrentSong(playSong);
+
+    await ref
+        .read(audioPlayerViewModelProvider.notifier)
+        .setAudioPlayer(playSong.video.audioUrl, -2);
+  }
+
   @override
   Widget build(BuildContext context) {
     final rankingState = ref.watch(rankingViewModelProvider);
@@ -280,78 +322,26 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                                 )),
                                   ],
                                 )),
-                            Positioned(
-                                right: 0,
-                                left: 160 + btnPosition,
-                                bottom: 180,
-                                top: 0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    RawSongEntity? song;
-
-                                    if (isLibrary) {
-                                      if (data.focusIndex ==
-                                          FocusIndex.firstPrice) {
-                                        song = data.cardRanking[0];
-                                      } else if (data.focusIndex ==
-                                          FocusIndex.secondPrice) {
-                                        song = data.cardRanking[1];
-                                      } else if (data.focusIndex ==
-                                          FocusIndex.thirdPrice) {
-                                        song = data.cardRanking[2];
-                                      }
-                                    } else {
-                                      if (data.focusIndex ==
-                                          FocusIndex.firstPrice) {
-                                        song = data.playlistRanking[0];
-                                      } else if (data.focusIndex ==
-                                          FocusIndex.secondPrice) {
-                                        song = data.playlistRanking[1];
-                                      } else if (data.focusIndex ==
-                                          FocusIndex.thirdPrice) {
-                                        song = data.playlistRanking[2];
-                                      }
-                                    }
-
-                                    AudioBottomSheet.showCurrentAudio(context);
-
-                                    ref
-                                        .read(audioPlayerViewModelProvider
-                                            .notifier)
-                                        .isStartLoadingAudioPlayer();
-
-                                    SongEntity playSong = SongEntity(
-                                        video: song!.video,
-                                        title: song.title,
-                                        imgUrl: song.imgUrl,
-                                        artist: song.artist,
-                                        mood: '',
-                                        situation: '',
-                                        genre: '',
-                                        favoriteArtist: '');
-
-                                    ref
-                                        .read(audioPlayerViewModelProvider
-                                            .notifier)
-                                        .setCurrentSong(playSong);
-
-                                    await ref
-                                        .read(audioPlayerViewModelProvider
-                                            .notifier)
-                                        .setAudioPlayer(
-                                            playSong.video.audioUrl, -2);
-                                  },
-                                  child: Icon(
-                                    Icons.play_circle_outline,
-                                    color: Colors.white,
-                                    size: 28,
-                                  ),
-                                )),
                           ],
                         ),
                       )
                     ],
                   ),
+                  Positioned(
+                      right: 0,
+                      left: 160 + btnPosition,
+                      bottom: 0,
+                      top: 0,
+                      child: GestureDetector(
+                        onTap: () async {
+                          playMusic(data);
+                        },
+                        child: Icon(
+                          Icons.play_circle_outline,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      )),
                   Positioned(
                     left: 0,
                     right: 0,
