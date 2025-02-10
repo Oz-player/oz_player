@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
-import 'package:oz_player/data/source/saved/raw_song_source.dart';
+import 'package:oz_player/data/source/firebase_songs/raw_song_source.dart';
 
 class RawSongSourceImpl implements RawSongSource {
   final FirebaseFirestore _firestore;
