@@ -20,7 +20,7 @@ class RankingPage extends ConsumerStatefulWidget {
 
 class _RankingPageState extends ConsumerState<RankingPage> {
   bool isLibrary = true;
-  double btnPosition = 50;
+  double btnPosition = 60;
 
   void onButtonClicked() {
     setState(() {
@@ -237,7 +237,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                       Positioned(
                                           left: 0,
                                           right: 0,
-                                          bottom: 160,
+                                          bottom: 170,
                                           child: isLibrary
                                               ? SpeechBubbleWidget(
                                                   song: data.cardRanking[0])
@@ -249,7 +249,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                       Positioned(
                                           left: 0,
                                           right: 50,
-                                          bottom: 160,
+                                          bottom: 170,
                                           child: isLibrary
                                               ? SpeechBubbleWidget(
                                                   nipLocation:
@@ -266,7 +266,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                       Positioned(
                                           left: 50,
                                           right: 0,
-                                          bottom: 160,
+                                          bottom: 170,
                                           child: isLibrary
                                               ? SpeechBubbleWidget(
                                                   nipLocation:
@@ -282,8 +282,8 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                                 )),
                             Positioned(
                                 right: 0,
-                                left: 130 + btnPosition,
-                                bottom: 160,
+                                left: 160 + btnPosition,
+                                bottom: 180,
                                 top: 0,
                                 child: GestureDetector(
                                   onTap: () async {

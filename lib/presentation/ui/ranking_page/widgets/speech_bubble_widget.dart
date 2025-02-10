@@ -32,7 +32,7 @@ class SpeechBubbleWidget extends ConsumerWidget {
         borderRadius: 8,
         nipHeight: 20,
         color: Colors.black.withValues(alpha: 0.32),
-        width: 230,
+        width: 256,
         height: 120,
         child: Stack(
           children: [
@@ -52,7 +52,7 @@ class SpeechBubbleWidget extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 110,
+                      width: 130,
                       child: AutoSizeText(
                         song!.title,
                         overflow: TextOverflow.ellipsis,
@@ -66,7 +66,7 @@ class SpeechBubbleWidget extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 110,
+                      width: 130,
                       child: AutoSizeText(
                         song!.artist,
                         overflow: TextOverflow.ellipsis,
