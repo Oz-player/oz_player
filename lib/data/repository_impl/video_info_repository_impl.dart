@@ -8,6 +8,7 @@ class VideoInfoRepositoryImpl implements VideoInfoRepository {
   @override
   Future<VideoInfoEntitiy> getVideoInfo(String songName, String artist) async {
     try {
+      log('$songName 비디오 정보 불러오기 시작');
       final yt = YoutubeExplode();
       final video = await yt.search.search('$artist $songName');
       log('비디오 정보 불러오기 성공');
