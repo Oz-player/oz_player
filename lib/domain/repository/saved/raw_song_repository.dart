@@ -15,4 +15,10 @@ abstract interface class RawSongRepository {
 
   // video 객체 업데이트
   Future<void> updateVideo(RawSongDto dto);
+
+  // 라이브러리 저장순 상위 3개
+  Future<List<RawSongDto>> getCardRanking();
+
+  // 플레이리스트 저장순 상위3개
+  Future<List<RawSongDto>> getPlaylistRanking();
 }

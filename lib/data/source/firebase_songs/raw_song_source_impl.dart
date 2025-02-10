@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
-import 'package:oz_player/data/source/saved/raw_song_source.dart';
+import 'package:oz_player/data/source/firebase_songs/raw_song_source.dart';
 
 class RawSongSourceImpl implements RawSongSource {
   final FirebaseFirestore _firestore;
@@ -101,6 +101,56 @@ class RawSongSourceImpl implements RawSongSource {
         'video': dto.video.toJson(),
       });
       print('video를 업데이트하였습니다.');
+    }
+  }
+
+  // --------------------------------------------------------------------
+  // 랭킹 관련 기능
+  // --------------------------------------------------------------------
+
+  // 카드 저장 순으로 상위 3개 가져오는 함수
+  @override
+  Future<List<RawSongDto>> getCardRanking() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('Song')
+          .orderBy('countLibrary', descending: true)
+          .limit(3)
+          .get();
+      final docs = querySnapshot.docs;
+      if (docs.isNotEmpty) {
+        return docs.map((e) {
+          return RawSongDto.fromJson(e.data());
+        }).toList();
+      }
+
+      return [];
+    } catch (e, stackTrace) {
+      print('e: $e, stackTrace: $stackTrace');
+      return [];
+    }
+  }
+
+  // 플레이리스트 저장 순으로 상위 3개 가져오는 함수
+  @override
+  Future<List<RawSongDto>> getPlaylistRanking() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('Song')
+          .orderBy('countPlaylist', descending: true)
+          .limit(3)
+          .get();
+      final docs = querySnapshot.docs;
+      if (docs.isNotEmpty) {
+        return docs.map((e) {
+          return RawSongDto.fromJson(e.data());
+        }).toList();
+      }
+
+      return [];
+    } catch (e, stackTrace) {
+      print('e: $e, stackTrace: $stackTrace');
+      return [];
     }
   }
 }

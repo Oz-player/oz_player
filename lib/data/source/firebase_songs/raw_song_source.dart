@@ -6,4 +6,8 @@ abstract interface class RawSongSource {
   Future<void> updateRawSongByLibrary(RawSongDto dto);
   Future<void> updateRawSongByPlaylist(RawSongDto dto);
   Future<void> updateVideo(RawSongDto dto);
+  // --------------------------------------
+  // 랭킹 관련 기능
+  Future<List<RawSongDto>> getPlaylistRanking();
+  Future<List<RawSongDto>> getCardRanking();
 }

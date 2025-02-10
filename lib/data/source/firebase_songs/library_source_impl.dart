@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/library_dto.dart';
-import 'package:oz_player/data/source/saved/library_source.dart';
+import 'package:oz_player/data/source/firebase_songs/library_source.dart';
 
 class LibrarySourceImpl implements LibrarySource {
   final FirebaseFirestore _firestore;
