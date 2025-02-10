@@ -7,13 +7,10 @@ import 'package:oz_player/presentation/ui/ranking_page/widgets/ranking_bottom_gr
 import 'package:oz_player/presentation/ui/ranking_page/widgets/ranking_bubble.dart';
 import 'package:oz_player/presentation/ui/ranking_page/widgets/ranking_intro.dart';
 import 'package:oz_player/presentation/ui/ranking_page/widgets/ranking_switch.dart';
-import 'package:oz_player/presentation/ui/ranking_page/widgets/speech_bubble_widget.dart';
-import 'package:oz_player/presentation/ui/saved/widgets/saved_tab_button.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
-import 'package:oz_player/presentation/widgets/speech_ballon/speech_ballon.dart';
 
 class RankingPage extends ConsumerStatefulWidget {
   const RankingPage({super.key});
@@ -24,7 +21,6 @@ class RankingPage extends ConsumerStatefulWidget {
 
 class _RankingPageState extends ConsumerState<RankingPage> {
   bool isLibrary = true;
-  double btnPosition = 60;
 
   void onButtonClicked() {
     setState(() {
