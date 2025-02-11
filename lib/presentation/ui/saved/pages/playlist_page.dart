@@ -9,6 +9,7 @@ import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provi
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
@@ -50,9 +51,14 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
 
   // AudioPlayer에 리스트를 넣어서 재생하는 기능
   Future<void> addListInAudioPlayer(List<SongEntity> data) async {
+    if (data.isEmpty) {
+      return;
+    }
+
     final nextSong = List<SongEntity>.from(data)..removeAt(0);
 
     ref.read(audioPlayerViewModelProvider.notifier).isStartLoadingAudioPlayer();
+    AudioBottomSheet.showCurrentAudio(context);
     ref.read(audioPlayerViewModelProvider.notifier).setCurrentSong(data.first);
     ref.read(audioPlayerViewModelProvider.notifier).setNextSongList(nextSong);
     await ref

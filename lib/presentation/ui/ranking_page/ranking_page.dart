@@ -25,6 +25,7 @@ class _RankingPageState extends ConsumerState<RankingPage> {
   void onButtonClicked() {
     setState(() {
       isLibrary = !isLibrary;
+      ref.read(rankingViewModelProvider.notifier).changeFocusIndex(FocusIndex.firstPrice);
     });
   }
 
