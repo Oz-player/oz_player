@@ -128,7 +128,10 @@ class SortedTypeOverlay extends StatelessWidget {
                           )),
                     ),
                     GestureDetector(
-                      onTap: () => whenAscending(),
+                      onTap: () {
+                        print('tap!!!!!!!!!!!!!!!!');
+                        whenAscending();
+                      },
                       child: Container(
                           width: 100,
                           padding:
