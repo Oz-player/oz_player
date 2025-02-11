@@ -89,4 +89,14 @@ class LibrarySourceImpl implements LibrarySource {
       print('e: $e, stack: $stackTrace');
     }
   }
+
+  @override
+  Future<void> clearLibrary(String userId) async {
+    try {
+      await _firestore.collection('Library').doc(userId).delete();
+      log('$userId의 라이브러리를 삭제하였습니다.');
+    } catch (e, stackTrace) {
+      print('e: $e, stackTrace: $stackTrace');
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
@@ -307,6 +309,16 @@ class PlayListSourceImpl implements PlayListSource {
       }
     } catch (e, stackTrace) {
       print('error: $e, stackTrace: $stackTrace');
+    }
+  }
+
+  @override
+  Future<void> clearPlaylist(String userId) async {
+    try {
+      await _firestore.collection('Playlist').doc(userId).delete();
+      log('$userId의 플레이리스트를 삭제하였습니다.');
+    } catch (e, stackTrace) {
+      print('e: $e, stackTrace: $stackTrace');
     }
   }
 }

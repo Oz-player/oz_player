@@ -24,4 +24,9 @@ class LibraryRepositoryImpl implements LibraryRepository {
       String songId, DateTime createdAt, String userId) async {
     await _source.deleteLibrary(songId, createdAt, userId);
   }
+
+  @override
+  Future<void> clearLibrary(String userId) async {
+    await _source.clearLibrary(userId);
+  }
 }

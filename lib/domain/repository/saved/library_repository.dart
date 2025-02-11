@@ -5,4 +5,5 @@ abstract interface class LibraryRepository {
   Future<List<LibraryEntity>> getLibrary(String userId);
   Future<void> createLibrary(LibraryDto dto, String userId);
   Future<void> deleteLibrary(String songId, DateTime createdAt, String userId);
+  Future<void> clearLibrary(String userId);
 }
