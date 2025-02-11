@@ -146,7 +146,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
           // 정렬 방법 선택용 드롭다운
           // ----------------------------------------------------------
           Positioned(
-            top: 250,
+            top: 270,
             left: 20,
             child: SizedBox(
               width: 110,

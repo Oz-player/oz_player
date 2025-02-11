@@ -16,7 +16,8 @@ class LibraryUsecase {
     return await _repository.createLibrary(dto, userId);
   }
 
-  Future<void> deleteLibrary(String userId, String songId) async {
-    return await _repository.deleteLibrary(songId, userId);
+  Future<void> deleteLibrary(
+      String userId, DateTime createdAt, String songId) async {
+    return await _repository.deleteLibrary(songId, createdAt, userId);
   }
 }
