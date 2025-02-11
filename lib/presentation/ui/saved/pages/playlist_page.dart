@@ -358,7 +358,7 @@ class MainScaffold extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                      color: AppColors.main300,
+                      color: AppColors.border,
                       width: 1,
                     )),
                   ),
@@ -406,19 +406,70 @@ class MainScaffold extends StatelessWidget {
                       const SizedBox(
                         height: 18,
                       ),
-                      // ------------------
-                      // 플레이리스트 재생 버튼
-                      // ------------------
-                      songListAsync.when(
-                          data: (data) {
-                            return GestureDetector(
-                              onTap: () => addListInAudioPlayer(data),
-                              child: PlayButton(),
-                            );
-                          },
-                          // 오류 시 회색 버튼 출력
-                          error: (error, stackTrace) => PlayButtonDisabled(),
-                          loading: () => PlayButtonDisabled()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // ------------------
+                          // 플레이리스트 재생 버튼
+                          // ------------------
+                          songListAsync.when(
+                            data: (data) {
+                              return GestureDetector(
+                                onTap: () => addListInAudioPlayer(data),
+                                child: PlayButton(),
+                              );
+                            },
+                            // 오류 시 회색 버튼 출력
+                            error: (error, stackTrace) => PlayButtonDisabled(),
+                            loading: () => PlayButtonDisabled(),
+                          ),
+                          Row(
+                            children: [
+                              // ------------------
+                              // 플레이리스트 편집 버튼
+                              // ------------------
+                              GestureDetector(
+                                onTap: () async {
+                                  ref
+                                      .read(bottomNavigationProvider.notifier)
+                                      .updatePage(5);
+                                  final newList = await context.push(
+                                    '/saved/playlist/edit',
+                                    extra: playlist,
+                                  ) as PlayListEntity;
+                                  setListState(newList);
+                                },
+                                child: Image.asset(
+                                    'assets/images/button_edit.png'),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              // ---------------------
+                              // 플레이리스트 셔플 재생 버튼
+                              // ---------------------
+                              GestureDetector(
+                                onTap: () async {
+                                  songListAsync.when(
+                                    data: (data) async {
+                                      List<SongEntity> list = [];
+                                      for (var item in data) {
+                                        list.add(item);
+                                      }
+                                      list.shuffle();
+                                      addListInAudioPlayer(list);
+                                    },
+                                    error: (error, stackTrace) {},
+                                    loading: () {},
+                                  );
+                                },
+                                child: Image.asset(
+                                    'assets/images/button_shuffle.png'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

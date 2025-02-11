@@ -10,16 +10,16 @@ class PlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 72,
-      height: 72,
+      width: 56,
+      height: 56,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.main100,
+        color: AppColors.main400,
       ),
       child: Icon(
         Icons.play_arrow,
-        size: 44,
-        color: AppColors.main600,
+        size: 36,
+        color: Colors.white,
       ),
     );
   }
@@ -34,15 +34,15 @@ class PlayButtonDisabled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 72,
-      height: 72,
+      width: 56,
+      height: 56,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.gray300,
       ),
       child: Icon(
         Icons.play_arrow,
-        size: 44,
+        size: 36,
         color: AppColors.gray400,
       ),
     );
