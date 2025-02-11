@@ -51,41 +51,44 @@ class KakaoButton extends ConsumerWidget {
           ),
         ],
       ),
-      child: ElevatedButton(
-        onPressed: activated ? () async {
-          try {
-            await ref.read(loginViewModelProvider.notifier).kakaoLogin();
-          } catch (e) {
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('카카오 로그인 실패! $e')),
-            );
-          }
-        } : null,
-        style: ElevatedButton.styleFrom(
-          fixedSize: const Size(double.infinity, 54),
-          padding: EdgeInsets.zero,
-          textStyle: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w500, height: 19 / 16),
-          minimumSize: Size.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          backgroundColor: Color(0xFFFEE500),
-          foregroundColor: Colors.black87,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/ic_kakao_logo.png',
-              color: Colors.black,
-              height: 24,
-              fit: BoxFit.fitHeight,
+      child: Opacity(
+        opacity: activated ? 1.0 : 0.7,
+        child: ElevatedButton(
+          onPressed: activated ? () async {
+            try {
+              await ref.read(loginViewModelProvider.notifier).kakaoLogin();
+            } catch (e) {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('카카오 로그인 실패! $e')),
+              );
+            }
+          } : () {},
+          style: ElevatedButton.styleFrom(
+            fixedSize: const Size(double.infinity, 54),
+            padding: EdgeInsets.zero,
+            textStyle: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w500, height: 19 / 16),
+            minimumSize: Size.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
-            SizedBox(width: 10),
-            Text('Kakao로 시작하기'),
-          ],
+            backgroundColor: Color(0xFFFEE500),
+            foregroundColor: Colors.black87,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/ic_kakao_logo.png',
+                color: Colors.black,
+                height: 24,
+                fit: BoxFit.fitHeight,
+              ),
+              SizedBox(width: 10),
+              Text('Kakao로 시작하기'),
+            ],
+          ),
         ),
       ),
     );

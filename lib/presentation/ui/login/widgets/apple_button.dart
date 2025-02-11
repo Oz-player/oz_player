@@ -28,41 +28,44 @@ class AppleButton extends ConsumerWidget {
           ),
         ],
       ),
-      child: ElevatedButton(
-        onPressed: activated ? () async {
-          try {
-            await ref.read(loginViewModelProvider.notifier).appleLogin();
-          } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('애플 로그인 실패! $e')),
-              );
+      child: Opacity(
+        opacity: activated ? 1.0 : 0.6,
+        child: ElevatedButton(
+          onPressed: activated ? () async {
+            try {
+              await ref.read(loginViewModelProvider.notifier).appleLogin();
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('애플 로그인 실패! $e')),
+                );
+              }
             }
-          }
-        } : null,
-        style: ElevatedButton.styleFrom(
-          fixedSize: const Size(double.infinity, 54),
-          padding: EdgeInsets.zero,
-          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, height: 19/16),
-          minimumSize: Size.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/ic_apple_logo.png',
-              color: Colors.white,
-              height: 24,
-              fit: BoxFit.fitHeight,
+          } : () {},
+          style: ElevatedButton.styleFrom(
+            fixedSize: const Size(double.infinity, 54),
+            padding: EdgeInsets.zero,
+            textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, height: 19/16),
+            minimumSize: Size.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
-            SizedBox(width: 15),
-            Text('Apple로 시작하기'),
-          ],
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/ic_apple_logo.png',
+                color: Colors.white,
+                height: 24,
+                fit: BoxFit.fitHeight,
+              ),
+              SizedBox(width: 15),
+              Text('Apple로 시작하기'),
+            ],
+          ),
         ),
       ),
     );
