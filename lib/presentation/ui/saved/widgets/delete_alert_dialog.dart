@@ -8,7 +8,7 @@ import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
-// 플레이리스트 - 노래 삭제 BottomSheet
+// 플레이리스트 - 노래 삭제 alert
 class DeleteSongAlertDialog extends ConsumerWidget {
   const DeleteSongAlertDialog({
     super.key,
@@ -106,7 +106,7 @@ class DeleteSongAlertDialog extends ConsumerWidget {
   }
 }
 
-// 플레이리스트 삭제 BottomSheet
+// 플레이리스트 삭제 alert
 class DeletePlayListAlertDialog extends ConsumerWidget {
   const DeletePlayListAlertDialog({
     super.key,
@@ -179,6 +179,98 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
+
+                          if (context.mounted) {
+                            context.pop();
+                            context.pop();
+                          }
+                        },
+                        child: Text(
+                          '확인',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Positioned(
+              top: -158,
+              left: 0,
+              right: 0,
+              child: Image.asset('assets/char/oz_2.png')),
+        ],
+      ),
+    );
+  }
+}
+
+// 플레이리스트 삭제 alert
+class DeleteCardAlertDialog extends ConsumerWidget {
+  const DeleteCardAlertDialog({
+    super.key,
+    required this.title,
+    required this.createdAt,
+  });
+
+  final String title;
+  final DateTime createdAt;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      content: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 24,
+              ),
+              Text(
+                '선택한 카드를\n삭제하시겠어요?',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            AppColors.gray200,
+                          ),
+                          shape: WidgetStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        onPressed: () => context.pop(),
+                        child: Text(
+                          '취소',
+                          style: TextStyle(color: AppColors.gray600),
+                        )),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(AppColors.main700),
+                            shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () async {
+                          // 카드 삭제 로직
 
                           if (context.mounted) {
                             context.pop();
