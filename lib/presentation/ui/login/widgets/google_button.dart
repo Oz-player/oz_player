@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 
 class GoogleButton extends ConsumerWidget {
+  final bool activated;
+
   const GoogleButton({
     super.key,
+    required this.activated,
   });
 
   @override
@@ -20,7 +23,7 @@ class GoogleButton extends ConsumerWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () async {
+        onPressed: activated ? () async {
           try {
             await ref.read(loginViewModelProvider.notifier).googleLogin();
           } catch (e) {
@@ -29,7 +32,7 @@ class GoogleButton extends ConsumerWidget {
               SnackBar(content: Text('구글 로그인 실패! $e')),
             );
           }
-        },
+        } : null,
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(double.infinity, 54),
           padding: EdgeInsets.zero,

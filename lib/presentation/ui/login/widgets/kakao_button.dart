@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 
 class KakaoButton extends ConsumerWidget {
+  final bool activated;
+
   const KakaoButton({
     super.key,
+    required this.activated,
   });
 
   // void kakaoLogin(BuildContext context) async {
@@ -49,7 +52,7 @@ class KakaoButton extends ConsumerWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () async {
+        onPressed: activated ? () async {
           try {
             await ref.read(loginViewModelProvider.notifier).kakaoLogin();
           } catch (e) {
@@ -58,7 +61,7 @@ class KakaoButton extends ConsumerWidget {
               SnackBar(content: Text('카카오 로그인 실패! $e')),
             );
           }
-        },
+        } : null,
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(double.infinity, 54),
           padding: EdgeInsets.zero,

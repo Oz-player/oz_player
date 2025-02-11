@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 
 class AppleButton extends ConsumerWidget {
+  final bool activated;
+
   const AppleButton({
     super.key,
+    required this.activated,
   });
 
   @override
@@ -26,7 +29,7 @@ class AppleButton extends ConsumerWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () async {
+        onPressed: activated ? () async {
           try {
             await ref.read(loginViewModelProvider.notifier).appleLogin();
           } catch (e) {
@@ -36,7 +39,7 @@ class AppleButton extends ConsumerWidget {
               );
             }
           }
-        },
+        } : null,
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(double.infinity, 54),
           padding: EdgeInsets.zero,
