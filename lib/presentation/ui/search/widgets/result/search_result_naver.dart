@@ -16,6 +16,8 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
   Widget build(BuildContext context) {
     final naverResults = ref.watch(searchNaverViewModel);
 
+
+    //성인 등급의 노래인 경우 naver에서 인증이 필요해서 로그인 문구가 뜨는것을 없앰
     final filteredResults = naverResults!
         .where(
             (result) => !result.lyrics.contains('로그인<\/a> 후 이용할 수 있는 컨텐츠입니다.'))
@@ -66,6 +68,7 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                           Expanded(
                             child: Text(
                               result.artist,
+                              textAlign: TextAlign.right,
                               style: TextStyle(
                                   fontSize: 14,
                                   fontFamily: 'Pretendard',
@@ -82,11 +85,7 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
                     SizedBox(
                       height: 40,
                       child: Text(
-                        textAlign: TextAlign.start,
-                        //성인 등급의 노래인 경우 naver에서 인증이 필요해서 로그인 문구가 뜨는것을 없앰
-                        result.lyrics.contains('로그인<\/a> 후 이용할 수 있는 컨텐츠입니다.')
-                            ? '청소년 이용 불가 노래입니다'
-                            : parse(result.lyrics).body!.text,
+                        parse(result.lyrics).body!.text,
                         style: TextStyle(
                           fontFamily: 'Pretendard',
                           fontWeight: FontWeight.w500,
