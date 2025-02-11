@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
@@ -85,6 +86,9 @@ class LoginViewModel extends Notifier<LoginState> {
 
       ref.read(userViewModelProvider.notifier).initUser();
       state = LoginState.idle;
+
+      FlutterSecureStorage storage = FlutterSecureStorage();
+      await storage.delete(key: 'user_uid');
 
       // ignore: use_build_context_synchronously
       context.go('/login');
