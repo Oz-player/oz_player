@@ -29,4 +29,14 @@ class RawSongUsecase {
     final dto = RawSongDto.fromEntity(entitiy);
     await _repository.updateVideo(dto);
   }
+
+  Future<List<RawSongEntity>> getCardRanking() async {
+    final list = await _repository.getCardRanking();
+    return list.map((e) => e.toEntity()).toList();
+  }
+
+  Future<List<RawSongEntity>> getPlaylistRanking() async {
+    final list = await _repository.getPlaylistRanking();
+    return list.map((e) => e.toEntity()).toList();
+  }
 }

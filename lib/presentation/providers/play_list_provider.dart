@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/data/repository_impl/play_list_repository_impl.dart';
-import 'package:oz_player/data/source/saved/play_list_source_impl.dart';
-import 'package:oz_player/data/source/saved/play_list_source.dart';
+import 'package:oz_player/data/source/firebase_songs/play_list_source_impl.dart';
+import 'package:oz_player/data/source/firebase_songs/play_list_source.dart';
 import 'package:oz_player/domain/repository/saved/play_list_repository.dart';
 import 'package:oz_player/domain/usecase/play_list_usecase.dart';
 

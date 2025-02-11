@@ -80,7 +80,8 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                           SizedBox(height: 10),
                           bottomSheetButton(context, '재생', () async {
                             if (audioState.currentSong?.title == song &&
-                                audioState.currentSong?.artist == artist) {
+                                audioState.currentSong?.artist == artist &&
+                                audioState.isPlaying) {
                               AudioBottomSheet.showCurrentAudio(context);
                             } else {
                               ref

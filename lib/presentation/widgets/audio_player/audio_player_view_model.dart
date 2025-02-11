@@ -280,7 +280,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     } catch (e) {
       print("오디오 스트림 취소시 오류 $e");
     } finally {
-      state = state.copyWith(index: -1, currentSong: null, nextSong: []);
+      state = state.copyWith(index: -1,nextSong: []);
     }
   }
 

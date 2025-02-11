@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
-import 'package:oz_player/data/source/saved/play_list_source.dart';
+import 'package:oz_player/data/source/firebase_songs/play_list_source.dart';
 
 class PlayListSourceImpl implements PlayListSource {
   final FirebaseFirestore _firestore;
