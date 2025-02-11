@@ -20,7 +20,8 @@ class LibraryRepositoryImpl implements LibraryRepository {
   }
 
   @override
-  Future<void> deleteLibrary(String songId, String userId) async {
-    await _source.deleteLibrary(songId, userId);
+  Future<void> deleteLibrary(
+      String songId, DateTime createdAt, String userId) async {
+    await _source.deleteLibrary(songId, createdAt, userId);
   }
 }

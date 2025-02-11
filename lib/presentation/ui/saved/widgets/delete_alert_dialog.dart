@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
+import 'package:oz_player/presentation/providers/library_provider.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
@@ -205,15 +207,15 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
   }
 }
 
-// 플레이리스트 삭제 alert
+// 라이브러리 카드 삭제 alert
 class DeleteCardAlertDialog extends ConsumerWidget {
   const DeleteCardAlertDialog({
     super.key,
-    required this.title,
+    required this.songId,
     required this.createdAt,
   });
 
-  final String title;
+  final String songId;
   final DateTime createdAt;
 
   @override
@@ -271,9 +273,14 @@ class DeleteCardAlertDialog extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(8)))),
                         onPressed: () async {
                           // 카드 삭제 로직
-
+                          ref.read(libraryUsecaseProvider).deleteLibrary(
+                              ref.read(userViewModelProvider),
+                              createdAt,
+                              songId);
+                          ref
+                              .read(libraryViewModelProvider.notifier)
+                              .getLibrary();
                           if (context.mounted) {
-                            context.pop();
                             context.pop();
                           }
                         },

@@ -259,8 +259,8 @@ class _LibraryState extends ConsumerState<Library> {
                                             context: context,
                                             builder: (context) =>
                                                 DeleteCardAlertDialog(
-                                              title: data[index].title,
                                               createdAt: data[index].createdAt,
+                                              songId: data[index].songId,
                                             ),
                                           );
                                         },
