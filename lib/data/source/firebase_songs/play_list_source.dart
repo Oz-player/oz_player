@@ -13,4 +13,5 @@ abstract interface class PlayListSource {
       String userId, String listName, String newDescription);
   Future<void> editSongOrder(
       String userId, String listName, List<String> songIds);
+  Future<void> clearPlaylist(String userId);
 }

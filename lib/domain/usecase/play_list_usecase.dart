@@ -50,4 +50,8 @@ class PlayListUsecase {
       String userId, String listName, List<String> songIds) async {
     await _repository.editSongOrder(userId, listName, songIds);
   }
+
+  Future<void> clearPlaylist(String userId) async {
+    await _repository.clearPlaylist(userId);
+  }
 }
