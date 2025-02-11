@@ -32,7 +32,7 @@ class _SplashState extends ConsumerState<Splash> {
         ref.read(userViewModelProvider.notifier).setUserId(uid);
         ref.watch(playListViewModelProvider.notifier).getPlayLists();
         ref.watch(libraryViewModelProvider.notifier).getLibrary();
-        
+
         _startNavigationTimer('/home');
       } else {
         _startNavigationTimer('/login');
