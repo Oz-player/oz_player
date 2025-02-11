@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/ui/ranking_page/view_model/ranking_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/speech_ballon/speech_ballon.dart';
 
 class SpeechBubbleWidget extends ConsumerWidget {
-  const SpeechBubbleWidget({super.key, this.nipLocation, this.song});
+  const SpeechBubbleWidget(this.data, {super.key, this.nipLocation, this.song});
 
   final RawSongEntity? song;
   final NipLocation? nipLocation;
+  final RankingState data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -135,9 +137,21 @@ class SpeechBubbleWidget extends ConsumerWidget {
                     size: 28,
                   ),
                 )),
-            Positioned(
-              child: Image.asset('assets/images/crown_gold.png'),
-            ),
+            if (data.focusIndex == FocusIndex.firstPrice)
+              Positioned(
+                top: -30,
+                child: Image.asset('assets/images/crown_gold.png'),
+              ),
+            if (data.focusIndex == FocusIndex.secondPrice)
+              Positioned(
+                top: -30,
+                child: Image.asset('assets/images/crown_sliver.png'),
+              ),
+            if (data.focusIndex == FocusIndex.thirdPrice)
+              Positioned(
+                top: -30,
+                child: Image.asset('assets/images/crown_bronze.png'),
+              ),
           ],
         ));
   }

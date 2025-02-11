@@ -17,6 +17,7 @@ class RankingBubble extends StatelessWidget {
     return SpeechBubbleWidget(
       nipLocation: nipLocationList[index],
       song: isLibrary ? data.cardRanking[index] : data.playlistRanking[index],
+      data
     );
   }
 }
