@@ -22,4 +22,16 @@ class SongEntity {
     required this.favoriteArtist,
     this.memo,
   });
+
+  SongEntity.empty() : this (
+    video: VideoInfoEntitiy.empty(),
+    title: '',
+    imgUrl: '',
+    artist: '',
+    mood: '',
+    situation: '',
+    genre: '',
+    favoriteArtist: '',
+    memo: null,
+  );
 }

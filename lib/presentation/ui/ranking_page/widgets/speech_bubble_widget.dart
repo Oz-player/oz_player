@@ -15,6 +15,8 @@ class SpeechBubbleWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final audioState = ref.watch(audioPlayerViewModelProvider);
+
     if (song == null) {
       return SpeechBalloon(
           nipLocation: nipLocation ?? NipLocation.bottom,
@@ -38,6 +40,7 @@ class SpeechBubbleWidget extends ConsumerWidget {
         width: 256,
         height: 120,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -48,7 +51,7 @@ class SpeechBubbleWidget extends ConsumerWidget {
                 SizedBox(
                     width: 60, height: 60, child: Image.network(song!.imgUrl)),
                 SizedBox(
-                  width: 20,
+                  width: 16,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -89,28 +92,42 @@ class SpeechBubbleWidget extends ConsumerWidget {
             ),
             Positioned(
                 right: 16,
-                bottom: 8,
+                bottom: 16,
                 child: GestureDetector(
                   onTap: () {
-                    AudioBottomSheet.showCurrentAudio(context);
+                    if (audioState.currentSong?.title == song!.title &&
+                        audioState.currentSong?.artist == song!.artist &&
+                        audioState.isPlaying) {
+                      AudioBottomSheet.showCurrentAudio(context);
+                    } else {
+                      ref
+                          .read(audioPlayerViewModelProvider.notifier)
+                          .toggleStop();
 
-                    SongEntity playSong = SongEntity(
-                        video: song!.video,
-                        title: song!.title,
-                        imgUrl: song!.imgUrl,
-                        artist: song!.artist,
-                        mood: '',
-                        situation: '',
-                        genre: '',
-                        favoriteArtist: '');
+                      AudioBottomSheet.showCurrentAudio(context);
 
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .setCurrentSong(playSong);
+                      ref
+                          .read(audioPlayerViewModelProvider.notifier)
+                          .isStartLoadingAudioPlayer();
 
-                    ref
-                        .read(audioPlayerViewModelProvider.notifier)
-                        .setAudioPlayer(playSong.video.audioUrl, -2);
+                      SongEntity playSong = SongEntity(
+                          video: song!.video,
+                          title: song!.title,
+                          imgUrl: song!.imgUrl,
+                          artist: song!.artist,
+                          mood: '',
+                          situation: '',
+                          genre: '',
+                          favoriteArtist: '');
+
+                      ref
+                          .read(audioPlayerViewModelProvider.notifier)
+                          .setCurrentSong(playSong);
+
+                      ref
+                          .read(audioPlayerViewModelProvider.notifier)
+                          .setAudioPlayer(playSong.video.audioUrl, -2);
+                    }
                   },
                   child: Icon(
                     Icons.play_circle_outline,
@@ -118,6 +135,9 @@ class SpeechBubbleWidget extends ConsumerWidget {
                     size: 28,
                   ),
                 )),
+            Positioned(
+              child: Image.asset('assets/images/crown_gold.png'),
+            ),
           ],
         ));
   }
