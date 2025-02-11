@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
-import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
+import 'package:oz_player/presentation/ui/saved/widgets/menu_bottom_sheets.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
+
+// saved page - 플레이리스트 탭 위젯
 
 class PlayList extends ConsumerStatefulWidget {
   const PlayList({
@@ -122,159 +124,78 @@ class _PlayListState extends ConsumerState<PlayList> {
                         onTap: () {
                           showModalBottomSheet<void>(
                             context: context,
-                            builder: (context) => Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                color: Colors.white,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          // -----------------------
-                                          // bottomsheet - 노래 이미지
-                                          // -----------------------
-                                          Container(
-                                            width: 48,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              image: data[index].imgUrl == null
-                                                  ? DecorationImage(
-                                                      image: AssetImage(
-                                                          'assets/images/muoz.png'))
-                                                  : DecorationImage(
-                                                      image: NetworkImage(
-                                                          data[index].imgUrl!)),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                          // ---------------------
-                                          // bottomsheet - 노래 제목
-                                          // ---------------------
-                                          Expanded(
-                                            child: Text(
-                                              data[index].listName,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                          // ---------------------
-                                          // bottomsheet - 종료 버튼
-                                          // ---------------------
-                                          GestureDetector(
-                                            onTap: () => context.pop(),
-                                            child: Container(
-                                              padding: const EdgeInsets.all(10),
-                                              width: 48,
-                                              height: 48,
-                                              color: Colors.transparent,
-                                              child: Icon(Icons.close),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      // -------------------
-                                      // 음악 세부 메뉴
-                                      // -------------------
-                                      const SizedBox(
-                                        height: 24,
-                                      ),
-                                      // -------------------
-                                      // 플레이리스트 세부 메뉴
-                                      // -------------------
-                                      // --------------------------------
-                                      // playlist menu : 1. 재생
-                                      // --------------------------------
-                                      GestureDetector(
-                                        onTap: () async {
-                                          context.pop();
-                                          // 음악 리스트 받아오기
-                                          await ref
-                                              .read(playlistSongsProvider
-                                                  .notifier)
-                                              .loadSongs(data[index].songIds);
-                                          final songListAsync =
-                                              ref.watch(playlistSongsProvider);
-                                          songListAsync.when(
-                                            data: (data) async {
-                                              addListInAudioPlayer(data);
-                                            },
-                                            error: (error, stackTrace) {},
-                                            loading: () {},
-                                          );
-                                        },
-                                        child:
-                                            BottomSheetMenuButton(title: '재생'),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      // --------------------------------
-                                      // playlist menu : 2. 셔플 재생
-                                      // --------------------------------
-                                      GestureDetector(
-                                        onTap: () async {
-                                          context.pop();
-                                          // 음악 리스트 받아오기
-                                          await ref
-                                              .read(playlistSongsProvider
-                                                  .notifier)
-                                              .loadSongs(data[index].songIds);
-                                          final songListAsync =
-                                              ref.watch(playlistSongsProvider);
-                                          songListAsync.when(
-                                            data: (data) async {
-                                              // 셔플
-                                              List<SongEntity> list = [];
-                                              for (var item in data) {
-                                                list.add(item);
-                                              }
-                                              list.shuffle();
-                                              addListInAudioPlayer(list);
-                                            },
-                                            error: (error, stackTrace) {},
-                                            loading: () {},
-                                          );
-                                        },
-                                        child: BottomSheetMenuButton(
-                                            title: '셔플 재생'),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      // --------------------------------
-                                      // playlist menu : 3. 삭제
-                                      // --------------------------------
-                                      GestureDetector(
-                                        onTap: () {
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (context) =>
-                                                DeletePlayListAlertDialog(
-                                              listName: data[index].listName,
-                                            ),
-                                          );
-                                        },
-                                        child: BottomSheetMenuButton(
-                                            title: '플레이리스트 삭제'),
-                                      ),
-                                    ],
-                                  ),
+                            builder: (context) => SavedMenuBottomSheet(
+                              imgUrl: data[index].imgUrl,
+                              name: data[index].listName,
+                              items: [
+                                // --------------------------------
+                                // playlist menu : 1. 재생
+                                // --------------------------------
+                                GestureDetector(
+                                  onTap: () async {
+                                    context.pop();
+                                    // 음악 리스트 받아오기
+                                    await ref
+                                        .read(playlistSongsProvider.notifier)
+                                        .loadSongs(data[index].songIds);
+                                    final songListAsync =
+                                        ref.watch(playlistSongsProvider);
+                                    songListAsync.when(
+                                      data: (data) async {
+                                        addListInAudioPlayer(data);
+                                      },
+                                      error: (error, stackTrace) {},
+                                      loading: () {},
+                                    );
+                                  },
+                                  child: BottomSheetMenuButton(title: '재생'),
                                 ),
-                              ),
+                                // --------------------------------
+                                // playlist menu : 2. 셔플 재생
+                                // --------------------------------
+                                GestureDetector(
+                                  onTap: () async {
+                                    context.pop();
+                                    // 음악 리스트 받아오기
+                                    await ref
+                                        .read(playlistSongsProvider.notifier)
+                                        .loadSongs(data[index].songIds);
+                                    final songListAsync =
+                                        ref.watch(playlistSongsProvider);
+                                    songListAsync.when(
+                                      data: (data) async {
+                                        // 셔플
+                                        List<SongEntity> list = [];
+                                        for (var item in data) {
+                                          list.add(item);
+                                        }
+                                        list.shuffle();
+                                        addListInAudioPlayer(list);
+                                      },
+                                      error: (error, stackTrace) {},
+                                      loading: () {},
+                                    );
+                                  },
+                                  child: BottomSheetMenuButton(title: '셔플 재생'),
+                                ),
+                                // --------------------------------
+                                // playlist menu : 3. 삭제
+                                // --------------------------------
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) =>
+                                          DeletePlayListAlertDialog(
+                                        listName: data[index].listName,
+                                      ),
+                                    );
+                                  },
+                                  child:
+                                      BottomSheetMenuButton(title: '플레이리스트 삭제'),
+                                ),
+                              ],
                             ),
                           );
                         },
