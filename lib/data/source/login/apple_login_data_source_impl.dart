@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:oz_player/data/source/login/apple_login_data_source.dart';
@@ -61,13 +63,13 @@ class AppleLoginDataSourceImpl implements AppleLoginDataSource {
         'email': email,
       });
     } catch (e) {
-      print('사용자 정보 업데이트 실패! $e');
+      log('사용자 정보 업데이트 실패! $e');
     }
   }
 
   @override
   Future<void> createUser(String uid, String? email) async {
-    print('Firestore createUser 호출: uid=$uid, email=$email');
+    log('Firestore createUser 호출: uid=$uid, email=$email');
     try {
       final docRef = _firestore.collection('User').doc(uid);
       final nullableEmail = email ?? 'unKnown'; // email이 null값으로 올 때, 기본값
@@ -75,9 +77,9 @@ class AppleLoginDataSourceImpl implements AppleLoginDataSource {
         'uid': uid,
         'email': nullableEmail,
       });
-      print('새로운 사용자 생성 완료! $uid, $nullableEmail');
+      log('새로운 사용자 생성 완료! $uid, $nullableEmail');
     } catch (e) {
-      print('사용자 생성 실패! $e');
+      log('사용자 생성 실패! $e');
     }
   }
 
@@ -95,9 +97,9 @@ class AppleLoginDataSourceImpl implements AppleLoginDataSource {
       } else {
         await createUser(uid, email);
       }
-      print('새로운 사용자 Firestore Database에 저장완료!: $uid, $email');
+      log('새로운 사용자 Firestore Database에 저장완료!: $uid, $email');
     } catch (e) {
-      print('새로운 사용자 Firestore Database에 저장 실패!: $e');
+      log('새로운 사용자 Firestore Database에 저장 실패!: $e');
     }
   }
 }

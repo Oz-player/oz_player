@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:oz_player/domain/repository/login/apple_login_repository.dart';
@@ -20,8 +22,8 @@ class AppleLoginUseCase {
       // 로그인 성공하면 uid, email 정보 받기
       final uid = appleCredential.userIdentifier;
       final email = 'zzzzzz@gmail.com'; // 나중에 다시 해보기!
-      print('!!!!!!!!!!!');
-      print('$uid, $email');
+      log('!!!!!!!!!!!');
+      log('$uid, $email');
 
       if (uid == null) {
         throw Exception('사용자 정보 받기 실패!');
@@ -48,13 +50,13 @@ class AppleLoginUseCase {
       final isExistUser = await _appleLoginRepository.isExistUser(firebaseUid);
 
       if (isExistUser) {
-        print('createUser 호출 전');
+        log('createUser 호출 전');
         // 기존 사용자면 데이터 업데이트
         await _appleLoginRepository.updateUser(firebaseUid, firebaseEmail);
       } else {
         // 새로운 사용자면 데이터 등록
         await _appleLoginRepository.createUser(firebaseUid, firebaseEmail);
-        print('createUser 호출 완료');
+        log('createUser 호출 완료');
       }
 
       // 자동 로그인에 필요(로그인 성공 후 uid 저장)
@@ -65,7 +67,7 @@ class AppleLoginUseCase {
 
       return ['/home', firebaseUid];
     } catch (e) {
-      print('$e');
+      log('$e');
       throw Exception('애플 로그인 실패! $e');
     }
   }

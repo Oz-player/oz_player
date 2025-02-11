@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +18,7 @@ class _SearchWordPageState extends State<SearchWordPage> {
   void initState() {
     super.initState();
     _loadSearchHistory();
-    print(searchHistory.length);
+    log('${searchHistory.length}');
     deleteMode = false;
   }
 
@@ -63,7 +65,7 @@ class _SearchWordPageState extends State<SearchWordPage> {
               TextButton(
                 onPressed: () {
                   _toggleDeleteMode();
-                  print('deleteMode : $deleteMode');
+                  log('deleteMode : $deleteMode');
                 },
                 child: Text(deleteMode ? '취소' : '기록 삭제'),
               ),
