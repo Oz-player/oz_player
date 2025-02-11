@@ -66,10 +66,11 @@ dependencies:
   kakao_flutter_sdk: ^1.9.6
   easy_rich_text: ^2.2.0
 
-  intl: ^0.20.2
+  intl: ^0.19.0
   flutter_slidable: ^4.0.0
   sentry_flutter: ^8.13.0
   flutter_secure_storage: ^9.2.4
+  flutter_styled_toast: ^2.2.1
 
 
 dev_dependencies:
