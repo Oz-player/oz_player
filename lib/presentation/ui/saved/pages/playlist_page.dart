@@ -220,6 +220,10 @@ class _MainScaffoldState extends State<MainScaffold> {
                                   GestureDetector(
                                     onTap: () {
                                       context.pop();
+                                      widget.ref
+                                          .read(audioPlayerViewModelProvider
+                                              .notifier)
+                                          .toggleStop();
                                       widget.songListAsync.when(
                                         data: (data) async {
                                           List<SongEntity> list = [];
@@ -362,8 +366,13 @@ class _MainScaffoldState extends State<MainScaffold> {
                             widget.songListAsync.when(
                               data: (data) {
                                 return GestureDetector(
-                                  onTap: () =>
-                                      widget.addListInAudioPlayer(data),
+                                  onTap: () {
+                                    widget.ref
+                                        .read(audioPlayerViewModelProvider
+                                            .notifier)
+                                        .toggleStop();
+                                    widget.addListInAudioPlayer(data);
+                                  },
                                   child: PlayButton(),
                                 );
                               },
@@ -379,6 +388,10 @@ class _MainScaffoldState extends State<MainScaffold> {
                                 // ------------------
                                 GestureDetector(
                                   onTap: () async {
+                                    widget.ref
+                                        .read(audioPlayerViewModelProvider
+                                            .notifier)
+                                        .toggleStop();
                                     widget.ref
                                         .read(bottomNavigationProvider.notifier)
                                         .updatePage(5);
@@ -403,6 +416,11 @@ class _MainScaffoldState extends State<MainScaffold> {
                                 // ---------------------
                                 GestureDetector(
                                   onTap: () async {
+                                    widget.ref
+                                        .read(audioPlayerViewModelProvider
+                                            .notifier)
+                                        .toggleStop();
+
                                     widget.songListAsync.when(
                                       data: (data) async {
                                         List<SongEntity> list = [];
@@ -596,6 +614,12 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         context.pop();
+                                                        widget.ref
+                                                            .read(
+                                                                audioPlayerViewModelProvider
+                                                                    .notifier)
+                                                            .toggleStop();
+
                                                         widget
                                                             .addListInAudioPlayer(
                                                                 [data[index]]);
@@ -631,7 +655,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                       ),
                                                     ),
                                                     // --------------------------------
-                                                    // song menu : 3. 음악 재생
+                                                    // song menu : 3. 음악 삭제
                                                     // --------------------------------
                                                     GestureDetector(
                                                       onTap: () {

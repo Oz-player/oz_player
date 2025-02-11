@@ -144,6 +144,10 @@ class _PlayListState extends ConsumerState<PlayList> {
                                       GestureDetector(
                                         onTap: () async {
                                           context.pop();
+                                          ref
+                                              .read(audioPlayerViewModelProvider
+                                                  .notifier)
+                                              .toggleStop();
                                           // 음악 리스트 받아오기
                                           await ref
                                               .read(playlistSongsProvider
@@ -167,6 +171,10 @@ class _PlayListState extends ConsumerState<PlayList> {
                                       // --------------------------------
                                       GestureDetector(
                                         onTap: () async {
+                                          ref
+                                              .read(audioPlayerViewModelProvider
+                                                  .notifier)
+                                              .toggleStop();
                                           context.pop();
                                           // 음악 리스트 받아오기
                                           await ref
