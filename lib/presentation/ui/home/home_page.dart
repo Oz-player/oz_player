@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
+import 'package:oz_player/presentation/widgets/toast_message/toast_message.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -114,7 +115,6 @@ class HomePage extends ConsumerWidget {
               SizedBox(
                 height: 16,
               ),
-              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Stack(
@@ -180,7 +180,7 @@ class HomePage extends ConsumerWidget {
                   ],
                 ),
               ),
-              
+
               Spacer(),
               AudioPlayer(
                 colorMode: true,
