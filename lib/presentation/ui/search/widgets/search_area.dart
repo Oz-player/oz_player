@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +38,7 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
       saveSearchText(text);
       ref.read(searchSpotifyListViewModel.notifier).fetchSpotify(text);
       ref.read(searchNaverViewModel.notifier).fetchNaver(text);
-      print('onsearch 호출됨');
+      log('onsearch 호출됨');
     } else {
       // 검색어가 비어있을 때 clearText 호출
       widget.onSearch('');
@@ -100,7 +102,7 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
           onPressed: () {
             _textEditingController.clear(); // 텍스트 필드 비우기
             widget.onCancel(); // 검색 모드 해제 호출
-            print('취소 호출됨');
+            log('취소 호출됨');
           },
           child: Text(
             '취소',

@@ -15,7 +15,7 @@ class LibrarySourceImpl implements LibrarySource {
       final doc = await _firestore.collection('Library').doc(userId).get();
 
       if (doc.exists && doc.data() != null) {
-        print('$userId의 라이브러리 목록을 찾았습니다!');
+        log('$userId의 라이브러리 목록을 찾았습니다!');
 
         final data = doc.data() as Map<String, dynamic>;
 
@@ -27,7 +27,7 @@ class LibrarySourceImpl implements LibrarySource {
       }
       return [];
     } catch (e, stackTrace) {
-      print('e: $e, stack: $stackTrace');
+      log('e: $e, stack: $stackTrace');
       return [];
     }
   }
@@ -43,7 +43,7 @@ class LibrarySourceImpl implements LibrarySource {
           await _firestore.collection('Library').doc(userId).update({
             'songs': FieldValue.arrayUnion([dto.toJson()])
           });
-          print('${dto.songId}을 라이브러리에 저장했습니다');
+          log('${dto.songId}을 라이브러리에 저장했습니다');
           return;
         }
       }
@@ -54,7 +54,7 @@ class LibrarySourceImpl implements LibrarySource {
       });
       return;
     } catch (e, stackTrace) {
-      print('e: $e, stack: $stackTrace');
+      log('e: $e, stack: $stackTrace');
     }
   }
 
@@ -86,7 +86,7 @@ class LibrarySourceImpl implements LibrarySource {
         }
       }
     } catch (e, stackTrace) {
-      print('e: $e, stack: $stackTrace');
+      log('e: $e, stack: $stackTrace');
     }
   }
 
@@ -96,7 +96,7 @@ class LibrarySourceImpl implements LibrarySource {
       await _firestore.collection('Library').doc(userId).delete();
       log('$userId의 라이브러리를 삭제하였습니다.');
     } catch (e, stackTrace) {
-      print('e: $e, stackTrace: $stackTrace');
+      log('e: $e, stackTrace: $stackTrace');
     }
   }
 }

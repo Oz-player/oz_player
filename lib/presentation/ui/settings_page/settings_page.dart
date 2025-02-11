@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -180,7 +182,7 @@ class ExitButtons extends ConsumerWidget {
                                             borderRadius:
                                                 BorderRadius.circular(8)))),
                                 onPressed: () async {
-                                  print('로그아웃 확인 버튼 선택함!');
+                                  log('로그아웃 확인 버튼 선택함!');
                                   final loginViewModel =
                                       ref.read(loginViewModelProvider.notifier);
                                   await loginViewModel.logout();

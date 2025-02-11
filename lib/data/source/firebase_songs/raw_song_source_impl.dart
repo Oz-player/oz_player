@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
 import 'package:oz_player/data/source/firebase_songs/raw_song_source.dart';
@@ -17,7 +19,7 @@ class RawSongSourceImpl implements RawSongSource {
       }
       return null;
     } catch (e, stackTrace) {
-      print('e: $e, stack: $stackTrace');
+      log('e: $e, stack: $stackTrace');
       return null;
     }
   }
@@ -36,7 +38,7 @@ class RawSongSourceImpl implements RawSongSource {
       final results = await Future.wait(futures);
       return results.whereType<RawSongDto>().toList();
     } catch (e, stackTrace) {
-      print('e: $e, stack: $stackTrace');
+      log('e: $e, stack: $stackTrace');
       return [];
     }
   }
@@ -53,7 +55,7 @@ class RawSongSourceImpl implements RawSongSource {
           'countLibrary': count + 1,
         },
       );
-      print('count가 증가하였습니다.');
+      log('count가 증가하였습니다.');
     } else {
       // 존재하지 않던 곡일 경우 곡을 생성하고 count 값을 1로 설정
       rawSongDto.countLibrary = 1;
@@ -61,7 +63,7 @@ class RawSongSourceImpl implements RawSongSource {
           .collection('Song')
           .doc(rawSongDto.video.id)
           .set(rawSongDto.toJson());
-      print('${rawSongDto.video.id}을 Song에 저장하였습니다.');
+      log('${rawSongDto.video.id}을 Song에 저장하였습니다.');
     }
   }
 
@@ -77,7 +79,7 @@ class RawSongSourceImpl implements RawSongSource {
           'countPlaylist': count + 1,
         },
       );
-      print('count가 증가하였습니다.');
+      log('count가 증가하였습니다.');
       // 존재하지 않던 곡일 경우 곡을 생성하고 count 값을 1로 설정
     } else {
       rawSongDto.countPlaylist = 1;
@@ -85,7 +87,7 @@ class RawSongSourceImpl implements RawSongSource {
           .collection('Song')
           .doc(rawSongDto.video.id)
           .set(rawSongDto.toJson());
-      print('${rawSongDto.video.id}을 Song에 저장하였습니다.');
+      log('${rawSongDto.video.id}을 Song에 저장하였습니다.');
     }
   }
 
@@ -100,7 +102,7 @@ class RawSongSourceImpl implements RawSongSource {
       await updateRef.update({
         'video': dto.video.toJson(),
       });
-      print('video를 업데이트하였습니다.');
+      log('video를 업데이트하였습니다.');
     }
   }
 
@@ -126,7 +128,7 @@ class RawSongSourceImpl implements RawSongSource {
 
       return [];
     } catch (e, stackTrace) {
-      print('e: $e, stackTrace: $stackTrace');
+      log('e: $e, stackTrace: $stackTrace');
       return [];
     }
   }
@@ -149,7 +151,7 @@ class RawSongSourceImpl implements RawSongSource {
 
       return [];
     } catch (e, stackTrace) {
-      print('e: $e, stackTrace: $stackTrace');
+      log('e: $e, stackTrace: $stackTrace');
       return [];
     }
   }

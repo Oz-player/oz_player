@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
@@ -32,13 +34,13 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
   @override
   Future<String> fetchKakaoIdToken(String idToken) async {
     final httpClient = Client();
-    print('카카오 서버로 요청 전송 중... idToken: $idToken');
+    log('카카오 서버로 요청 전송 중... idToken: $idToken');
     try {
       final httpResponse = await httpClient.post(
         Uri.parse('https://kakaologin-erb5lhs57a-uc.a.run.app'),
         body: {'idToken': idToken},
       );
-      print('${httpResponse.statusCode}');
+      log('${httpResponse.statusCode}');
       if (httpResponse.statusCode == 200) {
         return httpResponse.body;
       } else {
@@ -69,7 +71,7 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
       final userSnapshot = await _firestore.collection('User').doc(uid).get();
       return userSnapshot.exists;
     } catch (e) {
-      print('$e');
+      log('$e');
       rethrow;
     }
   }
@@ -82,9 +84,9 @@ class KakaoLoginDataSourceImpl implements KakaoLoginDataSource {
         'uid': uid,
       }, SetOptions(merge: true));
       
-      print('새로운 사용자 Firestore Database에 저장완료!: $uid');
+      log('새로운 사용자 Firestore Database에 저장완료!: $uid');
     } catch (e) {
-      print('새로운 사용자 Firestore Database에 저장 실패!: $e');
+      log('새로운 사용자 Firestore Database에 저장 실패!: $e');
       rethrow;
     }
   }
