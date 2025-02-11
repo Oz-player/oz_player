@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
 enum SortedType {
@@ -14,6 +15,16 @@ class ListSortViewmodel extends Notifier<SortedType> {
   @override
   SortedType build() {
     return SortedType.latest;
+  }
+
+  void setSongsLatest(List<String> songIds) {
+    state = SortedType.latest;
+    ref.read(playlistSongsProvider.notifier).loadSongs(songIds);
+  }
+
+  void setSongsAscending(List<String> songIds) {
+    state = SortedType.ascending;
+    ref.read(playlistSongsProvider.notifier).loadSongsByTitle(songIds);
   }
 
   void setLatest() {
