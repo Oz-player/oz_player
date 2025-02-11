@@ -273,11 +273,11 @@ class DeleteCardAlertDialog extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(8)))),
                         onPressed: () async {
                           // 카드 삭제 로직
-                          ref.read(libraryUsecaseProvider).deleteLibrary(
+                          await ref.read(libraryUsecaseProvider).deleteLibrary(
                               ref.read(userViewModelProvider),
                               createdAt,
                               songId);
-                          ref
+                          await ref
                               .read(libraryViewModelProvider.notifier)
                               .getLibrary();
                           if (context.mounted) {
