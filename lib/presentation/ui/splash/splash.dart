@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:oz_player/domain/usecase/login/auto_login_usecase.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -11,6 +12,28 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   bool _isAnimationLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginInfo();
+  }
+
+  Future<void> _checkLoginInfo() async {
+    final autoLoginUsecase = AutoLoginUsecase();
+    final uid = await autoLoginUsecase.execute();
+
+    if (mounted) {
+      if (uid != null) {
+        context.go('/home');
+      } else {
+        _startNavigationTimer();
+      }
+    }
+  }
+
+
+
 
   void _startNavigationTimer() {
     Future.delayed(const Duration(milliseconds: 3000)).then((_) {
