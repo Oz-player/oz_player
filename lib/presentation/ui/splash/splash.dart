@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:oz_player/domain/usecase/login/auto_login_usecase.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
-class Splash extends StatefulWidget {
+class Splash extends ConsumerStatefulWidget {
   const Splash({super.key});
 
   @override
-  State<Splash> createState() => _SplashState();
+  ConsumerState<Splash> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashState extends ConsumerState<Splash> {
   bool _isAnimationLoaded = false;
 
   @override
@@ -25,9 +29,13 @@ class _SplashState extends State<Splash> {
 
     if (mounted) {
       if (uid != null) {
-        context.go('/home');
+        ref.read(userViewModelProvider.notifier).setUserId(uid);
+        ref.watch(playListViewModelProvider.notifier).getPlayLists();
+        ref.watch(libraryViewModelProvider.notifier).getLibrary();
+        
+        _startNavigationTimer('/home');
       } else {
-        _startNavigationTimer();
+        _startNavigationTimer('/login');
       }
     }
   }
@@ -35,10 +43,10 @@ class _SplashState extends State<Splash> {
 
 
 
-  void _startNavigationTimer() {
+  void _startNavigationTimer(String path) {
     Future.delayed(const Duration(milliseconds: 3000)).then((_) {
       if (mounted) {
-        context.go('/login');
+        context.go(path);
       }
     });
   }
@@ -53,7 +61,7 @@ class _SplashState extends State<Splash> {
         child: Lottie.asset('assets/animation/splash_1.json', fit: BoxFit.cover, onLoaded: (state) {
           if (!_isAnimationLoaded) {
             _isAnimationLoaded = true;
-            _startNavigationTimer();
+            // _startNavigationTimer();
           }
         }),
       ),
