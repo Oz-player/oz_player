@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oz_player/data/source/naver/naver_search_data_source_impl.dart'; // Update with the correct import path
 
@@ -13,11 +15,11 @@ void main() {
     expect(searchResults.isEmpty, false);
 
     for (final result in searchResults) {
-      print('Title: ${result.title}');
-      print('Artist: ${result.artist}');
-      print('Lyrics: ${result.lyrics}');
-      print('Link: ${result.link}');
-      print('-------------------');
+      log('Title: ${result.title}');
+      log('Artist: ${result.artist}');
+      log('Lyrics: ${result.lyrics}');
+      log('Link: ${result.link}');
+      log('-------------------');
     }
   });
 }

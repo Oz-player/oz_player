@@ -69,7 +69,7 @@
 | 분류     | 이름                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Firebase | <img src="https://img.shields.io/badge/Authentication-4285F4"> <img src="https://img.shields.io/badge/Firestore-854C1D">                                                                                                                                                                                                                                                                                                                        |
-| 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube Explode-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |        
+| 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |        
 
 &nbsp;
 ## ♒ MuOz 기능
@@ -122,7 +122,7 @@
 &nbsp;
 ### ➿ 음악 재생 (오디오 플레이어) <img src="assets/images/mu_2.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
-> - YouTube Explode 패키지를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
+> - YouTube를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
 > - 10초 건너뛰기, 타임라인 선택 등의 기능을 제공합니다.
 
 <details>

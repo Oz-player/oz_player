@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oz_player/data/source/spotify/spotify_data_source_impl.dart';
@@ -8,21 +10,21 @@ void main() {
     SpotifyDataSourceImpl spotifyDataSourceImpl = SpotifyDataSourceImpl();
     final search = await spotifyDataSourceImpl.searchList('Make Up - 샘김');
     expect(search.isEmpty, false);
-    print(search.length);
+    log('${search.length}');
     for (var searchs in search) {
-      print("id : ${searchs.id}");
-      print("name : ${searchs.name}");
-      print("type : ${searchs.type}");
-      print("uri : ${searchs.uri}");
-      print("popularity : ${searchs.popularity}");
-      print("genres : ${searchs.genres}");
-      print("images : ${searchs.images}");
-      print("durationMs : ${searchs.durationMs}");
-      print("iexplicit : ${searchs.explicit}");
-      print("previewUrl : ${searchs.previewUrl}");
-      print("album : ${searchs.album}");
-      print("album_artist_name : ${searchs.album?['artists'][0]['name']}");
-      print("album_images : ${searchs.album?['images'][0]['url']}");
+      log("id : ${searchs.id}");
+      log("name : ${searchs.name}");
+      log("type : ${searchs.type}");
+      log("uri : ${searchs.uri}");
+      log("popularity : ${searchs.popularity}");
+      log("genres : ${searchs.genres}");
+      log("images : ${searchs.images}");
+      log("durationMs : ${searchs.durationMs}");
+      log("iexplicit : ${searchs.explicit}");
+      log("previewUrl : ${searchs.previewUrl}");
+      log("album : ${searchs.album}");
+      log("album_artist_name : ${searchs.album?['artists'][0]['name']}");
+      log("album_images : ${searchs.album?['images'][0]['url']}");
     }
   });
 }

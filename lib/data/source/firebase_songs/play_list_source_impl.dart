@@ -17,7 +17,7 @@ class PlayListSourceImpl implements PlayListSource {
       final doc = await _firestore.collection('Playlist').doc(userId).get();
 
       if (doc.exists && doc.data() != null) {
-        print('$userId의 플레이리스트 목록을 찾았습니다!');
+        log('$userId의 플레이리스트 목록을 찾았습니다!');
 
         final data = doc.data() as Map<String, dynamic>;
 
@@ -30,10 +30,10 @@ class PlayListSourceImpl implements PlayListSource {
         }
       }
 
-      print('$userId의 플레이리스트 목록이 없습니다');
+      log('$userId의 플레이리스트 목록이 없습니다');
       return [];
     } catch (e, stackTrace) {
-      print('playlist error: $e, stackTrace: $stackTrace');
+      log('playlist error: $e, stackTrace: $stackTrace');
       return [];
     }
   }
@@ -59,7 +59,7 @@ class PlayListSourceImpl implements PlayListSource {
       }
       return null;
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
       return null;
     }
   }
@@ -76,14 +76,14 @@ class PlayListSourceImpl implements PlayListSource {
         if (data.containsKey('playlists') && data['playlists'] is List) {
           for (var item in data['playlists']) {
             if (item['listName'] == dto.listName) {
-              print('이미 존재하는 제목의 플레이리스트입니다.');
+              log('이미 존재하는 제목의 플레이리스트입니다.');
               return false;
             }
           }
           await _firestore.collection('Playlist').doc(userId).update({
             'playlists': FieldValue.arrayUnion([dto.toJson()])
           });
-          print('${dto.listName}을 플레이리스트에 저장했습니다');
+          log('${dto.listName}을 플레이리스트에 저장했습니다');
           return true;
         }
       }
@@ -94,7 +94,7 @@ class PlayListSourceImpl implements PlayListSource {
       });
       return true;
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
       return false;
     }
   }
@@ -133,7 +133,7 @@ class PlayListSourceImpl implements PlayListSource {
         }
       }
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 
@@ -152,11 +152,11 @@ class PlayListSourceImpl implements PlayListSource {
 
           for (var item in playlist) {
             if (item['listName'] == listName) {
-              print('$listName 을 찾았습니다');
+              log('$listName 을 찾았습니다');
               await deleteRef.update({
                 'playlists': FieldValue.arrayRemove([item]),
               });
-              print('$listName 을 삭제했습니다');
+              log('$listName 을 삭제했습니다');
 
               break;
             }
@@ -164,7 +164,7 @@ class PlayListSourceImpl implements PlayListSource {
         }
       }
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 
@@ -200,7 +200,7 @@ class PlayListSourceImpl implements PlayListSource {
         }
       }
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 
@@ -229,14 +229,14 @@ class PlayListSourceImpl implements PlayListSource {
               await editRef.update({
                 'playlists': FieldValue.arrayUnion([item])
               });
-              print('$newName으로 업데이트에 성공했습니다');
+              log('$newName으로 업데이트에 성공했습니다');
               break;
             }
           }
         }
       }
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 
@@ -265,14 +265,14 @@ class PlayListSourceImpl implements PlayListSource {
               await editRef.update({
                 'playlists': FieldValue.arrayUnion([item])
               });
-              print('$newDescription 으로 업데이트에 성공했습니다');
+              log('$newDescription 으로 업데이트에 성공했습니다');
               break;
             }
           }
         }
       }
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 
@@ -289,7 +289,6 @@ class PlayListSourceImpl implements PlayListSource {
 
         if (data.containsKey('playlists') && data['playlists'] is List) {
           List<dynamic> playlist = data['playlists'];
-          print('문서 발견');
           for (var item in playlist) {
             if (item['listName'] == listName) {
               await playlistRef.update({
@@ -301,14 +300,14 @@ class PlayListSourceImpl implements PlayListSource {
               await playlistRef.update({
                 'playlists': FieldValue.arrayUnion([item])
               });
-              print('곡 순서를 새로고침했습니다');
+              log('곡 순서를 새로고침했습니다');
               break;
             }
           }
         }
       }
     } catch (e, stackTrace) {
-      print('error: $e, stackTrace: $stackTrace');
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 
@@ -318,7 +317,7 @@ class PlayListSourceImpl implements PlayListSource {
       await _firestore.collection('Playlist').doc(userId).delete();
       log('$userId의 플레이리스트를 삭제하였습니다.');
     } catch (e, stackTrace) {
-      print('e: $e, stackTrace: $stackTrace');
+      log('e: $e, stackTrace: $stackTrace');
     }
   }
 }

@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +22,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   Future<void> deleteAuthUser() async {
     auth.User? user = _auth.currentUser;
     if (user == null) {
-      throw Exception('$e');
+      throw Exception();
     }
     await user.delete();
   }
@@ -34,10 +35,10 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   @override
   Future<auth.AuthCredential?> reauthUser() async {
     auth.User? user = _auth.currentUser;
-    if (user == null) throw Exception('$e');
+    if (user == null) throw Exception();
 
     final providerId = user.providerData.first.providerId;
-    print('현재 로그인된 providerId: $providerId');
+    log('현재 로그인된 providerId: $providerId');
     auth.AuthCredential? credential;
 
     final uid = user.uid;
@@ -45,7 +46,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
     final isKakaoUser = userDoc.exists && uid.startsWith('kakao');
 
     if (isKakaoUser) {
-      print('카카오 로그인 사용자! 카카오 재인증 진행');
+      log('카카오 로그인 사용자! 카카오 재인증 진행');
       await reauthKakaoUser();
       return null;
     }
@@ -68,7 +69,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
         );
 
         if (appleCredential.identityToken == null) {
-          throw Exception('$e');
+          throw Exception();
         }
 
         credential = auth.OAuthProvider('apple.com').credential(
@@ -76,13 +77,13 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
           accessToken: appleCredential.authorizationCode,
         );
       } catch (e) {
-        print('애플로그인 재인증 실패! $e');
+        log('애플로그인 재인증 실패! $e');
       }
     }
     if (credential != null) {
       
       await user.reauthenticateWithCredential(credential);
-      print('재인증 성공!');
+      log('재인증 성공!');
       return credential;
     } else {
       throw Exception('재인증 실패');
@@ -93,7 +94,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   Future<void> reauthKakaoUser() async {
     auth.User? user = _auth.currentUser;
     if (user == null) {
-      throw Exception('$e');
+      throw Exception();
     }
     try {
       final isInstalled = await kakao.isKakaoTalkInstalled();
@@ -102,7 +103,7 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
           : await kakao.UserApi.instance.loginWithKakaoAccount();
 
       final idToken = kakaoLoginResult.idToken;
-      if (idToken == null) throw Exception('$e');
+      if (idToken == null) throw Exception();
 
       final httpClient = Client();
       final httpResponse = await httpClient.post(
@@ -114,12 +115,12 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
 
         //
         await auth.FirebaseAuth.instance.signInWithCustomToken(customToken);
-        print('카카오 재인증 성공!');
+        log('카카오 재인증 성공!');
       } else {
-        throw Exception('$e');
+        throw Exception();
       }
     } catch (e) {
-      print('계정 재인증 실패!: $e');
+      log('계정 재인증 실패!: $e');
     }
   }
 
@@ -127,10 +128,10 @@ class DeleteUserDataSourceImpl implements DeleteUserDataSource {
   Future<void> revokeAppleAccount(String authorizationCode) async {
     try {
       await _auth.revokeTokenWithAuthorizationCode(authorizationCode);
-      print('애플 탈퇴 성공!');
+      log('애플 탈퇴 성공!');
     } catch (e) {
       //
-      print('애츨 탈퇴 실패! $e');
+      log('애츨 탈퇴 실패! $e');
       throw Exception();
     }
   }
