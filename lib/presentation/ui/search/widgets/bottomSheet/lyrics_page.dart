@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
-class LyricsBottom extends StatelessWidget {
-  const LyricsBottom({
+class LyricsPage extends StatelessWidget {
+  const LyricsPage({
     super.key,
     required this.song,
     required this.artist,
@@ -15,14 +15,14 @@ class LyricsBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        color: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          '가사 검색'
+        ),
       ),
-      height: 800,
-      child: Padding(
-        padding: const EdgeInsets.all(24),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
             Row(
@@ -72,6 +72,6 @@ class LyricsBottom extends StatelessWidget {
           ],
         ),
       ),
-    );
+      );
   }
 }

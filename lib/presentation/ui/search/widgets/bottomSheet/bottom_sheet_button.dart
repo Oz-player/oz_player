@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 Widget bottomSheetButton(
-    BuildContext context, String text, VoidCallback onPressed) {
+  BuildContext context,
+  String text,
+  VoidCallback onPressed,
+) {
   return GestureDetector(
     onTap: onPressed,
     child: Container(
