@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:oz_player/data/dto/library_dto.dart';
 import 'package:oz_player/data/source/firebase_songs/library_source.dart';
@@ -37,14 +39,7 @@ class LibrarySourceImpl implements LibrarySource {
       final doc = await _firestore.collection('Library').doc(userId).get();
       if (doc.exists && doc.data() != null) {
         final data = doc.data() as Map<String, dynamic>;
-        // 2. 유저의 라이브러리 안에 동일한 곡이 존재하는지 확인
         if (data.containsKey('songs') && data['songs'] is List) {
-          for (var item in data['songs']) {
-            if (item['songId'] == dto.songId) {
-              print('이미 라이브러리에 존재하는 곡입니다.');
-              return;
-            }
-          }
           await _firestore.collection('Library').doc(userId).update({
             'songs': FieldValue.arrayUnion([dto.toJson()])
           });
@@ -64,7 +59,8 @@ class LibrarySourceImpl implements LibrarySource {
   }
 
   @override
-  Future<void> deleteLibrary(String songId, String userId) async {
+  Future<void> deleteLibrary(
+      String songId, DateTime createdAt, String userId) async {
     try {
       final doc = await _firestore.collection('Library').doc(userId).get();
       final deleteRef = _firestore.collection('Library').doc(userId);
@@ -76,10 +72,14 @@ class LibrarySourceImpl implements LibrarySource {
           List<dynamic> library = data['songs'];
 
           for (var item in library) {
-            if (item['songId'] == songId) {
-              await deleteRef.update({
-                'songs': FieldValue.arrayRemove([item])
-              });
+            if (item['songId'] == songId &&
+                item['createdAt'] == createdAt.toIso8601String()) {
+              await deleteRef.update(
+                {
+                  'songs': FieldValue.arrayRemove([item])
+                },
+              );
+              log('${createdAt.toIso8601String()}에 생성한 $songId 삭제 완료');
               break;
             }
           }
@@ -87,6 +87,16 @@ class LibrarySourceImpl implements LibrarySource {
       }
     } catch (e, stackTrace) {
       print('e: $e, stack: $stackTrace');
+    }
+  }
+
+  @override
+  Future<void> clearLibrary(String userId) async {
+    try {
+      await _firestore.collection('Library').doc(userId).delete();
+      log('$userId의 라이브러리를 삭제하였습니다.');
+    } catch (e, stackTrace) {
+      print('e: $e, stackTrace: $stackTrace');
     }
   }
 }

@@ -59,4 +59,9 @@ class PlayListRepositoryImpl implements PlayListRepository {
       String userId, String listName, List<String> songIds) async {
     await _source.editSongOrder(userId, listName, songIds);
   }
+
+  @override
+  Future<void> clearPlaylist(String userId) async {
+    await _source.clearPlaylist(userId);
+  }
 }

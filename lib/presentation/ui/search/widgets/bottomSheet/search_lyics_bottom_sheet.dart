@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
 import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/bottom_sheet_button.dart';
-import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/lyrics_bottom.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
@@ -70,15 +70,11 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                           ),
                           SizedBox(height: 25),
                           bottomSheetButton(context, '가사 보기', () {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return LyricsBottom(
-                                      song: song,
-                                      artist: artist,
-                                      lyrics: lyrics);
-                                });
+                            context.push('/search/lyrics', extra: {
+                              'song': song,
+                              'artist': artist,
+                              'lyrics': lyrics,
+                            });
                           }),
                           SizedBox(height: 10),
                           bottomSheetButton(context, '재생', () async {

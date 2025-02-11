@@ -47,132 +47,137 @@ class _SavedPageState extends ConsumerState<SavedPage> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(listSortViewModelProvider.notifier);
 
-    return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        title: Text(
-          '보관함',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 18,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                context.push('/settings');
-              },
-              icon: Image.asset('assets/images/option_icon.png')),
-          const SizedBox(
-            width: 8,
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ----------------------------------------------------------
-                // 상단 이미지
-                // ----------------------------------------------------------
-                Stack(
-                  children: [
-                    Container(
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: AppColors.gray300,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    Positioned(
-                      top: 35,
-                      left: 24,
-                      child: Text(
-                        isLibrary
-                            ? '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹'
-                            : '나만의 플레이리스트를 마음껏\n만들어봐라냐옹',
-                        style: TextStyle(
-                            color: AppColors.gray900,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Image.asset('assets/char/myu_2.png')),
-                  ],
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                // ----------------------------------------------------------
-                // 탭 이동 버튼
-                // ----------------------------------------------------------
-                Row(
-                  children: [
-                    SavedTabButton(
-                      title: '라이브러리',
-                      isLibrary: isLibrary,
-                      onClicked: onButtonClicked,
-                    ),
-                    SavedTabButton(
-                      title: '플레이리스트',
-                      isLibrary: !isLibrary,
-                      onClicked: onButtonClicked,
-                    ),
-                  ],
-                ),
-                // ----------------------------------------------------------
-                // 정렬 기준 박스
-                // ----------------------------------------------------------
-                SortedTypeBox(
-                  ref: ref,
-                  isOverlayOn: isOverlayOn,
-                  setOverlayOn: setOverlayOn,
-                ),
-                // ----------------------------------------------------------
-                // 보관함 내용
-                // ----------------------------------------------------------
-                isLibrary ? Library() : PlayList(),
-              ],
+    return GestureDetector(
+      onTap: () => setState(() {
+        isOverlayOn = false;
+      }),
+      child: Scaffold(
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          title: Text(
+            '보관함',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
             ),
           ),
-          // ----------------------------------------------------------
-          // 정렬 방법 선택용 드롭다운
-          // ----------------------------------------------------------
-          Positioned(
-            top: 250,
-            left: 20,
-            child: SizedBox(
-              width: 110,
-              child: isOverlayOn
-                  ? Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.25),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          )
-                        ],
+          centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  context.push('/settings');
+                },
+                icon: Image.asset('assets/images/option_icon.png')),
+            const SizedBox(
+              width: 8,
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ----------------------------------------------------------
+                  // 상단 이미지
+                  // ----------------------------------------------------------
+                  Stack(
+                    children: [
+                      Container(
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: AppColors.gray300,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              viewModel.setLatest();
-                              isOverlayOn = false;
-                            },
-                            child: Container(
+                      Positioned(
+                        top: 35,
+                        left: 24,
+                        child: Text(
+                          isLibrary
+                              ? '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹'
+                              : '나만의 플레이리스트를 마음껏\n만들어봐라냐옹',
+                          style: TextStyle(
+                              color: AppColors.gray900,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Image.asset('assets/char/myu_2.png')),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  // ----------------------------------------------------------
+                  // 탭 이동 버튼
+                  // ----------------------------------------------------------
+                  Row(
+                    children: [
+                      SavedTabButton(
+                        title: '라이브러리',
+                        isLibrary: isLibrary,
+                        onClicked: onButtonClicked,
+                      ),
+                      SavedTabButton(
+                        title: '플레이리스트',
+                        isLibrary: !isLibrary,
+                        onClicked: onButtonClicked,
+                      ),
+                    ],
+                  ),
+                  // ----------------------------------------------------------
+                  // 정렬 기준 박스
+                  // ----------------------------------------------------------
+                  SortedTypeBox(
+                    ref: ref,
+                    isOverlayOn: isOverlayOn,
+                    setOverlayOn: setOverlayOn,
+                  ),
+                  // ----------------------------------------------------------
+                  // 보관함 내용
+                  // ----------------------------------------------------------
+                  isLibrary ? Library() : PlayList(),
+                ],
+              ),
+            ),
+            // ----------------------------------------------------------
+            // 정렬 방법 선택용 드롭다운
+            // ----------------------------------------------------------
+            Positioned(
+              top: 270,
+              left: 20,
+              child: SizedBox(
+                width: 110,
+                child: isOverlayOn
+                    ? Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.25),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                isOverlayOn = false;
+                                print('$isOverlayOn');
+                                viewModel.setLatest();
+                              },
+                              child: Container(
                                 width: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
@@ -191,14 +196,15 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                                             ? AppColors.main600
                                             : AppColors.gray600,
                                   ),
-                                )),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              viewModel.setAscending();
-                              isOverlayOn = false;
-                            },
-                            child: Container(
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                isOverlayOn = false;
+                                viewModel.setAscending();
+                              },
+                              child: Container(
                                 width: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
@@ -217,41 +223,44 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                                             ? AppColors.main600
                                             : AppColors.gray600,
                                   ),
-                                )),
-                          ),
-                        ],
-                      ),
-                    )
-                  : null,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : null,
+              ),
             ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 24,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                // ----------------------------------------------------------
-                // 플레이리스트 새로 만들기 버튼
-                // ----------------------------------------------------------
-                if (!isLibrary)
-                  CreatePlaylistButton(title: title, description: description),
-                const SizedBox(
-                  height: 12,
-                ),
-                // ----------------------------------------------------------
-                // 오디오 박스
-                // ----------------------------------------------------------
-                AudioPlayer(
-                  colorMode: true,
-                ),
-              ],
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // ----------------------------------------------------------
+                  // 플레이리스트 새로 만들기 버튼
+                  // ----------------------------------------------------------
+                  if (!isLibrary)
+                    CreatePlaylistButton(
+                        title: title, description: description),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  // ----------------------------------------------------------
+                  // 오디오 박스
+                  // ----------------------------------------------------------
+                  AudioPlayer(
+                    colorMode: true,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        bottomNavigationBar: HomeBottomNavigation(),
       ),
-      bottomNavigationBar: HomeBottomNavigation(),
     );
   }
 }

@@ -1,5 +1,3 @@
-
-
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +9,6 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
 
   DeleteUserRepositoryImpl(this._dataSource);
 
-  
   @override
   Future<void> reauthKakaoUser() async {
     await _dataSource.reauthKakaoUser();
@@ -22,26 +19,19 @@ class DeleteUserRepositoryImpl implements DeleteUserRepository {
     return await _dataSource.reauthUser(); // provider 소셜 로그인 종류에 맞춰서 실행
   }
 
-
   @override
   Future<void> deleteUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await _dataSource.deleteAuthUser(); // firebase auth 계정 삭제
       await _dataSource.deleteFirestoreUser(user.uid); // firestore 계정 삭제
+      await _dataSource.deleteAuthUser(); // firebase auth 계정 삭제
     } else {
       throw Exception('$e');
     }
   }
-  
+
   @override
   Future<void> revokeAppleAccount(String authorizationCode) async {
     await _dataSource.revokeAppleAccount(authorizationCode);
   }
-  
-  
-  
-  
-
-  
 }

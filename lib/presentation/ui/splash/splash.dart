@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +31,7 @@ class _SplashState extends ConsumerState<Splash> {
 
     if (mounted) {
       if (uid != null) {
+        log(uid);
         ref.read(userViewModelProvider.notifier).setUserId(uid);
         ref.watch(playListViewModelProvider.notifier).getPlayLists();
         ref.watch(libraryViewModelProvider.notifier).getLibrary();
@@ -39,9 +42,6 @@ class _SplashState extends ConsumerState<Splash> {
       }
     }
   }
-
-
-
 
   void _startNavigationTimer(String path) {
     Future.delayed(const Duration(milliseconds: 3000)).then((_) {
@@ -58,7 +58,8 @@ class _SplashState extends ConsumerState<Splash> {
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: Lottie.asset('assets/animation/splash_1.json', fit: BoxFit.cover, onLoaded: (state) {
+        child: Lottie.asset('assets/animation/splash_1.json', fit: BoxFit.cover,
+            onLoaded: (state) {
           if (!_isAnimationLoaded) {
             _isAnimationLoaded = true;
             // _startNavigationTimer();
