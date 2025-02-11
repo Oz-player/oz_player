@@ -5,6 +5,7 @@ import 'package:oz_player/presentation/ui/recommend_page/view_model/card_positio
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
+import 'package:oz_player/presentation/widgets/toast_message/toast_message.dart';
 
 class SaveSongBottomSheet {
   static void show(BuildContext context, WidgetRef ref,
@@ -306,6 +307,7 @@ class SaveSongBottomSheet {
                                           .saveSongInLibrary();
 
                                       if (context.mounted) {
+                                        ToastMessage.show(context);
                                         context.pop();
                                       }
                                       ref
