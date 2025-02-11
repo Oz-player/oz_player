@@ -7,6 +7,7 @@ import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/ask_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/version_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -186,6 +187,7 @@ class ExitButtons extends ConsumerWidget {
 
                                   // ignore: use_build_context_synchronously
                                   context.go('/login');
+                                  ref.read(bottomNavigationProvider.notifier).resetPage();
                                 },
                                 child: Text(
                                   '확인',
