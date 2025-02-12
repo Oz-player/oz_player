@@ -61,6 +61,11 @@ class PlayListRepositoryImpl implements PlayListRepository {
   }
 
   @override
+  Future<void> editImage(String userId, String? newUrl, String listName) async {
+    await _source.editImage(userId, newUrl, listName);
+  }
+
+  @override
   Future<void> clearPlaylist(String userId) async {
     await _source.clearPlaylist(userId);
   }

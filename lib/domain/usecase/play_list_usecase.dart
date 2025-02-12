@@ -51,6 +51,13 @@ class PlayListUsecase {
     await _repository.editSongOrder(userId, listName, songIds);
   }
 
+  Future<void> editImage(
+      String userId, String? prevUrl, String? newUrl, String listName) async {
+    if (prevUrl != newUrl) {
+      await _repository.editImage(userId, newUrl, listName);
+    }
+  }
+
   Future<void> clearPlaylist(String userId) async {
     await _repository.clearPlaylist(userId);
   }

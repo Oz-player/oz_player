@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
@@ -28,6 +29,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   int? dragHandleIndex; // 현재 드래그중인 인덱스
   List<String> currentOrder = []; // 플레이리스트 순서가 바뀔 때마다 저장
   List<String> initialOrder = [];
+  String? initialImageUrl;
   bool isEdited = false;
 
   @override
@@ -37,6 +39,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
       await ref
           .watch(playlistSongsProvider.notifier)
           .loadSongs(widget.playlist.songIds);
+      initialImageUrl = widget.playlist.imgUrl;
     });
     listNameController.text = widget.playlist.listName;
     descriptionController.text = widget.playlist.description;
@@ -52,7 +55,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   }
 
   // 곡을 삭제할 때 songId를 삭제한 뒤 플레이리스트 화면 reload 하는 함수
-  void removeSongId(String songId) {
+  void removeSongId(String songId, String? newUrl) {
     setState(() {
       widget.playlist.songIds.remove(songId);
     });
@@ -81,26 +84,35 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           // 뒤로가기 버튼
           // ------------------------
           leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await ref.read(playListsUsecaseProvider).editImage(
+                  ref.read(userViewModelProvider.notifier).getUserId(),
+                  widget.playlist.imgUrl,
+                  initialImageUrl,
+                  widget.playlist.listName);
               if (isEdited) {
-                showDialog(
-                  context: context,
-                  builder: (context) => CancleEditAlertDialog(
-                    destination: null,
-                    newEntity: widget.playlist,
-                    initialList: initialOrder,
-                  ),
-                );
+                if (context.mounted) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CancleEditAlertDialog(
+                      destination: null,
+                      newEntity: widget.playlist,
+                      initialList: widget.playlist.songIds,
+                    ),
+                  );
+                }
               } else {
                 ref.read(bottomNavigationProvider.notifier).updatePage(0);
-                context.pop(
-                  PlayListEntity(
-                      listName: widget.playlist.listName,
-                      createdAt: widget.playlist.createdAt,
-                      imgUrl: widget.playlist.imgUrl,
-                      description: widget.playlist.description,
-                      songIds: initialOrder),
-                );
+                if (context.mounted) {
+                  context.pop(
+                    PlayListEntity(
+                        listName: widget.playlist.listName,
+                        createdAt: widget.playlist.createdAt,
+                        imgUrl: initialImageUrl,
+                        description: widget.playlist.description,
+                        songIds: widget.playlist.songIds),
+                  );
+                }
               }
             },
             icon: Icon(Icons.arrow_back),
@@ -147,9 +159,24 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                     }
                   }
                 }
+                // 이미지 변경
+                await ref.read(playListsUsecaseProvider).editImage(
+                    ref.read(userViewModelProvider.notifier).getUserId(),
+                    widget.playlist.imgUrl,
+                    initialImageUrl,
+                    widget.playlist.listName);
+
                 // 수정한 요소가 있다면 플레이리스트 리로드
                 if (isEdited) {
-                  ref.read(playListViewModelProvider.notifier).getPlayLists();
+                  await ref
+                      .read(playListViewModelProvider.notifier)
+                      .getPlayLists();
+                  if (ref.watch(listSortViewModelProvider) ==
+                      SortedType.latest) {
+                    ref.read(listSortViewModelProvider.notifier).setLatest();
+                  } else {
+                    ref.read(listSortViewModelProvider.notifier).setAscending();
+                  }
                 }
 
                 if (context.mounted) {
@@ -157,7 +184,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                     PlayListEntity(
                       listName: listNameController.text,
                       createdAt: widget.playlist.createdAt,
-                      imgUrl: widget.playlist.imgUrl,
+                      imgUrl: initialImageUrl,
                       description: descriptionController.text,
                       songIds: currentOrder.isEmpty
                           ? widget.playlist.songIds
@@ -212,7 +239,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                 image: widget.playlist.imgUrl == null
                                     ? DecorationImage(
                                         image: AssetImage(
-                                            'assets/images/muoz.png'))
+                                            'assets/images/empty_thumbnail.png'))
                                     : DecorationImage(
                                         image: NetworkImage(
                                             widget.playlist.imgUrl!)),
@@ -230,7 +257,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                         decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
-                            color: AppColors.main300,
+                            color: AppColors.border,
                             width: 1,
                           )),
                         ),
@@ -371,16 +398,65 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                             onPressed: (value) {
                                               String id = data[index].video.id;
                                               showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    DeleteSongAlertDialog(
-                                                  listName:
-                                                      widget.playlist.listName,
-                                                  songId: id,
-                                                  removeSongId: () =>
-                                                      removeSongId(id),
-                                                ),
-                                              );
+                                                  context: context,
+                                                  builder: (context) {
+                                                    if (index != 0) {
+                                                      // 리스트의 첫 번째가 아닌 곡 삭제
+                                                      return DeleteSongAlertDialog(
+                                                        listName: widget
+                                                            .playlist.listName,
+                                                        songId: id,
+                                                        removeSongId: () =>
+                                                            removeSongId(
+                                                                id,
+                                                                widget.playlist
+                                                                    .imgUrl),
+                                                      );
+                                                    } else if (data.length >
+                                                        1) {
+                                                      // 리스트의 첫 번째 곡 삭제 && 리스트 길이 2이상
+                                                      initialImageUrl =
+                                                          data[index + 1]
+                                                              .imgUrl;
+                                                      return DeleteSongAlertDialog(
+                                                        listName: widget
+                                                            .playlist.listName,
+                                                        songId: data[index]
+                                                            .video
+                                                            .id,
+                                                        removeSongId: () =>
+                                                            removeSongId(
+                                                                data[index]
+                                                                    .video
+                                                                    .id,
+                                                                data[index + 1]
+                                                                    .imgUrl),
+                                                        prevUrl:
+                                                            data[index].imgUrl,
+                                                        newUrl: data[index + 1]
+                                                            .imgUrl,
+                                                      );
+                                                    } else {
+                                                      // 리스트의 첫 번째 곡 삭제 && 리스트 길이 1이하
+                                                      initialImageUrl = null;
+                                                      return DeleteSongAlertDialog(
+                                                        listName: widget
+                                                            .playlist.listName,
+                                                        songId: data[index]
+                                                            .video
+                                                            .id,
+                                                        removeSongId: () =>
+                                                            removeSongId(
+                                                                data[index]
+                                                                    .video
+                                                                    .id,
+                                                                null),
+                                                        prevUrl:
+                                                            data[index].imgUrl,
+                                                        newUrl: null,
+                                                      );
+                                                    }
+                                                  });
                                             },
                                             backgroundColor: AppColors.red,
                                             foregroundColor: Colors.white,
@@ -504,8 +580,16 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                   data.insert(
                                       newIndex, data.removeAt(oldIndex));
                                   currentOrder.clear();
+                                  // 변경한 순서 저장
                                   for (var item in data) {
                                     currentOrder.add(item.video.id);
+                                  }
+                                  // 저장한 곡이 0개이면 대표 이미지 url을 null로
+                                  if (data.isEmpty) {
+                                    initialImageUrl = null;
+                                    // 저장한 곡이 하나라도 있으면 대표 이미지 url을 1번 곡의 이미지 url로 설정
+                                  } else {
+                                    initialImageUrl = data[0].imgUrl;
                                   }
                                 });
                                 isEdited = true;
