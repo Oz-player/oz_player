@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
@@ -67,7 +68,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                 onPressed: () {
                   context.push('/settings');
                 },
-                icon: Image.asset('assets/images/option_icon.png')),
+                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
             const SizedBox(
               width: 8,
             ),
