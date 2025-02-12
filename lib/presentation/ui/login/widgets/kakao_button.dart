@@ -17,7 +17,6 @@ class KakaoButton extends ConsumerWidget {
   //       : await UserApi.instance.loginWithKakaoAccount();
   //   print(kakaoLoginResult.idToken);
 
-
   //   final httpClient = Client();
   //   final httpResponse = await httpClient.post(
   //     Uri.parse('https://kakaologin-erb5lhs57a-uc.a.run.app'),
@@ -51,44 +50,65 @@ class KakaoButton extends ConsumerWidget {
           ),
         ],
       ),
-      child: Opacity(
-        opacity: activated ? 1.0 : 0.7,
-        child: ElevatedButton(
-          onPressed: activated ? () async {
-            try {
-              await ref.read(loginViewModelProvider.notifier).kakaoLogin();
-            } catch (e) {
-              // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('카카오 로그인 실패! $e')),
-              );
-            }
-          } : () {},
-          style: ElevatedButton.styleFrom(
-            fixedSize: const Size(double.infinity, 54),
-            padding: EdgeInsets.zero,
-            textStyle: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w500, height: 19 / 16),
-            minimumSize: Size.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+      child: ElevatedButton(
+        onPressed: activated
+            ? () async {
+                try {
+                  await ref.read(loginViewModelProvider.notifier).kakaoLogin();
+                } catch (e) {
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('카카오 로그인 실패! $e')),
+                  );
+                }
+              }
+            : () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: Colors.white,
+                    title: Text(
+                      '안내',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: Text(
+                      '개인정보 수집 및 이용에 동의해야\n 로그인을 할 수 있습니다!',
+                      textAlign: TextAlign.center,
+                    ),
+                    actionsAlignment: MainAxisAlignment.center,
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('확인'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+        style: ElevatedButton.styleFrom(
+          fixedSize: const Size(double.infinity, 54),
+          padding: EdgeInsets.zero,
+          textStyle: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.w500, height: 19 / 16),
+          minimumSize: Size.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          backgroundColor: Color(0xFFFEE500),
+          foregroundColor: Colors.black87,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/ic_kakao_logo.png',
+              color: Colors.black,
+              height: 24,
+              fit: BoxFit.fitHeight,
             ),
-            backgroundColor: Color(0xFFFEE500),
-            foregroundColor: Colors.black87,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/ic_kakao_logo.png',
-                color: Colors.black,
-                height: 24,
-                fit: BoxFit.fitHeight,
-              ),
-              SizedBox(width: 10),
-              Text('Kakao로 시작하기'),
-            ],
-          ),
+            SizedBox(width: 10),
+            Text('Kakao로 시작하기'),
+          ],
         ),
       ),
     );
