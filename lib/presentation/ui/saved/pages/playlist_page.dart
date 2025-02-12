@@ -512,7 +512,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                       height: 90,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 10, bottom: 30),
+                                            top: 20, bottom: 30),
                                         child: SvgPicture.asset(
                                             'assets/svg/muoz.svg'),
                                       ),

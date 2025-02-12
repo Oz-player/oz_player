@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
@@ -53,9 +54,12 @@ class _PlayListState extends ConsumerState<PlayList> {
               // 플레이리스트 선택 시 해당 플레이리스트의 songIds로
               // PlayListSongNotifier 상태 업데이트
               return index >= data.length
-                  ? Container(
-                      height: 130,
-                      color: Colors.transparent,
+                  ? SizedBox(
+                      height: 90,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 30),
+                        child: SvgPicture.asset('assets/svg/muoz.svg'),
+                      ),
                     )
                   : GestureDetector(
                       onTap: () {
