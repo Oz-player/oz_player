@@ -96,7 +96,11 @@
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
 > - google, apple 로그인 : firebase auth와 flutter package를 이용해서 구현하였습니다.     
 
-<br> ⬇ Kakao 로그인(Functions) 동작 흐름
+
+
+<details>
+<summary>Kakao 로그인(Functions) 동작 흐름</summary>
+<div markdown="1">
 
 ```mermaid
 flowchart
@@ -127,6 +131,8 @@ flowchart
   U --9️⃣---FA
 
 ```     
+</div>
+</details>      
 
 
 <details>
