@@ -196,7 +196,7 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                           await ref
                               .read(playListsUsecaseProvider)
                               .deletePlayList(userId, listName);
-                          ref
+                          await ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
                           if (ref.watch(listSortViewModelProvider) ==
