@@ -175,7 +175,6 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                             GestureDetector(
                               onTap: () {
                                 isOverlayOn = false;
-                                print('$isOverlayOn');
                                 viewModel.setLatest();
                               },
                               child: Container(

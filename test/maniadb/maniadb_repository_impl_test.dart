@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oz_player/data/repository_impl/maniadb_repository_impl.dart';
 import 'package:oz_player/data/source/manidb/maniadb_data_source_impl.dart';
@@ -13,11 +15,11 @@ void main() {
     final search = await maniadbUsecase.execute('볼빨간사춘기');
     expect(search!.isEmpty, false);
     for (var search in search) {
-      print('title : ${search.title}');
-      print('majorSongList : ${search.majorSongList}');
-      print('imageUrl : ${search.image}');
+      log('title : ${search.title}');
+      log('majorSongList : ${search.majorSongList}');
+      log('imageUrl : ${search.image}');
     }
-    print(search[0].image);
+    log(search[0].image);
   });
 
   test('test fetchSong', () async {
@@ -28,8 +30,8 @@ void main() {
     final search = await maniadbUsecase.execute('미운 오리');
     expect(search!.isEmpty, false);
     for (var search in search) {
-      print('title : ${search.title}');
-      print('artist : ${search.artist['name']}');
+      log('title : ${search.title}');
+      log('artist : ${search.artist['name']}');
     }
   });
 }

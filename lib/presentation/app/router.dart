@@ -29,16 +29,14 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => Splash(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => LoginPage(),
       routes: [
         GoRoute(
-          path: 'login',
-          builder: (context, state) => LoginPage(),
-          routes: [
-            GoRoute(
-              path: 'private',
-              builder: (context, state) => PrivateInfoPage(),
-            ),
-          ],
+          path: 'private',
+          builder: (context, state) => PrivateInfoPage(),
         ),
       ],
     ),

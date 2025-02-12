@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,12 +17,12 @@ class DeleteUserUsecase {
 
   Future<void> execute(WidgetRef ref) async {
     final user = _auth.currentUser;
-    if (user == null) throw Exception('$e');
+    if (user == null) throw Exception();
 
     final uid = user.uid;
-    print('uid 생성');
+    log('uid 생성');
     final userDoc = await _firestore.collection('User').doc(uid).get();
-    print('collection get');
+    log('collection get');
     final isKakaoUser = userDoc.exists && uid.startsWith('kakao');
 
     final isAppleUser =
@@ -44,6 +44,6 @@ class DeleteUserUsecase {
     await ref.read(playListsUsecaseProvider).clearPlaylist(userId);
     await ref.read(libraryUsecaseProvider).clearLibrary(userId);
     await _repository.deleteUser();
-    print('delete completed');
+    log('delete completed');
   }
 }

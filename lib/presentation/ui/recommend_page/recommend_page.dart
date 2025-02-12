@@ -62,13 +62,15 @@ class RecommendPage extends ConsumerWidget {
                                   width: 218,
                                   height: 56,
                                   child: TextButton(
-                                      onPressed: () {
-                                        ref
+                                      onPressed: () async {
+                                        await ref
                                             .read(audioPlayerViewModelProvider
                                                 .notifier)
                                             .toggleStop();
-                                        context
-                                            .go('/home/recommend/conditionOne');
+                                        if (context.mounted) {
+                                          context.go(
+                                              '/home/recommend/conditionOne');
+                                        }
                                       },
                                       style: ButtonStyle(
                                           backgroundColor:

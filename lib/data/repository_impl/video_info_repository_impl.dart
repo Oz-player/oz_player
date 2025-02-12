@@ -19,7 +19,7 @@ class VideoInfoRepositoryImpl implements VideoInfoRepository {
       log('오디오 정보 추출 성공');
       return VideoInfoEntitiy.yt(video, manifest);
     } catch (e) {
-      log('비디오 로딩 실패');
+      log('비디오 또는 오디오 로딩 실패');
       return VideoInfoEntitiy.empty();
     }
   }

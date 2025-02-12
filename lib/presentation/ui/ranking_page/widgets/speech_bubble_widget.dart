@@ -97,17 +97,19 @@ class SpeechBubbleWidget extends ConsumerWidget {
                 right: 16,
                 bottom: 16,
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (audioState.currentSong?.title == song!.title &&
                         audioState.currentSong?.artist == song!.artist &&
                         audioState.isPlaying) {
                       AudioBottomSheet.showCurrentAudio(context);
                     } else {
-                      ref
+                      await ref
                           .read(audioPlayerViewModelProvider.notifier)
                           .toggleStop();
 
-                      AudioBottomSheet.showCurrentAudio(context);
+                      if (context.mounted) {
+                        AudioBottomSheet.showCurrentAudio(context);
+                      }
 
                       ref
                           .read(audioPlayerViewModelProvider.notifier)
