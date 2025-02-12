@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/recommend_exit_alert_dialog.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
@@ -28,7 +29,7 @@ class HomeBottomNavigation extends StatelessWidget {
         child: ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           child: SizedBox(
-            height: 96,
+            height: 108,
             child: BottomNavigationBar(
               backgroundColor: Colors.white,
               currentIndex: currentPage == 4
@@ -146,21 +147,21 @@ class HomeBottomNavigation extends StatelessWidget {
               },
               items: [
                 BottomNavigationBarItem(
-                  icon: Image.asset(currentPage == 0 || currentPage == 5
-                      ? 'assets/images/save_icon2.png'
-                      : 'assets/images/save_icon.png'),
+                  icon: SvgPicture.asset(currentPage == 0 || currentPage == 5
+                      ? 'assets/svg/save_icon2.svg'
+                      : 'assets/svg/save_icon.svg'),
                   label: '보관함',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset((currentPage == 1 || currentPage == 4)
-                      ? 'assets/images/home_icon2.png'
-                      : 'assets/images/home_icon.png'),
+                  icon: SvgPicture.asset((currentPage == 1 || currentPage == 4)
+                      ? 'assets/svg/home_icon2.svg'
+                      : 'assets/svg/home_icon.svg'),
                   label: '홈',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset(currentPage == 2
-                      ? 'assets/images/search_icon2.png'
-                      : 'assets/images/search_icon.png'),
+                  icon: SvgPicture.asset(currentPage == 2
+                      ? 'assets/svg/search_icon2.svg'
+                      : 'assets/svg/search_icon.svg'),
                   label: '검색',
                 ),
               ],
