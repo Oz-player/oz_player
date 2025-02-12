@@ -15,7 +15,7 @@ class HomePage extends ConsumerWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/svg/background.svg'),
+          image: AssetImage('assets/images/background.png'),
         ),
       ),
       child: Scaffold(
@@ -32,7 +32,7 @@ class HomePage extends ConsumerWidget {
                 onPressed: () {
                   context.push('/settings');
                 },
-                icon: SvgPicture.asset('assets/images/svg/option_icon.svg')),
+                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
             SizedBox(
               width: 8,
             ),
