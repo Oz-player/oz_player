@@ -178,7 +178,7 @@ class _RecommendPageConditionTwoState
                             onPressed: conditionState.event == false
                                 ? null
                                 : () async {
-                                    ref
+                                    await ref
                                         .read(audioPlayerViewModelProvider
                                             .notifier)
                                         .toggleStop();

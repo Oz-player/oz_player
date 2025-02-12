@@ -117,6 +117,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         final videoEx = ref.read(videoInfoUsecaseProvider);
         final video = await videoEx.getVideoInfo(
             state.currentSong!.title, state.currentSong!.artist);
+
+        if (video.audioUrl == '' && video.id == '') {
+          throw 'Video is EMPTY';
+        }
+
         final update = RawSongEntity(
             countLibrary: 0,
             countPlaylist: 0,
@@ -136,7 +141,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
         isEndLoadingAudioPlayer();
         await togglePlay();
       } catch (e) {
-        log('인터넷 연결이 안됨');
+        log('오디오를 불러오는데 실패했습니다');
         isEndLoadingAudioPlayer();
       }
     }
@@ -164,6 +169,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
               final videoEx = ref.read(videoInfoUsecaseProvider);
               final video = await videoEx.getVideoInfo(
                   state.currentSong!.title, state.currentSong!.artist);
+
+              if (video.audioUrl == '' && video.id == '') {
+                throw 'Video is EMPTY';
+              }
+
               final update = RawSongEntity(
                   countLibrary: 0,
                   countPlaylist: 0,
@@ -176,10 +186,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
 
               log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
               await state.audioPlayer.setUrl(video.audioUrl, preload: true);
-              setSubscription();
               await togglePlay();
             } catch (e) {
-              log('인터넷 연결이 안됨');
+              log('오디오를 불러오는데 실패했습니다');
             }
           }
 
@@ -207,6 +216,11 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
               final videoEx = ref.read(videoInfoUsecaseProvider);
               final video = await videoEx.getVideoInfo(
                   state.currentSong!.title, state.currentSong!.artist);
+
+              if (video.audioUrl == '' && video.id == '') {
+                throw 'Video is EMPTY';
+              }
+
               final update = RawSongEntity(
                   countLibrary: 0,
                   countPlaylist: 0,
@@ -219,10 +233,9 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
 
               log('video가 만료된 토큰이거나, 잘못된 Url >> 스트리밍토큰 업데이트');
               await state.audioPlayer.setUrl(video.audioUrl, preload: true);
-              setSubscription();
               await togglePlay();
             } catch (e) {
-              log('인터넷 연결이 안됨');
+              log('오디오를 불러오는데 실패했습니다');
             }
           }
 
@@ -280,7 +293,7 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     } catch (e) {
       log("오디오 스트림 취소시 오류 $e");
     } finally {
-      state = state.copyWith(index: -1,nextSong: []);
+      state = state.copyWith(index: -1, nextSong: []);
     }
   }
 

@@ -329,14 +329,17 @@ $exceptlist
         }
         */
 
-        final searchSong = await spotifyDB.searchList('$artist - $title}');        
+        final searchSong = await spotifyDB.searchList('$artist - $title}');
         final album = searchSong[0].album;
         final albumImges = album!['images'][0];
         imgUrl = albumImges['url'];
-        
 
         log('$title - $artist 검색성공');
         final video = await videoEx.getVideoInfo(title!, artist!);
+
+        if (video.audioUrl == '' && video.id == '') {
+          throw '$title - Video is EMPTY';
+        }
 
         final song = SongEntity(
           video: video,
@@ -352,7 +355,7 @@ $exceptlist
         state.recommendSongs.add(song);
       } catch (e) {
         log('$e');
-        log('$title - $artist 는 검색결과에 없는 노래, 스킵');
+        log('$title - $artist 는 오디오 불러로는것을 실패, 스킵');
       } finally {
         // 추천항목에서 재 추천이 되지 않도록 예외 리스트에 넣기
         state.exceptList.add('$artist - $title');
