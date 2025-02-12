@@ -96,37 +96,51 @@
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
 > - google, apple 로그인 : firebase auth와 flutter package를 이용해서 구현하였습니다.     
 
-<br> ⬇ Kakao 로그인(Functions) 동작 흐름
+
+
+<details>
+<summary>Kakao 로그인(Functions) 동작 흐름</summary>
+<div markdown="1">
 
 ```mermaid
-flowchart
-	U[User👻]
-	KA[Kakao Auth Server]
-	KDB[(Kakao Auth DB)]
-	KPrivate{Kakao Private Key}
-  KPublic[Kakao Public Key]
-  FF[Firebase Functions]
-  FA[Firebase Authentication]
-  FDB[(Firebase Authentication DB)]
-	U --1️⃣--- KA
-	subgraph Kakao external
-	subgraph Kakao internal
-	KA <--2️⃣---> KDB
-	KA o--3️⃣---o KPrivate
+flowchart TD
+  %% 사용자
+  U[사용자 👻] 
+
+  %% 카카오 서버 및 관련 요소
+  subgraph Kakao 서비스
+    KA[카카오 인증 서버] 
+    KDB[(카카오 사용자 DB)] 
+    KPrivate{카카오 프라이빗 키} 
+    KPublic[카카오 퍼블릭 키] 
+
+    KA <-- 사용자 정보 조회 --> KDB
+    KA o-- 서명 생성 --o KPrivate
   end
-  KPublic
+
+  %% Firebase 및 관련 요소
+  subgraph Firebase 시스템
+    FF[Firebase Functions] 
+    FA[Firebase 인증] 
+    FDB[(Firebase 사용자 DB)] 
+
+    FF <-- 카카오 퍼블릭 키 검증 --> KPublic
+    FF <-- 사용자 인증 처리 --> FDB
   end
-  KA --4️⃣--- U
-	U --5️⃣--- FF
-	subgraph Firebase
-	FF <--6️⃣---> KPublic
-	FF <--7️⃣---> FDB
-	FA
-  end
-  FF --8️⃣---U
-  U --9️⃣---FA
+
+  %% 인증 과정
+  U --1️⃣ 로그인 요청 --> KA
+  KA --4️⃣ 액세스 토큰 반환 --> U
+  U --5️⃣ 액세스 토큰 전달 --> FF
+  FF --6️⃣ 카카오 서명 검증 --> KPublic
+  FF --7️⃣ Firebase 사용자 인증 처리 --> FDB
+  FF --8️⃣ 인증 결과 반환 --> U
+  U --9️⃣ Firebase 인증 요청 --> FA
+
 
 ```     
+</div>
+</details>      
 
 
 <details>
@@ -205,20 +219,12 @@ flowchart
 
 ### 🟣 검색 기능 (제목 검색, 가사 검색) <img src="assets/images/mu_5.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
-> - Spotify web Api를 사용하여 음악 제목을 겁색합니다.
-> - Naver 가사검색 기능을 사용하여 검색어에 해당하는 가사를 포함하는 곡을 보여줍니다.
+> - Spotify web Api를 사용하여 음악 제목을 검색합니다.
+> - Naver 가사검색 기능을 사용하여 검색어에 해당하는 가사를 포함하는 곡을 보여줍니다.    
 
 <details>
-<summary>미리보기</summary>
+<summary>검색 기능의 흐름</summary>
 <div markdown="1">
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/5ebbec2e-539c-412e-bcad-a7f2fcc94eac" width="200">
-  <img src="https://github.com/user-attachments/assets/3fc42757-d7e4-460a-9460-0c8a84786318" width="200">
-  <img src="https://github.com/user-attachments/assets/59f40626-d962-49df-a22c-156c5c4f5ffa" width="200">
-</p>
-
-<br> ⬇ 검색 기능의 흐름
 
 ```mermaid
 flowchart
@@ -257,10 +263,23 @@ flowchart
     lyrics --- additional
     
 
-``` 
+```     
+</div>
+</details>      
+
+<details>
+<summary>미리보기</summary>
+<div markdown="1">
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5ebbec2e-539c-412e-bcad-a7f2fcc94eac" width="200">
+  <img src="https://github.com/user-attachments/assets/3fc42757-d7e4-460a-9460-0c8a84786318" width="200">
+  <img src="https://github.com/user-attachments/assets/59f40626-d962-49df-a22c-156c5c4f5ffa" width="200">
+</p>
 
 </div>
-</details>     
+</details>
+   
 
 &nbsp;
 
@@ -292,7 +311,8 @@ Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 �
   <a href="https://apps.apple.com/kr/app/muoz/id6741506323">
     <img src="assets/images/app_store.png" width="400">
   </a>
-</p>
+</p>    
+<p align="center">⬆⬆⬆ App Store에서 <strong>MuOz</strong> 다운로드하기 ⬆⬆⬆</p>
 
 
 
