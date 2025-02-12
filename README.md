@@ -224,6 +224,47 @@ flowchart
   <img src="https://github.com/user-attachments/assets/59f40626-d962-49df-a22c-156c5c4f5ffa" width="200">
 </p>
 
+<br> ⬇ 검색 기능의 흐름
+
+```mermaid
+flowchart
+    subgraph searching
+    direction TB
+        subgraph track serach
+        direction TB
+            SA[spotify Api]
+            SAR[노래 검색 결과]
+        end
+
+        subgraph lyrics search
+        direction TB
+            NA[Naver Api]
+            NAR[가사 검색 결과]
+            lyrics[가사 화면]
+        end
+
+    end
+    subgraph additional
+    direction TB
+        저장
+        플레이
+    end
+    SC[search]
+    FP[first Page]
+
+    FP --> SC --> searching
+
+    SA --- SAR
+
+    NA --- NAR ---lyrics
+
+    SAR --- additional
+    NAR --- additional
+    lyrics --- additional
+    
+
+``` 
+
 </div>
 </details>     
 
