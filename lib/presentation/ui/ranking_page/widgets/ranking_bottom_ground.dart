@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:oz_player/presentation/ui/ranking_page/view_model/ranking_view_model.dart';
 import 'package:oz_player/presentation/ui/ranking_page/widgets/ranking_stage.dart';
 
@@ -10,7 +11,7 @@ class RankingBottomGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 250,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -31,8 +32,8 @@ class RankingBottomGround extends StatelessWidget {
           Positioned(
               left: 120,
               right: 0,
-              top: 40,
-              child: Image.asset('assets/images/ranking_myu.png')),
+              top: 120,
+              child: SvgPicture.asset('assets/svg/ranking_myu.svg')),
           Positioned(
               left: 280,
               right: 0,

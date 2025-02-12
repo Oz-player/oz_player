@@ -55,8 +55,9 @@ class AudioPlayerState {
 class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
   @override
   AudioPlayerState build() {
+    SongEntity currentSong = SongEntity.empty();
     return AudioPlayerState(
-        AudioPlayer(), null, false, -1, null, [], false, false, null);
+        AudioPlayer(), null, false, -1, currentSong, [], false, false, null);
   }
 
   /// 오디오 플레이어에 현재 곡 정보 저장
@@ -293,7 +294,8 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
     } catch (e) {
       log("오디오 스트림 취소시 오류 $e");
     } finally {
-      state = state.copyWith(index: -1, nextSong: []);
+      SongEntity currentSong = SongEntity.empty();
+      state = state.copyWith(index: -1, currentSong: currentSong, nextSong: []);
     }
   }
 
