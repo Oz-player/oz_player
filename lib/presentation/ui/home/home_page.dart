@@ -24,7 +24,7 @@ class HomePage extends ConsumerWidget {
           title: SizedBox(
               width: 96,
               height: 28,
-              child: Image.asset('assets/images/muoz.png')),
+              child: SvgPicture.asset('assets/svg/muoz.svg')),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           actions: [
@@ -108,7 +108,7 @@ class HomePage extends ConsumerWidget {
                     Positioned(
                         bottom: 6,
                         right: 2,
-                        child: Image.asset('assets/char/oz_3.png')),
+                        child: SvgPicture.asset('assets/svg/oz_3.svg')),
                   ],
                 ),
               ),
@@ -176,7 +176,7 @@ class HomePage extends ConsumerWidget {
                     Positioned(
                         bottom: 0,
                         right: 18,
-                        child: Image.asset('assets/char/myu_1.png')),
+                        child: SvgPicture.asset('assets/svg/myu_1.svg')),
                   ],
                 ),
               ),

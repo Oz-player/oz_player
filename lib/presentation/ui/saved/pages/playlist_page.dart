@@ -163,7 +163,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                 onPressed: () {
                   context.push('/settings');
                 },
-                icon: Image.asset('assets/images/option_icon.png')),
+                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
             SizedBox(
               width: 8,
             ),
@@ -396,8 +396,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                                       widget.setListState(newList);
                                     }
                                   },
-                                  child: Image.asset(
-                                      'assets/images/button_edit.png'),
+                                  child: SvgPicture.asset(
+                                      'assets/svg/button_edit.svg'),
                                 ),
                                 const SizedBox(
                                   width: 8,
@@ -425,8 +425,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                                       loading: () {},
                                     );
                                   },
-                                  child: Image.asset(
-                                      'assets/images/button_shuffle.png'),
+                                  child: SvgPicture.asset(
+                                      'assets/svg/button_shuffle.svg'),
                                 ),
                               ],
                             ),

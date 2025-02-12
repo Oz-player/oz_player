@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/ui/ranking_page/view_model/ranking_view_model.dart';
@@ -142,17 +143,17 @@ class SpeechBubbleWidget extends ConsumerWidget {
             if (data.focusIndex == FocusIndex.firstPrice)
               Positioned(
                 top: -30,
-                child: Image.asset('assets/images/crown_gold.png'),
+                child: SvgPicture.asset('assets/svg/crown_gold.svg'),
               ),
             if (data.focusIndex == FocusIndex.secondPrice)
               Positioned(
                 top: -30,
-                child: Image.asset('assets/images/crown_sliver.png'),
+                child: SvgPicture.asset('assets/svg/crown_silver.svg'),
               ),
             if (data.focusIndex == FocusIndex.thirdPrice)
               Positioned(
                 top: -30,
-                child: Image.asset('assets/images/crown_bronze.png'),
+                child: SvgPicture.asset('assets/svg/crown_bronze.svg'),
               ),
           ],
         ));

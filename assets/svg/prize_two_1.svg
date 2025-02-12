@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="92" height="84" fill="none">
+<defs>
+<filter id="a" width="92" height="84" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+<feOffset dx="-4" dy="-4"/>
+<feComposite in2="hardAlpha" k2="-1" k3="1" operator="arithmetic"/>
+<feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend in2="shape" result="effect1_innerShadow_1441_5345"/>
+</filter>
+</defs>
+<g filter="url(#a)">
+<rect width="92" height="84" fill="#D9B3FE" rx="12"/>
+<path fill="#fff" d="M52.92 55.588H39.814c-2.303 0-2.88-1.152-2.88-2.448 0-4.512 5.328-9.312 10.8-13.008 1.776-1.2 2.64-2.64 2.64-4.32 0-1.776-1.103-3.36-4.367-3.36-1.969 0-3.889.864-4.657 4.368-.335 1.104-1.248 1.632-2.544 1.488-1.008-.144-1.776-.816-1.776-1.92 0-4.656 3.793-8.304 8.977-8.304 5.76 0 8.927 3.168 8.927 7.728 0 2.256-.528 5.184-4.128 7.488-3.12 2.064-6.24 4.512-8.111 7.008-.145.144-.672.912.48.912h9.743c1.393 0 2.017.912 2.017 2.208 0 1.344-.864 2.16-2.017 2.16Z"/>
+</g>
+</svg>
