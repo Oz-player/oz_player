@@ -42,12 +42,18 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
   }
 
   // 곡을 삭제할 때 songId를 삭제한 뒤 플레이리스트 화면 reload 하는 함수
-  void removeSongId(String songId) {
+  void removeSongId(String songId, String? newUrl) async {
     setState(() {
       widget.playlist.songIds.remove(songId);
+      playlist = PlayListEntity(
+          listName: widget.playlist.listName,
+          createdAt: widget.playlist.createdAt,
+          imgUrl: newUrl,
+          description: widget.playlist.description,
+          songIds: widget.playlist.songIds);
     });
-    ref
-        .watch(playlistSongsProvider.notifier)
+    await ref
+        .read(playlistSongsProvider.notifier)
         .loadSongs(widget.playlist.songIds);
   }
 
@@ -68,6 +74,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
         .setAudioPlayer(data.first.video.audioUrl, -2);
   }
 
+  // 플레이리스트 리로드
   void setListState(PlayListEntity newList) async {
     setState(() {
       playlist = newList;
@@ -90,7 +97,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                 ref: ref,
                 removeSongId: removeSongId,
                 addListInAudioPlayer: addListInAudioPlayer,
-                playlist: playlist!,
+                scaffoldPlaylist: playlist!,
                 setListState: setListState,
               ),
               LoadingWidget(),
@@ -102,7 +109,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
             ref: ref,
             removeSongId: removeSongId,
             addListInAudioPlayer: addListInAudioPlayer,
-            playlist: playlist!,
+            scaffoldPlaylist: playlist!,
             setListState: setListState,
           );
   }
@@ -111,7 +118,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
 class MainScaffold extends StatefulWidget {
   const MainScaffold({
     super.key,
-    required this.playlist,
+    required this.scaffoldPlaylist,
     required this.widget,
     required this.songListAsync,
     required this.ref,
@@ -120,11 +127,11 @@ class MainScaffold extends StatefulWidget {
     required this.setListState,
   });
 
-  final void Function(String songId) removeSongId;
+  final void Function(String songId, String? newUrl) removeSongId;
   final void Function(List<SongEntity> data) addListInAudioPlayer;
   final void Function(PlayListEntity newList) setListState;
   final PlaylistPage widget;
-  final PlayListEntity playlist;
+  final PlayListEntity scaffoldPlaylist;
   final AsyncValue<List<SongEntity>> songListAsync;
   final WidgetRef ref;
 
@@ -192,12 +199,12 @@ class _MainScaffoldState extends State<MainScaffold> {
                           height: 120,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            image: widget.playlist.imgUrl == null
+                            image: widget.scaffoldPlaylist.imgUrl == null
                                 ? DecorationImage(
                                     image: AssetImage('assets/images/muoz.png'))
                                 : DecorationImage(
-                                    image:
-                                        NetworkImage(widget.playlist.imgUrl!)),
+                                    image: NetworkImage(
+                                        widget.scaffoldPlaylist.imgUrl!)),
                           ),
                         ),
                         // ----------------------------------------------------------
@@ -208,8 +215,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (context) => SavedMenuBottomSheet(
-                                imgUrl: widget.playlist.imgUrl,
-                                name: widget.playlist.listName,
+                                imgUrl: widget.scaffoldPlaylist.imgUrl,
+                                name: widget.scaffoldPlaylist.listName,
                                 items: [
                                   // --------------------------------
                                   // playlist menu : 1. 셔플 재생
@@ -249,7 +256,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                           .updatePage(5);
                                       final newList = await context.push(
                                         '/saved/playlist/edit',
-                                        extra: widget.playlist,
+                                        extra: widget.scaffoldPlaylist,
                                       ) as PlayListEntity;
                                       widget.setListState(newList);
                                     },
@@ -268,7 +275,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                                         barrierDismissible: false,
                                         builder: (context) =>
                                             DeletePlayListAlertDialog(
-                                          listName: widget.playlist.listName,
+                                          listName:
+                                              widget.scaffoldPlaylist.listName,
                                         ),
                                       );
                                     },
@@ -313,7 +321,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                         // 플레이리스트 제목
                         // ---------------
                         Text(
-                          widget.playlist.listName,
+                          widget.scaffoldPlaylist.listName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -335,7 +343,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.playlist.description,
+                                  widget.scaffoldPlaylist.description,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
@@ -391,7 +399,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                     if (context.mounted) {
                                       final newList = await context.push(
                                         '/saved/playlist/edit',
-                                        extra: widget.playlist,
+                                        extra: widget.scaffoldPlaylist,
                                       ) as PlayListEntity;
                                       widget.setListState(newList);
                                     }
@@ -652,22 +660,57 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                             context: context,
                                                             barrierDismissible:
                                                                 false,
-                                                            builder: (context) =>
-                                                                DeleteSongAlertDialog(
-                                                                  removeSongId: () =>
-                                                                      widget.removeSongId(data[
-                                                                              index]
-                                                                          .video
-                                                                          .id),
-                                                                  listName: widget
-                                                                      .widget
-                                                                      .playlist
-                                                                      .listName,
-                                                                  songId: data[
-                                                                          index]
-                                                                      .video
-                                                                      .id,
-                                                                ));
+                                                            builder: (context) => index ==
+                                                                    0
+                                                                ? data.length >
+                                                                        1
+                                                                    ? DeleteSongAlertDialog(
+                                                                        listName: widget
+                                                                            .scaffoldPlaylist
+                                                                            .listName,
+                                                                        songId: data[index]
+                                                                            .video
+                                                                            .id,
+                                                                        removeSongId: () => widget.removeSongId(
+                                                                            data[index].video.id,
+                                                                            data[index + 1].imgUrl),
+                                                                        prevUrl:
+                                                                            data[index].imgUrl,
+                                                                        newUrl: data[index +
+                                                                                1]
+                                                                            .imgUrl,
+                                                                      )
+                                                                    : DeleteSongAlertDialog(
+                                                                        listName: widget
+                                                                            .scaffoldPlaylist
+                                                                            .listName,
+                                                                        songId: data[index]
+                                                                            .video
+                                                                            .id,
+                                                                        removeSongId: () => widget.removeSongId(
+                                                                            data[index].video.id,
+                                                                            null),
+                                                                        prevUrl:
+                                                                            data[index].imgUrl,
+                                                                        newUrl:
+                                                                            null,
+                                                                      )
+                                                                : DeleteSongAlertDialog(
+                                                                    removeSongId: () => widget.removeSongId(
+                                                                        data[index]
+                                                                            .video
+                                                                            .id,
+                                                                        widget
+                                                                            .scaffoldPlaylist
+                                                                            .imgUrl),
+                                                                    listName: widget
+                                                                        .scaffoldPlaylist
+                                                                        .listName,
+                                                                    songId: data[
+                                                                            index]
+                                                                        .video
+                                                                        .id,
+                                                                  ));
                                                       },
                                                       child:
                                                           BottomSheetMenuButton(

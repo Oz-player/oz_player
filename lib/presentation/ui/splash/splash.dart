@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,7 +30,6 @@ class _SplashState extends ConsumerState<Splash> {
 
     if (mounted) {
       if (uid != null) {
-        log(uid);
         ref.read(userViewModelProvider.notifier).setUserId(uid);
         await ref.watch(playListViewModelProvider.notifier).getPlayLists();
         await ref.watch(libraryViewModelProvider.notifier).getLibrary();

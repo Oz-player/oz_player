@@ -15,4 +15,5 @@ abstract interface class PlayListRepository {
   Future<void> editSongOrder(
       String userId, String listName, List<String> songIds);
   Future<void> clearPlaylist(String userId);
+  Future<void> editImage(String userId, String? newUrl, String listName);
 }

@@ -18,14 +18,19 @@ class DeleteSongAlertDialog extends ConsumerWidget {
     required this.listName,
     required this.songId,
     required this.removeSongId,
+    this.newUrl,
+    this.prevUrl,
   });
 
   final void Function() removeSongId;
   final String listName;
   final String songId;
+  final String? newUrl;
+  final String? prevUrl;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.read(userViewModelProvider.notifier).getUserId();
     return AlertDialog(
       backgroundColor: Colors.white,
       content: Stack(
@@ -74,14 +79,19 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8)))),
                         onPressed: () async {
-                          await ref.read(playListsUsecaseProvider).deleteSong(
-                              ref
-                                  .read(userViewModelProvider.notifier)
-                                  .getUserId(),
-                              listName,
-                              songId);
+                          final playlistUsecase =
+                              ref.watch(playListsUsecaseProvider);
+                          // 곡 삭제
+                          await playlistUsecase.deleteSong(
+                              userId, listName, songId);
                           removeSongId();
-                          ref
+                          // 이미지 변경
+                          if (prevUrl != null || newUrl != null) {
+                            await playlistUsecase.editImage(
+                                userId, prevUrl, newUrl, listName);
+                          }
+                          // 플레이리스트 불러오기
+                          await ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
                           if (ref.watch(listSortViewModelProvider) ==
@@ -130,6 +140,7 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.read(userViewModelProvider.notifier).getUserId();
     return AlertDialog(
       backgroundColor: Colors.white,
       content: Stack(
@@ -184,11 +195,7 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                         onPressed: () async {
                           await ref
                               .read(playListsUsecaseProvider)
-                              .deletePlayList(
-                                  ref
-                                      .read(userViewModelProvider.notifier)
-                                      .getUserId(),
-                                  listName);
+                              .deletePlayList(userId, listName);
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();

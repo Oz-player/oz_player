@@ -29,6 +29,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   int? dragHandleIndex; // 현재 드래그중인 인덱스
   List<String> currentOrder = []; // 플레이리스트 순서가 바뀔 때마다 저장
   List<String> initialOrder = [];
+  String? initialImageUrl;
   bool isEdited = false;
 
   @override
@@ -38,6 +39,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
       await ref
           .watch(playlistSongsProvider.notifier)
           .loadSongs(widget.playlist.songIds);
+      initialImageUrl = widget.playlist.imgUrl;
     });
     listNameController.text = widget.playlist.listName;
     descriptionController.text = widget.playlist.description;
@@ -98,7 +100,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                   PlayListEntity(
                       listName: widget.playlist.listName,
                       createdAt: widget.playlist.createdAt,
-                      imgUrl: widget.playlist.imgUrl,
+                      imgUrl: initialImageUrl,
                       description: widget.playlist.description,
                       songIds: initialOrder),
                 );
@@ -148,9 +150,18 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                     }
                   }
                 }
+
+                await ref.read(playListsUsecaseProvider).editImage(
+                    ref.read(userViewModelProvider.notifier).getUserId(),
+                    widget.playlist.imgUrl,
+                    initialImageUrl,
+                    widget.playlist.listName);
+
                 // 수정한 요소가 있다면 플레이리스트 리로드
                 if (isEdited) {
-                  ref.read(playListViewModelProvider.notifier).getPlayLists();
+                  await ref
+                      .read(playListViewModelProvider.notifier)
+                      .getPlayLists();
                   if (ref.watch(listSortViewModelProvider) ==
                       SortedType.latest) {
                     ref.read(listSortViewModelProvider.notifier).setLatest();
@@ -164,7 +175,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                     PlayListEntity(
                       listName: listNameController.text,
                       createdAt: widget.playlist.createdAt,
-                      imgUrl: widget.playlist.imgUrl,
+                      imgUrl: initialImageUrl,
                       description: descriptionController.text,
                       songIds: currentOrder.isEmpty
                           ? widget.playlist.songIds
@@ -237,7 +248,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                         decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
-                            color: AppColors.main300,
+                            color: AppColors.border,
                             width: 1,
                           )),
                         ),
@@ -511,8 +522,16 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                   data.insert(
                                       newIndex, data.removeAt(oldIndex));
                                   currentOrder.clear();
+                                  // 변경한 순서 저장
                                   for (var item in data) {
                                     currentOrder.add(item.video.id);
+                                  }
+                                  // 저장한 곡이 0개이면 대표 이미지 url을 null로
+                                  if (data.isEmpty) {
+                                    initialImageUrl = null;
+                                    // 저장한 곡이 하나라도 있으면 대표 이미지 url을 1번 곡의 이미지 url로 설정
+                                  } else {
+                                    initialImageUrl = data[0].imgUrl;
                                   }
                                 });
                                 isEdited = true;
