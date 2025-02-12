@@ -88,7 +88,7 @@ class _LibraryState extends ConsumerState<Library> {
                                 ),
                                 // text
                                 SizedBox(
-                                  width: 226,
+                                  width: 230,
                                   height: 71,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
