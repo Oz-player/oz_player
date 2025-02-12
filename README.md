@@ -72,6 +72,18 @@
 | 활용API  | <img src="https://img.shields.io/badge/Apple Login-A2AAAD"> <img src="https://img.shields.io/badge/Google Login-373737"> <img src="https://img.shields.io/badge/Kakao Login-FFCD00"> <img src="https://img.shields.io/badge/Google Gemini-8E75B2"> <img src="https://img.shields.io/badge/Youtube-FF0000"> <img src="https://img.shields.io/badge/Spotify Api-1DB954"> <img src="https://img.shields.io/badge/Naver Search Api-03C75A"> |        
 
 &nbsp;
+
+### 🍇 코드 구조    
+#### ➡ 클린 아키텍처(Clean Architecture)
+| <img src="assets/images/clean_architecture.png" width="600"></img> |       
+| ------------- |        
+
+
+> <strong>🏗 선택한 이유 </strong>    
+관심사를 분리함으로써 보일러플레이트 코드를 줄이고<br> 코드의 유지보수성과 확장성을 높이는 것이<br> 클린 아키텍처를 선택한 주된 이유입니다.      
+
+&nbsp;
+
 ## ♒ MuOz 기능
 
 | <img src="assets/images/info.png" width="800"></img> |       
@@ -82,7 +94,40 @@
 
 > - 세 가지 종류의 소설 로그인 기능을 지원합니다.
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
-> - google, apple 로그인 : firebase auth와 flutter package를 이용해서 구현하였습니다.
+> - google, apple 로그인 : firebase auth와 flutter package를 이용해서 구현하였습니다.     
+
+⬇ Kakao 로그인(Functions) 동작 흐름
+
+```mermaid
+flowchart
+	U[User📱]
+	KA[Kakao Auth Server]
+	KDB[(Kakao Auth DB)]
+	KPrivate{Kakao Private Key}
+  KPublic[Kakao Public Key]
+  FF[Firebase Functions]
+  FA[Firebase Authentication]
+  FDB[(Firebase Authentication DB)]
+	U --1️⃣--- KA
+	subgraph Kakao external
+	subgraph Kakao internal
+	KA <--2️⃣---> KDB
+	KA o--3️⃣---o KPrivate
+  end
+  KPublic
+  end
+  KA --4️⃣--- U
+	U --5️⃣--- FF
+	subgraph Firebase
+	FF <--6️⃣---> KPublic
+	FF <--7️⃣---> FDB
+	FA
+  end
+  FF --8️⃣---U
+  U --9️⃣---FA
+
+```     
+
 
 <details>
 <summary>미리보기</summary>
@@ -178,6 +223,17 @@
 
 &nbsp;
 
+## ♒ 모니터링 방법    
+| <img src="assets/images/sentry_logo.png" width="400"></img> |       
+| ------------- |         
+
+> <strong>📊 선택한 이유 </strong>   
+Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 반면,<br> [Sentry](https://sentry.io/welcome/)는 릴리즈 모드에서 실시간으로 오류를 추적하기 용이합니다.<br> 현재 서비스의 초기 단계에서 다양한 버그가 발생할 가능성이 높다고 판단하여,<br> 보다 신속한 디버깅이 가능한 [Sentry](https://sentry.io/welcome/)를 선택했습니다.
+
+
+
+&nbsp;
+
 ## ♒ Trouble Shooting
 
 
@@ -225,16 +281,22 @@
 [flutter_dotenv](https://pub.dev/packages/flutter_dotenv)  
 [lottie](https://pub.dev/packages/lottie)  
 [package_info_plus](https://pub.dev/packages/package_info_plus)  
-[shared_preferences](https://pub.dev/packages/shared_preferences)  
-[android_intent_plus](https://pub.dev/packages/android_intent_plus)  
-[kakao_flutter_sdk](https://pub.dev/packages/kakao_flutter_sdk)  
-[easy_rich_text](https://pub.dev/packages/easy_rich_text)  
-[intl](https://pub.dev/packages/intl)  
-[flutter_slidable](https://pub.dev/packages/flutter_slidable)  
-[mockito](https://pub.dev/packages/mockito)  
-[build_runner](https://pub.dev/packages/build_runner)  
-[flutter_lints](https://pub.dev/packages/flutter_lints)  
-[change_app_package_name](https://pub.dev/packages/change_app_package_name)  
-[mocktail](https://pub.dev/packages/mocktail)
+[shared_preferences](https://pub.dev/packages/shared_preferences)    
+[android_intent_plus](https://pub.dev/packages/android_intent_plus)    
+[kakao_flutter_sdk](https://pub.dev/packages/kakao_flutter_sdk)    
+[easy_rich_text](https://pub.dev/packages/easy_rich_text)     
+[intl](https://pub.dev/packages/intl)    
+[flutter_slidable](https://pub.dev/packages/flutter_slidable)    
+[mockito](https://pub.dev/packages/mockito)     
+[build_runner](https://pub.dev/packages/build_runner)    
+[flutter_lints](https://pub.dev/packages/flutter_lints)     
+[change_app_package_name](https://pub.dev/packages/change_app_package_name)    
+[mocktail](https://pub.dev/packages/mocktail)     
+[easy_debounce](https://pub.dev/packages/easy_debounce)     
+[flutter_svg](https://pub.dev/packages/flutter_svg)     
+[sentry_flutter](https://pub.dev/packages/sentry_flutter)     
+[flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)     
+[flutter_styled_toast](https://pub.dev/packages/flutter_styled_toast)      
+
 
 ![footer](https://capsule-render.vercel.app/api?type=waving&color=0:DAF50F,50:F2E6FF,100:8C1CFC&height=150&section=footer&text=황상진%20권유진%20차부곤%20홍의정%20나영은&fontSize=20&fontColor=BF81FE&fontAlign=80&fontAlignY=80)
