@@ -25,7 +25,9 @@ class _RankingPageState extends ConsumerState<RankingPage> {
   void onButtonClicked() {
     setState(() {
       isLibrary = !isLibrary;
-      ref.read(rankingViewModelProvider.notifier).changeFocusIndex(FocusIndex.firstPrice);
+      ref
+          .read(rankingViewModelProvider.notifier)
+          .changeFocusIndex(FocusIndex.firstPrice);
     });
   }
 
@@ -110,23 +112,25 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                 children: [
                   SafeArea(
                       child: Column(
-                        children: [
-                          RankingIntro(),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          RankingSwitch(
-                            isLibrary: isLibrary,
-                            onButtonClicked: onButtonClicked,
-                          ),
-                          Spacer(),
-                          RankingBubble(data: data, isLibrary: isLibrary),
-                          SizedBox(height: 40,),
-                          RankingBottomGround(
-                            data: data,
-                          ),
-                        ],
-                      )),
+                    children: [
+                      RankingIntro(),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      RankingSwitch(
+                        isLibrary: isLibrary,
+                        onButtonClicked: onButtonClicked,
+                      ),
+                      Spacer(),
+                      RankingBubble(data: data, isLibrary: isLibrary),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      RankingBottomGround(
+                        data: data,
+                      ),
+                    ],
+                  )),
                   Positioned(
                     left: 0,
                     right: 0,
