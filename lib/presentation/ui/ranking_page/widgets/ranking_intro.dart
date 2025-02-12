@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class RankingIntro extends StatelessWidget {
   const RankingIntro({super.key});
@@ -34,7 +35,7 @@ class RankingIntro extends StatelessWidget {
                 child: ClipRRect(
                     borderRadius:
                         BorderRadius.only(bottomRight: Radius.circular(8)),
-                    child: Image.asset('assets/char/myu_2.png'))),
+                    child: SvgPicture.asset('assets/svg/myu_2.svg'))),
           ],
         ),
       ),

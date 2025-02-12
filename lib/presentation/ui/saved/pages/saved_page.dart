@@ -109,7 +109,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                       Positioned(
                           bottom: 0,
                           right: 0,
-                          child: Image.asset('assets/char/myu_2.png')),
+                          child: SvgPicture.asset('assets/svg/myu_2.svg')),
                     ],
                   ),
                   const SizedBox(
