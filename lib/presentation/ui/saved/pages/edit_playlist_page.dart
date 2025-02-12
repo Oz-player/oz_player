@@ -480,6 +480,11 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                       ),
                                     ),
                                   ),
+                                Container(
+                                  key: Key('empty item'),
+                                  height: 90,
+                                  color: Colors.transparent,
+                                )
                               ],
                               onReorderStart: (index) {
                                 setState(() {

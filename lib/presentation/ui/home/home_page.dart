@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
@@ -31,7 +32,7 @@ class HomePage extends ConsumerWidget {
                 onPressed: () {
                   context.push('/settings');
                 },
-                icon: Image.asset('assets/images/option_icon.png')),
+                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
             SizedBox(
               width: 8,
             ),
