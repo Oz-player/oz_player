@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
@@ -46,9 +47,12 @@ class _LibraryState extends ConsumerState<Library> {
             itemCount: data.length + 1,
             itemBuilder: (context, index) {
               return index >= data.length
-                  ? Container(
-                      height: 94,
-                      color: Colors.transparent,
+                  ? SizedBox(
+                      height: 90,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 30),
+                        child: SvgPicture.asset('assets/svg/muoz.svg'),
+                      ),
                     )
                   : GestureDetector(
                       onTap: () {
