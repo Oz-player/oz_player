@@ -251,7 +251,8 @@ Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 �
   <a href="https://apps.apple.com/kr/app/muoz/id6741506323">
     <img src="assets/images/app_store.png" width="400">
   </a>
-</p>
+</p>    
+<p align="center">⬆⬆⬆ App Store에서 <strong>MuOz</strong> 다운로드하기 ⬆⬆⬆</p>
 
 
 
