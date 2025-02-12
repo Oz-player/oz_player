@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
@@ -517,9 +518,14 @@ class _MainScaffoldState extends State<MainScaffold> {
                             ),
                             itemBuilder: (context, index) {
                               return index >= data.length
-                                  ? Container(
+                                  ? SizedBox(
                                       height: 90,
-                                      color: Colors.transparent,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 30),
+                                        child: SvgPicture.asset(
+                                            'assets/svg/muoz.svg'),
+                                      ),
                                     )
                                   : Container(
                                       padding:
