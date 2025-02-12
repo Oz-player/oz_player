@@ -13,6 +13,7 @@ import 'package:oz_player/presentation/ui/saved/pages/playlist_page.dart';
 import 'package:oz_player/presentation/ui/saved/pages/saved_page.dart';
 import 'package:oz_player/presentation/ui/saved/pages/edit_playlist_page.dart';
 import 'package:oz_player/presentation/ui/search/search.dart';
+import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/lyrics_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/ask_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
@@ -28,16 +29,14 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => Splash(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => LoginPage(),
       routes: [
         GoRoute(
-          path: 'login',
-          builder: (context, state) => LoginPage(),
-          routes: [
-            GoRoute(
-              path: 'private',
-              builder: (context, state) => PrivateInfoPage(),
-            ),
-          ],
+          path: 'private',
+          builder: (context, state) => PrivateInfoPage(),
         ),
       ],
     ),
@@ -93,6 +92,19 @@ final router = GoRouter(
     GoRoute(
       path: '/search',
       builder: (context, state) => Search(),
+      routes: [
+        GoRoute(
+          path: 'lyrics',
+          builder: (context, state) {
+            final args = state.extra as Map<String, dynamic>;
+            return LyricsPage(
+              song: args['song'],
+              artist: args['artist'],
+              lyrics: args['lyrics'],
+            );
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '/settings',

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -62,9 +64,9 @@ class GoogleLoginDataSourceImpl implements GoogleLoginDataSource {
         'email': email,
       });
 
-      print('새로운 사용자 Firestore Database에 저장완료!: $uid, $email');
+      log('새로운 사용자 Firestore Database에 저장완료!: $uid, $email');
     } catch (e) {
-      print('저장실패!: $e');
+      log('저장실패!: $e');
     }
   }
 }

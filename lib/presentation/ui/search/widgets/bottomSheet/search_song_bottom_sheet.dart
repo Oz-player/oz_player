@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
@@ -7,6 +10,7 @@ import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/bottom_shee
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
+import 'package:oz_player/presentation/widgets/toast_message/toast_message.dart';
 
 class SearchSongBottomSheet extends StatelessWidget {
   const SearchSongBottomSheet({
@@ -86,41 +90,59 @@ class SearchSongBottomSheet extends StatelessWidget {
                           SizedBox(height: 25),
                           bottomSheetButton(context, '재생', () async {
                             if (audioState.currentSong?.title == title &&
-                                audioState.currentSong?.artist == artist) {
+                                audioState.currentSong?.artist == artist &&
+                                audioState.isPlaying) {
                               AudioBottomSheet.showCurrentAudio(context);
                             } else {
-                              ref
+                              await ref
                                   .read(audioPlayerViewModelProvider.notifier)
                                   .toggleStop();
 
-                              AudioBottomSheet.showCurrentAudio(context);
+                              if (context.mounted) {
+                                AudioBottomSheet.showCurrentAudio(context);
+                              }
 
                               ref
                                   .read(audioPlayerViewModelProvider.notifier)
                                   .isStartLoadingAudioPlayer();
 
-                              final videoEx =
-                                  ref.read(videoInfoUsecaseProvider);
-                              final video =
-                                  await videoEx.getVideoInfo(title, artist);
+                              try {
+                                final videoEx =
+                                    ref.read(videoInfoUsecaseProvider);
+                                final video =
+                                    await videoEx.getVideoInfo(title, artist);
 
-                              final song = SongEntity(
-                                  video: video,
-                                  title: title,
-                                  imgUrl: imgUrl,
-                                  artist: artist,
-                                  mood: 'mood',
-                                  situation: 'situation',
-                                  genre: 'genre',
-                                  favoriteArtist: 'favoriteArtist');
+                                if (video.audioUrl == '' && video.id == '') {
+                                  throw 'Video is EMPTY';
+                                }
 
-                              ref
-                                  .read(audioPlayerViewModelProvider.notifier)
-                                  .setCurrentSong(song);
+                                final song = SongEntity(
+                                    video: video,
+                                    title: title,
+                                    imgUrl: imgUrl,
+                                    artist: artist,
+                                    mood: 'mood',
+                                    situation: 'situation',
+                                    genre: 'genre',
+                                    favoriteArtist: 'favoriteArtist');
 
-                              await ref
-                                  .read(audioPlayerViewModelProvider.notifier)
-                                  .setAudioPlayer(song.video.audioUrl, -2);
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .setCurrentSong(song);
+
+                                await ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .setAudioPlayer(song.video.audioUrl, -2);
+                              } catch (e) {
+                                log('오디오를 불러오는데 실패했습니다');
+                                ref
+                                    .read(audioPlayerViewModelProvider.notifier)
+                                    .isEndLoadingAudioPlayer();
+                                if (context.mounted) {
+                                  ToastMessage.showErrorMessage(context);
+                                  context.pop();
+                                }
+                              }
                             }
                           }),
                           SizedBox(height: 10),
@@ -135,34 +157,46 @@ class SearchSongBottomSheet extends StatelessWidget {
                                 return;
                               }
 
-                              ref
-                                  .read(loadingViewModelProvider.notifier)
-                                  .startLoading(4);
-                              final videoEx =
-                                  ref.read(videoInfoUsecaseProvider);
-                              final video =
-                                  await videoEx.getVideoInfo(title, artist);
+                              try {
+                                ref
+                                    .read(loadingViewModelProvider.notifier)
+                                    .startLoading(4);
+                                final videoEx =
+                                    ref.read(videoInfoUsecaseProvider);
+                                final video =
+                                    await videoEx.getVideoInfo(title, artist);
 
-                              TextEditingController titleController =
-                                  TextEditingController();
-                              TextEditingController descriptionController =
-                                  TextEditingController();
-                              final newEntity = SongEntity(
-                                  video: video,
-                                  title: title,
-                                  imgUrl: imgUrl,
-                                  artist: artist,
-                                  mood: 'mood',
-                                  situation: 'situation',
-                                  genre: 'genre',
-                                  favoriteArtist: 'favoriteArtist');
-                              if (context.mounted) {
-                                SavePlaylistBottomSheet.show(
-                                    context,
-                                    ref,
-                                    titleController,
-                                    descriptionController,
-                                    newEntity);
+                                if (video.audioUrl == '' && video.id == '') {
+                                  throw 'Video is EMPTY';
+                                }
+
+                                TextEditingController titleController =
+                                    TextEditingController();
+                                TextEditingController descriptionController =
+                                    TextEditingController();
+                                final newEntity = SongEntity(
+                                    video: video,
+                                    title: title,
+                                    imgUrl: imgUrl,
+                                    artist: artist,
+                                    mood: 'mood',
+                                    situation: 'situation',
+                                    genre: 'genre',
+                                    favoriteArtist: 'favoriteArtist');
+                                if (context.mounted) {
+                                  SavePlaylistBottomSheet.show(
+                                      context,
+                                      ref,
+                                      titleController,
+                                      descriptionController,
+                                      newEntity);
+                                }
+                              } catch (e) {
+                                log('오디오를 불러오는데 실패했습니다');
+                                if (context.mounted) {
+                                  ToastMessage.showErrorMessage(context);
+                                }
+                              } finally {
                                 ref
                                     .read(loadingViewModelProvider.notifier)
                                     .endLoading();

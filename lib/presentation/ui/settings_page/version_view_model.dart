@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +31,7 @@ class VersionViewModel extends StateNotifier<String> {
       state = newVersion;
     } catch (e) {
       //
-      print('$e');
+      log('$e');
     }
   }
 }

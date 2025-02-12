@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 
 class KakaoButton extends ConsumerWidget {
+  final bool activated;
+
   const KakaoButton({
     super.key,
+    required this.activated,
   });
 
   // void kakaoLogin(BuildContext context) async {
@@ -13,7 +16,6 @@ class KakaoButton extends ConsumerWidget {
   //       ? await UserApi.instance.loginWithKakaoTalk()
   //       : await UserApi.instance.loginWithKakaoAccount();
   //   print(kakaoLoginResult.idToken);
-
 
   //   final httpClient = Client();
   //   final httpResponse = await httpClient.post(
@@ -49,16 +51,40 @@ class KakaoButton extends ConsumerWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () async {
-          try {
-            await ref.read(loginViewModelProvider.notifier).kakaoLogin();
-          } catch (e) {
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('카카오 로그인 실패! $e')),
-            );
-          }
-        },
+        onPressed: activated
+            ? () async {
+                try {
+                  await ref.read(loginViewModelProvider.notifier).kakaoLogin();
+                } catch (e) {
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('카카오 로그인 실패! $e')),
+                  );
+                }
+              }
+            : () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: Colors.white,
+                    title: Text(
+                      '안내',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: Text(
+                      '개인정보 수집 및 이용에 동의해야\n 로그인을 할 수 있습니다!',
+                      textAlign: TextAlign.center,
+                    ),
+                    actionsAlignment: MainAxisAlignment.center,
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('확인'),
+                      ),
+                    ],
+                  ),
+                );
+              },
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(double.infinity, 54),
           padding: EdgeInsets.zero,

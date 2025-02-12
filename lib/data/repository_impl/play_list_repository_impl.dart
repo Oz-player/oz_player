@@ -1,6 +1,6 @@
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/data/dto/raw_song_dto.dart';
-import 'package:oz_player/data/source/saved/play_list_source.dart';
+import 'package:oz_player/data/source/firebase_songs/play_list_source.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/repository/saved/play_list_repository.dart';
 
@@ -58,5 +58,15 @@ class PlayListRepositoryImpl implements PlayListRepository {
   Future<void> editSongOrder(
       String userId, String listName, List<String> songIds) async {
     await _source.editSongOrder(userId, listName, songIds);
+  }
+
+  @override
+  Future<void> editImage(String userId, String? newUrl, String listName) async {
+    await _source.editImage(userId, newUrl, listName);
+  }
+
+  @override
+  Future<void> clearPlaylist(String userId) async {
+    await _source.clearPlaylist(userId);
   }
 }

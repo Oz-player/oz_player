@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 
 class LoadingWidget extends ConsumerWidget {
@@ -32,9 +33,13 @@ class LoadingWidget extends ConsumerWidget {
           loadingState.loadingImage[loadingState.index].isEmpty
               ? SizedBox.shrink()
               : Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: Image.asset(loadingState.loadingImage[loadingState.index]),
-              ),
+                  padding: const EdgeInsets.only(top: 100),
+                  child: loadingState.index == 1
+                      ? Lottie.asset('assets/animation/loading.json',
+                          fit: BoxFit.cover)
+                      : Image.asset(
+                          loadingState.loadingImage[loadingState.index]),
+                ),
           Spacer(),
         ],
       ),

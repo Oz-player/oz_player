@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
@@ -23,7 +24,7 @@ class HomePage extends ConsumerWidget {
           title: SizedBox(
               width: 96,
               height: 28,
-              child: Image.asset('assets/images/muoz.png')),
+              child: SvgPicture.asset('assets/svg/muoz.svg')),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           actions: [
@@ -31,7 +32,7 @@ class HomePage extends ConsumerWidget {
                 onPressed: () {
                   context.push('/settings');
                 },
-                icon: Image.asset('assets/images/option_icon.png')),
+                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
             SizedBox(
               width: 8,
             ),
@@ -107,14 +108,13 @@ class HomePage extends ConsumerWidget {
                     Positioned(
                         bottom: 6,
                         right: 2,
-                        child: Image.asset('assets/char/oz_3.png')),
+                        child: SvgPicture.asset('assets/svg/oz_3.svg')),
                   ],
                 ),
               ),
               SizedBox(
                 height: 16,
               ),
-              /*
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Stack(
@@ -176,11 +176,10 @@ class HomePage extends ConsumerWidget {
                     Positioned(
                         bottom: 0,
                         right: 18,
-                        child: Image.asset('assets/char/myu_1.png')),
+                        child: SvgPicture.asset('assets/svg/myu_1.svg')),
                   ],
                 ),
               ),
-              */
               Spacer(),
               AudioPlayer(
                 colorMode: true,

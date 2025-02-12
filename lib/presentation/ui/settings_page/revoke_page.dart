@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/revoke_reason_button.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class RevokePage extends ConsumerStatefulWidget {
   const RevokePage({super.key});
@@ -103,8 +104,12 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                 ),
                 onPressed: selectedButtonIndex == -1
                     ? null
-                    : () {
-                        deleteUserViewModel.deleteUser(context, selectedButtonIndex);
+                    : () async {
+                        if (context.mounted) {
+                          await deleteUserViewModel.deleteUser(
+                              context, selectedButtonIndex, ref);
+                        }
+                        ref.read(bottomNavigationProvider.notifier).resetPage();
                       },
                 child: Text('탈퇴하기'),
               ),

@@ -13,6 +13,17 @@ class PlaylistSongsNotifier extends AsyncNotifier<List<SongEntity>> {
     state =
         AsyncValue.data(await ref.watch(songUsecaseProvider).getSongs(songIds));
   }
+
+  Future<void> loadSongsByTitle(List<String> songIds) async {
+    state = AsyncValue.data(
+      await ref.watch(songUsecaseProvider).getSongs(songIds).then(
+        (value) {
+          value.sort((a, b) => a.title.compareTo(b.title));
+          return value;
+        },
+      ),
+    );
+  }
 }
 
 final playlistSongsProvider =

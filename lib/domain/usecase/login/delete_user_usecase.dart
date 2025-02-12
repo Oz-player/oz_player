@@ -1,8 +1,12 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/repository/login/delete_user_repository.dart';
+import 'package:oz_player/presentation/providers/library_provider.dart';
+import 'package:oz_player/presentation/providers/play_list_provider.dart';
+import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
 class DeleteUserUsecase {
   final DeleteUserRepository _repository;
@@ -11,12 +15,14 @@ class DeleteUserUsecase {
 
   DeleteUserUsecase(this._repository, this._auth, this._firestore);
 
-  Future<void> execute() async {
+  Future<void> execute(WidgetRef ref) async {
     final user = _auth.currentUser;
-    if (user == null) throw Exception('$e');
+    if (user == null) throw Exception();
 
     final uid = user.uid;
+    log('uid 생성');
     final userDoc = await _firestore.collection('User').doc(uid).get();
+    log('collection get');
     final isKakaoUser = userDoc.exists && uid.startsWith('kakao');
 
     final isAppleUser =
@@ -33,6 +39,11 @@ class DeleteUserUsecase {
     } else {
       await _repository.reauthUser();
     }
+
+    final userId = ref.read(userViewModelProvider);
+    await ref.read(playListsUsecaseProvider).clearPlaylist(userId);
+    await ref.read(libraryUsecaseProvider).clearLibrary(userId);
     await _repository.deleteUser();
+    log('delete completed');
   }
 }

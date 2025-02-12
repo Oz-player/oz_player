@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
 import 'package:oz_player/data/dto/naver_search_dto.dart';
@@ -32,7 +33,7 @@ class NaverSearchDataSourceImpl implements NaverSearchDataSource {
       }
     } catch (e) {
       // 오류 처리 (네트워크 에러 등)
-      print('Error fetching data: $e');
+      log('Error fetching data: $e');
       return [];
     } finally {
       client.close();

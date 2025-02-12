@@ -13,7 +13,6 @@ class PlaylistViewModel extends AsyncNotifier<List<PlayListEntity>> {
 
   // DB에서 플레이리스트 추출
   Future<void> getPlayLists() async {
-    print('view: ${ref.watch(userViewModelProvider.notifier).getUserId()}');
     state = AsyncValue.data(await ref
         .read(playListsUsecaseProvider)
         .getPlayLists(ref.read(userViewModelProvider.notifier).getUserId()));

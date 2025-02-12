@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +18,7 @@ class _SearchWordPageState extends State<SearchWordPage> {
   void initState() {
     super.initState();
     _loadSearchHistory();
-    print(searchHistory.length);
+    log('${searchHistory.length}');
     deleteMode = false;
   }
 
@@ -63,7 +65,7 @@ class _SearchWordPageState extends State<SearchWordPage> {
               TextButton(
                 onPressed: () {
                   _toggleDeleteMode();
-                  print('deleteMode : $deleteMode');
+                  log('deleteMode : $deleteMode');
                 },
                 child: Text(deleteMode ? '취소' : '기록 삭제'),
               ),
@@ -83,12 +85,12 @@ class _SearchWordPageState extends State<SearchWordPage> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.search, size: 24),
+                            Icon(Icons.schedule, size: 24, color: Colors.grey[400],),
                             SizedBox(
                               width: 20,
                             ),
                             Text(
-                              searchHistory[index],
+                              searchHistory[searchHistory.length - 1 - index],
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -96,15 +98,23 @@ class _SearchWordPageState extends State<SearchWordPage> {
                             ),
                           ],
                         ),
-                        deleteMode ?
-                        IconButton(
-                          icon: Icon(Icons.delete,
-                              size: 24, color: Colors.grey[400]),
-                          onPressed: () {
-                            _deleteSearchHistory(searchHistory[index]);
-                          },
-                        )
-                        : Text(''),
+                        SizedBox(
+                          height: 20,
+                          child: deleteMode
+                              ? IconButton(
+                                  padding: EdgeInsets.zero, // 패딩 설정
+                                  constraints: BoxConstraints(), // constraints
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.grey[600],
+                                  ),
+                                  iconSize: 20,
+                                  onPressed: () {
+                                    _deleteSearchHistory(searchHistory[searchHistory.length - 1 - index]);
+                                  },
+                                )
+                              : Text(''),
+                        ),
                       ],
                     ),
                   );

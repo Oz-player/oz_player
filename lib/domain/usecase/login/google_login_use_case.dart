@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:oz_player/domain/repository/login/google_login_repository.dart';
 
 class GoogleLoginUseCase {
   final GoogleLoginRepository googleLoginRepository;
+
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   GoogleLoginUseCase(this.googleLoginRepository);
 
@@ -22,7 +25,8 @@ class GoogleLoginUseCase {
       );
 
       // 받은 Token 이용해서 google 계정으로 인증받은 사용자 정보 Firebase Auth에 등록
-      final userCredential = await googleLoginRepository.signInWithFirebase(credential);
+      final userCredential =
+          await googleLoginRepository.signInWithFirebase(credential);
       final uid = userCredential.user?.uid;
 
       if (uid == null) {
@@ -37,11 +41,17 @@ class GoogleLoginUseCase {
       // // Database에서 기존 사용자 검색
       // final userDocs = await googleLoginRepository.fetchUserEmail(email);
 
-      // // 기존 사용자, 기존사용자지만 추천카테고리 미입력 사용자 이동페이지 다르게 TODO
-      // //
+      // // 기존 사용자, 기존사용자지만 추천카테고리 미입력 사용자 이동페이지 다르게
 
       // 새로운 사용자는 Firestore 데이터 저장 후 홈페이지로 이동
       await googleLoginRepository.saveNewUser(uid, email);
+
+      // 자동 로그인에 필요(로그인 성공 후 uid 저장)
+      await _storage.write(
+        key: 'user_uid',
+        value: uid,
+      );
+
       return ['/home', uid];
     } catch (e) {
       //

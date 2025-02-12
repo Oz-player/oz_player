@@ -8,8 +8,9 @@ class VideoInfoRepositoryImpl implements VideoInfoRepository {
   @override
   Future<VideoInfoEntitiy> getVideoInfo(String songName, String artist) async {
     try {
+      log('$songName 비디오 정보 불러오기 시작');
       final yt = YoutubeExplode();
-      final video = await yt.search.search('$artist $songName');
+      final video = await yt.search.search('$artist $songName official');
       log('비디오 정보 불러오기 성공');
 
       final manifest =
@@ -18,7 +19,7 @@ class VideoInfoRepositoryImpl implements VideoInfoRepository {
       log('오디오 정보 추출 성공');
       return VideoInfoEntitiy.yt(video, manifest);
     } catch (e) {
-      log('비디오 로딩 실패');
+      log('비디오 또는 오디오 로딩 실패');
       return VideoInfoEntitiy.empty();
     }
   }

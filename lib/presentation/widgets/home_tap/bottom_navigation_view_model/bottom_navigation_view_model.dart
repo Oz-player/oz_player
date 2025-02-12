@@ -6,6 +6,10 @@ class BottomNavigationViewModel extends StateNotifier<int> {
   void updatePage(int index){
     state = index;
   }
+
+  void resetPage(){
+    state = 1;
+  }
 }
 
 final bottomNavigationProvider =

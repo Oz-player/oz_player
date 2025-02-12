@@ -7,21 +7,38 @@ import 'package:oz_player/presentation/ui/login/widgets/google_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/kakao_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/private_info_button.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
-class LoginPage extends ConsumerWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends ConsumerState<LoginPage> {
+  bool _isChecked = false;
+
+  void _checkState(bool isChecked) {
+    setState(() {
+      _isChecked = isChecked;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final loginState = ref.watch(loginViewModelProvider);
 
     // 로그인 상태가 success일 때, 페이지 이동
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (loginState == LoginState.success) {
-        ref.watch(playListViewModelProvider.notifier).getPlayLists();
-        ref.watch(libraryViewModelProvider.notifier).getLibrary();
-        context.go('/home');
+        await ref.watch(playListViewModelProvider.notifier).getPlayLists();
+        await ref.watch(libraryViewModelProvider.notifier).getLibrary();
+        ref.watch(listSortViewModelProvider.notifier).setLatest();
+        if (context.mounted) {
+          context.go('/home');
+        }
       }
     });
 
@@ -54,10 +71,10 @@ class LoginPage extends ConsumerWidget {
                         fontSize: 24, fontWeight: FontWeight.w600, height: 1.4),
                   ),
                   Spacer(flex: 264),
-                  GoogleButton(),
-                  KakaoButton(),
-                  AppleButton(), // IOS에서만 애플 로그인 버튼 보임
-                  PrivateInfoButton(),
+                  GoogleButton(activated: _isChecked),
+                  KakaoButton(activated: _isChecked),
+                  AppleButton(activated: _isChecked), // IOS에서만 애플 로그인 버튼 보임
+                  PrivateInfoButton(onChecked: _checkState),
                   SizedBox(height: 32),
                 ],
               ),

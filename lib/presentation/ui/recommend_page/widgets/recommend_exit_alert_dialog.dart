@@ -42,45 +42,49 @@ class RecommendExitAlertDialog extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStatePropertyAll(AppColors.gray200),
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)))),
-                      onPressed: () {
-                        ref
-                            .read(bottomNavigationProvider.notifier)
-                            .updatePage(destination!);
-                        ref.read(cardPositionProvider.notifier).reset();
-                        if (destination == 0) {
-                          context.go('/saved');
-                        } else if (destination == 1) {
-                          context.go('/home');
-                        } else if (destination == 2) {
-                          context.go('/search');
-                        }
-                      },
-                      child: Text(
-                        '나중에 할게요',
-                        style: TextStyle(color: Colors.grey[600]),
-                      )),
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(AppColors.gray300),
+                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () {
+                          ref
+                              .read(bottomNavigationProvider.notifier)
+                              .updatePage(destination!);
+                          ref.read(cardPositionProvider.notifier).reset();
+                          if (destination == 0) {
+                            context.go('/saved');
+                          } else if (destination == 1) {
+                            context.go('/home');
+                          } else if (destination == 2) {
+                            context.go('/search');
+                          }
+                        },
+                        child: Text(
+                          '나중에 할게요',
+                          style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.w500),
+                        )),
+                  ),
                   SizedBox(
                     width: 8,
                   ),
-                  TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStatePropertyAll(AppColors.main700),
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)))),
-                      onPressed: () {
-                        context.pop();
-                      },
-                      child: Text(
-                        '이어서 할게요',
-                        style: TextStyle(color: Colors.white),
-                      )),
+                  Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(AppColors.main700),
+                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)))),
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: Text(
+                          '이어서 할게요',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
                 ],
               ),
             ],

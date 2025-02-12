@@ -21,7 +21,7 @@ class GeminiSourceImpl implements AiSource {
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);
 
-      print(response.text);
+      log(response.text!);
 
       log('추천음악 GEMINI 응답 성공');
       final filteringText = response.text!.split('json')[1].split('```')[0];
@@ -48,7 +48,7 @@ class GeminiSourceImpl implements AiSource {
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);
 
-      print(response.text);
+      log(response.text!);
 
       log('추천음악 GEMINI 응답 성공');
       final filteringText = response.text!.split('json')[1].split('```')[0];
