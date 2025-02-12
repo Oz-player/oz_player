@@ -135,7 +135,7 @@ class _LibraryState extends ConsumerState<Library> {
                               onTap: () => showModalBottomSheet<void>(
                                 context: context,
                                 builder: (context) => Container(
-                                  height: 248,
+                                  height: 264,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(24),
                                     color: Colors.white,
