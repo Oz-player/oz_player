@@ -90,17 +90,17 @@
 | ------------- |        
 
 &nbsp;
-### ➿ 소셜로그인 (google, kakao, apple) <img src="assets/images/mu_1.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
+### 🟣 소셜로그인 (google, kakao, apple) <img src="assets/images/mu_1.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 세 가지 종류의 소설 로그인 기능을 지원합니다.
 > - kakao 로그인 : firebase의 functions 기능을 이용해서 구현하였습니다.
 > - google, apple 로그인 : firebase auth와 flutter package를 이용해서 구현하였습니다.     
 
-⬇ Kakao 로그인(Functions) 동작 흐름
+<br> ⬇ Kakao 로그인(Functions) 동작 흐름
 
 ```mermaid
 flowchart
-	U[User📱]
+	U[User👻]
 	KA[Kakao Auth Server]
 	KDB[(Kakao Auth DB)]
 	KPrivate{Kakao Private Key}
@@ -142,7 +142,7 @@ flowchart
 </details>    
 &nbsp;
 
-### ➿ Google Gemini를 이용한 음악 추천 기능 <img src="assets/images/mu_3.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
+### 🟣 Google Gemini를 이용한 음악 추천 기능 <img src="assets/images/mu_3.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 현재 상태, 상황, 음악장르, 선호 아티스트 등의 태그들을 활용하여 Google Gemini에게 음악 추천을 받습니다.
 > - 음악을 추천받아 SPOTIFY API를 거쳐 데이터를 정제한 후, 사용자에게 카드 형태 UI를 제공합니다.
@@ -165,7 +165,7 @@ flowchart
 </details>     
 
 &nbsp;
-### ➿ 음악 재생 (오디오 플레이어) <img src="assets/images/mu_2.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
+### 🟣 음악 재생 (오디오 플레이어) <img src="assets/images/mu_2.png" height="25" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - YouTube를 활용하여 플레이리스트에서 선택한 곡을 재생합니다.
 > - 10초 건너뛰기, 타임라인 선택 등의 기능을 제공합니다.
@@ -183,7 +183,7 @@ flowchart
 </details>     
      
 &nbsp;
-### ➿ 음악 보관함 (플레이리스트) <img src="assets/images/mu_4.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
+### 🟣 음악 보관함 (플레이리스트) <img src="assets/images/mu_4.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - 지금까지 저장한 음악 카드를 살펴볼 수 있습니다.
 > - 플레이리스트를 생성하거나 저장한 플레이리스트를 열람, 재생합니다.
@@ -203,7 +203,7 @@ flowchart
 </details>       
 &nbsp;
 
-### ➿ 검색 기능 (제목 검색, 가사 검색) <img src="assets/images/mu_5.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
+### 🟣 검색 기능 (제목 검색, 가사 검색) <img src="assets/images/mu_5.png" height="22" style="vertical-align: middle; display: inline-block; margin-left: 5px;">
 
 > - Spotify web Api를 사용하여 음악 제목을 겁색합니다.
 > - Naver 가사검색 기능을 사용하여 검색어에 해당하는 가사를 포함하는 곡을 보여줍니다.
@@ -241,7 +241,7 @@ Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 �
 > ✔ IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
 > ✔ IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
 > ✔ Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
-> ✔ gorouter 파라미터 문제 [notion>](https://www.notion.so/teamsparta/go-router-497180bd5ebc474b80f7cc114a8a3039)     
+> ✔ go router 파라미터 문제 [notion>](https://www.notion.so/teamsparta/go-router-497180bd5ebc474b80f7cc114a8a3039)     
 
 
 &nbsp;
