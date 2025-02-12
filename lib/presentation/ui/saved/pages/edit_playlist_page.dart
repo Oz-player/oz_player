@@ -230,7 +230,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                 image: widget.playlist.imgUrl == null
                                     ? DecorationImage(
                                         image: AssetImage(
-                                            'assets/images/muoz.png'))
+                                            'assets/images/empty_thumbnail.png'))
                                     : DecorationImage(
                                         image: NetworkImage(
                                             widget.playlist.imgUrl!)),

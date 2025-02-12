@@ -201,7 +201,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                             borderRadius: BorderRadius.circular(12),
                             image: widget.scaffoldPlaylist.imgUrl == null
                                 ? DecorationImage(
-                                    image: AssetImage('assets/images/muoz.png'))
+                                    image: AssetImage(
+                                        'assets/images/empty_thumbnail.png'))
                                 : DecorationImage(
                                     image: NetworkImage(
                                         widget.scaffoldPlaylist.imgUrl!)),
