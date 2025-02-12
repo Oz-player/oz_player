@@ -6,12 +6,10 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/menu_bottom_sheets.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
-import 'package:oz_player/presentation/ui/saved/widgets/sorted_type_box.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
@@ -38,7 +36,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
     playlist = widget.playlist;
     Future.microtask(() async {
       await ref
-          .watch(playlistSongsProvider.notifier)
+          .read(playlistSongsProvider.notifier)
           .loadSongs(widget.playlist.songIds);
     });
   }
@@ -145,8 +143,6 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = widget.ref.watch(listSortViewModelProvider.notifier);
-
     return GestureDetector(
       onTap: () => setState(() {
         isOverlayOn = false;
@@ -256,10 +252,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                                         extra: widget.playlist,
                                       ) as PlayListEntity;
                                       widget.setListState(newList);
-                                      widget.ref
-                                          .read(listSortViewModelProvider
-                                              .notifier)
-                                          .setLatest();
                                     },
                                     child: BottomSheetMenuButton(
                                       title: '플레이리스트 편집',
@@ -402,10 +394,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                                         extra: widget.playlist,
                                       ) as PlayListEntity;
                                       widget.setListState(newList);
-                                      widget.ref
-                                          .read(listSortViewModelProvider
-                                              .notifier)
-                                          .setLatest();
                                     }
                                   },
                                   child: Image.asset(
@@ -450,14 +438,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                   const SizedBox(
                     height: 12,
                   ),
-
-                  // ------------------------------------------------------------------
-                  // 정렬 방법 선택창
-                  // ------------------------------------------------------------------
-                  SortedTypeBox(
-                      ref: widget.ref,
-                      isOverlayOn: isOverlayOn,
-                      setOverlayOn: setOverlayOn),
                   // ------------------------------------------------------------------
                   // 음악 목록
                   // ------------------------------------------------------------------
@@ -722,25 +702,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                   ),
                 ],
               ),
-            ),
-            // ------------------------------------------------
-            // 정렬 방법 변경용 오버레이
-            // ------------------------------------------------
-            SortedTypeOverlay(
-              isOverlayOn: isOverlayOn,
-              widget: widget,
-              whenLatest: () {
-                viewModel.setSongsLatest(widget.playlist.songIds);
-                setState(() {
-                  isOverlayOn = false;
-                });
-              },
-              whenAscending: () {
-                viewModel.setSongsAscending(widget.playlist.songIds);
-                setState(() {
-                  isOverlayOn = false;
-                });
-              },
             ),
             Positioned(
               left: 0,

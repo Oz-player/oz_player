@@ -63,9 +63,6 @@ class _PlayListState extends ConsumerState<PlayList> {
                           '/saved/playlist',
                           extra: data[index],
                         );
-                        ref
-                            .read(listSortViewModelProvider.notifier)
-                            .setLatest();
                       },
                       // 터치 가능 영역 확장하기 위해 Expanded 사용
                       child: Container(

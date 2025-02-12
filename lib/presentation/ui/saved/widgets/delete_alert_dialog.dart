@@ -6,6 +6,7 @@ import 'package:oz_player/presentation/providers/library_provider.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
@@ -83,6 +84,16 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
+                          if (ref.watch(listSortViewModelProvider) ==
+                              SortedType.latest) {
+                            ref
+                                .read(listSortViewModelProvider.notifier)
+                                .setLatest();
+                          } else {
+                            ref
+                                .read(listSortViewModelProvider.notifier)
+                                .setAscending();
+                          }
 
                           if (context.mounted) {
                             context.pop();
@@ -181,6 +192,16 @@ class DeletePlayListAlertDialog extends ConsumerWidget {
                           ref
                               .read(playListViewModelProvider.notifier)
                               .getPlayLists();
+                          if (ref.watch(listSortViewModelProvider) ==
+                              SortedType.latest) {
+                            ref
+                                .read(listSortViewModelProvider.notifier)
+                                .setLatest();
+                          } else {
+                            ref
+                                .read(listSortViewModelProvider.notifier)
+                                .setAscending();
+                          }
 
                           if (context.mounted) {
                             context.pop();
@@ -280,6 +301,16 @@ class DeleteCardAlertDialog extends ConsumerWidget {
                           await ref
                               .read(libraryViewModelProvider.notifier)
                               .getLibrary();
+                          if (ref.watch(listSortViewModelProvider) ==
+                              SortedType.latest) {
+                            ref
+                                .read(listSortViewModelProvider.notifier)
+                                .setLatest();
+                          } else {
+                            ref
+                                .read(listSortViewModelProvider.notifier)
+                                .setAscending();
+                          }
                           if (context.mounted) {
                             context.pop();
                           }

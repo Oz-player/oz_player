@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:oz_player/domain/usecase/login/auto_login_usecase.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
 
@@ -33,8 +34,9 @@ class _SplashState extends ConsumerState<Splash> {
       if (uid != null) {
         log(uid);
         ref.read(userViewModelProvider.notifier).setUserId(uid);
-        ref.watch(playListViewModelProvider.notifier).getPlayLists();
-        ref.watch(libraryViewModelProvider.notifier).getLibrary();
+        await ref.watch(playListViewModelProvider.notifier).getPlayLists();
+        await ref.watch(libraryViewModelProvider.notifier).getLibrary();
+        ref.watch(listSortViewModelProvider.notifier).setLatest();
 
         _startNavigationTimer('/home');
       } else {

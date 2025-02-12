@@ -7,6 +7,7 @@ import 'package:oz_player/presentation/ui/login/widgets/google_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/kakao_button.dart';
 import 'package:oz_player/presentation/ui/login/widgets/private_info_button.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -30,11 +31,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final loginState = ref.watch(loginViewModelProvider);
 
     // 로그인 상태가 success일 때, 페이지 이동
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (loginState == LoginState.success) {
-        ref.watch(playListViewModelProvider.notifier).getPlayLists();
-        ref.watch(libraryViewModelProvider.notifier).getLibrary();
-        context.go('/home');
+        await ref.watch(playListViewModelProvider.notifier).getPlayLists();
+        await ref.watch(libraryViewModelProvider.notifier).getLibrary();
+        ref.watch(listSortViewModelProvider.notifier).setLatest();
+        if (context.mounted) {
+          context.go('/home');
+        }
       }
     });
 

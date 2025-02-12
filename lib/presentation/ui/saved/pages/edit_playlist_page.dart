@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
@@ -150,6 +151,12 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 // 수정한 요소가 있다면 플레이리스트 리로드
                 if (isEdited) {
                   ref.read(playListViewModelProvider.notifier).getPlayLists();
+                  if (ref.watch(listSortViewModelProvider) ==
+                      SortedType.latest) {
+                    ref.read(listSortViewModelProvider.notifier).setLatest();
+                  } else {
+                    ref.read(listSortViewModelProvider.notifier).setAscending();
+                  }
                 }
 
                 if (context.mounted) {
