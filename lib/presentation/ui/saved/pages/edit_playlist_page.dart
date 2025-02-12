@@ -55,7 +55,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
   }
 
   // 곡을 삭제할 때 songId를 삭제한 뒤 플레이리스트 화면 reload 하는 함수
-  void removeSongId(String songId) {
+  void removeSongId(String songId, String? newUrl) {
     setState(() {
       widget.playlist.songIds.remove(songId);
     });
@@ -84,26 +84,35 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           // 뒤로가기 버튼
           // ------------------------
           leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await ref.read(playListsUsecaseProvider).editImage(
+                  ref.read(userViewModelProvider.notifier).getUserId(),
+                  widget.playlist.imgUrl,
+                  initialImageUrl,
+                  widget.playlist.listName);
               if (isEdited) {
-                showDialog(
-                  context: context,
-                  builder: (context) => CancleEditAlertDialog(
-                    destination: null,
-                    newEntity: widget.playlist,
-                    initialList: initialOrder,
-                  ),
-                );
+                if (context.mounted) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CancleEditAlertDialog(
+                      destination: null,
+                      newEntity: widget.playlist,
+                      initialList: widget.playlist.songIds,
+                    ),
+                  );
+                }
               } else {
                 ref.read(bottomNavigationProvider.notifier).updatePage(0);
-                context.pop(
-                  PlayListEntity(
-                      listName: widget.playlist.listName,
-                      createdAt: widget.playlist.createdAt,
-                      imgUrl: initialImageUrl,
-                      description: widget.playlist.description,
-                      songIds: initialOrder),
-                );
+                if (context.mounted) {
+                  context.pop(
+                    PlayListEntity(
+                        listName: widget.playlist.listName,
+                        createdAt: widget.playlist.createdAt,
+                        imgUrl: initialImageUrl,
+                        description: widget.playlist.description,
+                        songIds: widget.playlist.songIds),
+                  );
+                }
               }
             },
             icon: Icon(Icons.arrow_back),
@@ -150,7 +159,7 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                     }
                   }
                 }
-
+                // 이미지 변경
                 await ref.read(playListsUsecaseProvider).editImage(
                     ref.read(userViewModelProvider.notifier).getUserId(),
                     widget.playlist.imgUrl,
@@ -389,16 +398,65 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                             onPressed: (value) {
                                               String id = data[index].video.id;
                                               showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    DeleteSongAlertDialog(
-                                                  listName:
-                                                      widget.playlist.listName,
-                                                  songId: id,
-                                                  removeSongId: () =>
-                                                      removeSongId(id),
-                                                ),
-                                              );
+                                                  context: context,
+                                                  builder: (context) {
+                                                    if (index != 0) {
+                                                      // 리스트의 첫 번째가 아닌 곡 삭제
+                                                      return DeleteSongAlertDialog(
+                                                        listName: widget
+                                                            .playlist.listName,
+                                                        songId: id,
+                                                        removeSongId: () =>
+                                                            removeSongId(
+                                                                id,
+                                                                widget.playlist
+                                                                    .imgUrl),
+                                                      );
+                                                    } else if (data.length >
+                                                        1) {
+                                                      // 리스트의 첫 번째 곡 삭제 && 리스트 길이 2이상
+                                                      initialImageUrl =
+                                                          data[index + 1]
+                                                              .imgUrl;
+                                                      return DeleteSongAlertDialog(
+                                                        listName: widget
+                                                            .playlist.listName,
+                                                        songId: data[index]
+                                                            .video
+                                                            .id,
+                                                        removeSongId: () =>
+                                                            removeSongId(
+                                                                data[index]
+                                                                    .video
+                                                                    .id,
+                                                                data[index + 1]
+                                                                    .imgUrl),
+                                                        prevUrl:
+                                                            data[index].imgUrl,
+                                                        newUrl: data[index + 1]
+                                                            .imgUrl,
+                                                      );
+                                                    } else {
+                                                      // 리스트의 첫 번째 곡 삭제 && 리스트 길이 1이하
+                                                      initialImageUrl = null;
+                                                      return DeleteSongAlertDialog(
+                                                        listName: widget
+                                                            .playlist.listName,
+                                                        songId: data[index]
+                                                            .video
+                                                            .id,
+                                                        removeSongId: () =>
+                                                            removeSongId(
+                                                                data[index]
+                                                                    .video
+                                                                    .id,
+                                                                null),
+                                                        prevUrl:
+                                                            data[index].imgUrl,
+                                                        newUrl: null,
+                                                      );
+                                                    }
+                                                  });
                                             },
                                             backgroundColor: AppColors.red,
                                             foregroundColor: Colors.white,

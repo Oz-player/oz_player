@@ -665,6 +665,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                                     0
                                                                 ? data.length >
                                                                         1
+                                                                    // 리스트의 첫 번째 곡 삭제 && 리스트 길이 2이상
                                                                     ? DeleteSongAlertDialog(
                                                                         listName: widget
                                                                             .scaffoldPlaylist
@@ -681,6 +682,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                                                 1]
                                                                             .imgUrl,
                                                                       )
+                                                                    // 리스트의 첫 번째 곡 삭제 && 리스트 길이 1이하
                                                                     : DeleteSongAlertDialog(
                                                                         listName: widget
                                                                             .scaffoldPlaylist
@@ -696,6 +698,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                                         newUrl:
                                                                             null,
                                                                       )
+                                                                // 리스트의 첫 번째가 아닌 곡 삭제
                                                                 : DeleteSongAlertDialog(
                                                                     removeSongId: () => widget.removeSongId(
                                                                         data[index]
