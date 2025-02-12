@@ -311,6 +311,7 @@ class PlayListSourceImpl implements PlayListSource {
     }
   }
 
+  // 유저의 플레이리스트 문서 삭제
   @override
   Future<void> clearPlaylist(String userId) async {
     try {
@@ -318,6 +319,41 @@ class PlayListSourceImpl implements PlayListSource {
       log('$userId의 플레이리스트를 삭제하였습니다.');
     } catch (e, stackTrace) {
       log('e: $e, stackTrace: $stackTrace');
+    }
+  }
+
+  // 플레이리스트 커버 이미지 변경
+  @override
+  Future<void> editImage(String userId, String? newUrl, String listName) async {
+    try {
+      final doc = await _firestore.collection('Playlist').doc(userId).get();
+      if (doc.exists && doc.data() != null) {
+        final playlistRef = _firestore.collection('Playlist').doc(userId);
+
+        final data = doc.data() as Map<String, dynamic>;
+
+        if (data.containsKey('playlists') && data['playlists'] is List) {
+          List<dynamic> playlist = data['playlists'];
+
+          for (var item in playlist) {
+            if (item['listName'] == listName) {
+              await playlistRef.update({
+                'playlists': FieldValue.arrayRemove([item]),
+              });
+
+              item['imgUrl'] = newUrl;
+
+              await playlistRef.update({
+                'playlists': FieldValue.arrayUnion([item])
+              });
+              log('플레이리스트 커버 이미지를 변경했습니다.');
+              break;
+            }
+          }
+        }
+      }
+    } catch (e, stackTrace) {
+      log('error: $e, stackTrace: $stackTrace');
     }
   }
 }

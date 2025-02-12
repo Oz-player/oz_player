@@ -10,6 +10,7 @@ import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_playlist_bottom_sheet.dart';
+import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
 import 'package:oz_player/presentation/view_model/user_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
@@ -484,6 +485,19 @@ class SavePlaylistBottomSheet {
                                               .read(playListViewModelProvider
                                                   .notifier)
                                               .getPlayLists();
+                                          if (ref.watch(
+                                                  listSortViewModelProvider) ==
+                                              SortedType.latest) {
+                                            ref
+                                                .read(listSortViewModelProvider
+                                                    .notifier)
+                                                .setLatest();
+                                          } else {
+                                            ref
+                                                .read(listSortViewModelProvider
+                                                    .notifier)
+                                                .setAscending();
+                                          }
 
                                           if (context.mounted) {
                                             ToastMessage.show(context);
@@ -726,6 +740,16 @@ Widget playlistDialog(
                                 await ref
                                     .read(playListViewModelProvider.notifier)
                                     .getPlayLists();
+                                if (ref.watch(listSortViewModelProvider) ==
+                                    SortedType.latest) {
+                                  ref
+                                      .read(listSortViewModelProvider.notifier)
+                                      .setLatest();
+                                } else {
+                                  ref
+                                      .read(listSortViewModelProvider.notifier)
+                                      .setAscending();
+                                }
                                 if (context.mounted) {
                                   context.pop();
                                 }

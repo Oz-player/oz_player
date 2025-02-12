@@ -6,12 +6,10 @@ import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/save_playlist_bottom_sheet.dart';
-import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_songs_provider.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/menu_bottom_sheets.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/play_buttons.dart';
-import 'package:oz_player/presentation/ui/saved/widgets/sorted_type_box.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
@@ -38,18 +36,24 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
     playlist = widget.playlist;
     Future.microtask(() async {
       await ref
-          .watch(playlistSongsProvider.notifier)
+          .read(playlistSongsProvider.notifier)
           .loadSongs(widget.playlist.songIds);
     });
   }
 
   // 곡을 삭제할 때 songId를 삭제한 뒤 플레이리스트 화면 reload 하는 함수
-  void removeSongId(String songId) {
+  void removeSongId(String songId, String? newUrl) async {
     setState(() {
       widget.playlist.songIds.remove(songId);
+      playlist = PlayListEntity(
+          listName: widget.playlist.listName,
+          createdAt: widget.playlist.createdAt,
+          imgUrl: newUrl,
+          description: widget.playlist.description,
+          songIds: widget.playlist.songIds);
     });
-    ref
-        .watch(playlistSongsProvider.notifier)
+    await ref
+        .read(playlistSongsProvider.notifier)
         .loadSongs(widget.playlist.songIds);
   }
 
@@ -70,6 +74,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
         .setAudioPlayer(data.first.video.audioUrl, -2);
   }
 
+  // 플레이리스트 리로드
   void setListState(PlayListEntity newList) async {
     setState(() {
       playlist = newList;
@@ -92,7 +97,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
                 ref: ref,
                 removeSongId: removeSongId,
                 addListInAudioPlayer: addListInAudioPlayer,
-                playlist: playlist!,
+                scaffoldPlaylist: playlist!,
                 setListState: setListState,
               ),
               LoadingWidget(),
@@ -104,7 +109,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
             ref: ref,
             removeSongId: removeSongId,
             addListInAudioPlayer: addListInAudioPlayer,
-            playlist: playlist!,
+            scaffoldPlaylist: playlist!,
             setListState: setListState,
           );
   }
@@ -113,7 +118,7 @@ class _PlaylistPageState extends ConsumerState<PlaylistPage> {
 class MainScaffold extends StatefulWidget {
   const MainScaffold({
     super.key,
-    required this.playlist,
+    required this.scaffoldPlaylist,
     required this.widget,
     required this.songListAsync,
     required this.ref,
@@ -122,11 +127,11 @@ class MainScaffold extends StatefulWidget {
     required this.setListState,
   });
 
-  final void Function(String songId) removeSongId;
+  final void Function(String songId, String? newUrl) removeSongId;
   final void Function(List<SongEntity> data) addListInAudioPlayer;
   final void Function(PlayListEntity newList) setListState;
   final PlaylistPage widget;
-  final PlayListEntity playlist;
+  final PlayListEntity scaffoldPlaylist;
   final AsyncValue<List<SongEntity>> songListAsync;
   final WidgetRef ref;
 
@@ -145,8 +150,6 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = widget.ref.watch(listSortViewModelProvider.notifier);
-
     return GestureDetector(
       onTap: () => setState(() {
         isOverlayOn = false;
@@ -196,12 +199,13 @@ class _MainScaffoldState extends State<MainScaffold> {
                           height: 120,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            image: widget.playlist.imgUrl == null
+                            image: widget.scaffoldPlaylist.imgUrl == null
                                 ? DecorationImage(
-                                    image: AssetImage('assets/images/muoz.png'))
+                                    image: AssetImage(
+                                        'assets/images/empty_thumbnail.png'))
                                 : DecorationImage(
-                                    image:
-                                        NetworkImage(widget.playlist.imgUrl!)),
+                                    image: NetworkImage(
+                                        widget.scaffoldPlaylist.imgUrl!)),
                           ),
                         ),
                         // ----------------------------------------------------------
@@ -212,8 +216,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (context) => SavedMenuBottomSheet(
-                                imgUrl: widget.playlist.imgUrl,
-                                name: widget.playlist.listName,
+                                imgUrl: widget.scaffoldPlaylist.imgUrl,
+                                name: widget.scaffoldPlaylist.listName,
                                 items: [
                                   // --------------------------------
                                   // playlist menu : 1. 셔플 재생
@@ -253,13 +257,9 @@ class _MainScaffoldState extends State<MainScaffold> {
                                           .updatePage(5);
                                       final newList = await context.push(
                                         '/saved/playlist/edit',
-                                        extra: widget.playlist,
+                                        extra: widget.scaffoldPlaylist,
                                       ) as PlayListEntity;
                                       widget.setListState(newList);
-                                      widget.ref
-                                          .read(listSortViewModelProvider
-                                              .notifier)
-                                          .setLatest();
                                     },
                                     child: BottomSheetMenuButton(
                                       title: '플레이리스트 편집',
@@ -276,7 +276,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                                         barrierDismissible: false,
                                         builder: (context) =>
                                             DeletePlayListAlertDialog(
-                                          listName: widget.playlist.listName,
+                                          listName:
+                                              widget.scaffoldPlaylist.listName,
                                         ),
                                       );
                                     },
@@ -321,7 +322,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                         // 플레이리스트 제목
                         // ---------------
                         Text(
-                          widget.playlist.listName,
+                          widget.scaffoldPlaylist.listName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -343,7 +344,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.playlist.description,
+                                  widget.scaffoldPlaylist.description,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
@@ -399,13 +400,9 @@ class _MainScaffoldState extends State<MainScaffold> {
                                     if (context.mounted) {
                                       final newList = await context.push(
                                         '/saved/playlist/edit',
-                                        extra: widget.playlist,
+                                        extra: widget.scaffoldPlaylist,
                                       ) as PlayListEntity;
                                       widget.setListState(newList);
-                                      widget.ref
-                                          .read(listSortViewModelProvider
-                                              .notifier)
-                                          .setLatest();
                                     }
                                   },
                                   child: SvgPicture.asset(
@@ -450,14 +447,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                   const SizedBox(
                     height: 12,
                   ),
-
-                  // ------------------------------------------------------------------
-                  // 정렬 방법 선택창
-                  // ------------------------------------------------------------------
-                  SortedTypeBox(
-                      ref: widget.ref,
-                      isOverlayOn: isOverlayOn,
-                      setOverlayOn: setOverlayOn),
                   // ------------------------------------------------------------------
                   // 음악 목록
                   // ------------------------------------------------------------------
@@ -524,7 +513,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                                       height: 90,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 10, bottom: 30),
+                                            top: 20, bottom: 30),
                                         child: SvgPicture.asset(
                                             'assets/svg/muoz.svg'),
                                       ),
@@ -672,22 +661,60 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                             context: context,
                                                             barrierDismissible:
                                                                 false,
-                                                            builder: (context) =>
-                                                                DeleteSongAlertDialog(
-                                                                  removeSongId: () =>
-                                                                      widget.removeSongId(data[
-                                                                              index]
-                                                                          .video
-                                                                          .id),
-                                                                  listName: widget
-                                                                      .widget
-                                                                      .playlist
-                                                                      .listName,
-                                                                  songId: data[
-                                                                          index]
-                                                                      .video
-                                                                      .id,
-                                                                ));
+                                                            builder: (context) => index ==
+                                                                    0
+                                                                ? data.length >
+                                                                        1
+                                                                    // 리스트의 첫 번째 곡 삭제 && 리스트 길이 2이상
+                                                                    ? DeleteSongAlertDialog(
+                                                                        listName: widget
+                                                                            .scaffoldPlaylist
+                                                                            .listName,
+                                                                        songId: data[index]
+                                                                            .video
+                                                                            .id,
+                                                                        removeSongId: () => widget.removeSongId(
+                                                                            data[index].video.id,
+                                                                            data[index + 1].imgUrl),
+                                                                        prevUrl:
+                                                                            data[index].imgUrl,
+                                                                        newUrl: data[index +
+                                                                                1]
+                                                                            .imgUrl,
+                                                                      )
+                                                                    // 리스트의 첫 번째 곡 삭제 && 리스트 길이 1이하
+                                                                    : DeleteSongAlertDialog(
+                                                                        listName: widget
+                                                                            .scaffoldPlaylist
+                                                                            .listName,
+                                                                        songId: data[index]
+                                                                            .video
+                                                                            .id,
+                                                                        removeSongId: () => widget.removeSongId(
+                                                                            data[index].video.id,
+                                                                            null),
+                                                                        prevUrl:
+                                                                            data[index].imgUrl,
+                                                                        newUrl:
+                                                                            null,
+                                                                      )
+                                                                // 리스트의 첫 번째가 아닌 곡 삭제
+                                                                : DeleteSongAlertDialog(
+                                                                    removeSongId: () => widget.removeSongId(
+                                                                        data[index]
+                                                                            .video
+                                                                            .id,
+                                                                        widget
+                                                                            .scaffoldPlaylist
+                                                                            .imgUrl),
+                                                                    listName: widget
+                                                                        .scaffoldPlaylist
+                                                                        .listName,
+                                                                    songId: data[
+                                                                            index]
+                                                                        .video
+                                                                        .id,
+                                                                  ));
                                                       },
                                                       child:
                                                           BottomSheetMenuButton(
@@ -722,25 +749,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                   ),
                 ],
               ),
-            ),
-            // ------------------------------------------------
-            // 정렬 방법 변경용 오버레이
-            // ------------------------------------------------
-            SortedTypeOverlay(
-              isOverlayOn: isOverlayOn,
-              widget: widget,
-              whenLatest: () {
-                viewModel.setSongsLatest(widget.playlist.songIds);
-                setState(() {
-                  isOverlayOn = false;
-                });
-              },
-              whenAscending: () {
-                viewModel.setSongsAscending(widget.playlist.songIds);
-                setState(() {
-                  isOverlayOn = false;
-                });
-              },
             ),
             Positioned(
               left: 0,
