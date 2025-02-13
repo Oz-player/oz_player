@@ -54,16 +54,19 @@ class _SplashState extends ConsumerState<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Lottie.asset('assets/animation/splash_1.json', fit: BoxFit.cover,
-            onLoaded: (state) {
-          if (!_isAnimationLoaded) {
-            _isAnimationLoaded = true;
-            // _startNavigationTimer();
-          }
-        }),
+      body: SafeArea(
+        top: false,
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Lottie.asset('assets/animation/splash_1.json', fit: BoxFit.cover,
+              onLoaded: (state) {
+            if (!_isAnimationLoaded) {
+              _isAnimationLoaded = true;
+              // _startNavigationTimer();
+            }
+          }),
+        ),
       ),
     );
   }
