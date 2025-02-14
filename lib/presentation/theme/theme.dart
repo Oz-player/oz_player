@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:oz_player/presentation/theme/app_theme_extension.dart';
 
 class LightTheme extends AppThemeExtension {
@@ -44,6 +45,10 @@ ThemeData _theme(Brightness brightness, AppThemeExtension ext) => ThemeData(
     ),
     extensions: [ext],
     appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
