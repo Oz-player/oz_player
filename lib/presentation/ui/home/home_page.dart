@@ -11,6 +11,11 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      ref.read(bottomNavigationProvider.notifier).resetPage();
+    });
+
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
