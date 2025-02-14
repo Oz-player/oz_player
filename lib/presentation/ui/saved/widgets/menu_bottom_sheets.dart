@@ -63,6 +63,7 @@ class SavedMenuBottomSheet extends StatelessWidget {
                   Expanded(
                     child: Text(
                       name,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
