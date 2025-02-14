@@ -10,7 +10,7 @@ class VideoInfoRepositoryImpl implements VideoInfoRepository {
     try {
       log('$songName 비디오 정보 불러오기 시작');
       final yt = YoutubeExplode();
-      final video = await yt.search.search('$artist $songName');
+      final video = await yt.search.search('$artist $songName official');
       log('비디오 정보 불러오기 성공');
 
       final manifest =

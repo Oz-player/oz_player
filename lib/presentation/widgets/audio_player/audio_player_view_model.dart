@@ -156,10 +156,12 @@ class AudioPlayerViewModel extends AutoDisposeNotifier<AudioPlayerState> {
       if (position >=
               Duration(milliseconds: totalDuration.inMilliseconds ~/ 2) &&
           Platform.isIOS) {
+
         if (state.nextSong.isEmpty) {
           await state.audioPlayer.seek(Duration.zero);
           await togglePause();
         } else {
+          
           state = state.copyWith(currentSong: state.nextSong.first);
           try {
             await state.audioPlayer
