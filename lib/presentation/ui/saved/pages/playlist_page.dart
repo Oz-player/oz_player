@@ -390,10 +390,6 @@ class _MainScaffoldState extends State<MainScaffold> {
                                 // ------------------
                                 GestureDetector(
                                   onTap: () async {
-                                    await widget.ref
-                                        .read(audioPlayerViewModelProvider
-                                            .notifier)
-                                        .toggleStop();
                                     widget.ref
                                         .read(bottomNavigationProvider.notifier)
                                         .updatePage(5);
