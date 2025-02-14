@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
@@ -288,35 +289,64 @@ class SaveSongBottomSheet {
                                               loadingViewModelProvider.notifier)
                                           .startLoading(2);
 
-                                      ref
-                                          .read(
-                                              saveSongBottomSheetViewModelProvider
-                                                  .notifier)
-                                          .setMemoInSong(textController.text);
-                                      // 카드 정보 보관함에 넘기기
+                                      try {
+                                        if (saveState
+                                                .savedSong!.video.audioUrl ==
+                                            '') {
+                                          final videoEx = ref
+                                              .read(videoInfoUsecaseProvider);
 
-                                      await ref
-                                          .read(
-                                              saveSongBottomSheetViewModelProvider
-                                                  .notifier)
-                                          .saveSongInDB();
-                                      await ref
-                                          .read(
-                                              saveSongBottomSheetViewModelProvider
-                                                  .notifier)
-                                          .saveSongInLibrary();
+                                          final video =
+                                              await videoEx.getVideoInfo(
+                                                  saveState.savedSong!.title,
+                                                  saveState.savedSong!.artist);
 
-                                      if (context.mounted) {
-                                        ToastMessage.show(context);
-                                        context.pop();
+                                          if (video.audioUrl == '' &&
+                                              video.id == '') {
+                                            throw '${saveState.savedSong!.title} - Video is EMPTY';
+                                          }
+
+                                          saveState.savedSong!.video = video;
+                                        }
+
+                                        ref
+                                            .read(
+                                                saveSongBottomSheetViewModelProvider
+                                                    .notifier)
+                                            .setMemoInSong(textController.text);
+                                        // 카드 정보 보관함에 넘기기
+
+                                        await ref
+                                            .read(
+                                                saveSongBottomSheetViewModelProvider
+                                                    .notifier)
+                                            .saveSongInDB();
+                                        await ref
+                                            .read(
+                                                saveSongBottomSheetViewModelProvider
+                                                    .notifier)
+                                            .saveSongInLibrary();
+
+                                        if (context.mounted) {
+                                          ToastMessage.show(context);
+                                          context.pop();
+                                        }
+                                        ref
+                                            .read(cardPositionProvider.notifier)
+                                            .cardPositionIndex(0);
+                                        ref
+                                            .read(loadingViewModelProvider
+                                                .notifier)
+                                            .endLoading();
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ToastMessage.showErrorMessage(context);
+                                        }
+                                        ref
+                                            .read(loadingViewModelProvider
+                                                .notifier)
+                                            .endLoading();
                                       }
-                                      ref
-                                          .read(cardPositionProvider.notifier)
-                                          .cardPositionIndex(0);
-                                      ref
-                                          .read(
-                                              loadingViewModelProvider.notifier)
-                                          .endLoading();
                                     }
                                   },
                                   child: Text(

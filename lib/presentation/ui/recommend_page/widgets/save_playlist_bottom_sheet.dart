@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
@@ -457,51 +458,87 @@ class SavePlaylistBottomSheet {
                                                       .notifier)
                                               .isBlind();
 
-                                          final entity = RawSongEntity(
-                                              countLibrary: 0,
-                                              countPlaylist: 0,
-                                              video: songEntity.video,
-                                              title: songEntity.title,
-                                              imgUrl: songEntity.imgUrl,
-                                              artist: songEntity.artist);
+                                          try {
+                                            if (songEntity.video.audioUrl ==
+                                                '') {
+                                              final videoEx = ref.read(
+                                                  videoInfoUsecaseProvider);
 
-                                          // 플레이리스트에 곡 추가 로직
-                                          await ref
-                                              .read(rawSongUsecaseProvider)
-                                              .updateRawSongByPlaylist(entity);
+                                              final video =
+                                                  await videoEx.getVideoInfo(
+                                                      songEntity.title,
+                                                      songEntity.artist);
 
-                                          await ref
-                                              .read(playListsUsecaseProvider)
-                                              .addSong(
-                                                  ref
-                                                      .read(
-                                                          userViewModelProvider
-                                                              .notifier)
-                                                      .getUserId(),
-                                                  playlistTitle,
-                                                  entity);
+                                              if (video.audioUrl == '' &&
+                                                  video.id == '') {
+                                                throw '${songEntity.title} - Video is EMPTY';
+                                              }
 
-                                          await ref
-                                              .read(playListViewModelProvider
-                                                  .notifier)
-                                              .getPlayLists();
-                                          if (ref.watch(
-                                                  listSortViewModelProvider) ==
-                                              SortedType.latest) {
-                                            ref
-                                                .read(listSortViewModelProvider
+                                              songEntity.video = video;
+                                            }
+
+                                            final entity = RawSongEntity(
+                                                countLibrary: 0,
+                                                countPlaylist: 0,
+                                                video: songEntity.video,
+                                                title: songEntity.title,
+                                                imgUrl: songEntity.imgUrl,
+                                                artist: songEntity.artist);
+
+                                            // 플레이리스트에 곡 추가 로직
+                                            await ref
+                                                .read(rawSongUsecaseProvider)
+                                                .updateRawSongByPlaylist(
+                                                    entity);
+
+                                            await ref
+                                                .read(playListsUsecaseProvider)
+                                                .addSong(
+                                                    ref
+                                                        .read(
+                                                            userViewModelProvider
+                                                                .notifier)
+                                                        .getUserId(),
+                                                    playlistTitle,
+                                                    entity);
+
+                                            await ref
+                                                .read(playListViewModelProvider
                                                     .notifier)
-                                                .setLatest();
-                                          } else {
-                                            ref
-                                                .read(listSortViewModelProvider
-                                                    .notifier)
-                                                .setAscending();
-                                          }
-
-                                          if (context.mounted) {
-                                            ToastMessage.show(context);
-                                            context.pop();
+                                                .getPlayLists();
+                                            if (ref.watch(
+                                                    listSortViewModelProvider) ==
+                                                SortedType.latest) {
+                                              ref
+                                                  .read(
+                                                      listSortViewModelProvider
+                                                          .notifier)
+                                                  .setLatest();
+                                            } else {
+                                              ref
+                                                  .read(
+                                                      listSortViewModelProvider
+                                                          .notifier)
+                                                  .setAscending();
+                                            }
+                                            
+                                            if (context.mounted) {
+                                              ToastMessage.show(context);
+                                              context.pop();
+                                              ref
+                                                  .read(
+                                                      savePlaylistBottomSheetProvider
+                                                          .notifier)
+                                                  .reflash();
+                                              ref
+                                                  .read(loadingViewModelProvider
+                                                      .notifier)
+                                                  .endLoading();
+                                            }
+                                          } catch (e) {
+                                            if (context.mounted) {
+                                              ToastMessage.show(context);
+                                            }
                                             ref
                                                 .read(
                                                     savePlaylistBottomSheetProvider

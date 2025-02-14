@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
@@ -13,6 +14,7 @@ import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_widget.dart';
+import 'package:oz_player/presentation/widgets/toast_message/toast_message.dart';
 
 class RecommendPageConditionTwo extends ConsumerStatefulWidget {
   const RecommendPageConditionTwo({super.key});
@@ -54,6 +56,7 @@ class _RecommendPageConditionTwoState
 
   Widget mainScaffold(ConditionState conditionState) {
     final positionIndex = ref.watch(cardPositionProvider);
+    final audioState = ref.watch(audioPlayerViewModelProvider);
 
     return Container(
       decoration: BoxDecoration(
@@ -205,11 +208,6 @@ class _RecommendPageConditionTwoState
                       children: [
                         InkWell(
                           onTap: () {
-                            final length = conditionState.recommendSongs.length;
-                            if (length == positionIndex) {
-                              return;
-                            }
-
                             // 음악 플레이리스트에 저장
                             SavePlaylistBottomSheet.show(
                                 context,
@@ -234,22 +232,68 @@ class _RecommendPageConditionTwoState
                           width: 12,
                         ),
                         InkWell(
-                          onTap: () {
-                            final length = conditionState.recommendSongs.length;
-                            if (length == positionIndex) {
+                          onTap: () async {
+                            if (audioState.currentSong?.title ==
+                                    conditionState
+                                        .recommendSongs[positionIndex].title &&
+                                audioState.currentSong?.artist ==
+                                    conditionState
+                                        .recommendSongs[positionIndex].artist &&
+                                audioState.isPlaying) {
+                              AudioBottomSheet.showCurrentAudio(context);
                               return;
                             }
+
+                            if (context.mounted) {
+                              AudioBottomSheet.show(context, positionIndex);
+                            }
+                            await ref
+                                .read(audioPlayerViewModelProvider.notifier)
+                                .toggleStop();
+
                             ref
                                 .read(audioPlayerViewModelProvider.notifier)
-                                .setCurrentSong(conditionState
-                                    .recommendSongs[positionIndex]);
-                            ref
-                                .read(audioPlayerViewModelProvider.notifier)
-                                .setAudioPlayer(
-                                    conditionState.recommendSongs[positionIndex]
-                                        .video.audioUrl,
-                                    positionIndex);
-                            AudioBottomSheet.show(context, positionIndex);
+                                .isStartLoadingAudioPlayer();
+
+                            try {
+                              if (conditionState.recommendSongs[positionIndex]
+                                      .video.audioUrl ==
+                                  '') {
+                                final videoEx =
+                                    ref.read(videoInfoUsecaseProvider);
+
+                                final video = await videoEx.getVideoInfo(
+                                    conditionState
+                                        .recommendSongs[positionIndex].title,
+                                    conditionState
+                                        .recommendSongs[positionIndex].artist);
+
+                                if (video.audioUrl == '' && video.id == '') {
+                                  throw '${conditionState.recommendSongs[positionIndex].title} - Video is EMPTY';
+                                }
+
+                                conditionState.recommendSongs[positionIndex]
+                                    .video = video;
+                              }
+
+                              ref
+                                  .read(audioPlayerViewModelProvider.notifier)
+                                  .setCurrentSong(conditionState
+                                      .recommendSongs[positionIndex]);
+                              await ref
+                                  .read(audioPlayerViewModelProvider.notifier)
+                                  .setAudioPlayer(
+                                      conditionState
+                                          .recommendSongs[positionIndex]
+                                          .video
+                                          .audioUrl,
+                                      positionIndex);
+                            } catch (e) {
+                              ToastMessage.showErrorMessage(context);
+                              ref
+                                  .read(audioPlayerViewModelProvider.notifier)
+                                  .isEndLoadingAudioPlayer();
+                            }
                           },
                           borderRadius: BorderRadius.circular(50),
                           child: CircleAvatar(
@@ -268,18 +312,16 @@ class _RecommendPageConditionTwoState
                         ),
                         InkWell(
                           onTap: () {
-                            final length = conditionState.recommendSongs.length;
-                            if (length == positionIndex) {
-                              return;
-                            }
-
                             /// 보관함에 저장
                             ref
                                 .read(saveSongBottomSheetViewModelProvider
                                     .notifier)
                                 .setSaveSong(conditionState
                                     .recommendSongs[positionIndex]);
-                            ref.read(saveSongBottomSheetViewModelProvider.notifier).isNotBlind();
+                            ref
+                                .read(saveSongBottomSheetViewModelProvider
+                                    .notifier)
+                                .isNotBlind();
                             SaveSongBottomSheet.show(
                                 context, ref, textControllerSaveSongMemo);
                           },
