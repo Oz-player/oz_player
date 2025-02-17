@@ -1,5 +1,3 @@
-import 'package:easy_rich_text/easy_rich_text.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,44 +24,38 @@ class _PrivateInfoButtonState extends State<PrivateInfoButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _boxCheck,
-      child: Container(
-        height: 50,
-        color: Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 21,
-              width: 21,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color(0xFFD9B3FE))
-              ),
-              child: _isChecked
-                  ? Icon(Icons.check, size: 19, color: Color(0xFF5902B0))
-                  : null,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 24,
+            width: 24,
+            decoration: BoxDecoration(
+              color: Color(0xFFEFF1F3),
+              borderRadius: BorderRadius.circular(4),
             ),
-            SizedBox(width: 8),
-            // flutter package easy_rich_text 사용!
-            EasyRichText(
-              '개인정보 수집 및 이용에 동의하시겠습니까?',
-              defaultStyle: TextStyle(
-                fontSize: 13,
-                color: Color(0xFF8D8D8D),
+            child: _isChecked
+                ? Icon(Icons.check, size: 19, color: Color(0xFF6B7684))
+                : null,
+          ),
+          SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              context.go('/login/private');
+            },
+            child: SizedBox(
+              height: 14,
+              child: Text(
+                '로그인 시 동의 및 개인정보 제공에 동의한 것으로 간주됩니다.',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF8D8D8D),
+                  height: 14 / 12,
+                ),
               ),
-              patternList: [
-                EasyRichTextPattern(
-                    targetString: '개인정보 수집 및 이용',
-                    style: TextStyle(color: Color(0xFFD28BBA)),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        context.go('/login/private');
-                      }),
-              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
