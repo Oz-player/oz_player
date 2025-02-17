@@ -188,7 +188,9 @@ class AudioBottomSheet {
                                     .skipBackwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_backward_icon.png')),
+                                'assets/images/skip_backward_icon.png',
+                                semanticLabel: '10초 전으로',
+                              )),
                           SizedBox(
                             width: 40,
                           ),
@@ -233,7 +235,9 @@ class AudioBottomSheet {
                                     .skipForwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_forward_icon.png')),
+                                'assets/images/skip_forward_icon.png',
+                                semanticLabel: '10초 후로',
+                              )),
                         ],
                       ),
                       SizedBox(
@@ -427,7 +431,9 @@ class AudioBottomSheet {
                                     .skipBackwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_backward_icon.png')),
+                                'assets/images/skip_backward_icon.png',
+                                semanticLabel: '10초 전으로',
+                              )),
                           SizedBox(
                             width: 40,
                           ),
@@ -472,7 +478,9 @@ class AudioBottomSheet {
                                     .skipForwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_forward_icon.png')),
+                                'assets/images/skip_forward_icon.png',
+                                semanticLabel: '10초 후로',
+                              )),
                         ],
                       ),
                       SizedBox(
