@@ -73,14 +73,17 @@ class SavedMenuBottomSheet extends StatelessWidget {
                   // --------------------------------
                   // bottomSheet : 3. 종료 버튼
                   // --------------------------------
-                  GestureDetector(
-                    onTap: () => context.pop(),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      width: 48,
-                      height: 48,
-                      color: Colors.transparent,
-                      child: Icon(Icons.close),
+                  Semantics(
+                    label: '메뉴 종료',
+                    child: GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        width: 48,
+                        height: 48,
+                        color: Colors.transparent,
+                        child: Icon(Icons.close),
+                      ),
                     ),
                   )
                 ],

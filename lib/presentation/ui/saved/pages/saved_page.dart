@@ -64,11 +64,18 @@ class _SavedPageState extends ConsumerState<SavedPage> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-                onPressed: () {
-                  context.push('/settings');
-                },
-                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
+            Semantics(
+              label: '설정 버튼',
+              button: true,
+              child: IconButton(
+                  onPressed: () {
+                    context.push('/settings');
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/svg/option_icon.svg',
+                    semanticsLabel: '',
+                  )),
+            ),
             const SizedBox(
               width: 8,
             ),
@@ -96,14 +103,16 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                       Positioned(
                         top: 35,
                         left: 24,
-                        child: Text(
-                          isLibrary
-                              ? '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹'
-                              : '나만의 플레이리스트를 마음껏\n만들어봐라냐옹',
-                          style: TextStyle(
-                              color: AppColors.gray900,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
+                        child: ExcludeSemantics(
+                          child: Text(
+                            isLibrary
+                                ? '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹'
+                                : '나만의 플레이리스트를 마음껏\n만들어봐라냐옹',
+                            style: TextStyle(
+                                color: AppColors.gray900,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                       Positioned(

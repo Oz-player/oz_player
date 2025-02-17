@@ -204,52 +204,55 @@ class SaveSongBottomSheet {
                                     horizontal: 37.5),
                                 child: SizedBox(
                                   height: 140,
-                                  child: TextField(
-                                    controller: textController,
-                                    onChanged: (value) {
-                                      ref
-                                          .read(
-                                              saveSongBottomSheetViewModelProvider
-                                                  .notifier)
-                                          .reflash();
-                                    },
-                                    style: TextStyle(
-                                      color: Colors.grey[900],
+                                  child: Semantics(
+                                    hint: '메모 추가',
+                                    child: TextField(
+                                      controller: textController,
+                                      onChanged: (value) {
+                                        ref
+                                            .read(
+                                                saveSongBottomSheetViewModelProvider
+                                                    .notifier)
+                                            .reflash();
+                                      },
+                                      style: TextStyle(
+                                        color: Colors.grey[900],
+                                      ),
+                                      maxLines: 6,
+                                      cursorWidth: 2.0,
+                                      cursorHeight: 20.0,
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.grey[200],
+                                          hintText: '메모 추가',
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey[600]),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                            ),
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 10,
+                                          )),
                                     ),
-                                    maxLines: 6,
-                                    cursorWidth: 2.0,
-                                    cursorHeight: 20.0,
-                                    decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.grey[200],
-                                        hintText: '메모 추가',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey[600]),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                          ),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                          ),
-                                        ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 10,
-                                        )),
                                   ),
                                 ),
                               ),
@@ -259,104 +262,113 @@ class SaveSongBottomSheet {
                               SizedBox(
                                 width: 160,
                                 height: 48,
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8))),
-                                    backgroundColor: WidgetStatePropertyAll(
-                                        textController.text.isEmpty
-                                            ? Colors.grey[300]
-                                            : Colors.grey[800]),
-                                  ),
-                                  onPressed: () async {
-                                    if (loading) {
-                                      return;
-                                    }
+                                child: Semantics(
+                                  label: textController.text.isEmpty
+                                      ? '저장하려면 먼저 메모를 작성해주세요.'
+                                      : '카드 저장하기',
+                                  child: TextButton(
+                                    style: ButtonStyle(
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8))),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          textController.text.isEmpty
+                                              ? Colors.grey[300]
+                                              : Colors.grey[800]),
+                                    ),
+                                    onPressed: () async {
+                                      if (loading) {
+                                        return;
+                                      }
 
-                                    if (textController.text.isEmpty) {
-                                      return;
-                                    } else {
-                                      ref
-                                          .read(
-                                              saveSongBottomSheetViewModelProvider
-                                                  .notifier)
-                                          .isBlind();
+                                      if (textController.text.isEmpty) {
+                                        return;
+                                      } else {
+                                        ref
+                                            .read(
+                                                saveSongBottomSheetViewModelProvider
+                                                    .notifier)
+                                            .isBlind();
 
-                                      ref
-                                          .read(
-                                              loadingViewModelProvider.notifier)
-                                          .startLoading(2);
+                                        ref
+                                            .read(loadingViewModelProvider
+                                                .notifier)
+                                            .startLoading(2);
 
-                                      try {
-                                        if (saveState
-                                                .savedSong!.video.audioUrl ==
-                                            '') {
-                                          final videoEx = ref
-                                              .read(videoInfoUsecaseProvider);
+                                        try {
+                                          if (saveState
+                                                  .savedSong!.video.audioUrl ==
+                                              '') {
+                                            final videoEx = ref
+                                                .read(videoInfoUsecaseProvider);
 
-                                          final video =
-                                              await videoEx.getVideoInfo(
-                                                  saveState.savedSong!.title,
-                                                  saveState.savedSong!.artist);
+                                            final video =
+                                                await videoEx.getVideoInfo(
+                                                    saveState.savedSong!.title,
+                                                    saveState
+                                                        .savedSong!.artist);
 
-                                          if (video.audioUrl == '' &&
-                                              video.id == '') {
-                                            throw '${saveState.savedSong!.title} - Video is EMPTY';
+                                            if (video.audioUrl == '' &&
+                                                video.id == '') {
+                                              throw '${saveState.savedSong!.title} - Video is EMPTY';
+                                            }
+
+                                            saveState.savedSong!.video = video;
                                           }
 
-                                          saveState.savedSong!.video = video;
-                                        }
+                                          ref
+                                              .read(
+                                                  saveSongBottomSheetViewModelProvider
+                                                      .notifier)
+                                              .setMemoInSong(
+                                                  textController.text);
+                                          // 카드 정보 보관함에 넘기기
 
-                                        ref
-                                            .read(
-                                                saveSongBottomSheetViewModelProvider
-                                                    .notifier)
-                                            .setMemoInSong(textController.text);
-                                        // 카드 정보 보관함에 넘기기
+                                          await ref
+                                              .read(
+                                                  saveSongBottomSheetViewModelProvider
+                                                      .notifier)
+                                              .saveSongInDB();
+                                          await ref
+                                              .read(
+                                                  saveSongBottomSheetViewModelProvider
+                                                      .notifier)
+                                              .saveSongInLibrary();
 
-                                        await ref
-                                            .read(
-                                                saveSongBottomSheetViewModelProvider
-                                                    .notifier)
-                                            .saveSongInDB();
-                                        await ref
-                                            .read(
-                                                saveSongBottomSheetViewModelProvider
-                                                    .notifier)
-                                            .saveSongInLibrary();
-
-                                        if (context.mounted) {
-                                          ToastMessage.show(context);
-                                          context.pop();
+                                          if (context.mounted) {
+                                            ToastMessage.show(context);
+                                            context.pop();
+                                          }
+                                          ref
+                                              .read(
+                                                  cardPositionProvider.notifier)
+                                              .cardPositionIndex(0);
+                                          ref
+                                              .read(loadingViewModelProvider
+                                                  .notifier)
+                                              .endLoading();
+                                        } catch (e) {
+                                          if (context.mounted) {
+                                            ToastMessage.showErrorMessage(
+                                                context);
+                                          }
+                                          ref
+                                              .read(loadingViewModelProvider
+                                                  .notifier)
+                                              .endLoading();
                                         }
-                                        ref
-                                            .read(cardPositionProvider.notifier)
-                                            .cardPositionIndex(0);
-                                        ref
-                                            .read(loadingViewModelProvider
-                                                .notifier)
-                                            .endLoading();
-                                      } catch (e) {
-                                        if (context.mounted) {
-                                          ToastMessage.showErrorMessage(context);
-                                        }
-                                        ref
-                                            .read(loadingViewModelProvider
-                                                .notifier)
-                                            .endLoading();
                                       }
-                                    }
-                                  },
-                                  child: Text(
-                                    '카드 저장하기',
-                                    style: TextStyle(
-                                        color: textController.text.isEmpty
-                                            ? Colors.grey[400]
-                                            : Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
+                                    },
+                                    child: Text(
+                                      '카드 저장하기',
+                                      style: TextStyle(
+                                          color: textController.text.isEmpty
+                                              ? Colors.grey[400]
+                                              : Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
                               ),

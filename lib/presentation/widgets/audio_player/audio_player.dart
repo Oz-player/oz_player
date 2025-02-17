@@ -14,7 +14,7 @@ class AudioPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return bottomAudioPlayer(colorMode);
+    return Semantics(label: '오디오 플레이어', child: bottomAudioPlayer(colorMode));
   }
 
   Widget bottomAudioPlayer(bool colorMode) {

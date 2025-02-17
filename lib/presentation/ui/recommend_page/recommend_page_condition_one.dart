@@ -21,20 +21,25 @@ class RecommendPageConditionOne extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text('음악 카드 추천'),
+          title: Semantics(
+              hint: '옵션을 선택한 뒤 오른쪽 하단의 다음 버튼을 눌러주세요.', child: Text('음악 카드 추천')),
           centerTitle: true,
           backgroundColor: Colors.transparent,
-          leading: IconButton(
-              onPressed: () {
-                if (conditionState.page == 0) {
-                  context.pop();
-                } else {
-                  ref
-                      .read(conditionViewModelProvider.notifier)
-                      .beforePageAnimation();
-                }
-              },
-              icon: Icon(Icons.arrow_back)),
+          leading: Semantics(
+            label: '뒤로 가기',
+            button: true,
+            child: IconButton(
+                onPressed: () {
+                  if (conditionState.page == 0) {
+                    context.pop();
+                  } else {
+                    ref
+                        .read(conditionViewModelProvider.notifier)
+                        .beforePageAnimation();
+                  }
+                },
+                icon: Icon(Icons.arrow_back)),
+          ),
         ),
         body: AnimatedOpacity(
           opacity: conditionState.opacity,
@@ -48,9 +53,14 @@ class RecommendPageConditionOne extends ConsumerWidget {
                   SizedBox(
                     height: 24,
                   ),
-                  Text(
-                    '(${conditionState.page + 1}/4)',
-                    style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                  Semantics(
+                    label: '4단계 중 ${conditionState.page + 1}번째',
+                    child: ExcludeSemantics(
+                      child: Text(
+                        '(${conditionState.page + 1}/4)',
+                        style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 8,
@@ -83,8 +93,8 @@ class RecommendPageConditionOne extends ConsumerWidget {
                         ...boxes(
                             conditionState.genre, conditionState.genreSet, ref),
                       if (conditionState.page == 3)
-                        ...boxes(
-                            conditionState.artist, conditionState.artistSet, ref),
+                        ...boxes(conditionState.artist,
+                            conditionState.artistSet, ref),
                     ],
                   ),
                   Spacer(),
@@ -98,17 +108,20 @@ class RecommendPageConditionOne extends ConsumerWidget {
                               backgroundColor: Colors.grey[800],
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8))),
-                          onPressed: conditionState.event == false ? null : () async {
-                            final isNextPage = ref
-                                .read(conditionViewModelProvider.notifier)
-                                .nextPage();
-                            if (isNextPage) {
-                              ref
-                                  .read(conditionViewModelProvider.notifier)
-                                  .recommendMusic();
-                              context.go('/home/recommend/conditionTwo');
-                            }
-                          },
+                          onPressed: conditionState.event == false
+                              ? null
+                              : () async {
+                                  final isNextPage = ref
+                                      .read(conditionViewModelProvider.notifier)
+                                      .nextPage();
+                                  if (isNextPage) {
+                                    ref
+                                        .read(
+                                            conditionViewModelProvider.notifier)
+                                        .recommendMusic();
+                                    context.go('/home/recommend/conditionTwo');
+                                  }
+                                },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: Text(

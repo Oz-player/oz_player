@@ -136,8 +136,10 @@ class CardWidgetLibrary extends ConsumerWidget {
                                       showDialog(
                                         barrierDismissible: false,
                                         context: context,
-                                        builder: (context) =>
-                                            memoDialog(title, memo, mood),
+                                        builder: (context) => Semantics(
+                                          label: '내가 남긴 메모 확인',
+                                          child: memoDialog(title, memo, mood),
+                                        ),
                                       );
                                     },
                                     child: SizedBox(
@@ -255,37 +257,43 @@ Widget memoDialog(String title, String memo, String mood) {
                             SizedBox(
                               height: 20,
                             ),
-                            tagBox(mood),
+                            Semantics(
+                              label: '기분',
+                              child: tagBox(mood),
+                            ),
                             const SizedBox(
                               height: 8,
                             ),
                             Flexible(
-                              child: Container(
-                                width: 259,
-                                height: 170,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                  left: 20,
-                                  right: 20,
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: AppColors.border,
-                                    )),
-                                child: ListView(
-                                  children: [
-                                    Text(
-                                      memo,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                        color: AppColors.gray900,
+                              child: Semantics(
+                                label: '내용',
+                                child: Container(
+                                  width: 259,
+                                  height: 170,
+                                  padding: const EdgeInsets.only(
+                                    top: 10,
+                                    bottom: 10,
+                                    left: 20,
+                                    right: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: AppColors.border,
+                                      )),
+                                  child: ListView(
+                                    children: [
+                                      Text(
+                                        memo,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                          color: AppColors.gray900,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -296,22 +304,23 @@ Widget memoDialog(String title, String memo, String mood) {
                               width: 246,
                               height: 40,
                               child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: WidgetStatePropertyAll(
-                                        AppColors.main700),
-                                    shape: WidgetStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(AppColors.main700),
+                                  shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    context.pop();
-                                  },
-                                  child: Text(
-                                    '확인',
-                                    style: TextStyle(color: Colors.white),
-                                  )),
+                                ),
+                                onPressed: () {
+                                  context.pop();
+                                },
+                                child: Text(
+                                  '확인',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
                             ),
                           ],
                         ),

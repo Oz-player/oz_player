@@ -83,40 +83,47 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
           // ------------------------
           // 뒤로가기 버튼
           // ------------------------
-          leading: IconButton(
-            onPressed: () async {
-              await ref.read(playListsUsecaseProvider).editImage(
-                  ref.read(userViewModelProvider.notifier).getUserId(),
-                  widget.playlist.imgUrl,
-                  initialImageUrl,
-                  widget.playlist.listName);
-              if (isEdited) {
-                if (context.mounted) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => CancleEditAlertDialog(
-                      destination: null,
-                      newEntity: widget.playlist,
-                      initialList: widget.playlist.songIds,
-                    ),
-                  );
+          leading: Semantics(
+            label: '뒤로 가기',
+            button: true,
+            child: IconButton(
+              onPressed: () async {
+                await ref.read(playListsUsecaseProvider).editImage(
+                    ref.read(userViewModelProvider.notifier).getUserId(),
+                    widget.playlist.imgUrl,
+                    initialImageUrl,
+                    widget.playlist.listName);
+                if (isEdited) {
+                  if (context.mounted) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CancleEditAlertDialog(
+                        destination: null,
+                        newEntity: widget.playlist,
+                        initialList: widget.playlist.songIds,
+                      ),
+                    );
+                  }
+                } else {
+                  ref.read(bottomNavigationProvider.notifier).updatePage(0);
+                  if (context.mounted) {
+                    context.pop(
+                      PlayListEntity(
+                          listName: widget.playlist.listName,
+                          createdAt: widget.playlist.createdAt,
+                          imgUrl: initialImageUrl,
+                          description: widget.playlist.description,
+                          songIds: widget.playlist.songIds),
+                    );
+                  }
                 }
-              } else {
-                ref.read(bottomNavigationProvider.notifier).updatePage(0);
-                if (context.mounted) {
-                  context.pop(
-                    PlayListEntity(
-                        listName: widget.playlist.listName,
-                        createdAt: widget.playlist.createdAt,
-                        imgUrl: initialImageUrl,
-                        description: widget.playlist.description,
-                        songIds: widget.playlist.songIds),
-                  );
-                }
-              }
-            },
-            icon: Icon(Icons.arrow_back),
-            color: Colors.grey[900],
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                semanticLabel: '',
+              ),
+              color: Colors.grey[900],
+            ),
           ),
           actions: [],
           title: Align(
@@ -124,86 +131,93 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
             // --------------------
             // 저장 버튼
             // --------------------
-            child: GestureDetector(
-              onTap: () async {
-                // 제목은 비워둘 수 없게 설정
-                if (listNameController.text == '') {
-                  listNameController.text = widget.playlist.listName;
-                }
-                // 제목을 수정한 경우
-                if (listNameController.text != currentName) {
-                  await ref.watch(playListsUsecaseProvider).editListName(
-                      ref.read(userViewModelProvider.notifier).getUserId(),
-                      currentName,
-                      listNameController.text);
-                  isEdited = true;
-                }
-                // 플레이리스트 설명을 수정한 경우
-                if (descriptionController.text != currentDescription) {
-                  await ref.watch(playListsUsecaseProvider).editDescription(
-                      ref.read(userViewModelProvider.notifier).getUserId(),
-                      currentDescription,
-                      descriptionController.text);
-                  isEdited = true;
-                }
-                // 음악을 삭제하지 않고 플레이리스트 순서를 바꾼 경우
-                if (widget.playlist.songIds.length == currentOrder.length) {
-                  for (int i = 0; i < currentOrder.length; i++) {
-                    if (widget.playlist.songIds[i] != currentOrder[i]) {
-                      await ref.watch(playListsUsecaseProvider).editSongOrder(
-                          ref.read(userViewModelProvider.notifier).getUserId(),
-                          widget.playlist.listName,
-                          currentOrder);
-                      isEdited = true;
-                      break;
+            child: Semantics(
+              button: true,
+              child: GestureDetector(
+                onTap: () async {
+                  // 제목은 비워둘 수 없게 설정
+                  if (listNameController.text == '') {
+                    listNameController.text = widget.playlist.listName;
+                  }
+                  // 제목을 수정한 경우
+                  if (listNameController.text != currentName) {
+                    await ref.watch(playListsUsecaseProvider).editListName(
+                        ref.read(userViewModelProvider.notifier).getUserId(),
+                        currentName,
+                        listNameController.text);
+                    isEdited = true;
+                  }
+                  // 플레이리스트 설명을 수정한 경우
+                  if (descriptionController.text != currentDescription) {
+                    await ref.watch(playListsUsecaseProvider).editDescription(
+                        ref.read(userViewModelProvider.notifier).getUserId(),
+                        currentDescription,
+                        descriptionController.text);
+                    isEdited = true;
+                  }
+                  // 음악을 삭제하지 않고 플레이리스트 순서를 바꾼 경우
+                  if (widget.playlist.songIds.length == currentOrder.length) {
+                    for (int i = 0; i < currentOrder.length; i++) {
+                      if (widget.playlist.songIds[i] != currentOrder[i]) {
+                        await ref.watch(playListsUsecaseProvider).editSongOrder(
+                            ref
+                                .read(userViewModelProvider.notifier)
+                                .getUserId(),
+                            widget.playlist.listName,
+                            currentOrder);
+                        isEdited = true;
+                        break;
+                      }
                     }
                   }
-                }
-                // 이미지 변경
-                await ref.read(playListsUsecaseProvider).editImage(
-                    ref.read(userViewModelProvider.notifier).getUserId(),
-                    widget.playlist.imgUrl,
-                    initialImageUrl,
-                    widget.playlist.listName);
+                  // 이미지 변경
+                  await ref.read(playListsUsecaseProvider).editImage(
+                      ref.read(userViewModelProvider.notifier).getUserId(),
+                      widget.playlist.imgUrl,
+                      initialImageUrl,
+                      widget.playlist.listName);
 
-                // 수정한 요소가 있다면 플레이리스트 리로드
-                if (isEdited) {
-                  await ref
-                      .read(playListViewModelProvider.notifier)
-                      .getPlayLists();
-                  if (ref.watch(listSortViewModelProvider) ==
-                      SortedType.latest) {
-                    ref.read(listSortViewModelProvider.notifier).setLatest();
-                  } else {
-                    ref.read(listSortViewModelProvider.notifier).setAscending();
+                  // 수정한 요소가 있다면 플레이리스트 리로드
+                  if (isEdited) {
+                    await ref
+                        .read(playListViewModelProvider.notifier)
+                        .getPlayLists();
+                    if (ref.watch(listSortViewModelProvider) ==
+                        SortedType.latest) {
+                      ref.read(listSortViewModelProvider.notifier).setLatest();
+                    } else {
+                      ref
+                          .read(listSortViewModelProvider.notifier)
+                          .setAscending();
+                    }
                   }
-                }
 
-                if (context.mounted) {
-                  context.pop(
-                    PlayListEntity(
-                      listName: listNameController.text,
-                      createdAt: widget.playlist.createdAt,
-                      imgUrl: initialImageUrl,
-                      description: descriptionController.text,
-                      songIds: currentOrder.isEmpty
-                          ? widget.playlist.songIds
-                          : currentOrder,
+                  if (context.mounted) {
+                    context.pop(
+                      PlayListEntity(
+                        listName: listNameController.text,
+                        createdAt: widget.playlist.createdAt,
+                        imgUrl: initialImageUrl,
+                        description: descriptionController.text,
+                        songIds: currentOrder.isEmpty
+                            ? widget.playlist.songIds
+                            : currentOrder,
+                      ),
+                    );
+                    ref.watch(bottomNavigationProvider.notifier).updatePage(0);
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 44,
+                  height: 44,
+                  color: Colors.transparent,
+                  child: Text(
+                    '저장',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
-                  );
-                  ref.watch(bottomNavigationProvider.notifier).updatePage(0);
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 44,
-                height: 44,
-                color: Colors.transparent,
-                child: Text(
-                  '저장',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
                   ),
                 ),
               ),
@@ -267,27 +281,30 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                             // ---------------
                             // 플레이리스트 제목
                             // ---------------
-                            TextField(
-                              controller: listNameController,
-                              focusNode: titleFocus,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24,
-                              ),
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.zero,
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                hintText: widget.playlist.listName,
-                                hintStyle: TextStyle(
+                            Semantics(
+                              label: '제목 편집',
+                              child: TextField(
+                                controller: listNameController,
+                                focusNode: titleFocus,
+                                style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 24,
-                                  color: AppColors.gray400,
                                 ),
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  hintText: widget.playlist.listName,
+                                  hintStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24,
+                                    color: AppColors.gray400,
+                                  ),
+                                ),
+                                onChanged: (value) => isEdited = true,
                               ),
-                              onChanged: (value) => isEdited = true,
                             ),
                             const SizedBox(
                               height: 8,
@@ -297,27 +314,30 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                             // ---------------
                             Padding(
                               padding: const EdgeInsets.only(bottom: 20),
-                              child: TextField(
-                                controller: descriptionController,
-                                focusNode: descriptionFocus,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  border: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  hintText: '플레이리스트 설명을 입력하세요',
-                                  hintStyle: TextStyle(
+                              child: Semantics(
+                                label: '설명 편집',
+                                child: TextField(
+                                  controller: descriptionController,
+                                  focusNode: descriptionFocus,
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
-                                    color: AppColors.gray400,
                                   ),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.zero,
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: '플레이리스트 설명을 입력하세요',
+                                    hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12,
+                                      color: AppColors.gray400,
+                                    ),
+                                  ),
+                                  onChanged: (value) => isEdited = true,
                                 ),
-                                onChanged: (value) => isEdited = true,
                               ),
                             )
                           ],
@@ -384,174 +404,188 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                                     // -----------------------------
                                     // 슬라이더 위젯
                                     // -----------------------------
-                                    title: Slidable(
-                                      key: const ValueKey(0),
-                                      endActionPane: ActionPane(
-                                        extentRatio: 0.25,
-                                        motion: BehindMotion(),
-                                        children: [
-                                          // ------------------------
-                                          // 삭제 버튼 클릭 시 액션
-                                          // ------------------------
-                                          SlidableAction(
-                                            flex: 1,
-                                            onPressed: (value) {
-                                              String id = data[index].video.id;
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    if (index != 0) {
-                                                      // 리스트의 첫 번째가 아닌 곡 삭제
-                                                      return DeleteSongAlertDialog(
-                                                        listName: widget
-                                                            .playlist.listName,
-                                                        songId: id,
-                                                        removeSongId: () =>
-                                                            removeSongId(
-                                                                id,
-                                                                widget.playlist
-                                                                    .imgUrl),
-                                                      );
-                                                    } else if (data.length >
-                                                        1) {
-                                                      // 리스트의 첫 번째 곡 삭제 && 리스트 길이 2이상
-                                                      initialImageUrl =
-                                                          data[index + 1]
-                                                              .imgUrl;
-                                                      return DeleteSongAlertDialog(
-                                                        listName: widget
-                                                            .playlist.listName,
-                                                        songId: data[index]
-                                                            .video
-                                                            .id,
-                                                        removeSongId: () =>
-                                                            removeSongId(
-                                                                data[index]
-                                                                    .video
-                                                                    .id,
-                                                                data[index + 1]
-                                                                    .imgUrl),
-                                                        prevUrl:
-                                                            data[index].imgUrl,
-                                                        newUrl: data[index + 1]
-                                                            .imgUrl,
-                                                      );
-                                                    } else {
-                                                      // 리스트의 첫 번째 곡 삭제 && 리스트 길이 1이하
-                                                      initialImageUrl = null;
-                                                      return DeleteSongAlertDialog(
-                                                        listName: widget
-                                                            .playlist.listName,
-                                                        songId: data[index]
-                                                            .video
-                                                            .id,
-                                                        removeSongId: () =>
-                                                            removeSongId(
-                                                                data[index]
-                                                                    .video
-                                                                    .id,
-                                                                null),
-                                                        prevUrl:
-                                                            data[index].imgUrl,
-                                                        newUrl: null,
-                                                      );
-                                                    }
-                                                  });
-                                            },
-                                            backgroundColor: AppColors.red,
-                                            foregroundColor: Colors.white,
-                                            label: '삭제',
-                                          ),
-                                        ],
-                                      ),
-                                      // 리스트 블록 레이아웃
-                                      child: SizedBox(
-                                        height: 72,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                    title: Semantics(
+                                      hint: '오른쪽으로 슬라이드하여 삭제',
+                                      child: Slidable(
+                                        key: const ValueKey(0),
+                                        endActionPane: ActionPane(
+                                          extentRatio: 0.25,
+                                          motion: BehindMotion(),
                                           children: [
-                                            Expanded(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  // ---------
-                                                  // 곡 이미지
-                                                  // ---------
-                                                  Container(
-                                                    width: 48,
-                                                    height: 48,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      color: AppColors.gray600,
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            data[index].imgUrl),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  // -------
-                                                  // 곡 내용
-                                                  // -------
-                                                  Expanded(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 18),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            data[index].title,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 16,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            data[index].artist,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: TextStyle(
-                                                              color: AppColors
-                                                                  .gray600,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 14,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            // -------------
-                                            // 메뉴 버튼
-                                            // -------------
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              color: Colors.transparent,
-                                              child: Icon(Icons.more_vert),
+                                            // ------------------------
+                                            // 삭제 버튼 클릭 시 액션
+                                            // ------------------------
+                                            SlidableAction(
+                                              flex: 1,
+                                              onPressed: (value) {
+                                                String id =
+                                                    data[index].video.id;
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      if (index != 0) {
+                                                        // 리스트의 첫 번째가 아닌 곡 삭제
+                                                        return DeleteSongAlertDialog(
+                                                          listName: widget
+                                                              .playlist
+                                                              .listName,
+                                                          songId: id,
+                                                          removeSongId: () =>
+                                                              removeSongId(
+                                                                  id,
+                                                                  widget
+                                                                      .playlist
+                                                                      .imgUrl),
+                                                        );
+                                                      } else if (data.length >
+                                                          1) {
+                                                        // 리스트의 첫 번째 곡 삭제 && 리스트 길이 2이상
+                                                        initialImageUrl =
+                                                            data[index + 1]
+                                                                .imgUrl;
+                                                        return DeleteSongAlertDialog(
+                                                          listName: widget
+                                                              .playlist
+                                                              .listName,
+                                                          songId: data[index]
+                                                              .video
+                                                              .id,
+                                                          removeSongId: () =>
+                                                              removeSongId(
+                                                                  data[index]
+                                                                      .video
+                                                                      .id,
+                                                                  data[index +
+                                                                          1]
+                                                                      .imgUrl),
+                                                          prevUrl: data[index]
+                                                              .imgUrl,
+                                                          newUrl:
+                                                              data[index + 1]
+                                                                  .imgUrl,
+                                                        );
+                                                      } else {
+                                                        // 리스트의 첫 번째 곡 삭제 && 리스트 길이 1이하
+                                                        initialImageUrl = null;
+                                                        return DeleteSongAlertDialog(
+                                                          listName: widget
+                                                              .playlist
+                                                              .listName,
+                                                          songId: data[index]
+                                                              .video
+                                                              .id,
+                                                          removeSongId: () =>
+                                                              removeSongId(
+                                                                  data[index]
+                                                                      .video
+                                                                      .id,
+                                                                  null),
+                                                          prevUrl: data[index]
+                                                              .imgUrl,
+                                                          newUrl: null,
+                                                        );
+                                                      }
+                                                    });
+                                              },
+                                              backgroundColor: AppColors.red,
+                                              foregroundColor: Colors.white,
+                                              label: '삭제',
                                             ),
                                           ],
+                                        ),
+                                        // 리스트 블록 레이아웃
+                                        child: SizedBox(
+                                          height: 72,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    // ---------
+                                                    // 곡 이미지
+                                                    // ---------
+                                                    Container(
+                                                      width: 48,
+                                                      height: 48,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        color:
+                                                            AppColors.gray600,
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              data[index]
+                                                                  .imgUrl),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // -------
+                                                    // 곡 내용
+                                                    // -------
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 18),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              data[index].title,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              data[index]
+                                                                  .artist,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                color: AppColors
+                                                                    .gray600,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              // -------------
+                                              // 메뉴 버튼
+                                              // -------------
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                color: Colors.transparent,
+                                                child: Icon(Icons.more_vert),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

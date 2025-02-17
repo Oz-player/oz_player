@@ -11,8 +11,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(bottomNavigationProvider.notifier).resetPage();
     });
 
@@ -33,11 +32,18 @@ class HomePage extends ConsumerWidget {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           actions: [
-            IconButton(
-                onPressed: () {
-                  context.push('/settings');
-                },
-                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
+            // 설정창
+            Semantics(
+              label: '설정 버튼',
+              child: IconButton(
+                  onPressed: () {
+                    context.push('/settings');
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/svg/option_icon.svg',
+                    semanticsLabel: '',
+                  )),
+            ),
             SizedBox(
               width: 8,
             ),

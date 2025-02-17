@@ -18,16 +18,35 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            '설정',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[900],
-              height: 1.4,
+        centerTitle: true,
+        title: Semantics(
+          label: '설정',
+          child: ExcludeSemantics(
+            child: Text(
+              '설정',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[900],
+                height: 1.4,
+              ),
             ),
-          )),
+          ),
+        ),
+        leading: Semantics(
+          button: true,
+          child: IconButton(
+            onPressed: () {
+              context.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              semanticLabel: '돌아가기',
+            ),
+            color: Colors.grey[900],
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -105,111 +124,116 @@ class ExitButtons extends ConsumerWidget {
           textButton('로그아웃', () {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                content: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          '잠깐!\n정말 로그아웃 하시겠어요?',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            height: 1.4,
+              builder: (context) => Semantics(
+                label: '취소와 확인 버튼입니다. 로그아웃 하시려면 확인을 눌러주세요.',
+                child: AlertDialog(
+                  backgroundColor: Colors.white,
+                  content: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 24,
                           ),
-                        ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        Text(
-                          '확인 버튼을 누르면 로그아웃됩니다',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF6B7684),
-                            height: 1.4,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                                style: ButtonStyle(
-                                    padding: WidgetStateProperty.all<
-                                            EdgeInsetsGeometry>(
-                                        EdgeInsets.symmetric(
-                                            horizontal: 47, vertical: 10)),
-                                    backgroundColor: WidgetStatePropertyAll(
-                                        Color(0xFFF2E6FF)),
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)))),
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: Text(
-                                  '취소',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF6B7684),
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.4),
-                                )),
-                            SizedBox(
-                              width: 8,
+                          Text(
+                            '잠깐!\n정말 로그아웃 하시겠어요?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              height: 1.4,
                             ),
-                            TextButton(
-                                style: ButtonStyle(
-                                    padding: WidgetStateProperty.all<
-                                            EdgeInsetsGeometry>(
-                                        EdgeInsets.symmetric(
-                                            horizontal: 47, vertical: 10)),
-                                    backgroundColor: WidgetStatePropertyAll(
-                                        Color(0xFF40017E)),
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)))),
-                                onPressed: () async {
-                                  log('로그아웃 확인 버튼 선택함!');
-                                  final loginViewModel =
-                                      ref.read(loginViewModelProvider.notifier);
-                                  await loginViewModel.logout();
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            '확인 버튼을 누르면 로그아웃됩니다',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF6B7684),
+                              height: 1.4,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  style: ButtonStyle(
+                                      padding: WidgetStateProperty.all<
+                                              EdgeInsetsGeometry>(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 47, vertical: 10)),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          Color(0xFFF2E6FF)),
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8)))),
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  child: Text(
+                                    '취소',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF6B7684),
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.4),
+                                  )),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              TextButton(
+                                  style: ButtonStyle(
+                                      padding: WidgetStateProperty.all<
+                                              EdgeInsetsGeometry>(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 47, vertical: 10)),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          Color(0xFF40017E)),
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8)))),
+                                  onPressed: () async {
+                                    log('로그아웃 확인 버튼 선택함!');
+                                    final loginViewModel = ref
+                                        .read(loginViewModelProvider.notifier);
+                                    await loginViewModel.logout();
 
-                                  // ignore: use_build_context_synchronously
-                                  context.go('/login');
-                                  ref.read(bottomNavigationProvider.notifier).resetPage();
-                                },
-                                child: Text(
-                                  '확인',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    height: 1.4,
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                        top: -164,
-                        left: 0,
-                        right: 0,
-                        child: Image.asset('assets/char/oz_2.png')),
-                  ],
+                                    // ignore: use_build_context_synchronously
+                                    context.go('/login');
+                                    ref
+                                        .read(bottomNavigationProvider.notifier)
+                                        .resetPage();
+                                  },
+                                  child: Text(
+                                    '확인',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      height: 1.4,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                          top: -164,
+                          left: 0,
+                          right: 0,
+                          child: Image.asset('assets/char/oz_2.png')),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -227,7 +251,7 @@ class ExitButtons extends ConsumerWidget {
             ),
           ),
           textButton('회원탈퇴', () {
-            context.go('/settings/revoke');
+            context.push('/settings/revoke');
           }),
         ],
       ),

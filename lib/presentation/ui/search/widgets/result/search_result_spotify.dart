@@ -83,7 +83,6 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                             result.name, // SpotifyEntity의 title 속성 사용
                             style: TextStyle(
                               fontSize: 16,
-                              fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
                             ),
@@ -98,7 +97,6 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                                   : '',
                           style: TextStyle(
                             fontSize: 16,
-                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w500,
                             color: Colors.grey[600],
                           ),
@@ -125,8 +123,11 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                       },
                     );
                   },
-                  icon: Image.asset(
-                    'assets/images/menu_thin_icon.png',
+                  icon: Semantics(
+                    label: '음악 옵션',
+                    child: Image.asset(
+                      'assets/images/menu_thin_icon.png',
+                    ),
                   ),
                 ),
               ],

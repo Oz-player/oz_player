@@ -48,7 +48,9 @@ class _RecommendPageConditionTwoState
         ? Stack(
             children: [
               mainScaffold(conditionState),
-              LoadingWidget(),
+              Semantics(
+                  label: '준비 중, 잠시만 기다려주세요.',
+                  child: ExcludeSemantics(child: LoadingWidget())),
             ],
           )
         : mainScaffold(conditionState);
@@ -114,10 +116,19 @@ class _RecommendPageConditionTwoState
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  tagBox(conditionState
-                      .situation[conditionState.situationSet.first]),
-                  tagBox(conditionState.genre[conditionState.genreSet.first]),
-                  tagBox(conditionState.artist[conditionState.artistSet.first]),
+                  Semantics(
+                    label: '장르',
+                    child: tagBox(
+                        conditionState.genre[conditionState.genreSet.first]),
+                  ),
+                  Semantics(
+                      hint: '할 때 듣는 노래',
+                      child: tagBox(conditionState
+                          .situation[conditionState.situationSet.first])),
+                  Semantics(
+                      label: '아티스트 분류',
+                      child: tagBox(conditionState
+                          .artist[conditionState.artistSet.first])),
                 ],
               ),
               SizedBox(
@@ -129,6 +140,7 @@ class _RecommendPageConditionTwoState
                   loop: false,
                   itemBuilder: (BuildContext context, int index) {
                     final length = conditionState.recommendSongs.length;
+                    var activeIndex = ref.read(cardPositionProvider);
                     if (length == 0) {
                       return CardWidget(
                         isEmpty: true,
@@ -144,10 +156,17 @@ class _RecommendPageConditionTwoState
                     final title = recommendSong.title;
                     final artist = recommendSong.artist;
                     final imgUrl = recommendSong.imgUrl;
-                    return CardWidget(
-                      title: title,
-                      artist: artist,
-                      imgUrl: imgUrl,
+                    return Semantics(
+                      label: index == activeIndex
+                          ? '현재 카드'
+                          : index > activeIndex
+                              ? '다음 카드'
+                              : '이전 카드',
+                      child: CardWidget(
+                        title: title,
+                        artist: artist,
+                        imgUrl: imgUrl,
+                      ),
                     );
                   },
                   itemCount: conditionState.recommendSongs == []
@@ -217,14 +236,18 @@ class _RecommendPageConditionTwoState
                                 null);
                           },
                           borderRadius: BorderRadius.circular(50),
-                          child: CircleAvatar(
-                            backgroundColor:
-                                Colors.black.withValues(alpha: 0.32),
-                            radius: 28,
-                            child: Icon(
-                              Icons.format_list_bulleted_add,
-                              size: 24,
-                              color: Colors.white,
+                          child: Semantics(
+                            label: '플레이리스트에 저장',
+                            button: true,
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Colors.black.withValues(alpha: 0.32),
+                              radius: 28,
+                              child: Icon(
+                                Icons.format_list_bulleted_add,
+                                size: 24,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -289,21 +312,27 @@ class _RecommendPageConditionTwoState
                                           .audioUrl,
                                       positionIndex);
                             } catch (e) {
-                              ToastMessage.showErrorMessage(context);
+                              if (mounted) {
+                                ToastMessage.showErrorMessage(context);
+                              }
                               ref
                                   .read(audioPlayerViewModelProvider.notifier)
                                   .isEndLoadingAudioPlayer();
                             }
                           },
                           borderRadius: BorderRadius.circular(50),
-                          child: CircleAvatar(
-                            backgroundColor:
-                                Colors.black.withValues(alpha: 0.32),
-                            radius: 28,
-                            child: Icon(
-                              Icons.play_arrow,
-                              size: 24,
-                              color: Colors.white,
+                          child: Semantics(
+                            label: '재생',
+                            button: true,
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Colors.black.withValues(alpha: 0.32),
+                              radius: 28,
+                              child: Icon(
+                                Icons.play_arrow,
+                                size: 24,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -326,14 +355,18 @@ class _RecommendPageConditionTwoState
                                 context, ref, textControllerSaveSongMemo);
                           },
                           borderRadius: BorderRadius.circular(50),
-                          child: CircleAvatar(
-                            backgroundColor:
-                                Colors.black.withValues(alpha: 0.32),
-                            radius: 28,
-                            child: Icon(
-                              Icons.bookmark,
-                              size: 24,
-                              color: Colors.white,
+                          child: Semantics(
+                            label: '음악 카드 저장',
+                            button: true,
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Colors.black.withValues(alpha: 0.32),
+                              radius: 28,
+                              child: Icon(
+                                Icons.bookmark,
+                                size: 24,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         )

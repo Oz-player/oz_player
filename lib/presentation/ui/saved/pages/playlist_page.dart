@@ -150,510 +150,586 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => setState(() {
-        isOverlayOn = false;
-      }),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          scrolledUnderElevation: 0,
-          title: Text(
-            '플레이리스트',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
+    return Semantics(
+      label: '',
+      child: GestureDetector(
+        onTap: () => setState(() {
+          isOverlayOn = false;
+        }),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            scrolledUnderElevation: 0,
+            title: Text(
+              '플레이리스트',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+              ),
             ),
-          ),
-          actions: [
-            IconButton(
+            leading: Semantics(
+              button: true,
+              child: IconButton(
                 onPressed: () {
-                  context.push('/settings');
+                  context.pop();
                 },
-                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
-            SizedBox(
-              width: 8,
+                icon: Icon(
+                  Icons.arrow_back,
+                  semanticLabel: '보관함으로 돌아가기',
+                ),
+                color: Colors.grey[900],
+              ),
             ),
-          ],
-        ),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // ------------------------------------------------------
-                  // 플레이리스트 대표 이미지
-                  // ------------------------------------------------------
-                  Container(
-                    width: double.infinity,
-                    height: 140,
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: widget.scaffoldPlaylist.imgUrl == null
-                                ? DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/empty_thumbnail.png'))
-                                : DecorationImage(
-                                    image: NetworkImage(
-                                        widget.scaffoldPlaylist.imgUrl!)),
+            actions: [
+              Semantics(
+                label: '설정 버튼',
+                button: true,
+                child: IconButton(
+                    onPressed: () {
+                      context.push('/settings');
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/svg/option_icon.svg',
+                      semanticsLabel: '',
+                    )),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+          body: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ------------------------------------------------------
+                    // 플레이리스트 대표 이미지
+                    // ------------------------------------------------------
+                    Container(
+                      width: double.infinity,
+                      height: 140,
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: widget.scaffoldPlaylist.imgUrl == null
+                                  ? DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/empty_thumbnail.png'))
+                                  : DecorationImage(
+                                      image: NetworkImage(
+                                          widget.scaffoldPlaylist.imgUrl!)),
+                            ),
                           ),
-                        ),
-                        // ----------------------------------------------------------
-                        // 플레이리스트 관리 메뉴 버튼
-                        // ----------------------------------------------------------
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              context: context,
-                              builder: (context) => SavedMenuBottomSheet(
-                                imgUrl: widget.scaffoldPlaylist.imgUrl,
-                                name: widget.scaffoldPlaylist.listName,
-                                items: [
-                                  // --------------------------------
-                                  // playlist menu : 1. 셔플 재생
-                                  // --------------------------------
-                                  GestureDetector(
-                                    onTap: () async {
-                                      context.pop();
-                                      await widget.ref
-                                          .read(audioPlayerViewModelProvider
-                                              .notifier)
-                                          .toggleStop();
-                                      widget.songListAsync.when(
-                                        data: (data) async {
-                                          List<SongEntity> list = [];
-                                          for (var item in data) {
-                                            list.add(item);
-                                          }
-                                          list.shuffle();
-                                          widget.addListInAudioPlayer(list);
-                                        },
-                                        error: (error, stackTrace) {},
-                                        loading: () {},
-                                      );
-                                    },
-                                    child:
-                                        BottomSheetMenuButton(title: '셔플 재생'),
-                                  ),
-                                  // --------------------------------
-                                  // playlist menu : 2. 플레이리스트 편집
-                                  // --------------------------------
-                                  GestureDetector(
-                                    onTap: () async {
-                                      context.pop();
-                                      widget.ref
-                                          .read(
-                                              bottomNavigationProvider.notifier)
-                                          .updatePage(5);
-                                      final newList = await context.push(
-                                        '/saved/playlist/edit',
-                                        extra: widget.scaffoldPlaylist,
-                                      ) as PlayListEntity;
-                                      widget.setListState(newList);
-                                    },
-                                    child: BottomSheetMenuButton(
-                                      title: '플레이리스트 편집',
+                          // ----------------------------------------------------------
+                          // 플레이리스트 관리 메뉴 버튼
+                          // ----------------------------------------------------------
+                          IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => SavedMenuBottomSheet(
+                                  imgUrl: widget.scaffoldPlaylist.imgUrl,
+                                  name: widget.scaffoldPlaylist.listName,
+                                  items: [
+                                    // --------------------------------
+                                    // playlist menu : 1. 셔플 재생
+                                    // --------------------------------
+                                    GestureDetector(
+                                      onTap: () async {
+                                        context.pop();
+                                        await widget.ref
+                                            .read(audioPlayerViewModelProvider
+                                                .notifier)
+                                            .toggleStop();
+                                        widget.songListAsync.when(
+                                          data: (data) async {
+                                            List<SongEntity> list = [];
+                                            for (var item in data) {
+                                              list.add(item);
+                                            }
+                                            list.shuffle();
+                                            widget.addListInAudioPlayer(list);
+                                          },
+                                          error: (error, stackTrace) {},
+                                          loading: () {},
+                                        );
+                                      },
+                                      child:
+                                          BottomSheetMenuButton(title: '셔플 재생'),
+                                    ),
+                                    // --------------------------------
+                                    // playlist menu : 2. 플레이리스트 편집
+                                    // --------------------------------
+                                    GestureDetector(
+                                      onTap: () async {
+                                        context.pop();
+                                        widget.ref
+                                            .read(bottomNavigationProvider
+                                                .notifier)
+                                            .updatePage(5);
+                                        final newList = await context.push(
+                                          '/saved/playlist/edit',
+                                          extra: widget.scaffoldPlaylist,
+                                        ) as PlayListEntity;
+                                        widget.setListState(newList);
+                                      },
+                                      child: BottomSheetMenuButton(
+                                        title: '플레이리스트 편집',
+                                      ),
+                                    ),
+                                    // --------------------------------
+                                    // playlist menu : 3. 플레이리스트 삭제
+                                    // --------------------------------
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.pop();
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (context) =>
+                                              DeletePlayListAlertDialog(
+                                            listName: widget
+                                                .scaffoldPlaylist.listName,
+                                          ),
+                                        );
+                                      },
+                                      child: BottomSheetMenuButton(
+                                          title: '플레이리스트 삭제'),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                            icon: Semantics(
+                              label: '플레이리스트 옵션',
+                              child: Image.asset(
+                                  'assets/images/menu_thin_icon.png'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    // ------------------------------------------------------
+                    // 플레이리스트 본문
+                    // ------------------------------------------------------
+                    Container(
+                      padding: EdgeInsets.only(bottom: 20),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                          color: AppColors.border,
+                          width: 1,
+                        )),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ---------------
+                          // 플레이리스트 제목
+                          // ---------------
+                          Semantics(
+                            label: '플레이리스트 제목',
+                            child: Text(
+                              widget.scaffoldPlaylist.listName,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          // ---------------
+                          // 플레이리스트 설명
+                          // ---------------
+                          Semantics(
+                            child: SizedBox(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Semantics(
+                                    label: '설명',
+                                    child: Text(
+                                      widget.scaffoldPlaylist.description,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12,
+                                        color: AppColors.gray600,
+                                      ),
                                     ),
                                   ),
-                                  // --------------------------------
-                                  // playlist menu : 3. 플레이리스트 삭제
-                                  // --------------------------------
-                                  GestureDetector(
-                                    onTap: () {
-                                      context.pop();
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (context) =>
-                                            DeletePlayListAlertDialog(
-                                          listName:
-                                              widget.scaffoldPlaylist.listName,
-                                        ),
-                                      );
-                                    },
-                                    child: BottomSheetMenuButton(
-                                        title: '플레이리스트 삭제'),
-                                  )
                                 ],
                               ),
-                            );
-                          },
-                          child: Container(
-                            width: 44,
-                            height: 44,
-                            color: Colors.transparent,
-                            child:
-                                Image.asset('assets/images/menu_bold_icon.png'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  // ------------------------------------------------------
-                  // 플레이리스트 본문
-                  // ------------------------------------------------------
-                  Container(
-                    padding: EdgeInsets.only(bottom: 20),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                        color: AppColors.border,
-                        width: 1,
-                      )),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // ---------------
-                        // 플레이리스트 제목
-                        // ---------------
-                        Text(
-                          widget.scaffoldPlaylist.listName,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 24,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        // ---------------
-                        // 플레이리스트 설명
-                        // ---------------
-                        SizedBox(
-                          width: 335,
-                          height: 40,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.scaffoldPlaylist.description,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: AppColors.gray600,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        ),
-
-                        const SizedBox(
-                          height: 18,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // ------------------
-                            // 플레이리스트 재생 버튼
-                            // ------------------
-                            widget.songListAsync.when(
-                              data: (data) {
-                                return GestureDetector(
-                                  onTap: () async {
-                                    await widget.ref
-                                        .read(audioPlayerViewModelProvider
-                                            .notifier)
-                                        .toggleStop();
-                                    widget.addListInAudioPlayer(data);
-                                  },
-                                  child: PlayButton(),
-                                );
-                              },
-                              // 오류 시 회색 버튼 출력
-                              error: (error, stackTrace) =>
-                                  PlayButtonDisabled(),
-                              loading: () => PlayButtonDisabled(),
-                            ),
-                            Row(
-                              children: [
-                                // ------------------
-                                // 플레이리스트 편집 버튼
-                                // ------------------
-                                GestureDetector(
-                                  onTap: () async {
-                                    widget.ref
-                                        .read(bottomNavigationProvider.notifier)
-                                        .updatePage(5);
-                                    if (context.mounted) {
-                                      final newList = await context.push(
-                                        '/saved/playlist/edit',
-                                        extra: widget.scaffoldPlaylist,
-                                      ) as PlayListEntity;
-                                      widget.setListState(newList);
-                                    }
-                                  },
-                                  child: SvgPicture.asset(
-                                      'assets/svg/button_edit.svg'),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                // ---------------------
-                                // 플레이리스트 셔플 재생 버튼
-                                // ---------------------
-                                GestureDetector(
-                                  onTap: () async {
-                                    await widget.ref
-                                        .read(audioPlayerViewModelProvider
-                                            .notifier)
-                                        .toggleStop();
-
-                                    widget.songListAsync.when(
-                                      data: (data) async {
-                                        List<SongEntity> list = [];
-                                        for (var item in data) {
-                                          list.add(item);
-                                        }
-                                        list.shuffle();
-                                        widget.addListInAudioPlayer(list);
-                                      },
-                                      error: (error, stackTrace) {},
-                                      loading: () {},
-                                    );
-                                  },
-                                  child: SvgPicture.asset(
-                                      'assets/svg/button_shuffle.svg'),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  // ------------------------------------------------------------------
-                  // 음악 목록
-                  // ------------------------------------------------------------------
-                  Expanded(
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 300,
-                      child: widget.songListAsync.when(
-                        data: (data) {
-                          // 플레이리스트가 비었을 경우 검색 페이지로 redirecting 버튼
-                          if (data.isEmpty) {
-                            return Stack(
-                              children: [
-                                Positioned(
-                                  top: 20,
-                                  left: 0,
-                                  right: 0,
-                                  child: Image.asset(
-                                      'assets/images/no_songs_in_playlist.png'),
-                                ),
-                                Positioned(
-                                  left: 60,
-                                  right: 60,
-                                  bottom: 32,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      widget.ref
-                                          .watch(
-                                              bottomNavigationProvider.notifier)
-                                          .updatePage(2);
-                                      context.go('/search');
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      width: 160,
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: AppColors.gray800,
-                                      ),
-                                      child: Text(
-                                        '음악 추가하기',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                          return ListView.separated(
-                            itemCount: data.length + 1,
-                            separatorBuilder: (context, index) => Container(
-                              width: double.infinity,
-                              height: 1,
-                              color: AppColors.border,
-                            ),
-                            itemBuilder: (context, index) {
-                              return index >= data.length
-                                  ? SizedBox(
-                                      height: 90,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 20, bottom: 30),
-                                        child: SvgPicture.asset(
-                                            'assets/svg/muoz.svg'),
-                                      ),
-                                    )
-                                  : Container(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 12),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          // ------------------
+                          // 플레이리스트 재생 버튼
+                          // ------------------
+                          widget.songListAsync.when(
+                            data: (data) {
+                              return data.isEmpty
+                                  ? Container()
+                                  : SizedBox(
                                       width: double.infinity,
-                                      height: 72,
-                                      color: Colors.transparent,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          Expanded(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                // ---------
-                                                // 곡 이미지
-                                                // ---------
-                                                Container(
-                                                  width: 48,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    color: AppColors.gray600,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          data[index].imgUrl),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // -------
-                                                // 곡 내용
-                                                // -------
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 18),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          data[index].title,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 16,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          data[index].artist,
-                                                          style: TextStyle(
-                                                            color: AppColors
-                                                                .gray600,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                          Semantics(
+                                            label: '전체 재생',
+                                            button: true,
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                await widget.ref
+                                                    .read(
+                                                        audioPlayerViewModelProvider
+                                                            .notifier)
+                                                    .toggleStop();
+                                                widget
+                                                    .addListInAudioPlayer(data);
+                                              },
+                                              child: PlayButton(),
                                             ),
                                           ),
-                                          // ---------------
-                                          // 음악 세부 메뉴 버튼
-                                          // ---------------
-                                          GestureDetector(
-                                            onTap: () {
-                                              showModalBottomSheet<void>(
-                                                context: context,
-                                                builder: (context) =>
-                                                    SavedMenuBottomSheet(
-                                                  imgUrl: data[index].imgUrl,
-                                                  name: data[index].title,
-                                                  items: [
-                                                    // --------------------------------
-                                                    // song menu : 1. 음악 재생
-                                                    // --------------------------------
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        context.pop();
-                                                        await widget.ref
-                                                            .read(
-                                                                audioPlayerViewModelProvider
-                                                                    .notifier)
-                                                            .toggleStop();
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              // ------------------
+                                              // 플레이리스트 편집 버튼
+                                              // ------------------
+                                              Semantics(
+                                                label: '플레이리스트 편집',
+                                                button: true,
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    widget.ref
+                                                        .read(
+                                                            bottomNavigationProvider
+                                                                .notifier)
+                                                        .updatePage(5);
+                                                    if (context.mounted) {
+                                                      final newList =
+                                                          await context.push(
+                                                        '/saved/playlist/edit',
+                                                        extra: widget
+                                                            .scaffoldPlaylist,
+                                                      ) as PlayListEntity;
+                                                      widget.setListState(
+                                                          newList);
+                                                    }
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                      'assets/svg/button_edit.svg'),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              // ---------------------
+                                              // 플레이리스트 셔플 재생 버튼
+                                              // ---------------------
+                                              Semantics(
+                                                label: '셔플 재생',
+                                                button: true,
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    await widget.ref
+                                                        .read(
+                                                            audioPlayerViewModelProvider
+                                                                .notifier)
+                                                        .toggleStop();
 
+                                                    widget.songListAsync.when(
+                                                      data: (data) async {
+                                                        List<SongEntity> list =
+                                                            [];
+                                                        for (var item in data) {
+                                                          list.add(item);
+                                                        }
+                                                        list.shuffle();
                                                         widget
                                                             .addListInAudioPlayer(
-                                                                [data[index]]);
+                                                                list);
                                                       },
-                                                      child:
-                                                          BottomSheetMenuButton(
-                                                              title: '재생'),
-                                                    ),
-                                                    // --------------------------------
-                                                    // song menu : 2. 다른 리스트에 저장
-                                                    // --------------------------------
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        context.pop();
-                                                        TextEditingController
-                                                            titleController =
-                                                            TextEditingController();
-                                                        TextEditingController
-                                                            descriptionController =
-                                                            TextEditingController();
-                                                        SavePlaylistBottomSheet
-                                                            .show(
-                                                          context,
-                                                          widget.ref,
-                                                          titleController,
-                                                          descriptionController,
-                                                          data[index],
-                                                        );
-                                                      },
-                                                      child:
-                                                          BottomSheetMenuButton(
-                                                        title: '플레이리스트에 저장',
+                                                      error: (error,
+                                                          stackTrace) {},
+                                                      loading: () {},
+                                                    );
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                      'assets/svg/button_shuffle.svg'),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                            },
+                            // 오류 시 회색 버튼 출력
+                            error: (error, stackTrace) => Container(),
+                            loading: () => Container(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    // ------------------------------------------------------------------
+                    // 음악 목록
+                    // ------------------------------------------------------------------
+                    Expanded(
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 300,
+                        child: widget.songListAsync.when(
+                          data: (data) {
+                            // 플레이리스트가 비었을 경우 검색 페이지로 redirecting 버튼
+                            if (data.isEmpty) {
+                              return Stack(
+                                children: [
+                                  Positioned(
+                                    top: 20,
+                                    left: 0,
+                                    right: 0,
+                                    child: Semantics(
+                                      label: '플레이리스트가 비어있습니다.',
+                                      child: Image.asset(
+                                          'assets/images/no_songs_in_playlist.png'),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    left: 60,
+                                    right: 60,
+                                    bottom: 32,
+                                    child: Semantics(
+                                      label: '곡 검색하여 추가하기',
+                                      button: true,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          widget.ref
+                                              .watch(bottomNavigationProvider
+                                                  .notifier)
+                                              .updatePage(2);
+                                          context.go('/search');
+                                        },
+                                        child: ExcludeSemantics(
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: 160,
+                                            height: 48,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: AppColors.gray800,
+                                            ),
+                                            child: Text(
+                                              '음악 추가하기',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            return ListView.separated(
+                              itemCount: data.length + 1,
+                              separatorBuilder: (context, index) => Container(
+                                width: double.infinity,
+                                height: 1,
+                                color: AppColors.border,
+                              ),
+                              itemBuilder: (context, index) {
+                                return index >= data.length
+                                    ? SizedBox(
+                                        height: 90,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 20, bottom: 30),
+                                          child: SvgPicture.asset(
+                                              'assets/svg/muoz.svg'),
+                                        ),
+                                      )
+                                    : Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 12),
+                                        width: double.infinity,
+                                        height: 72,
+                                        color: Colors.transparent,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  // ---------
+                                                  // 곡 이미지
+                                                  // ---------
+                                                  Container(
+                                                    width: 48,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      color: AppColors.gray600,
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            data[index].imgUrl),
                                                       ),
                                                     ),
-                                                    // --------------------------------
-                                                    // song menu : 3. 음악 삭제
-                                                    // --------------------------------
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        context.pop();
-                                                        showDialog(
+                                                  ),
+                                                  // -------
+                                                  // 곡 내용
+                                                  // -------
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 18),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Semantics(
+                                                            label: '제목',
+                                                            child: Text(
+                                                              data[index].title,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Semantics(
+                                                            label: '가수',
+                                                            child: Text(
+                                                              data[index]
+                                                                  .artist,
+                                                              style: TextStyle(
+                                                                color: AppColors
+                                                                    .gray600,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            // ---------------
+                                            // 음악 세부 메뉴 버튼
+                                            // ---------------
+                                            IconButton(
+                                              onPressed: () {
+                                                showModalBottomSheet<void>(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      SavedMenuBottomSheet(
+                                                    imgUrl: data[index].imgUrl,
+                                                    name: data[index].title,
+                                                    items: [
+                                                      // --------------------------------
+                                                      // song menu : 1. 음악 재생
+                                                      // --------------------------------
+                                                      GestureDetector(
+                                                        onTap: () async {
+                                                          context.pop();
+                                                          await widget.ref
+                                                              .read(
+                                                                  audioPlayerViewModelProvider
+                                                                      .notifier)
+                                                              .toggleStop();
+
+                                                          widget
+                                                              .addListInAudioPlayer(
+                                                                  [data[index]]);
+                                                        },
+                                                        child:
+                                                            BottomSheetMenuButton(
+                                                                title: '재생'),
+                                                      ),
+                                                      // --------------------------------
+                                                      // song menu : 2. 다른 리스트에 저장
+                                                      // --------------------------------
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          context.pop();
+                                                          TextEditingController
+                                                              titleController =
+                                                              TextEditingController();
+                                                          TextEditingController
+                                                              descriptionController =
+                                                              TextEditingController();
+                                                          SavePlaylistBottomSheet
+                                                              .show(
+                                                            context,
+                                                            widget.ref,
+                                                            titleController,
+                                                            descriptionController,
+                                                            data[index],
+                                                          );
+                                                        },
+                                                        child:
+                                                            BottomSheetMenuButton(
+                                                          title: '플레이리스트에 저장',
+                                                        ),
+                                                      ),
+                                                      // --------------------------------
+                                                      // song menu : 3. 음악 삭제
+                                                      // --------------------------------
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          context.pop();
+                                                          showDialog(
                                                             context: context,
                                                             barrierDismissible:
                                                                 false,
@@ -710,53 +786,53 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                                             index]
                                                                         .video
                                                                         .id,
-                                                                  ));
-                                                      },
-                                                      child:
-                                                          BottomSheetMenuButton(
-                                                              title: '음악 삭제'),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 44,
-                                              height: 44,
-                                              color: Colors.transparent,
-                                              child: Image.asset(
-                                                  'assets/images/menu_thin_icon.png'),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                            },
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          return Container();
-                        },
-                        loading: () {
-                          return Container();
-                        },
+                                                                  ),
+                                                          );
+                                                        },
+                                                        child:
+                                                            BottomSheetMenuButton(
+                                                                title: '음악 삭제'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              icon: Semantics(
+                                                label: '음악 옵션',
+                                                child: Image.asset(
+                                                    'assets/images/menu_thin_icon.png'),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                              },
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Container();
+                          },
+                          loading: () {
+                            return Container();
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 24,
-              child: AudioPlayer(
-                colorMode: true,
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 24,
+                child: AudioPlayer(
+                  colorMode: true,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          bottomNavigationBar: HomeBottomNavigation(),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }

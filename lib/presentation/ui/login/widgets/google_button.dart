@@ -37,23 +37,26 @@ class GoogleButton extends ConsumerWidget {
             : () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: Colors.white,
-                    title: Text(
-                      '안내',
-                      textAlign: TextAlign.center,
-                    ),
-                    content: Text(
-                      '개인정보 수집 및 이용에 동의해야\n 로그인을 할 수 있습니다!',
-                      textAlign: TextAlign.center,
-                    ),
-                    actionsAlignment: MainAxisAlignment.center,
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('확인'),
+                  builder: (context) => Semantics(
+                    label: '개인정보 수집 및 이용에 대한 동의가 필요합니다.',
+                    child: AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: Text(
+                        '안내',
+                        textAlign: TextAlign.center,
                       ),
-                    ],
+                      content: Text(
+                        '로그인하기 전에\n 개인정보 수집 및 이용에 동의해주세요.',
+                        textAlign: TextAlign.center,
+                      ),
+                      actionsAlignment: MainAxisAlignment.center,
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('확인'),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

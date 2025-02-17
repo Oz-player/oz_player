@@ -42,20 +42,25 @@ class SortedTypeBox extends StatelessWidget {
             const SizedBox(
               width: 12,
             ),
-            GestureDetector(
-              onTap: setOverlayOn,
-              child: Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: Colors.white,
-                ),
-                child: Icon(
-                  !isOverlayOn
-                      ? Icons.keyboard_arrow_down
-                      : Icons.keyboard_arrow_up,
-                  color: AppColors.main600,
+            Semantics(
+              button: true,
+              label: isOverlayOn ? '선택 창 닫기' : '정렬 방법 선택',
+              hint: isOverlayOn ? '' : '최근 저장 순 또는 가나다 순',
+              child: GestureDetector(
+                onTap: setOverlayOn,
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white,
+                  ),
+                  child: Icon(
+                    !isOverlayOn
+                        ? Icons.keyboard_arrow_down
+                        : Icons.keyboard_arrow_up,
+                    color: AppColors.main600,
+                  ),
                 ),
               ),
             ),
