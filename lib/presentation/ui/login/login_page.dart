@@ -74,8 +74,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   GoogleButton(activated: _isChecked),
                   KakaoButton(activated: _isChecked),
                   AppleButton(activated: _isChecked), // IOS에서만 애플 로그인 버튼 보임
+                  SizedBox(height: 24),
                   PrivateInfoButton(onChecked: _checkState),
-                  SizedBox(height: 32),
+                  // SizedBox(height: 32),
                 ],
               ),
             ),

@@ -43,7 +43,7 @@ class _SplashState extends ConsumerState<Splash> {
   }
 
   void _startNavigationTimer(String path) {
-    Future.delayed(const Duration(milliseconds: 3000)).then((_) {
+    Future.delayed(const Duration(milliseconds: 2700)).then((_) {
       if (mounted) {
         context.go(path);
       }
@@ -54,16 +54,19 @@ class _SplashState extends ConsumerState<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Lottie.asset('assets/animation/splash_1.json', fit: BoxFit.cover,
-            onLoaded: (state) {
-          if (!_isAnimationLoaded) {
-            _isAnimationLoaded = true;
-            // _startNavigationTimer();
-          }
-        }),
+      body: SafeArea(
+        top: false,
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Lottie.asset('assets/animation/splash_1.json', repeat: false, fit: BoxFit.cover,
+              onLoaded: (state) {
+            if (!_isAnimationLoaded) {
+              _isAnimationLoaded = true;
+              // _startNavigationTimer();
+            }
+          }),
+        ),
       ),
     );
   }
