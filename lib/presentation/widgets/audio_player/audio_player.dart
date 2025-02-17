@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/app/logic/isvaildurl.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 
@@ -80,7 +81,7 @@ class AudioPlayer extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                            color: Colors.grey[600],
+                            color: AppColors.gray600,
                             borderRadius: BorderRadius.circular(12)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
@@ -103,7 +104,7 @@ class AudioPlayer extends StatelessWidget {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/muoz.png',
+                                      'assets/images/empty_thumbnail.png',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -154,12 +155,15 @@ class AudioPlayer extends StatelessWidget {
                                   .togglePlay();
                             }
                           },
-                          icon: Icon(
-                            audioState.isPlaying
-                                ? Icons.pause
-                                : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 38,
+                          icon: Semantics(
+                            label: audioState.isPlaying ? '일시정지' : '재생',
+                            child: Icon(
+                              audioState.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                              color: Colors.white,
+                              size: 38,
+                            ),
                           )),
                     ],
                   ),
@@ -241,7 +245,7 @@ class AudioPlayer extends StatelessWidget {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/muoz.png',
+                                      'assets/images/empty_thumbnail.png',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -292,12 +296,16 @@ class AudioPlayer extends StatelessWidget {
                                   .togglePlay();
                             }
                           },
-                          icon: Icon(
-                            audioState.isPlaying
-                                ? Icons.pause
-                                : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 38,
+                          icon: Semantics(
+                            label: audioState.isPlaying ? '일시정지' : '재생',
+                            button: true,
+                            child: Icon(
+                              audioState.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                              color: Colors.white,
+                              size: 38,
+                            ),
                           )),
                     ],
                   ),
