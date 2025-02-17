@@ -213,7 +213,7 @@ Widget tagBox(String tag) {
     padding: const EdgeInsets.only(right: 12, bottom: 12),
     child: Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8), color: Color(0xfff2e6ff)),
+          borderRadius: BorderRadius.circular(8), color: AppColors.main100),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Text(

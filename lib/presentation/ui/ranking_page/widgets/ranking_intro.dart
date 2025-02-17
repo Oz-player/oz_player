@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class RankingIntro extends StatelessWidget {
   const RankingIntro({super.key});
@@ -12,7 +13,7 @@ class RankingIntro extends StatelessWidget {
         height: 120,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xffA54DFD),
+          color: AppColors.main400,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Stack(

@@ -755,7 +755,7 @@ Widget playlistDialog(
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor:
-                                      WidgetStatePropertyAll(Color(0xff40017E)),
+                                      WidgetStatePropertyAll(AppColors.main800),
                                   shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius:

@@ -78,7 +78,7 @@ class DeleteSongAlertDialog extends ConsumerWidget {
                       child: TextButton(
                           style: ButtonStyle(
                               backgroundColor:
-                                  WidgetStatePropertyAll(Color(0xff40017E)),
+                                  WidgetStatePropertyAll(AppColors.main800),
                               shape: WidgetStatePropertyAll(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8)))),
@@ -451,7 +451,7 @@ class CancleEditAlertDialog extends ConsumerWidget {
                       child: TextButton(
                           style: ButtonStyle(
                               backgroundColor:
-                                  WidgetStatePropertyAll(Color(0xff40017E)),
+                                  WidgetStatePropertyAll(AppColors.main800),
                               shape: WidgetStatePropertyAll(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8)))),

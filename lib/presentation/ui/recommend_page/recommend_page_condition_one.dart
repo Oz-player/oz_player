@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
@@ -74,7 +75,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
                   ),
                   Text(
                     conditionState.subtitle[conditionState.page],
-                    style: TextStyle(fontSize: 14, color: Color(0xff7303e3)),
+                    style: TextStyle(fontSize: 14, color: AppColors.main600),
                   ),
                   SizedBox(
                     height: 52,
@@ -169,9 +170,9 @@ class RecommendPageConditionOne extends ConsumerWidget {
   Widget tagBox(String tag, bool clicked, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xffF2E6FF)),
+          border: Border.all(color: AppColors.main100),
           borderRadius: BorderRadius.circular(8),
-          color: clicked ? Color(0xfff2e6ff) : Colors.white),
+          color: clicked ? AppColors.main100 : Colors.white),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Text(

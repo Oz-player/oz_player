@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class SettingsButton extends StatelessWidget {
   final String text;
@@ -29,7 +30,7 @@ class SettingsButton extends StatelessWidget {
               text,
               style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF6B7684),
+                color: AppColors.gray600,
                 fontWeight: FontWeight.w500,
                 height: 17 / 14,
               ),
@@ -38,7 +39,7 @@ class SettingsButton extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
-              color: Color(0xFF6B7684),
+              color: AppColors.gray600,
             ),
           ],
         ),

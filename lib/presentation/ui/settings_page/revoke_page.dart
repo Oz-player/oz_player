@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/revoke_reason_button.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
@@ -34,7 +35,7 @@ class _RevokePageState extends ConsumerState<RevokePage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF191F28),
+              color: AppColors.gray900,
               height: 1.4,
             ),
           ),
@@ -114,10 +115,10 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                       borderRadius: BorderRadius.circular(8)),
                   padding: EdgeInsets.symmetric(horizontal: 36, vertical: 13),
                   backgroundColor: selectedButtonIndex == -1
-                      ? Color(0xFFEFF1F3)
-                      : Color(0xFF40017E),
+                      ? AppColors.gray300
+                      : AppColors.main800,
                   foregroundColor: selectedButtonIndex == -1
-                      ? Color(0xFFADB5BD)
+                      ? AppColors.gray400
                       : Colors.white,
                   textStyle: TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600, height: 1.4),

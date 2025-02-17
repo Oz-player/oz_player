@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/go_app_settings.dart';
 import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
@@ -154,7 +155,7 @@ class ExitButtons extends ConsumerWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Color(0xFF6B7684),
+                              color: AppColors.gray600,
                               height: 1.4,
                             ),
                           ),
@@ -171,7 +172,7 @@ class ExitButtons extends ConsumerWidget {
                                           EdgeInsets.symmetric(
                                               horizontal: 47, vertical: 10)),
                                       backgroundColor: WidgetStatePropertyAll(
-                                          Color(0xFFF2E6FF)),
+                                          AppColors.main100),
                                       shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                               borderRadius:
@@ -183,7 +184,7 @@ class ExitButtons extends ConsumerWidget {
                                     '취소',
                                     style: TextStyle(
                                         fontSize: 14,
-                                        color: Color(0xFF6B7684),
+                                        color: AppColors.gray600,
                                         fontWeight: FontWeight.w500,
                                         height: 1.4),
                                   )),
@@ -197,7 +198,7 @@ class ExitButtons extends ConsumerWidget {
                                           EdgeInsets.symmetric(
                                               horizontal: 47, vertical: 10)),
                                       backgroundColor: WidgetStatePropertyAll(
-                                          Color(0xFF40017E)),
+                                          AppColors.main800),
                                       shape: WidgetStatePropertyAll(
                                           RoundedRectangleBorder(
                                               borderRadius:
@@ -245,7 +246,7 @@ class ExitButtons extends ConsumerWidget {
               height: 10,
               width: 2,
               decoration: BoxDecoration(
-                color: Color(0xFFADB5BD),
+                color: AppColors.gray400,
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
@@ -272,7 +273,7 @@ class ExitButtons extends ConsumerWidget {
             height: 17 / 14,
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Color(0xFFADB5BD),
+            color: AppColors.gray400,
           ),
         ),
       ),
@@ -300,7 +301,7 @@ class VersionInfo extends ConsumerWidget {
             '버전 안내',
             style: TextStyle(
               fontSize: 14,
-              color: Color(0xFF6B7684),
+              color: AppColors.gray600,
               fontWeight: FontWeight.w500,
               height: 17 / 14,
             ),
@@ -311,7 +312,7 @@ class VersionInfo extends ConsumerWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF6B7684),
+              color: AppColors.gray600,
               height: 17 / 14,
             ),
           ),
@@ -320,14 +321,14 @@ class VersionInfo extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 18, vertical: 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              color: Color(0xFFF2E6FF),
+              color: AppColors.main100,
             ),
             child: Text(
               appVersion,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF7303E3),
+                color: AppColors.main600,
                 height: 17 / 14,
               ),
             ),

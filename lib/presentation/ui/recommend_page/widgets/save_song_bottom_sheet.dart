@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/save_song_bottom_sheet_view_model.dart';
 import 'package:oz_player/presentation/widgets/card_widget/card_widget.dart';
@@ -91,7 +92,7 @@ class SaveSongBottomSheet {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
-                                            color: Color(0xfff2e6ff)),
+                                            color: AppColors.main100),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 10),
@@ -194,7 +195,7 @@ class SaveSongBottomSheet {
                               Text(
                                 '지금 떠오르는 생각을 자유롭게 적어보세요',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Color(0xff7303E3)),
+                                style: TextStyle(color: AppColors.main600),
                               ),
                               SizedBox(
                                 height: 16,

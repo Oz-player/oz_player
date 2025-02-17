@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/app/logic/isvaildurl.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 //import 'package:toggle_switch/toggle_switch.dart';
@@ -51,8 +52,8 @@ class AudioBottomSheet {
                         minWidth: 67,
                         cornerRadius: 8,
                         activeBgColors: [
-                          [Color(0xff7303E3)],
-                          [Color(0xff7303E3)]
+                          [AppColors.main600],
+                          [AppColors.main600]
                         ],
                         activeFgColor: Colors.white,
                         inactiveBgColor: Colors.grey,
@@ -158,12 +159,12 @@ class AudioBottomSheet {
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Color(0xff7303E3)),
+                                    TextStyle(color: AppColors.main600),
                                 timeLabelPadding: 10,
-                                baseBarColor: Color(0xffF2E6FF),
-                                progressBarColor: Color(0xff7303E3),
-                                bufferedBarColor: Color(0xffD9B3FE),
-                                thumbColor: Color(0xff7303E3),
+                                baseBarColor: AppColors.main100,
+                                progressBarColor: AppColors.main600,
+                                bufferedBarColor: AppColors.main200,
+                                thumbColor: AppColors.main600,
                                 onSeek: (duration) {
                                   ref
                                       .read(
@@ -210,13 +211,13 @@ class AudioBottomSheet {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50)),
                               child: CircleAvatar(
-                                backgroundColor: Color(0xffF2E6FF),
+                                backgroundColor: AppColors.main100,
                                 child: Icon(
                                   audioState.isPlaying
                                       ? Icons.pause
                                       : Icons.play_arrow,
                                   size: 28,
-                                  color: Color(0xff7303E3),
+                                  color: AppColors.main600,
                                 ),
                               ),
                             ),
@@ -289,8 +290,8 @@ class AudioBottomSheet {
                         minWidth: 67,
                         cornerRadius: 8,
                         activeBgColors: [
-                          [Color(0xff7303E3)],
-                          [Color(0xff7303E3)]
+                          [AppColors.main600],
+                          [AppColors.main600]
                         ],
                         activeFgColor: Colors.white,
                         inactiveBgColor: Colors.grey,
@@ -397,12 +398,12 @@ class AudioBottomSheet {
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Color(0xff7303E3)),
+                                    TextStyle(color: AppColors.main600),
                                 timeLabelPadding: 10,
-                                baseBarColor: Color(0xffF2E6FF),
-                                progressBarColor: Color(0xff7303E3),
-                                bufferedBarColor: Color(0xffD9B3FE),
-                                thumbColor: Color(0xff7303E3),
+                                baseBarColor: AppColors.main100,
+                                progressBarColor: AppColors.main600,
+                                bufferedBarColor: AppColors.main200,
+                                thumbColor: AppColors.main600,
                                 onSeek: (duration) {
                                   ref
                                       .read(
@@ -449,13 +450,13 @@ class AudioBottomSheet {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50)),
                               child: CircleAvatar(
-                                backgroundColor: Color(0xffF2E6FF),
+                                backgroundColor: AppColors.main100,
                                 child: Icon(
                                   audioState.isPlaying
                                       ? Icons.pause
                                       : Icons.play_arrow,
                                   size: 28,
-                                  color: Color(0xff7303E3),
+                                  color: AppColors.main600,
                                 ),
                               ),
                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 
 class GoogleButton extends ConsumerWidget {
@@ -70,7 +71,7 @@ class GoogleButton extends ConsumerWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           backgroundColor: Colors.white,
-          foregroundColor: Color(0xFF6B7684),
+          foregroundColor: AppColors.gray600,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
