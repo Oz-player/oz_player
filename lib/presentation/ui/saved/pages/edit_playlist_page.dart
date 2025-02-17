@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/domain/entitiy/play_list_entity.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
@@ -361,15 +362,16 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                       child: songListAsync.when(
                         data: (data) {
                           if (data.isEmpty) {
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
-                                  child: Image.asset(
-                                      'assets/images/no_songs_in_playlist.png'),
-                                ),
-                              ],
+                            return SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                      'assets/svg/no_songs_in_playlist.svg'),
+                                  const SizedBox(
+                                    height: 250,
+                                  ),
+                                ],
+                              ),
                             );
                           }
                           return SizedBox(

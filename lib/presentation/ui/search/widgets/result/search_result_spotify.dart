@@ -40,8 +40,8 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
           return SizedBox(
             height: 90,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 30),
-              child: SvgPicture.asset('assets/svg/muoz.svg'),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              child: SvgPicture.asset('assets/svg/list_trailer.svg'),
             ),
           );
         } else {

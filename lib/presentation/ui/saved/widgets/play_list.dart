@@ -45,7 +45,18 @@ class _PlayListState extends ConsumerState<PlayList> {
     return playListAsync.when(
       data: (data) {
         if (data.isEmpty) {
-          return Image.asset('assets/images/playlist_empty.png');
+          return Expanded(
+            child: SingleChildScrollView(
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+              SvgPicture.asset(
+                'assets/svg/no_playlists.svg',
+                semanticsLabel: '저장된 플레이리스트가 없습니다',
+              ),
+              const SizedBox(
+                height: 200,
+              ),
+            ])),
+          );
         }
         return Flexible(
           child: ListView.separated(
@@ -57,8 +68,9 @@ class _PlayListState extends ConsumerState<PlayList> {
                   ? SizedBox(
                       height: 90,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 30),
-                        child: SvgPicture.asset('assets/svg/muoz.svg'),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 30),
+                        child: SvgPicture.asset('assets/svg/list_trailer.svg'),
                       ),
                     )
                   : Semantics(

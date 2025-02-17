@@ -516,49 +516,103 @@ class _MainScaffoldState extends State<MainScaffold> {
                                     top: 20,
                                     left: 0,
                                     right: 0,
-                                    child: Semantics(
-                                      label: '플레이리스트가 비어있습니다.',
-                                      child: Image.asset(
-                                          'assets/images/no_songs_in_playlist.png'),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 60,
-                                    right: 60,
-                                    bottom: 32,
-                                    child: Semantics(
-                                      label: '곡 검색하여 추가하기',
-                                      button: true,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          widget.ref
-                                              .watch(bottomNavigationProvider
-                                                  .notifier)
-                                              .updatePage(2);
-                                          context.go('/search');
-                                        },
-                                        child: ExcludeSemantics(
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: 160,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              color: AppColors.gray800,
-                                            ),
-                                            child: Text(
-                                              '음악 추가하기',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
-                                                  color: Colors.white),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 200,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  'assets/svg/no_songs_in_playlist.svg',
+                                                  semanticsLabel:
+                                                      '플레이리스트가 비어있습니다',
+                                                ),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      ),
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                        Semantics(
+                                          label: '곡 검색하여 추가하기',
+                                          button: true,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              widget.ref
+                                                  .watch(
+                                                      bottomNavigationProvider
+                                                          .notifier)
+                                                  .updatePage(2);
+                                              context.go('/search');
+                                            },
+                                            child: ExcludeSemantics(
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: 160,
+                                                height: 48,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: AppColors.gray800,
+                                                ),
+                                                child: Text(
+                                                  '음악 추가하기',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 16,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                  // Positioned(
+                                  //   left: 60,
+                                  //   right: 60,
+                                  //   bottom: 114,
+                                  //   child: Semantics(
+                                  //     label: '곡 검색하여 추가하기',
+                                  //     button: true,
+                                  //     child: GestureDetector(
+                                  //       onTap: () {
+                                  //         widget.ref
+                                  //             .watch(bottomNavigationProvider
+                                  //                 .notifier)
+                                  //             .updatePage(2);
+                                  //         context.go('/search');
+                                  //       },
+                                  //       child: ExcludeSemantics(
+                                  //         child: Container(
+                                  //           alignment: Alignment.center,
+                                  //           width: 160,
+                                  //           height: 48,
+                                  //           decoration: BoxDecoration(
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(8),
+                                  //             color: AppColors.gray800,
+                                  //           ),
+                                  //           child: Text(
+                                  //             '음악 추가하기',
+                                  //             style: TextStyle(
+                                  //                 fontWeight: FontWeight.w600,
+                                  //                 fontSize: 16,
+                                  //                 color: Colors.white),
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               );
                             }
@@ -574,10 +628,10 @@ class _MainScaffoldState extends State<MainScaffold> {
                                     ? SizedBox(
                                         height: 90,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, bottom: 30),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 30),
                                           child: SvgPicture.asset(
-                                              'assets/svg/muoz.svg'),
+                                              'assets/svg/list_trailer.svg'),
                                         ),
                                       )
                                     : Container(

@@ -40,7 +40,23 @@ class _LibraryState extends ConsumerState<Library> {
     return libraryAsync.when(
       data: (data) {
         if (data.isEmpty) {
-          return Image.asset('assets/images/library_empty.png');
+          return Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    'assets/svg/no_cards.svg',
+                    semanticsLabel: '저장된 카드가 없습니다',
+                  ),
+                  const SizedBox(
+                    height: 200,
+                  )
+                ],
+              ),
+            ),
+          );
+          // return Image.asset('assets/images/library_empty.png');
         }
         return Flexible(
           child: ListView.separated(
@@ -50,8 +66,9 @@ class _LibraryState extends ConsumerState<Library> {
                   ? SizedBox(
                       height: 90,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 30),
-                        child: SvgPicture.asset('assets/svg/muoz.svg'),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 30),
+                        child: SvgPicture.asset('assets/svg/list_trailer.svg'),
                       ),
                     )
                   : Semantics(

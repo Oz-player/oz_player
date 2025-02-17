@@ -47,7 +47,8 @@ class SavedMenuBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       image: imgUrl == null
                           ? DecorationImage(
-                              image: AssetImage('assets/images/muoz.png'),
+                              image: AssetImage(
+                                  'assets/images/empty_thumbnail.png'),
                             )
                           : DecorationImage(
                               image: NetworkImage(imgUrl!),
