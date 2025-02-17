@@ -354,7 +354,7 @@ class SavePlaylistBottomSheet {
                                                                 null
                                                             ? DecorationImage(
                                                                 image: AssetImage(
-                                                                    'assets/images/muoz.png'),
+                                                                    'assets/images/empty_thumbnail.png'),
                                                                 fit: BoxFit
                                                                     .contain)
                                                             : DecorationImage(

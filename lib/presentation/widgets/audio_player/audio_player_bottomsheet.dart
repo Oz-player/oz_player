@@ -99,7 +99,7 @@ class AudioBottomSheet {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/muoz.png',
+                                      'assets/images/empty_thumbnail',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -206,19 +206,23 @@ class AudioBottomSheet {
                                     .togglePlay();
                               }
                             },
-                            child: Container(
-                              width: 72,
-                              height: 72,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: CircleAvatar(
-                                backgroundColor: AppColors.main100,
-                                child: Icon(
-                                  audioState.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  size: 28,
-                                  color: AppColors.main600,
+                            child: Semantics(
+                              label: audioState.isPlaying ? '일시정지' : '재생',
+                              button: true,
+                              child: Container(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: CircleAvatar(
+                                  backgroundColor: AppColors.main100,
+                                  child: Icon(
+                                    audioState.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    size: 28,
+                                    color: AppColors.main600,
+                                  ),
                                 ),
                               ),
                             ),
@@ -338,7 +342,7 @@ class AudioBottomSheet {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/muoz.png',
+                                      'assets/images/empty_thumbnail',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -448,19 +452,23 @@ class AudioBottomSheet {
                                     .togglePlay();
                               }
                             },
-                            child: Container(
-                              width: 72,
-                              height: 72,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: CircleAvatar(
-                                backgroundColor: AppColors.main100,
-                                child: Icon(
-                                  audioState.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  size: 28,
-                                  color: AppColors.main600,
+                            child: Semantics(
+                              label: audioState.isPlaying ? '일시정지' : '재생',
+                              button: true,
+                              child: Container(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: CircleAvatar(
+                                  backgroundColor: AppColors.main100,
+                                  child: Icon(
+                                    audioState.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    size: 28,
+                                    color: AppColors.main600,
+                                  ),
                                 ),
                               ),
                             ),

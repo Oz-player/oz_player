@@ -134,7 +134,7 @@ class CardWidget extends ConsumerWidget {
                                     },
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
-                                        'assets/images/muoz.png',
+                                        'assets/images/empty_thumbnail',
                                         fit: BoxFit.contain,
                                       );
                                     },
