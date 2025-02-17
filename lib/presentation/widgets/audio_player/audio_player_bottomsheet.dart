@@ -13,7 +13,6 @@ class AudioBottomSheet {
   static void show(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
-      isDismissible: false,
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {
@@ -252,7 +251,6 @@ class AudioBottomSheet {
   static void showCurrentAudio(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      isDismissible: false,
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {

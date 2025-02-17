@@ -93,7 +93,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '불안해요',
       '우울해요',
       '답답해요',
-      '걱정되요',
+      '걱정돼요',
       '지루해요',
       '차분해요',
       '집중하고 싶어요',

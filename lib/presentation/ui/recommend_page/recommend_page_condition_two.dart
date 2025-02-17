@@ -222,7 +222,7 @@ class _RecommendPageConditionTwoState
                                 Colors.black.withValues(alpha: 0.32),
                             radius: 28,
                             child: Icon(
-                              Icons.format_list_bulleted_add,
+                              Icons.add,
                               size: 24,
                               color: Colors.white,
                             ),
