@@ -9,6 +9,7 @@ class ToastMessage {
     showToastWidget(
         context: context,
         position: position,
+        animation: StyledToastAnimation.none,
         Container(
           height: 48,
           width: double.infinity,
@@ -42,6 +43,7 @@ class ToastMessage {
     showToastWidget(
         context: context,
         position: position,
+        animation: StyledToastAnimation.none,
         Container(
           height: 48,
           width: double.infinity,

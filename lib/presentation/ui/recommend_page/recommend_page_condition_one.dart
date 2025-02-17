@@ -11,123 +11,115 @@ class RecommendPageConditionOne extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final conditionState = ref.watch(conditionViewModelProvider);
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/background.png'),
-        ),
-      ),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('음악 카드 추천'),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: Text('음악 카드 추천'),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-              onPressed: () {
-                if (conditionState.page == 0) {
-                  context.pop();
-                } else {
-                  ref
-                      .read(conditionViewModelProvider.notifier)
-                      .beforePageAnimation();
-                }
-              },
-              icon: Icon(Icons.arrow_back)),
-        ),
-        body: AnimatedOpacity(
-          opacity: conditionState.opacity,
-          duration: Duration(milliseconds: 250),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Text(
-                    '(${conditionState.page + 1}/4)',
-                    style: TextStyle(fontSize: 20, color: Colors.grey[600]),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    conditionState.title[conditionState.page],
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    conditionState.subtitle[conditionState.page],
-                    style: TextStyle(fontSize: 14, color: Color(0xff7303e3)),
-                  ),
-                  SizedBox(
-                    height: 52,
-                  ),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: [
-                      if (conditionState.page == 0)
-                        ...boxes(
-                            conditionState.mood, conditionState.moodSet, ref),
-                      if (conditionState.page == 1)
-                        ...boxes(conditionState.situation,
-                            conditionState.situationSet, ref),
-                      if (conditionState.page == 2)
-                        ...boxes(
-                            conditionState.genre, conditionState.genreSet, ref),
-                      if (conditionState.page == 3)
-                        ...boxes(
-                            conditionState.artist, conditionState.artistSet, ref),
-                    ],
-                  ),
-                  Spacer(),
-                  Row(
-                    children: [
-                      Spacer(),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              disabledForegroundColor: Colors.grey[400],
-                              disabledBackgroundColor: Colors.grey[300],
-                              backgroundColor: Colors.grey[800],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8))),
-                          onPressed: conditionState.event == false ? null : () async {
-                            final isNextPage = ref
+        leading: IconButton(
+            onPressed: () {
+              if (conditionState.page == 0) {
+                context.pop();
+              } else {
+                ref
+                    .read(conditionViewModelProvider.notifier)
+                    .beforePageAnimation();
+              }
+            },
+            icon: Icon(Icons.arrow_back)),
+      ),
+      body: AnimatedOpacity(
+        opacity: conditionState.opacity,
+        duration: Duration(milliseconds: 250),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 24,
+                ),
+                Text(
+                  '(${conditionState.page + 1}/4)',
+                  style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  conditionState.title[conditionState.page],
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  conditionState.subtitle[conditionState.page],
+                  style: TextStyle(fontSize: 14, color: Color(0xff7303e3)),
+                ),
+                SizedBox(
+                  height: 52,
+                ),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    if (conditionState.page == 0)
+                      ...boxes(
+                          conditionState.mood, conditionState.moodSet, ref),
+                    if (conditionState.page == 1)
+                      ...boxes(conditionState.situation,
+                          conditionState.situationSet, ref),
+                    if (conditionState.page == 2)
+                      ...boxes(
+                          conditionState.genre, conditionState.genreSet, ref),
+                    if (conditionState.page == 3)
+                      ...boxes(
+                          conditionState.artist, conditionState.artistSet, ref),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                        style: TextButton.styleFrom(
+                            disabledForegroundColor: Colors.grey[400],
+                            disabledBackgroundColor: Colors.grey[300],
+                            backgroundColor: Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        onPressed: conditionState.event == false ? null : () async {
+                          final isNextPage = ref
+                              .read(conditionViewModelProvider.notifier)
+                              .nextPage();
+                          if (isNextPage) {
+                            ref
                                 .read(conditionViewModelProvider.notifier)
-                                .nextPage();
-                            if (isNextPage) {
-                              ref
-                                  .read(conditionViewModelProvider.notifier)
-                                  .recommendMusic();
-                              context.go('/home/recommend/conditionTwo');
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Text(
-                              '다음',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 52,
-                  ),
-                ],
-              ),
+                                .recommendMusic();
+                            context.go('/home/recommend/conditionTwo');
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            '다음',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )),
+                  ],
+                ),
+                SizedBox(
+                  height: 52,
+                ),
+              ],
             ),
           ),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
+      bottomNavigationBar: HomeBottomNavigation(),
     );
   }
 
