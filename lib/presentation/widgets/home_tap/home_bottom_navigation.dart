@@ -33,6 +33,8 @@ class HomeBottomNavigation extends StatelessWidget {
             height: 108,
             child: BottomNavigationBar(
               backgroundColor: Colors.white,
+              selectedFontSize: 14,
+              unselectedFontSize: 14,
               currentIndex: currentPage == 4
                   ? 1
                   : currentPage == 5
