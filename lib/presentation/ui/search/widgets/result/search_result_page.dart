@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/search/widgets/result/search_result_naver.dart';
 import 'package:oz_player/presentation/ui/search/widgets/result/search_result_spotify.dart';
 
@@ -26,7 +27,6 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,7 +44,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(
-                        titleButton ? Color(0xff40017E) : Colors.white),
+                        titleButton ? AppColors.main800 : Colors.white),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -54,7 +54,6 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   child: Text(
                     '제목 검색',
                     style: TextStyle(
-                      fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: titleButton ? Colors.white : Colors.grey[600],
@@ -70,7 +69,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(
-                      lyricsButton ? Color(0xff40017E) : Colors.white,
+                      lyricsButton ? AppColors.main800 : Colors.white,
                     ),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
@@ -82,7 +81,6 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   child: Text(
                     '가사 검색',
                     style: TextStyle(
-                      fontFamily: 'Pretendard',
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: lyricsButton ? Colors.white : Colors.grey[600],
@@ -103,4 +101,3 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
     );
   }
 }
-

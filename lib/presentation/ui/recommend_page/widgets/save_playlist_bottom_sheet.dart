@@ -174,6 +174,11 @@ class SavePlaylistBottomSheet {
                                             horizontal: 24),
                                         child: Text(
                                           '플레이리스트에 음악 추가하기',
+                                          semanticsLabel:
+                                              playListState.isClickedPlayList ==
+                                                      -1
+                                                  ? '저장하려면 먼저 플레이리스트를 선택해주세요.'
+                                                  : '플레이리스트에 음악 추가하기',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
@@ -349,7 +354,7 @@ class SavePlaylistBottomSheet {
                                                                 null
                                                             ? DecorationImage(
                                                                 image: AssetImage(
-                                                                    'assets/images/muoz.png'),
+                                                                    'assets/images/empty_thumbnail.png'),
                                                                 fit: BoxFit
                                                                     .contain)
                                                             : DecorationImage(
@@ -521,7 +526,7 @@ class SavePlaylistBottomSheet {
                                                           .notifier)
                                                   .setAscending();
                                             }
-                                            
+
                                             if (context.mounted) {
                                               ToastMessage.show(context);
                                               context.pop();
@@ -555,6 +560,11 @@ class SavePlaylistBottomSheet {
                                               horizontal: 24),
                                           child: Text(
                                             '플레이리스트에 음악 추가하기',
+                                            semanticsLabel: playListState
+                                                        .isClickedPlayList ==
+                                                    -1
+                                                ? '저장하려면 먼저 플레이리스트를 선택해주세요.'
+                                                : '플레이리스트에 음악 추가하기',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -614,93 +624,99 @@ Widget playlistDialog(
                     SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
-                      height: 40,
-                      width: 260,
-                      child: TextField(
-                        controller: title,
-                        style: TextStyle(
-                          color: Colors.grey[900],
+                    Semantics(
+                      label: '제목',
+                      child: SizedBox(
+                        height: 40,
+                        width: 260,
+                        child: TextField(
+                          controller: title,
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                          ),
+                          maxLines: 1,
+                          maxLength: 20,
+                          buildCounter: (context,
+                                  {required currentLength,
+                                  required isFocused,
+                                  required maxLength}) =>
+                              null,
+                          cursorWidth: 2.0,
+                          cursorHeight: 20.0,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              hintText: '제목',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              )),
                         ),
-                        maxLines: 1,
-                        maxLength: 20,
-                        buildCounter: (context,
-                                {required currentLength,
-                                required isFocused,
-                                required maxLength}) =>
-                            null,
-                        cursorWidth: 2.0,
-                        cursorHeight: 20.0,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            hintText: '제목',
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
-                            )),
                       ),
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    SizedBox(
-                      height: 80,
-                      width: 260,
-                      child: TextField(
-                        controller: description,
-                        style: TextStyle(
-                          color: Colors.grey[900],
+                    Semantics(
+                      label: '설명 추가',
+                      child: SizedBox(
+                        height: 80,
+                        width: 260,
+                        child: TextField(
+                          controller: description,
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                          ),
+                          maxLines: 3,
+                          cursorWidth: 2.0,
+                          cursorHeight: 20.0,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              hintText: '설명추가',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              )),
                         ),
-                        maxLines: 3,
-                        cursorWidth: 2.0,
-                        cursorHeight: 20.0,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            hintText: '설명추가',
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
-                            )),
                       ),
                     ),
                     SizedBox(
@@ -739,7 +755,7 @@ Widget playlistDialog(
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor:
-                                      WidgetStatePropertyAll(Color(0xff40017E)),
+                                      WidgetStatePropertyAll(AppColors.main800),
                                   shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius:

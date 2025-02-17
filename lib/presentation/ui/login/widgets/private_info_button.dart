@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class PrivateInfoButton extends StatefulWidget {
   final void Function(bool) onChecked;
@@ -18,6 +21,7 @@ class _PrivateInfoButtonState extends State<PrivateInfoButton> {
       _isChecked = !_isChecked;
     });
     widget.onChecked(_isChecked);
+    SemanticsAction.tap;
   }
 
   @override
@@ -27,16 +31,20 @@ class _PrivateInfoButtonState extends State<PrivateInfoButton> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 24,
-            width: 24,
-            decoration: BoxDecoration(
-              color: Color(0xFFEFF1F3),
-              borderRadius: BorderRadius.circular(4),
+          Semantics(
+            label: '회원 로그인에 필요한 개인정보 제공에 동의하신다면 두 번 탭해주세요',
+            value: _isChecked ? '동의함' : '동의하지 않음',
+            child: Container(
+              height: 24,
+              width: 24,
+              decoration: BoxDecoration(
+                color: AppColors.gray300,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: _isChecked
+                  ? Icon(Icons.check, size: 19, color: AppColors.gray600)
+                  : null,
             ),
-            child: _isChecked
-                ? Icon(Icons.check, size: 19, color: Color(0xFF6B7684))
-                : null,
           ),
           SizedBox(width: 8),
           GestureDetector(
@@ -46,10 +54,11 @@ class _PrivateInfoButtonState extends State<PrivateInfoButton> {
             child: SizedBox(
               height: 14,
               child: Text(
-                '로그인 시 동의 및 개인정보 제공에 동의한 것으로 간주됩니다.',
+                '회원 로그인에 필요한 개인정보 제공에 동의합니다.',
+                semanticsLabel: '두 번 탭해 개인정보 처리 방침 자세히 보기',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Color(0xFF8D8D8D),
+                  color: AppColors.gray600,
                   height: 14 / 12,
                 ),
               ),

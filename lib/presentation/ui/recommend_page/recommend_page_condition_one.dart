@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
@@ -14,20 +15,24 @@ class RecommendPageConditionOne extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('음악 카드 추천'),
+        title: Semantics(
+            hint: '옵션을 선택한 뒤 오른쪽 하단의 다음 버튼을 눌러주세요.', child: Text('음악 카드 추천')),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-            onPressed: () {
-              if (conditionState.page == 0) {
-                context.pop();
-              } else {
-                ref
-                    .read(conditionViewModelProvider.notifier)
-                    .beforePageAnimation();
-              }
-            },
-            icon: Icon(Icons.arrow_back)),
+        leading: Semantics(
+            label: '뒤로 가기',
+            button: true,
+            child: IconButton(
+                onPressed: () {
+                  if (conditionState.page == 0) {
+                    context.pop();
+                  } else {
+                    ref
+                        .read(conditionViewModelProvider.notifier)
+                        .beforePageAnimation();
+                  }
+                },
+                icon: Icon(Icons.arrow_back))),
       ),
       body: AnimatedOpacity(
         opacity: conditionState.opacity,
@@ -43,6 +48,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
                 ),
                 Text(
                   '(${conditionState.page + 1}/4)',
+                  semanticsLabel: '4단계 중 ${conditionState.page + 1}번째',
                   style: TextStyle(fontSize: 20, color: Colors.grey[600]),
                 ),
                 SizedBox(
@@ -57,7 +63,7 @@ class RecommendPageConditionOne extends ConsumerWidget {
                 ),
                 Text(
                   conditionState.subtitle[conditionState.page],
-                  style: TextStyle(fontSize: 14, color: Color(0xff7303e3)),
+                  style: TextStyle(fontSize: 14, color: AppColors.main600),
                 ),
                 SizedBox(
                   height: 52,
@@ -91,17 +97,19 @@ class RecommendPageConditionOne extends ConsumerWidget {
                             backgroundColor: Colors.grey[800],
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8))),
-                        onPressed: conditionState.event == false ? null : () async {
-                          final isNextPage = ref
-                              .read(conditionViewModelProvider.notifier)
-                              .nextPage();
-                          if (isNextPage) {
-                            ref
-                                .read(conditionViewModelProvider.notifier)
-                                .recommendMusic();
-                            context.go('/home/recommend/conditionTwo');
-                          }
-                        },
+                        onPressed: conditionState.event == false
+                            ? null
+                            : () async {
+                                final isNextPage = ref
+                                    .read(conditionViewModelProvider.notifier)
+                                    .nextPage();
+                                if (isNextPage) {
+                                  ref
+                                      .read(conditionViewModelProvider.notifier)
+                                      .recommendMusic();
+                                  context.go('/home/recommend/conditionTwo');
+                                }
+                              },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: Text(
@@ -148,9 +156,9 @@ class RecommendPageConditionOne extends ConsumerWidget {
   Widget tagBox(String tag, bool clicked, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xffF2E6FF)),
+          border: Border.all(color: AppColors.main100),
           borderRadius: BorderRadius.circular(8),
-          color: clicked ? Color(0xfff2e6ff) : Colors.white),
+          color: clicked ? AppColors.main100 : Colors.white),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Text(
