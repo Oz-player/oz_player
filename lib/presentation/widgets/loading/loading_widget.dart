@@ -12,14 +12,12 @@ class LoadingWidget extends ConsumerWidget {
 
     return Stack(
       children: [
-        /*
         if (loadingState.index == 1)
           Container(
             width: double.infinity,
             height: double.infinity,
             color: Colors.black,
-          ),*/
-          
+          ),
         Container(
           width: double.infinity,
           height: double.infinity,
