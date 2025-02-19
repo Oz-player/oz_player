@@ -61,6 +61,78 @@ class _RecommendPageConditionTwoState
     final positionIndex = ref.watch(cardPositionProvider);
     final audioState = ref.watch(audioPlayerViewModelProvider);
 
+    if (conditionState.recommendSongs.isEmpty) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text(
+            '음악 카드 추천',
+            style: TextStyle(color: Colors.grey[900]),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => RecommendExitAlertDialog(
+                  destination: 1,
+                ),
+              );
+            },
+            icon: Icon(Icons.arrow_back),
+            color: Colors.grey[900],
+          ),
+        ),
+        body: SafeArea(
+            child: Column(
+          children: [
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60),
+              child: Image.asset(
+                'assets/images/fail_recommend.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+            Spacer(),
+            TextButton(
+                style: TextButton.styleFrom(
+                    disabledForegroundColor: Colors.grey[400],
+                    disabledBackgroundColor: Colors.grey[300],
+                    backgroundColor: Colors.grey[800],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
+                onPressed: conditionState.event == false
+                    ? null
+                    : () async {
+                        await ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .toggleStop();
+                        ref
+                            .read(conditionViewModelProvider.notifier)
+                            .recommendMusic();
+                      },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    '다시 시도',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                )),
+            SizedBox(
+              height: 32,
+            ),
+          ],
+        )),
+        bottomNavigationBar: HomeBottomNavigation(),
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(

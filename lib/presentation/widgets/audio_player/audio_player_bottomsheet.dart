@@ -187,6 +187,8 @@ class AudioBottomSheet {
                                     .skipBackwardSec(10);
                               },
                               child: Image.asset(
+                                width: 44,
+                                height: 44,
                                 'assets/images/skip_backward_icon.png',
                                 semanticLabel: '10초 전으로',
                               )),
@@ -238,6 +240,8 @@ class AudioBottomSheet {
                                     .skipForwardSec(10);
                               },
                               child: Image.asset(
+                                width: 44,
+                                height: 44,
                                 'assets/images/skip_forward_icon.png',
                                 semanticLabel: '10초 후로',
                               )),
@@ -433,6 +437,8 @@ class AudioBottomSheet {
                                     .skipBackwardSec(10);
                               },
                               child: Image.asset(
+                                width: 44,
+                                height: 44,
                                 'assets/images/skip_backward_icon.png',
                                 semanticLabel: '10초 전으로',
                               )),
@@ -484,6 +490,8 @@ class AudioBottomSheet {
                                     .skipForwardSec(10);
                               },
                               child: Image.asset(
+                                width: 44,
+                                height: 44,
                                 'assets/images/skip_forward_icon.png',
                                 semanticLabel: '10초 후로',
                               )),
