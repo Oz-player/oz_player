@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:html/parser.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
@@ -35,100 +36,121 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
       );
     }
 
-    return ListView.separated(
-      itemCount: filteredResults.length,
-      itemBuilder: (context, index) {
-        final result = filteredResults[index];
-        return Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              child: Text(
-                                result.title, // SpotifyEntity의 title 속성 사용
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                  overflow: TextOverflow.ellipsis,
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.separated(
+            itemCount: filteredResults.length,
+            itemBuilder: (context, index) {
+              final result = filteredResults[index];
+              return Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push('/search/lyrics', extra: {
+                            'song': result.title,
+                            'artist': result.artist,
+                            'lyrics': result.lyrics,
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: SizedBox(
+                                      child: Text(
+                                        result.title, // SpotifyEntity의 title 속성 사용
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      result.artist,
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.gray600,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ExcludeSemantics(
+                              child: SizedBox(
+                                height: 40,
+                                child: Text(
+                                  parse(result.lyrics).body!.text,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.gray600,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              result.artist,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.gray600,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ExcludeSemantics(
-                      child: SizedBox(
-                        height: 40,
-                        child: Text(
-                          parse(result.lyrics).body!.text,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.gray600,
-                            fontSize: 14,
-                          ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                  const SizedBox(
+                    width: 18,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SearchLyicsBottomSheet(
+                            song: result.title,
+                            artist: result.artist,
+                            lyrics: result.lyrics,
+                          );
+                        },
+                      );
+                    },
+                    icon: Semantics(
+                      label: '음악 옵션',
+                      child: Image.asset(
+                        'assets/images/menu_thin_icon.png',
+                        semanticLabel: '',
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider(
+                color: Color(0xFFE5E8EB),
+              );
+            },
+          ),
+        ),
+        SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              child: SvgPicture.asset('assets/svg/list_trailer.svg', height: 40,),
             ),
-            const SizedBox(
-              width: 18,
-            ),
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SearchLyicsBottomSheet(
-                      song: result.title,
-                      artist: result.artist,
-                      lyrics: result.lyrics,
-                    );
-                  },
-                );
-              },
-              icon: Semantics(
-                label: '음악 옵션',
-                child: Image.asset(
-                  'assets/images/menu_thin_icon.png',
-                  semanticLabel: '',
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider(
-          color: Color(0xFFE5E8EB),
-        );
-      },
+          )
+      ],
     );
   }
 }
