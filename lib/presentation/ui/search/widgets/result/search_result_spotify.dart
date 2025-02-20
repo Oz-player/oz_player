@@ -38,10 +38,9 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
       itemBuilder: (context, index) {
         if (index == spotifyResults.length) {
           return SizedBox(
-            height: 90,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: SvgPicture.asset('assets/svg/list_trailer.svg'),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: SvgPicture.asset('assets/svg/list_trailer.svg', height: 40,),
             ),
           );
         } else {
@@ -60,16 +59,20 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(3.43),
-                  child: Image.network(imageUrl,
-                      width: 56, height: 56, fit: BoxFit.fill,
-                      errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/char/oz_3.png',
-                      width: 56,
-                      height: 56,
-                      fit: BoxFit.fill,
-                    );
-                  }),
+                  child: Image.network(
+                    imageUrl,
+                    width: 56,
+                    height: 56,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/char/oz_3.png',
+                        width: 56,
+                        height: 56,
+                        fit: BoxFit.fill,
+                      );
+                    },
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -136,7 +139,9 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
         }
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return Divider(
+          color: Color(0xFFE5E8EB),
+        );
       },
     );
   }
