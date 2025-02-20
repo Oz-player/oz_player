@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_naver_view_model.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_spotify_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -85,7 +86,7 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
                 ),
                 suffixIcon: _textEditingController.text.isNotEmpty
                     ? IconButton(
-                        icon: Image.asset('assets/images/icon_delete.png'),
+                        icon: SvgPicture.asset('assets/svg/icon_delete.svg', height: 24,),
                         onPressed: clearText, // 검색어 지우기
                       )
                     : null,

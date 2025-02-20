@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:html/parser.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_naver_view_model.dart';
 import 'package:oz_player/presentation/ui/search/widgets/bottomSheet/search_lyics_bottom_sheet.dart';
@@ -38,88 +39,99 @@ class _SearchNaverResultState extends ConsumerState<SearchResultNaver> {
       itemCount: filteredResults.length,
       itemBuilder: (context, index) {
         final result = filteredResults[index];
-        return Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24,0,0,0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              child: Text(
-                                result.title, // SpotifyEntity의 title 속성 사용
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                  overflow: TextOverflow.ellipsis,
+        return GestureDetector(
+          onTap: () {
+            context.push('/search/lyrics', extra: {
+              'song': result.title,
+              'artist': result.artist,
+              'lyrics': result.lyrics,
+            });
+          },
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24,0,0,0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                child: Text(
+                                  result.title, // SpotifyEntity의 title 속성 사용
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              result.artist,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Pretendard',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey[600],
-                                  overflow: TextOverflow.ellipsis,
-                                  ),
-                              
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: Text(
-                        parse(result.lyrics).body!.text,
-                        style: TextStyle(
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[600],
-                          fontSize: 14,
+                            Expanded(
+                              child: Text(
+                                result.artist,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Pretendard',
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[600],
+                                    overflow: TextOverflow.ellipsis,
+                                    ),
+                                
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 40,
+                        child: Text(
+                          parse(result.lyrics).body!.text,
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SearchLyicsBottomSheet(
-                      song: result.title,
-                      artist: result.artist,
-                      lyrics: result.lyrics,
-                    );
-                  },
-                );
-              },
-              icon: Image.asset(
-                'assets/images/menu_thin_icon.png',
+              IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SearchLyicsBottomSheet(
+                        song: result.title,
+                        artist: result.artist,
+                        lyrics: result.lyrics,
+                      );
+                    },
+                  );
+                },
+                icon: Image.asset(
+                  'assets/images/menu_thin_icon.png',
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return Divider(
+          color: Color(0xFFE5E8EB),
+        );
       },
     );
   }

@@ -18,7 +18,6 @@ class _SearchWordPageState extends State<SearchWordPage> {
   void initState() {
     super.initState();
     _loadSearchHistory();
-    log('${searchHistory.length}');
     deleteMode = false;
   }
 
@@ -35,6 +34,13 @@ class _SearchWordPageState extends State<SearchWordPage> {
     searchHistory.remove(searchTerm);
     await prefs.setStringList('searchHistory', searchHistory);
     setState(() {});
+  }
+
+  Future<void> _deleteAllHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('searchHistory');
+    setState(() {});
+    _loadSearchHistory();
   }
 
   void _toggleDeleteMode() {
@@ -62,13 +68,26 @@ class _SearchWordPageState extends State<SearchWordPage> {
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  _toggleDeleteMode();
-                  log('deleteMode : $deleteMode');
-                },
-                child: Text(deleteMode ? '취소' : '기록 삭제'),
-              ),
+              Row(
+                children: [
+                  deleteMode
+                      ? TextButton(
+                          onPressed: () {
+                            _deleteAllHistory();
+                            log('기록 전체 삭제');
+                          },
+                          child: Text('전체 삭제'),
+                        )
+                      : SizedBox(),
+                  TextButton(
+                    onPressed: () {
+                      _toggleDeleteMode();
+                      log('deleteMode : $deleteMode');
+                    },
+                    child: Text(deleteMode ? '삭제 완료' : '기록 삭제'),
+                  ),
+                ],
+              )
             ],
           ),
           Expanded(
@@ -85,7 +104,11 @@ class _SearchWordPageState extends State<SearchWordPage> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.schedule, size: 24, color: Colors.grey[400],),
+                            Icon(
+                              Icons.schedule,
+                              size: 24,
+                              color: Colors.grey[400],
+                            ),
                             SizedBox(
                               width: 20,
                             ),
@@ -110,7 +133,8 @@ class _SearchWordPageState extends State<SearchWordPage> {
                                   ),
                                   iconSize: 20,
                                   onPressed: () {
-                                    _deleteSearchHistory(searchHistory[searchHistory.length - 1 - index]);
+                                    _deleteSearchHistory(searchHistory[
+                                        searchHistory.length - 1 - index]);
                                   },
                                 )
                               : Text(''),

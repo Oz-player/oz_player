@@ -135,7 +135,9 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
         }
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return Divider(
+          color: Color(0xFFE5E8EB),
+        );
       },
     );
   }

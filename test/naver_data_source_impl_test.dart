@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oz_player/data/source/naver/naver_search_data_source_impl.dart'; // Update with the correct import path
@@ -9,17 +8,17 @@ void main() {
     NaverSearchDataSourceImpl naverSearchDataSourceImpl = NaverSearchDataSourceImpl();
     
     // Fetch the search results
-    final searchResults = await naverSearchDataSourceImpl.fetchNaver("Switch my whip, came back in black");
+    final searchResults = await naverSearchDataSourceImpl.fetchNaver("재밌다");
     
     // Validate that the result is not empty
     expect(searchResults.isEmpty, false);
 
     for (final result in searchResults) {
-      log('Title: ${result.title}');
-      log('Artist: ${result.artist}');
-      log('Lyrics: ${result.lyrics}');
-      log('Link: ${result.link}');
-      log('-------------------');
+      print('Title: ${result.title}');
+      print('Artist: ${result.artist}');
+      print('Lyrics: ${result.lyrics}');
+      print('Link: ${result.link}');
+      print('-------------------');
     }
   });
 }
