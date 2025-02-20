@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/app/logic/isvaildurl.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 //import 'package:toggle_switch/toggle_switch.dart';
@@ -13,7 +14,6 @@ class AudioBottomSheet {
   static void show(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
-      isDismissible: false,
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {
@@ -51,8 +51,8 @@ class AudioBottomSheet {
                         minWidth: 67,
                         cornerRadius: 8,
                         activeBgColors: [
-                          [Color(0xff7303E3)],
-                          [Color(0xff7303E3)]
+                          [AppColors.main600],
+                          [AppColors.main600]
                         ],
                         activeFgColor: Colors.white,
                         inactiveBgColor: Colors.grey,
@@ -99,7 +99,7 @@ class AudioBottomSheet {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/muoz.png',
+                                      'assets/images/empty_thumbnail',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -158,12 +158,12 @@ class AudioBottomSheet {
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Color(0xff7303E3)),
+                                    TextStyle(color: AppColors.main600),
                                 timeLabelPadding: 10,
-                                baseBarColor: Color(0xffF2E6FF),
-                                progressBarColor: Color(0xff7303E3),
-                                bufferedBarColor: Color(0xffD9B3FE),
-                                thumbColor: Color(0xff7303E3),
+                                baseBarColor: AppColors.main100,
+                                progressBarColor: AppColors.main600,
+                                bufferedBarColor: AppColors.main200,
+                                thumbColor: AppColors.main600,
                                 onSeek: (duration) {
                                   ref
                                       .read(
@@ -187,7 +187,11 @@ class AudioBottomSheet {
                                     .skipBackwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_backward_icon.png')),
+                                width: 44,
+                                height: 44,
+                                'assets/images/skip_backward_icon.png',
+                                semanticLabel: '10초 전으로',
+                              )),
                           SizedBox(
                             width: 40,
                           ),
@@ -204,19 +208,23 @@ class AudioBottomSheet {
                                     .togglePlay();
                               }
                             },
-                            child: Container(
-                              width: 72,
-                              height: 72,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: CircleAvatar(
-                                backgroundColor: Color(0xffF2E6FF),
-                                child: Icon(
-                                  audioState.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  size: 28,
-                                  color: Color(0xff7303E3),
+                            child: Semantics(
+                              label: audioState.isPlaying ? '일시정지' : '재생',
+                              button: true,
+                              child: Container(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: CircleAvatar(
+                                  backgroundColor: AppColors.main100,
+                                  child: Icon(
+                                    audioState.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    size: 28,
+                                    color: AppColors.main600,
+                                  ),
                                 ),
                               ),
                             ),
@@ -232,7 +240,11 @@ class AudioBottomSheet {
                                     .skipForwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_forward_icon.png')),
+                                width: 44,
+                                height: 44,
+                                'assets/images/skip_forward_icon.png',
+                                semanticLabel: '10초 후로',
+                              )),
                         ],
                       ),
                       SizedBox(
@@ -252,7 +264,6 @@ class AudioBottomSheet {
   static void showCurrentAudio(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      isDismissible: false,
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {
@@ -289,8 +300,8 @@ class AudioBottomSheet {
                         minWidth: 67,
                         cornerRadius: 8,
                         activeBgColors: [
-                          [Color(0xff7303E3)],
-                          [Color(0xff7303E3)]
+                          [AppColors.main600],
+                          [AppColors.main600]
                         ],
                         activeFgColor: Colors.white,
                         inactiveBgColor: Colors.grey,
@@ -335,7 +346,7 @@ class AudioBottomSheet {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/muoz.png',
+                                      'assets/images/empty_thumbnail',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -397,12 +408,12 @@ class AudioBottomSheet {
                                 buffered:
                                     audioState.audioPlayer.bufferedPosition,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Color(0xff7303E3)),
+                                    TextStyle(color: AppColors.main600),
                                 timeLabelPadding: 10,
-                                baseBarColor: Color(0xffF2E6FF),
-                                progressBarColor: Color(0xff7303E3),
-                                bufferedBarColor: Color(0xffD9B3FE),
-                                thumbColor: Color(0xff7303E3),
+                                baseBarColor: AppColors.main100,
+                                progressBarColor: AppColors.main600,
+                                bufferedBarColor: AppColors.main200,
+                                thumbColor: AppColors.main600,
                                 onSeek: (duration) {
                                   ref
                                       .read(
@@ -426,7 +437,11 @@ class AudioBottomSheet {
                                     .skipBackwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_backward_icon.png')),
+                                width: 44,
+                                height: 44,
+                                'assets/images/skip_backward_icon.png',
+                                semanticLabel: '10초 전으로',
+                              )),
                           SizedBox(
                             width: 40,
                           ),
@@ -443,19 +458,23 @@ class AudioBottomSheet {
                                     .togglePlay();
                               }
                             },
-                            child: Container(
-                              width: 72,
-                              height: 72,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: CircleAvatar(
-                                backgroundColor: Color(0xffF2E6FF),
-                                child: Icon(
-                                  audioState.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  size: 28,
-                                  color: Color(0xff7303E3),
+                            child: Semantics(
+                              label: audioState.isPlaying ? '일시정지' : '재생',
+                              button: true,
+                              child: Container(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: CircleAvatar(
+                                  backgroundColor: AppColors.main100,
+                                  child: Icon(
+                                    audioState.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    size: 28,
+                                    color: AppColors.main600,
+                                  ),
                                 ),
                               ),
                             ),
@@ -471,7 +490,11 @@ class AudioBottomSheet {
                                     .skipForwardSec(10);
                               },
                               child: Image.asset(
-                                  'assets/images/skip_forward_icon.png')),
+                                width: 44,
+                                height: 44,
+                                'assets/images/skip_forward_icon.png',
+                                semanticLabel: '10초 후로',
+                              )),
                         ],
                       ),
                       SizedBox(

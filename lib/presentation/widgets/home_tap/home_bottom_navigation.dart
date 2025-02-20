@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/widgets/recommend_exit_alert_dialog.dart';
 import 'package:oz_player/presentation/ui/saved/widgets/delete_alert_dialog.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
@@ -32,6 +33,8 @@ class HomeBottomNavigation extends StatelessWidget {
             height: 108,
             child: BottomNavigationBar(
               backgroundColor: Colors.white,
+              selectedFontSize: 14,
+              unselectedFontSize: 14,
               currentIndex: currentPage == 4
                   ? 1
                   : currentPage == 5
@@ -39,7 +42,7 @@ class HomeBottomNavigation extends StatelessWidget {
                       : currentPage,
               elevation: 10,
               unselectedItemColor: Colors.grey[600],
-              selectedItemColor: Color(0xff7303e3),
+              selectedItemColor: AppColors.main600,
               onTap: (value) {
                 switch (value) {
                   // 보관함 탭을 터치했을 경우

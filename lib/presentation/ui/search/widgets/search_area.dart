@@ -61,7 +61,6 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
             height: 45,
             child: TextFormField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),
@@ -72,7 +71,6 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
                 hintText: '제목 또는 가사 검색',
                 hintStyle: TextStyle(
                   fontSize: 16,
-                  fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w600,
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -92,7 +90,8 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
                     : null,
               ),
               onChanged: (text) {
-                EasyDebounce.debounce('search', Duration(milliseconds: 500), (){
+                EasyDebounce.debounce('search', Duration(milliseconds: 500),
+                    () {
                   search(text);
                 });
               },
@@ -108,7 +107,6 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
           child: Text(
             '취소',
             style: TextStyle(
-              fontFamily: 'Pretendard',
               fontWeight: FontWeight.w500,
               fontSize: 16,
               color: Colors.grey[600],

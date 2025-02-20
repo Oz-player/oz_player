@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
@@ -11,11 +12,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      ref.read(bottomNavigationProvider.notifier).resetPage();
-    });
-
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -33,11 +29,18 @@ class HomePage extends ConsumerWidget {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           actions: [
-            IconButton(
-                onPressed: () {
-                  context.push('/settings');
-                },
-                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
+            // 설정창
+            Semantics(
+              label: '설정 버튼',
+              child: IconButton(
+                  onPressed: () {
+                    context.push('/settings');
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/svg/option_icon.svg',
+                    semanticsLabel: '',
+                  )),
+            ),
             SizedBox(
               width: 8,
             ),
@@ -56,7 +59,7 @@ class HomePage extends ConsumerWidget {
                     Container(
                       height: 200,
                       decoration: BoxDecoration(
-                        color: Color(0xffA54DFD),
+                        color: AppColors.main400,
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -97,7 +100,7 @@ class HomePage extends ConsumerWidget {
                               context.go('/home/recommend');
                             },
                             style: TextButton.styleFrom(
-                                backgroundColor: Color(0xff5902B0),
+                                backgroundColor: AppColors.main700,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8))),
                             child: Text(
@@ -165,7 +168,7 @@ class HomePage extends ConsumerWidget {
                               context.go('/home/ranking');
                             },
                             style: TextButton.styleFrom(
-                                backgroundColor: Color(0xff5902B0),
+                                backgroundColor: AppColors.main700,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8))),
                             child: Text(

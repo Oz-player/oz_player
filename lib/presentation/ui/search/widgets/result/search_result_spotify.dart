@@ -40,8 +40,8 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
           return SizedBox(
             height: 90,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 30),
-              child: SvgPicture.asset('assets/svg/muoz.svg'),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              child: SvgPicture.asset('assets/svg/list_trailer.svg'),
             ),
           );
         } else {
@@ -83,7 +83,6 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                             result.name, // SpotifyEntity의 title 속성 사용
                             style: TextStyle(
                               fontSize: 16,
-                              fontFamily: 'Pretendard',
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
                             ),
@@ -98,7 +97,6 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                                   : '',
                           style: TextStyle(
                             fontSize: 16,
-                            fontFamily: 'Pretendard',
                             fontWeight: FontWeight.w500,
                             color: Colors.grey[600],
                           ),
@@ -125,8 +123,11 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                       },
                     );
                   },
-                  icon: Image.asset(
-                    'assets/images/menu_thin_icon.png',
+                  icon: Semantics(
+                    label: '음악 옵션',
+                    child: Image.asset(
+                      'assets/images/menu_thin_icon.png',
+                    ),
                   ),
                 ),
               ],

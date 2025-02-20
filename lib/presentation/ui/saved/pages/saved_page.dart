@@ -64,11 +64,18 @@ class _SavedPageState extends ConsumerState<SavedPage> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-                onPressed: () {
-                  context.push('/settings');
-                },
-                icon: SvgPicture.asset('assets/svg/option_icon.svg')),
+            Semantics(
+              label: '설정 버튼',
+              button: true,
+              child: IconButton(
+                  onPressed: () {
+                    context.push('/settings');
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/svg/option_icon.svg',
+                    semanticsLabel: '',
+                  )),
+            ),
             const SizedBox(
               width: 8,
             ),
@@ -77,40 +84,45 @@ class _SavedPageState extends ConsumerState<SavedPage> {
         body: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // ----------------------------------------------------------
                   // 상단 이미지
                   // ----------------------------------------------------------
-                  Stack(
-                    children: [
-                      Container(
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: AppColors.gray300,
-                          borderRadius: BorderRadius.circular(8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: AppColors.gray300,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        top: 35,
-                        left: 24,
-                        child: Text(
-                          isLibrary
-                              ? '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹'
-                              : '나만의 플레이리스트를 마음껏\n만들어봐라냐옹',
-                          style: TextStyle(
-                              color: AppColors.gray900,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
+                        Positioned(
+                          top: 35,
+                          left: 24,
+                          child: ExcludeSemantics(
+                            child: Text(
+                              isLibrary
+                                  ? '오즈의 음악 카드에 적어놓은\n메모도 확인해봐라냐옹'
+                                  : '나만의 플레이리스트를 마음껏\n만들어봐라냐옹',
+                              style: TextStyle(
+                                  color: AppColors.gray900,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: SvgPicture.asset('assets/svg/myu_2.svg')),
-                    ],
+                        Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: SvgPicture.asset('assets/svg/myu_2.svg')),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 16,
@@ -181,10 +193,13 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                                 width: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
-                                color: ref.watch(listSortViewModelProvider) ==
-                                        SortedType.latest
-                                    ? AppColors.main100
-                                    : Colors.white,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: ref.watch(listSortViewModelProvider) ==
+                                          SortedType.latest
+                                      ? AppColors.main100
+                                      : Colors.white,
+                                ),
                                 child: Text(
                                   '최근 저장 순',
                                   style: TextStyle(
@@ -208,10 +223,13 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                                 width: 100,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
-                                color: ref.watch(listSortViewModelProvider) ==
-                                        SortedType.ascending
-                                    ? AppColors.main100
-                                    : Colors.white,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: ref.watch(listSortViewModelProvider) ==
+                                          SortedType.ascending
+                                      ? AppColors.main100
+                                      : Colors.white,
+                                ),
                                 child: Text(
                                   '가나다순',
                                   style: TextStyle(

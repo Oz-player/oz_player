@@ -50,7 +50,7 @@ class AppleButton extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     content: Text(
-                      '개인정보 수집 및 이용에 동의해야\n 로그인을 할 수 있습니다!',
+                      '로그인하기 전에\n개인정보 수집 및 이용에 동의해주세요',
                       textAlign: TextAlign.center,
                     ),
                     actionsAlignment: MainAxisAlignment.center,

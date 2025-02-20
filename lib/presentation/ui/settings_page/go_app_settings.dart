@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,7 +45,7 @@ class GoAppSettingsButton extends StatelessWidget {
               '알림 설정',
               style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF6B7684),
+                color: AppColors.gray600,
                 fontWeight: FontWeight.w500,
                 height: 17 / 14,
               ),
@@ -53,12 +54,11 @@ class GoAppSettingsButton extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
-              color: Color(0xFF6B7684),
+              color: AppColors.gray600,
             ),
           ],
         ),
       ),
     );
   }
-  
 }
