@@ -89,56 +89,57 @@ class SpeechBalloon extends StatelessWidget {
 
     final rotatedNipHalfHeight = getNipHeight(nipHeight) / 2;
     final offset = nipHeight / 2 + rotatedNipHalfHeight;
+    final nipOffsetAdjustment = 11.0;
     switch (nipLocation) {
       case NipLocation.top:
         final value = -offset + rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(0, value);
-        innerNipOffset = this.offset + Offset(0, value * vM);
+        nipOffset = this.offset + Offset(0, value + nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(0, value * vM + nipOffsetAdjustment);
         alignment = Alignment.topCenter;
-        break;
-      case NipLocation.right:
-        final value = offset - rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(value, 0);
-        innerNipOffset = this.offset + Offset(value * vM, 0);
-        alignment = Alignment.centerRight;
         break;
       case NipLocation.bottom:
         final value = offset - rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(0, value);
-        innerNipOffset = this.offset + Offset(0, value * vM);
+        nipOffset = this.offset + Offset(0, value + nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(0, value * vM + nipOffsetAdjustment);
         alignment = Alignment.bottomCenter;
         break;
       case NipLocation.left:
         final value = -offset + rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(value, 0);
-        innerNipOffset = this.offset + Offset(value * vM, 0);
+        nipOffset = this.offset + Offset(value, nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(value * vM, nipOffsetAdjustment);
         alignment = Alignment.centerLeft;
+        break;
+      case NipLocation.right:
+        final value = offset - rotatedNipHalfHeight;
+        nipOffset = this.offset + Offset(value, nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(value * vM, nipOffsetAdjustment);
+        alignment = Alignment.centerRight;
         break;
       case NipLocation.bottomLeft:
         final value = offset - rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(value, value);
-        innerNipOffset = this.offset + Offset(value * hM + 20, value * vM);
+        nipOffset = this.offset + Offset(value, value + nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(value * hM + 20, value * vM + nipOffsetAdjustment);
         alignment = Alignment.bottomLeft;
         break;
       case NipLocation.bottomRight:
         final value1 = -offset + rotatedNipHalfHeight;
         final value2 = offset - rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(value1, value2);
-        innerNipOffset = this.offset + Offset(value1 * hM - 20, value2 * vM);
+        nipOffset = this.offset + Offset(value1, value2 + nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(value1 * hM - 20, value2 * vM + nipOffsetAdjustment);
         alignment = Alignment.bottomRight;
         break;
       case NipLocation.topLeft:
         final value1 = offset - rotatedNipHalfHeight;
         final value2 = -offset + rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(value1, value2);
-        innerNipOffset = this.offset + Offset(value1 * hM, value2 * vM);
+        nipOffset = this.offset + Offset(value1, value2 + nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(value1 * hM, value2 * vM + nipOffsetAdjustment);
         alignment = Alignment.topLeft;
         break;
       case NipLocation.topRight:
         final value1 = -offset + rotatedNipHalfHeight;
         final value2 = -offset + rotatedNipHalfHeight;
-        nipOffset = this.offset + Offset(value1, value2);
-        innerNipOffset = this.offset + Offset(value1 * hM, value2 * vM);
+        nipOffset = this.offset + Offset(value1, value2 + nipOffsetAdjustment);
+        innerNipOffset = this.offset + Offset(value1 * hM, value2 * vM + nipOffsetAdjustment);
         alignment = Alignment.topRight;
         break;
     }
@@ -188,6 +189,7 @@ class SpeechBalloon extends StatelessWidget {
     );
   }
 
+  /*
   Widget frontNip(Offset nipOffset) {
     return Transform.translate(
       offset: nipOffset,
@@ -206,6 +208,16 @@ class SpeechBalloon extends StatelessWidget {
       ),
     );
   }
+  */
+  Widget frontNip(Offset nipOffset) {
+    return Transform.translate(
+      offset: nipOffset,
+      child: CustomPaint(
+        painter: NipPainter(color),
+        size: Size(nipHeight, nipHeight),
+      ),
+    );
+  }
 
   Widget balloon() {
     return Material(
@@ -220,6 +232,7 @@ class SpeechBalloon extends StatelessWidget {
     );
   }
 
+/*
   Widget nip(Offset nipOffset) {
     return Transform.translate(
       offset: nipOffset,
@@ -238,6 +251,40 @@ class SpeechBalloon extends StatelessWidget {
       ),
     );
   }
+  */
+  Widget nip(Offset nipOffset) {
+    return Transform.translate(
+      offset: nipOffset,
+      child: CustomPaint(
+        painter: NipPainter(borderColor ?? Colors.transparent),
+        size: Size(nipHeight, nipHeight),
+      ),
+    );
+  }
 
   double getNipHeight(double nipHeight) => sqrt(2 * pow(nipHeight, 2));
+}
+
+class NipPainter extends CustomPainter {
+  final Color color;
+
+  NipPainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    final path = Path()
+      ..moveTo(size.width / 2, size.height) // 삼각형의 꼭짓점 (아래쪽)
+      ..lineTo(0, 0) // 왼쪽 위
+      ..lineTo(size.width, 0) // 오른쪽 위
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
