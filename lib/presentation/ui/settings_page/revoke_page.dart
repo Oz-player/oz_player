@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/revoke_reason_button.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class RevokePage extends ConsumerStatefulWidget {
@@ -130,6 +131,7 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                           await deleteUserViewModel.deleteUser(
                               context, selectedButtonIndex, ref);
                         }
+                        ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
                         ref.read(bottomNavigationProvider.notifier).resetPage();
                       },
                 child: Text(
