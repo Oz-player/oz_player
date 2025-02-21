@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
@@ -142,8 +143,8 @@ class SavePlaylistBottomSheet {
                               ),
                               SizedBox(
                                 width: double.maxFinite,
-                                child: Image.asset(
-                                    'assets/images/playlist_empty.png'),
+                                child: SvgPicture.asset(
+                                    'assets/svg/no_songs_in_playlist.svg'),
                               ),
                               SizedBox(
                                 height: 10,
