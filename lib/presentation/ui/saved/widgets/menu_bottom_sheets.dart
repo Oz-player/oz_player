@@ -47,7 +47,8 @@ class SavedMenuBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       image: imgUrl == null
                           ? DecorationImage(
-                              image: AssetImage('assets/images/muoz.png'),
+                              image: AssetImage(
+                                  'assets/images/empty_thumbnail.png'),
                             )
                           : DecorationImage(
                               image: NetworkImage(imgUrl!),
@@ -63,6 +64,7 @@ class SavedMenuBottomSheet extends StatelessWidget {
                   Expanded(
                     child: Text(
                       name,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -72,14 +74,17 @@ class SavedMenuBottomSheet extends StatelessWidget {
                   // --------------------------------
                   // bottomSheet : 3. 종료 버튼
                   // --------------------------------
-                  GestureDetector(
-                    onTap: () => context.pop(),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      width: 48,
-                      height: 48,
-                      color: Colors.transparent,
-                      child: Icon(Icons.close),
+                  Semantics(
+                    label: '메뉴 종료',
+                    child: GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        width: 48,
+                        height: 48,
+                        color: Colors.transparent,
+                        child: Icon(Icons.close),
+                      ),
                     ),
                   )
                 ],

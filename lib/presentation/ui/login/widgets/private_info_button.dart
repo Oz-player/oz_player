@@ -1,7 +1,8 @@
-import 'package:easy_rich_text/easy_rich_text.dart';
-import 'package:flutter/gestures.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 
 class PrivateInfoButton extends StatefulWidget {
   final void Function(bool) onChecked;
@@ -20,50 +21,50 @@ class _PrivateInfoButtonState extends State<PrivateInfoButton> {
       _isChecked = !_isChecked;
     });
     widget.onChecked(_isChecked);
+    SemanticsAction.tap;
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _boxCheck,
-      child: Container(
-        height: 50,
-        color: Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 21,
-              width: 21,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Semantics(
+            label: '회원 로그인에 필요한 개인정보 제공에 동의하신다면 두 번 탭해주세요',
+            value: _isChecked ? '동의함' : '동의하지 않음',
+            child: Container(
+              height: 24,
+              width: 24,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color(0xFFD9B3FE))
+                color: AppColors.gray300,
+                borderRadius: BorderRadius.circular(4),
               ),
               child: _isChecked
-                  ? Icon(Icons.check, size: 19, color: Color(0xFF5902B0))
+                  ? Icon(Icons.check, size: 19, color: AppColors.gray600)
                   : null,
             ),
-            SizedBox(width: 8),
-            // flutter package easy_rich_text 사용!
-            EasyRichText(
-              '개인정보 수집 및 이용에 동의하시겠습니까?',
-              defaultStyle: TextStyle(
-                fontSize: 13,
-                color: Color(0xFF8D8D8D),
+          ),
+          SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              context.go('/login/private');
+            },
+            child: SizedBox(
+              height: 14,
+              child: Text(
+                '회원 로그인에 필요한 개인정보 제공에 동의합니다.',
+                semanticsLabel: '두 번 탭해 개인정보 처리 방침 자세히 보기',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.gray600,
+                  height: 14 / 12,
+                ),
               ),
-              patternList: [
-                EasyRichTextPattern(
-                    targetString: '개인정보 수집 및 이용',
-                    style: TextStyle(color: Color(0xFFD28BBA)),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        context.go('/login/private');
-                      }),
-              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

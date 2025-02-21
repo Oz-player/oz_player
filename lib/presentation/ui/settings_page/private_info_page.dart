@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PrivateInfoPage extends StatelessWidget {
@@ -9,6 +10,19 @@ class PrivateInfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('개인정보 수집·이용'),
+        leading: Semantics(
+          button: true,
+          child: IconButton(
+            onPressed: () {
+              context.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              semanticLabel: '돌아가기',
+            ),
+            color: Colors.grey[900],
+          ),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),

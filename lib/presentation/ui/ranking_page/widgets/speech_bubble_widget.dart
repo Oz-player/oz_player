@@ -21,141 +21,156 @@ class SpeechBubbleWidget extends ConsumerWidget {
     final audioState = ref.watch(audioPlayerViewModelProvider);
 
     if (song == null) {
-      return SpeechBalloon(
-          nipLocation: nipLocation ?? NipLocation.bottom,
-          borderRadius: 8,
-          nipHeight: 20,
-          color: Colors.black.withValues(alpha: 0.32),
-          width: 230,
-          height: 120,
-          child: Center(
-              child: Text(
-            '랭킹 확인 중입니다',
-            style: TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-          )));
+      return Semantics(
+        child: SpeechBalloon(
+            nipLocation: nipLocation ?? NipLocation.bottom,
+            borderRadius: 12,
+            nipHeight: 20,
+            color: Colors.black.withValues(alpha: 0.32),
+            width: 230,
+            height: 120,
+            child: Center(
+                child: Text(
+              '랭킹 확인 중입니다',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ))),
+      );
     }
     return SpeechBalloon(
         nipLocation: nipLocation ?? NipLocation.bottom,
-        borderRadius: 8,
+        borderRadius: 12,
         nipHeight: 20,
         color: Colors.black.withValues(alpha: 0.32),
         width: 256,
         height: 120,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 24,
-                ),
-                SizedBox(
-                    width: 60, height: 60, child: Image.network(song!.imgUrl)),
-                SizedBox(
-                  width: 16,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 130,
-                      child: AutoSizeText(
-                        song!.title,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 14,
-                        maxLines: 1,
-                        wrapWords: false,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 130,
-                      child: AutoSizeText(
-                        song!.artist,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 12,
-                        maxLines: 1,
-                        wrapWords: false,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-                Spacer(),
-              ],
-            ),
-            Positioned(
-                right: 16,
-                bottom: 16,
-                child: GestureDetector(
-                  onTap: () async {
-                    if (audioState.currentSong?.title == song!.title &&
-                        audioState.currentSong?.artist == song!.artist &&
-                        audioState.isPlaying) {
-                      AudioBottomSheet.showCurrentAudio(context);
-                    } else {
-                      await ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .toggleStop();
-
-                      if (context.mounted) {
-                        AudioBottomSheet.showCurrentAudio(context);
-                      }
-
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .isStartLoadingAudioPlayer();
-
-                      SongEntity playSong = SongEntity(
-                          video: song!.video,
-                          title: song!.title,
-                          imgUrl: song!.imgUrl,
-                          artist: song!.artist,
-                          mood: '',
-                          situation: '',
-                          genre: '',
-                          favoriteArtist: '');
-
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .setCurrentSong(playSong);
-
-                      ref
-                          .read(audioPlayerViewModelProvider.notifier)
-                          .setAudioPlayer(playSong.video.audioUrl, -2);
-                    }
-                  },
-                  child: Icon(
-                    Icons.play_circle_outline,
-                    color: Colors.white,
-                    size: 28,
+        child: Semantics(
+          button: true,
+          label: data.focusIndex == FocusIndex.firstPrice
+              ? '1위'
+              : data.focusIndex == FocusIndex.secondPrice
+                  ? '2위'
+                  : '3위',
+          hint: '두 번 탭하여 재생',
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 24,
                   ),
-                )),
-            if (data.focusIndex == FocusIndex.firstPrice)
-              Positioned(
-                top: -30,
-                child: SvgPicture.asset('assets/svg/crown_gold.svg'),
+                  SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: Image.network(song!.imgUrl)),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 130,
+                        child: AutoSizeText(
+                          song!.title,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 14,
+                          maxLines: 1,
+                          wrapWords: false,
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 130,
+                        child: AutoSizeText(
+                          song!.artist,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 12,
+                          maxLines: 1,
+                          wrapWords: false,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                ],
               ),
-            if (data.focusIndex == FocusIndex.secondPrice)
               Positioned(
-                top: -30,
-                child: SvgPicture.asset('assets/svg/crown_silver.svg'),
-              ),
-            if (data.focusIndex == FocusIndex.thirdPrice)
-              Positioned(
-                top: -30,
-                child: SvgPicture.asset('assets/svg/crown_bronze.svg'),
-              ),
-          ],
+                  right: 16,
+                  bottom: 16,
+                  child: GestureDetector(
+                    onTap: () async {
+                      if (audioState.currentSong?.title == song!.title &&
+                          audioState.currentSong?.artist == song!.artist &&
+                          audioState.isPlaying) {
+                        AudioBottomSheet.showCurrentAudio(context);
+                      } else {
+                        await ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .toggleStop();
+
+                        if (context.mounted) {
+                          AudioBottomSheet.showCurrentAudio(context);
+                        }
+
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .isStartLoadingAudioPlayer();
+
+                        SongEntity playSong = SongEntity(
+                            video: song!.video,
+                            title: song!.title,
+                            imgUrl: song!.imgUrl,
+                            artist: song!.artist,
+                            mood: '',
+                            situation: '',
+                            genre: '',
+                            favoriteArtist: '');
+
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .setCurrentSong(playSong);
+
+                        ref
+                            .read(audioPlayerViewModelProvider.notifier)
+                            .setAudioPlayer(playSong.video.audioUrl, -2);
+                      }
+                    },
+                    child: Icon(
+                      Icons.play_circle_outline,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  )),
+              if (data.focusIndex == FocusIndex.firstPrice)
+                Positioned(
+                  top: -30,
+                  child: SvgPicture.asset('assets/svg/crown_gold.svg'),
+                ),
+              if (data.focusIndex == FocusIndex.secondPrice)
+                Positioned(
+                  top: -30,
+                  child: SvgPicture.asset('assets/svg/crown_silver.svg'),
+                ),
+              if (data.focusIndex == FocusIndex.thirdPrice)
+                Positioned(
+                  top: -30,
+                  child: SvgPicture.asset('assets/svg/crown_bronze.svg'),
+                ),
+            ],
+          ),
         ));
   }
 }

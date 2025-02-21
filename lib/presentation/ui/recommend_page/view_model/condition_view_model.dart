@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/domain/entitiy/video_info_entitiy.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/card_position_provider.dart';
 import 'package:oz_player/presentation/widgets/loading/loading_view_model/loading_view_model.dart';
@@ -92,7 +93,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
       '불안해요',
       '우울해요',
       '답답해요',
-      '걱정되요',
+      '걱정돼요',
       '지루해요',
       '차분해요',
       '집중하고 싶어요',
@@ -267,7 +268,7 @@ class ConditionViewModel extends AutoDisposeNotifier<ConditionState> {
     state.recommendSongs = [];
 
     final gemini = ref.read(geiminiRepositoryProvider);
-    final videoEx = ref.read(videoInfoUsecaseProvider);
+    // final videoEx = ref.read(videoInfoUsecaseProvider);
     // final maniaDBSong = ref.read(maniadbSongUsecaseProvider);
     // final maniaDBArtist = ref.read(maniadbArtistUsecaseProvider);
     final spotifyDB = ref.read(spotifySourceProvider);
@@ -335,17 +336,21 @@ $exceptlist
         imgUrl = albumImges['url'];
 
         log('$title - $artist 검색성공');
+        /*
         final video = await videoEx.getVideoInfo(title!, artist!);
 
         if (video.audioUrl == '' && video.id == '') {
           throw '$title - Video is EMPTY';
         }
+        */
+
+        final video = VideoInfoEntitiy.empty();
 
         final song = SongEntity(
           video: video,
-          title: title,
+          title: title!,
           imgUrl: imgUrl ?? '',
-          artist: artist,
+          artist: artist!,
           mood: moodtext,
           situation: situationtext,
           genre: genretext,

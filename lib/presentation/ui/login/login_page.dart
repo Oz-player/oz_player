@@ -9,6 +9,7 @@ import 'package:oz_player/presentation/ui/login/widgets/private_info_button.dart
 import 'package:oz_player/presentation/ui/saved/view_models/library_view_model.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/list_sort_viewmodel.dart';
 import 'package:oz_player/presentation/ui/saved/view_models/playlist_view_model.dart';
+import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -33,6 +34,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     // 로그인 상태가 success일 때, 페이지 이동
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (loginState == LoginState.success) {
+        ref.read(bottomNavigationProvider.notifier).resetPage();
         await ref.watch(playListViewModelProvider.notifier).getPlayLists();
         await ref.watch(libraryViewModelProvider.notifier).getLibrary();
         ref.watch(listSortViewModelProvider.notifier).setLatest();
@@ -74,8 +76,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   GoogleButton(activated: _isChecked),
                   KakaoButton(activated: _isChecked),
                   AppleButton(activated: _isChecked), // IOS에서만 애플 로그인 버튼 보임
+                  SizedBox(height: 24),
                   PrivateInfoButton(onChecked: _checkState),
-                  SizedBox(height: 32),
+                  // SizedBox(height: 32),
                 ],
               ),
             ),

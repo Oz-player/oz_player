@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/data/dto/play_list_dto.dart';
 import 'package:oz_player/domain/entitiy/raw_song_entity.dart';
 import 'package:oz_player/domain/entitiy/song_entity.dart';
+import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/providers/play_list_provider.dart';
 import 'package:oz_player/presentation/providers/raw_song_provider.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
@@ -141,8 +143,8 @@ class SavePlaylistBottomSheet {
                               ),
                               SizedBox(
                                 width: double.maxFinite,
-                                child: Image.asset(
-                                    'assets/images/playlist_empty.png'),
+                                child: SvgPicture.asset(
+                                    'assets/svg/no_songs_in_playlist.svg'),
                               ),
                               SizedBox(
                                 height: 10,
@@ -173,6 +175,11 @@ class SavePlaylistBottomSheet {
                                             horizontal: 24),
                                         child: Text(
                                           '플레이리스트에 음악 추가하기',
+                                          semanticsLabel:
+                                              playListState.isClickedPlayList ==
+                                                      -1
+                                                  ? '저장하려면 먼저 플레이리스트를 선택해주세요.'
+                                                  : '플레이리스트에 음악 추가하기',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
@@ -348,7 +355,7 @@ class SavePlaylistBottomSheet {
                                                                 null
                                                             ? DecorationImage(
                                                                 image: AssetImage(
-                                                                    'assets/images/muoz.png'),
+                                                                    'assets/images/empty_thumbnail.png'),
                                                                 fit: BoxFit
                                                                     .contain)
                                                             : DecorationImage(
@@ -457,51 +464,87 @@ class SavePlaylistBottomSheet {
                                                       .notifier)
                                               .isBlind();
 
-                                          final entity = RawSongEntity(
-                                              countLibrary: 0,
-                                              countPlaylist: 0,
-                                              video: songEntity.video,
-                                              title: songEntity.title,
-                                              imgUrl: songEntity.imgUrl,
-                                              artist: songEntity.artist);
+                                          try {
+                                            if (songEntity.video.audioUrl ==
+                                                '') {
+                                              final videoEx = ref.read(
+                                                  videoInfoUsecaseProvider);
 
-                                          // 플레이리스트에 곡 추가 로직
-                                          await ref
-                                              .read(rawSongUsecaseProvider)
-                                              .updateRawSongByPlaylist(entity);
+                                              final video =
+                                                  await videoEx.getVideoInfo(
+                                                      songEntity.title,
+                                                      songEntity.artist);
 
-                                          await ref
-                                              .read(playListsUsecaseProvider)
-                                              .addSong(
-                                                  ref
-                                                      .read(
-                                                          userViewModelProvider
-                                                              .notifier)
-                                                      .getUserId(),
-                                                  playlistTitle,
-                                                  entity);
+                                              if (video.audioUrl == '' &&
+                                                  video.id == '') {
+                                                throw '${songEntity.title} - Video is EMPTY';
+                                              }
 
-                                          await ref
-                                              .read(playListViewModelProvider
-                                                  .notifier)
-                                              .getPlayLists();
-                                          if (ref.watch(
-                                                  listSortViewModelProvider) ==
-                                              SortedType.latest) {
-                                            ref
-                                                .read(listSortViewModelProvider
+                                              songEntity.video = video;
+                                            }
+
+                                            final entity = RawSongEntity(
+                                                countLibrary: 0,
+                                                countPlaylist: 0,
+                                                video: songEntity.video,
+                                                title: songEntity.title,
+                                                imgUrl: songEntity.imgUrl,
+                                                artist: songEntity.artist);
+
+                                            // 플레이리스트에 곡 추가 로직
+                                            await ref
+                                                .read(rawSongUsecaseProvider)
+                                                .updateRawSongByPlaylist(
+                                                    entity);
+
+                                            await ref
+                                                .read(playListsUsecaseProvider)
+                                                .addSong(
+                                                    ref
+                                                        .read(
+                                                            userViewModelProvider
+                                                                .notifier)
+                                                        .getUserId(),
+                                                    playlistTitle,
+                                                    entity);
+
+                                            await ref
+                                                .read(playListViewModelProvider
                                                     .notifier)
-                                                .setLatest();
-                                          } else {
-                                            ref
-                                                .read(listSortViewModelProvider
-                                                    .notifier)
-                                                .setAscending();
-                                          }
+                                                .getPlayLists();
+                                            if (ref.watch(
+                                                    listSortViewModelProvider) ==
+                                                SortedType.latest) {
+                                              ref
+                                                  .read(
+                                                      listSortViewModelProvider
+                                                          .notifier)
+                                                  .setLatest();
+                                            } else {
+                                              ref
+                                                  .read(
+                                                      listSortViewModelProvider
+                                                          .notifier)
+                                                  .setAscending();
+                                            }
 
-                                          if (context.mounted) {
-                                            ToastMessage.show(context);
-                                            context.pop();
+                                            if (context.mounted) {
+                                              ToastMessage.show(context);
+                                              context.pop();
+                                              ref
+                                                  .read(
+                                                      savePlaylistBottomSheetProvider
+                                                          .notifier)
+                                                  .reflash();
+                                              ref
+                                                  .read(loadingViewModelProvider
+                                                      .notifier)
+                                                  .endLoading();
+                                            }
+                                          } catch (e) {
+                                            if (context.mounted) {
+                                              ToastMessage.show(context);
+                                            }
                                             ref
                                                 .read(
                                                     savePlaylistBottomSheetProvider
@@ -518,6 +561,11 @@ class SavePlaylistBottomSheet {
                                               horizontal: 24),
                                           child: Text(
                                             '플레이리스트에 음악 추가하기',
+                                            semanticsLabel: playListState
+                                                        .isClickedPlayList ==
+                                                    -1
+                                                ? '저장하려면 먼저 플레이리스트를 선택해주세요.'
+                                                : '플레이리스트에 음악 추가하기',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -577,93 +625,99 @@ Widget playlistDialog(
                     SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
-                      height: 40,
-                      width: 260,
-                      child: TextField(
-                        controller: title,
-                        style: TextStyle(
-                          color: Colors.grey[900],
+                    Semantics(
+                      label: '제목',
+                      child: SizedBox(
+                        height: 40,
+                        width: 260,
+                        child: TextField(
+                          controller: title,
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                          ),
+                          maxLines: 1,
+                          maxLength: 20,
+                          buildCounter: (context,
+                                  {required currentLength,
+                                  required isFocused,
+                                  required maxLength}) =>
+                              null,
+                          cursorWidth: 2.0,
+                          cursorHeight: 20.0,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              hintText: '제목',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              )),
                         ),
-                        maxLines: 1,
-                        maxLength: 20,
-                        buildCounter: (context,
-                                {required currentLength,
-                                required isFocused,
-                                required maxLength}) =>
-                            null,
-                        cursorWidth: 2.0,
-                        cursorHeight: 20.0,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            hintText: '제목',
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
-                            )),
                       ),
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    SizedBox(
-                      height: 80,
-                      width: 260,
-                      child: TextField(
-                        controller: description,
-                        style: TextStyle(
-                          color: Colors.grey[900],
+                    Semantics(
+                      label: '설명 추가',
+                      child: SizedBox(
+                        height: 80,
+                        width: 260,
+                        child: TextField(
+                          controller: description,
+                          style: TextStyle(
+                            color: Colors.grey[900],
+                          ),
+                          maxLines: 3,
+                          cursorWidth: 2.0,
+                          cursorHeight: 20.0,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              hintText: '설명추가',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              )),
                         ),
-                        maxLines: 3,
-                        cursorWidth: 2.0,
-                        cursorHeight: 20.0,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            hintText: '설명추가',
-                            hintStyle: TextStyle(color: Colors.grey[600]),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
-                            )),
                       ),
                     ),
                     SizedBox(
@@ -702,7 +756,7 @@ Widget playlistDialog(
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor:
-                                      WidgetStatePropertyAll(Color(0xff40017E)),
+                                      WidgetStatePropertyAll(AppColors.main800),
                                   shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius:

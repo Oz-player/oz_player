@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_naver_view_model.dart';
 import 'package:oz_player/presentation/ui/search/view_model/search_spotify_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +61,6 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
             height: 45,
             child: TextFormField(
               style: TextStyle(
-                fontFamily: 'Pretendard',
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),
@@ -71,7 +71,6 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
                 hintText: '제목 또는 가사 검색',
                 hintStyle: TextStyle(
                   fontSize: 16,
-                  fontFamily: 'Pretendard',
                   fontWeight: FontWeight.w600,
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -85,13 +84,14 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
                 ),
                 suffixIcon: _textEditingController.text.isNotEmpty
                     ? IconButton(
-                        icon: Image.asset('assets/images/icon_delete.png'),
+                        icon: SvgPicture.asset('assets/svg/icon_delete.svg', height: 24,),
                         onPressed: clearText, // 검색어 지우기
                       )
                     : null,
               ),
               onChanged: (text) {
-                EasyDebounce.debounce('search', Duration(milliseconds: 500), (){
+                EasyDebounce.debounce('search', Duration(milliseconds: 500),
+                    () {
                   search(text);
                 });
               },
@@ -107,7 +107,6 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
           child: Text(
             '취소',
             style: TextStyle(
-              fontFamily: 'Pretendard',
               fontWeight: FontWeight.w500,
               fontSize: 16,
               color: Colors.grey[600],

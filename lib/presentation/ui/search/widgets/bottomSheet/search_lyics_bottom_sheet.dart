@@ -47,13 +47,16 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: SizedBox(
-                                  child: Text(
-                                    song,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                  child: Semantics(
+                                    label: '제목',
+                                    child: Text(
+                                      song,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ),
@@ -62,10 +65,13 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                                 height: 50,
                               ),
                               SizedBox(
-                                child: Text(
-                                  artist,
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                child: Semantics(
+                                  label: '가수',
+                                  child: Text(
+                                    artist,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                               )
@@ -73,6 +79,7 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                           ),
                           SizedBox(height: 25),
                           bottomSheetButton(context, '가사 보기', () {
+                            context.pop();
                             context.push('/search/lyrics', extra: {
                               'song': song,
                               'artist': artist,
@@ -81,6 +88,7 @@ class SearchLyicsBottomSheet extends StatelessWidget {
                           }),
                           SizedBox(height: 10),
                           bottomSheetButton(context, '재생', () async {
+                            context.pop();
                             if (audioState.currentSong?.title == song &&
                                 audioState.currentSong?.artist == artist &&
                                 audioState.isPlaying) {

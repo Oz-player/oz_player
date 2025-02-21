@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/revoke_reason_button.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class RevokePage extends ConsumerStatefulWidget {
@@ -26,16 +29,32 @@ class _RevokePageState extends ConsumerState<RevokePage> {
 
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          title: Text(
+        centerTitle: true,
+        title: ExcludeSemantics(
+          child: Text(
             '회원탈퇴',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF191F28),
+              color: AppColors.gray900,
               height: 1.4,
             ),
-          )),
+          ),
+        ),
+        leading: Semantics(
+          button: true,
+          child: IconButton(
+            onPressed: () {
+              context.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              semanticLabel: '돌아가기',
+            ),
+            color: Colors.grey[900],
+          ),
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 38),
@@ -52,13 +71,16 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                 ),
               ),
               SizedBox(height: 12),
-              Text(
-                '떠나시는 이유를 공유해주시면 더 나은 서비스를\n제공할 수 있도록 노력하겠습니다',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                  height: 1.4,
+              Semantics(
+                hint: '탈퇴 사유를 선택한 후 맨 아래의 탈퇴하기 버튼을 클릭해주세요.',
+                child: Text(
+                  '떠나시는 이유를 공유해주시면 더 나은 서비스를\n제공할 수 있도록 노력하겠습니다',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                    height: 1.4,
+                  ),
                 ),
               ),
               SizedBox(height: 48),
@@ -94,10 +116,10 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                       borderRadius: BorderRadius.circular(8)),
                   padding: EdgeInsets.symmetric(horizontal: 36, vertical: 13),
                   backgroundColor: selectedButtonIndex == -1
-                      ? Color(0xFFEFF1F3)
-                      : Color(0xFF40017E),
+                      ? AppColors.gray300
+                      : AppColors.main800,
                   foregroundColor: selectedButtonIndex == -1
-                      ? Color(0xFFADB5BD)
+                      ? AppColors.gray400
                       : Colors.white,
                   textStyle: TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600, height: 1.4),
@@ -109,9 +131,14 @@ class _RevokePageState extends ConsumerState<RevokePage> {
                           await deleteUserViewModel.deleteUser(
                               context, selectedButtonIndex, ref);
                         }
+                        ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
                         ref.read(bottomNavigationProvider.notifier).resetPage();
                       },
-                child: Text('탈퇴하기'),
+                child: Text(
+                  '탈퇴하기',
+                  semanticsLabel:
+                      selectedButtonIndex == -1 ? '먼저 탈퇴 사유를 선택해주세요.' : '탈퇴하기',
+                ),
               ),
             ],
           ),

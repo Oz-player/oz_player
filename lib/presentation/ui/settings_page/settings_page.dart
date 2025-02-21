@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/login/login_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/go_app_settings.dart';
 import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/ask_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/version_view_model.dart';
 import 'package:oz_player/presentation/ui/settings_page/widgets/settings_button.dart';
+import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -18,16 +20,35 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            '설정',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[900],
-              height: 1.4,
+        centerTitle: true,
+        title: Semantics(
+          label: '설정',
+          child: ExcludeSemantics(
+            child: Text(
+              '설정',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[900],
+                height: 1.4,
+              ),
             ),
-          )),
+          ),
+        ),
+        leading: Semantics(
+          button: true,
+          child: IconButton(
+            onPressed: () {
+              context.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              semanticLabel: '돌아가기',
+            ),
+            color: Colors.grey[900],
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -105,111 +126,117 @@ class ExitButtons extends ConsumerWidget {
           textButton('로그아웃', () {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                content: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 24,
-                        ),
-                        Text(
-                          '잠깐!\n정말 로그아웃 하시겠어요?',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            height: 1.4,
+              builder: (context) => Semantics(
+                label: '취소와 확인 버튼입니다. 로그아웃 하시려면 확인을 눌러주세요.',
+                child: AlertDialog(
+                  backgroundColor: Colors.white,
+                  content: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 24,
                           ),
-                        ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        Text(
-                          '확인 버튼을 누르면 로그아웃됩니다',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF6B7684),
-                            height: 1.4,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                                style: ButtonStyle(
-                                    padding: WidgetStateProperty.all<
-                                            EdgeInsetsGeometry>(
-                                        EdgeInsets.symmetric(
-                                            horizontal: 47, vertical: 10)),
-                                    backgroundColor: WidgetStatePropertyAll(
-                                        Color(0xFFF2E6FF)),
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)))),
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: Text(
-                                  '취소',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF6B7684),
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.4),
-                                )),
-                            SizedBox(
-                              width: 8,
+                          Text(
+                            '잠깐!\n정말 로그아웃 하시겠어요?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              height: 1.4,
                             ),
-                            TextButton(
-                                style: ButtonStyle(
-                                    padding: WidgetStateProperty.all<
-                                            EdgeInsetsGeometry>(
-                                        EdgeInsets.symmetric(
-                                            horizontal: 47, vertical: 10)),
-                                    backgroundColor: WidgetStatePropertyAll(
-                                        Color(0xFF40017E)),
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)))),
-                                onPressed: () async {
-                                  log('로그아웃 확인 버튼 선택함!');
-                                  final loginViewModel =
-                                      ref.read(loginViewModelProvider.notifier);
-                                  await loginViewModel.logout();
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            '확인 버튼을 누르면 로그아웃됩니다',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.gray600,
+                              height: 1.4,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  style: ButtonStyle(
+                                      padding: WidgetStateProperty.all<
+                                              EdgeInsetsGeometry>(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 47, vertical: 10)),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          AppColors.main100),
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8)))),
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  child: Text(
+                                    '취소',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.gray600,
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.4),
+                                  )),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              TextButton(
+                                  style: ButtonStyle(
+                                      padding: WidgetStateProperty.all<
+                                              EdgeInsetsGeometry>(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 47, vertical: 10)),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          AppColors.main800),
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8)))),
+                                  onPressed: () async {
+                                    log('로그아웃 확인 버튼 선택함!');
+                                    final loginViewModel = ref
+                                        .read(loginViewModelProvider.notifier);
+                                    await loginViewModel.logout();
 
-                                  // ignore: use_build_context_synchronously
-                                  context.go('/login');
-                                  ref.read(bottomNavigationProvider.notifier).resetPage();
-                                },
-                                child: Text(
-                                  '확인',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    height: 1.4,
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                        top: -164,
-                        left: 0,
-                        right: 0,
-                        child: Image.asset('assets/char/oz_2.png')),
-                  ],
+                                    // ignore: use_build_context_synchronously
+                                    context.go('/login');
+                                    ref.read(audioPlayerViewModelProvider.notifier).toggleStop();
+                                    ref
+                                        .read(bottomNavigationProvider.notifier)
+                                        .resetPage();
+                                  },
+                                  child: Text(
+                                    '확인',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      height: 1.4,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                          top: -164,
+                          left: 0,
+                          right: 0,
+                          child: Image.asset('assets/char/oz_2.png')),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -221,13 +248,13 @@ class ExitButtons extends ConsumerWidget {
               height: 10,
               width: 2,
               decoration: BoxDecoration(
-                color: Color(0xFFADB5BD),
+                color: AppColors.gray400,
                 borderRadius: BorderRadius.circular(100),
               ),
             ),
           ),
           textButton('회원탈퇴', () {
-            context.go('/settings/revoke');
+            context.push('/settings/revoke');
           }),
         ],
       ),
@@ -248,7 +275,7 @@ class ExitButtons extends ConsumerWidget {
             height: 17 / 14,
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Color(0xFFADB5BD),
+            color: AppColors.gray400,
           ),
         ),
       ),
@@ -276,7 +303,7 @@ class VersionInfo extends ConsumerWidget {
             '버전 안내',
             style: TextStyle(
               fontSize: 14,
-              color: Color(0xFF6B7684),
+              color: AppColors.gray600,
               fontWeight: FontWeight.w500,
               height: 17 / 14,
             ),
@@ -287,7 +314,7 @@ class VersionInfo extends ConsumerWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF6B7684),
+              color: AppColors.gray600,
               height: 17 / 14,
             ),
           ),
@@ -296,14 +323,14 @@ class VersionInfo extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 18, vertical: 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              color: Color(0xFFF2E6FF),
+              color: AppColors.main100,
             ),
             child: Text(
               appVersion,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF7303E3),
+                color: AppColors.main600,
                 height: 17 / 14,
               ),
             ),
