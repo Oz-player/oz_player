@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/providers/login/providers.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
@@ -249,6 +250,7 @@ class _RecommendPageConditionTwoState
                   scale: 0.5,
                   fade: 0.3,
                   onIndexChanged: (index) {
+                    HapticFeedback.vibrate();
                     ref
                         .read(cardPositionProvider.notifier)
                         .cardPositionIndex(index);
