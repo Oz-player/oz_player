@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -175,7 +177,8 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                       scale: 0.5,
                       fade: 0.3,
                       onIndexChanged: (index) {
-                        HapticFeedback.vibrate();
+                        log('index changed');
+                        HapticFeedback.lightImpact();
                         ref
                             .read(cardPositionProvider.notifier)
                             .cardPositionIndex(index);
