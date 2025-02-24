@@ -3,7 +3,6 @@
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=BF81FE&width=435&lines=Hello!+We+are+Oz+⭐;Welcome+to+our+world+of+music+⭐)](https://git.io/typing-svg)    
 <p align="center"><img src="assets/images/screen.png"></img></p>     
 
-<!-- <img src="assets/images/muoz_2.png" height="120"></img>     -->
 
 <div align="center">
   <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid white;">
@@ -73,14 +72,56 @@
 
 &nbsp;
 
-### 🍇 코드 구조    
-#### ➡ 클린 아키텍처(Clean Architecture)
+### 👾 기술적 의사결정   
+#### 📍 클린 아키텍처(Clean Architecture)
 | <img src="assets/images/clean_architecture.png" width="600"></img> |       
 | ------------- |        
 
 
-> <strong>🏗 선택한 이유 </strong>    
-관심사를 분리함으로써 보일러플레이트 코드를 줄이고<br> 코드의 유지보수성과 확장성을 높이는 것이<br> 클린 아키텍처를 선택한 주된 이유입니다.      
+> <strong>💡 선택한 이유 </strong>    
+관심사를 분리하여 보일러 플레이트 코드를 줄여서, 코드의 유지보수성과 확장성을 높이는 것이 <br>클린 아키텍처를 선택한 주된 이유입니다. 이를 효과적으로 구현하기 위해<br>MVVM 패턴과 Repository 패턴을 도입하여 각 계층의 역할을 명확히 구분하고 <br>코드의 일관성과 재사용성을 극대화했습니다.       
+         
+&nbsp;
+#### 📍 Firebase Functions을 활용한 OIDC 직접 구현   
+> <strong>💡 선택한 이유 </strong>
+> 카카오 로그인을 Firebase Authentication의 기본 OIDC 제공자를 통해 구현할 경우,
+비용이 발생하는 한계가 있습니다. 
+특히, 월 활성 사용자(MAU)가 50명을 초과하면 유료 요금이 적용되며, 
+예를 들어 10,049명의 사용자가 한달에 10번씩 로그인(MAU 10,000)하면 
+월 $150의 비용이 발생할 수 있습니다.
+[> OIDC 요금 참조](https://cloud.google.com/identity-platform/pricing?hl=ko) <br>
+>이 문제를 해결하기 위해, Firebase Functions를 활용하여 OIDC 인증을 직접 구현하는
+방식을 선택했습니다.
+> 
+> - Firebase Functions는 백그라운드 이벤트, HTTPS 요청, Admin SDK 호출, 
+> Cloud Scheduler 작업 등을 통해 실행할 수 있는 서버 리스(Serverless) 프레임 워크 입니다.
+> - CPU 기준(연산양) 월 200,000초 무료 제공
+> 
+> 예를 들어 10,049명의 사용자가 한 달에 10번씩 로그인 한다고 가정하면,
+> 
+> - 총 100,490회 요청
+> - 요청당 평균 500ms(0.5초) 소요 → 총 50,245초 사용
+> 
+> 결과적으로 더 저렴하게 이용 가능합니다. 
+>
+
+&nbsp;
+#### 📍 디바운싱
+> <strong>💡 선택한 이유 </strong>  
+검색 시 사용자가 키워드 입력만으로 즉시 결과를 확인할 수 있도록 onChanged 를 활용하였습니다. 
+그러나 onChanged 는 사용자가 입력할 때마다 API 요청이 발생하여 성능 저하를 초래할 수 있습니다. 
+이를 방지하기 위해 디바운스를 적용하여, 일정 시간 동안 추가 입력이 없을 경우에만 
+요청이 실행되도록 최적화하였습니다.
+
+&nbsp;
+#### 📍 Sentry 모니터링
+| <img src="assets/images/sentry_logo.png" width="400"></img> |       
+| ------------- |         
+
+> <strong>💡 선택한 이유 </strong>   
+Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 반면,<br> [Sentry](https://sentry.io/welcome/)는 릴리즈 모드에서 실시간으로 오류를 추적하기 용이합니다.<br> 현재 서비스의 초기 단계에서 다양한 버그가 발생할 가능성이 높다고 판단하여,<br> 보다 신속한 디버깅이 가능한 [Sentry](https://sentry.io/welcome/)를 선택했습니다.
+
+     
 
 &nbsp;
 
@@ -279,16 +320,6 @@ flowchart
 
 </div>
 </details>
-   
-
-&nbsp;
-
-## ♒ 모니터링 방법    
-| <img src="assets/images/sentry_logo.png" width="400"></img> |       
-| ------------- |         
-
-> <strong>📊 선택한 이유 </strong>   
-Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 반면,<br> [Sentry](https://sentry.io/welcome/)는 릴리즈 모드에서 실시간으로 오류를 추적하기 용이합니다.<br> 현재 서비스의 초기 단계에서 다양한 버그가 발생할 가능성이 높다고 판단하여,<br> 보다 신속한 디버깅이 가능한 [Sentry](https://sentry.io/welcome/)를 선택했습니다.
 
 
 
@@ -297,7 +328,7 @@ Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 �
 ## ♒ Trouble Shooting
 
 
-> ✔ 사용하려던 domain 변경 [notion>](https://teamsparta.notion.site/domain-17d2dc3ef51481dea802d9bf863319e0)  
+
 > ✔ IOS에서 구글로그인 강제 종료 [notion>](https://teamsparta.notion.site/IOS-6c3d12eafa614d3b9fb495f0039284fe)  
 > ✔ IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
 > ✔ Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
