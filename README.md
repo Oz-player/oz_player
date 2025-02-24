@@ -78,12 +78,12 @@
 | ------------- |        
 
 
-> <strong>💡 선택한 이유 </strong>    
+> <strong>💡 선택한 이유 </strong>        
 관심사를 분리하여 보일러 플레이트 코드를 줄여서, 코드의 유지보수성과 확장성을 높이는 것이 <br>클린 아키텍처를 선택한 주된 이유입니다. 이를 효과적으로 구현하기 위해<br>MVVM 패턴과 Repository 패턴을 도입하여 각 계층의 역할을 명확히 구분하고 <br>코드의 일관성과 재사용성을 극대화했습니다.       
          
 &nbsp;
 #### 📍 Firebase Functions을 활용한 OIDC 직접 구현   
-> <strong>💡 선택한 이유 </strong>
+> <strong>💡 선택한 이유 </strong>        
 > 카카오 로그인을 Firebase Authentication의 기본 OIDC 제공자를 통해 구현할 경우,
 비용이 발생하는 한계가 있습니다. 
 특히, 월 활성 사용자(MAU)가 50명을 초과하면 유료 요금이 적용되며, 
@@ -107,7 +107,7 @@
 
 &nbsp;
 #### 📍 디바운싱
-> <strong>💡 선택한 이유 </strong>  
+> <strong>💡 선택한 이유 </strong>      
 검색 시 사용자가 키워드 입력만으로 즉시 결과를 확인할 수 있도록 onChanged 를 활용하였습니다. 
 그러나 onChanged 는 사용자가 입력할 때마다 API 요청이 발생하여 성능 저하를 초래할 수 있습니다. 
 이를 방지하기 위해 디바운스를 적용하여, 일정 시간 동안 추가 입력이 없을 경우에만 
@@ -118,7 +118,7 @@
 | <img src="assets/images/sentry_logo.png" width="400"></img> |       
 | ------------- |         
 
-> <strong>💡 선택한 이유 </strong>   
+> <strong>💡 선택한 이유 </strong>      
 Firebase Crashlytics는 로그를 일정 시간 단위로 묶어 전송하는 반면,<br> [Sentry](https://sentry.io/welcome/)는 릴리즈 모드에서 실시간으로 오류를 추적하기 용이합니다.<br> 현재 서비스의 초기 단계에서 다양한 버그가 발생할 가능성이 높다고 판단하여,<br> 보다 신속한 디버깅이 가능한 [Sentry](https://sentry.io/welcome/)를 선택했습니다.
 
      
