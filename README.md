@@ -328,6 +328,7 @@ flowchart
 > ✔ IOS에서 스트리밍되는 audioUrl의 길이가 다른 문제 [notion>](https://www.notion.so/IOS-audioUrl-5984d131058c46b28b4711a3d16fa5eb?pvs=23)  
 > ✔ Google Gemini의 추천곡 로직에서 할루시네이션(Hallucination) 이 발생했던 문제 [notion>](https://www.notion.so/teamsparta/Google-Gemini-Hallucination-aaf8d827afe242edb9d9e734d81d025b)     
 > ✔ go router 파라미터 문제 [notion>](https://www.notion.so/teamsparta/go-router-497180bd5ebc474b80f7cc114a8a3039)     
+> ✔ 회원 탈퇴 시 유저 아이디 캐시 삭제 문제 [notion>](https://www.notion.so/teamsparta/1a42dc3ef5148014ab95f8e3da26a01c)      
 
 
 &nbsp;
