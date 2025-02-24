@@ -26,7 +26,7 @@
 ### 'MUOZ' 는 새로운 음악🎵을<br> 🎶 만나고 싶은 사람들을 위한<br> 음악 추천형🎵 오디오 플레이어입니다.
 
 #### 'MUOZ'는 다음과 같은 분들을 위해<br> 탄생되었습니다 !
-<img src="assets/images/oz_1.png" height="100"></img>   
+<img src="assets/images/oz_1.png" height="100"></img><img src="assets/images/QRcode.png" height="105"></img>    
 
 
 > <p><img src="assets/images/search_icon2.png" height="20" style="vertical-align: middle;"> 취향에 맞는 새로운 음악을 추천받아 보고 싶으신 분들</p>
