@@ -84,17 +84,12 @@
 &nbsp;
 #### 📍 Firebase Functions을 활용한 OIDC 직접 구현   
 > <strong>💡 선택한 이유 </strong>        
-> 카카오 로그인을 Firebase Authentication의 기본 OIDC 제공자를 통해 구현할 경우,
-비용이 발생하는 한계가 있습니다. 
-특히, 월 활성 사용자(MAU)가 50명을 초과하면 유료 요금이 적용되며, 
-예를 들어 10,049명의 사용자가 한달에 10번씩 로그인(MAU 10,000)하면 
-월 $150의 비용이 발생할 수 있습니다.
-[> OIDC 요금 참조](https://cloud.google.com/identity-platform/pricing?hl=ko) <br>
->이 문제를 해결하기 위해, Firebase Functions를 활용하여 OIDC 인증을 직접 구현하는
+> 카카오 로그인을 Firebase Authentication의 기본 OIDC 제공자를 통해 구현할 경우,<br>비용이 발생하는 한계가 있습니다. <br>특히, 월 활성 사용자(MAU)가 50명을 초과하면 유료 요금이 적용되며, <br>예를 들어 10,049명의 사용자가 한달에 10번씩 로그인(MAU 10,000)하면 <br>월 $150의 비용이 발생할 수 있습니다.<br>[> OIDC 요금 참조](https://cloud.google.com/identity-platform/pricing?hl=ko) <br>
+>이 문제를 해결하기 위해, Firebase Functions를 활용하여<br> OIDC 인증을 직접 구현하는
 방식을 선택했습니다.
 > 
 > - Firebase Functions는 백그라운드 이벤트, HTTPS 요청, Admin SDK 호출, 
-> Cloud Scheduler 작업 등을 통해 실행할 수 있는 서버 리스(Serverless) 프레임 워크 입니다.
+> <br>Cloud Scheduler 작업 등을 통해 실행할 수 있는 서버 리스(Serverless) 프레임 워크 입니다.
 > - CPU 기준(연산양) 월 200,000초 무료 제공
 > 
 > 예를 들어 10,049명의 사용자가 한 달에 10번씩 로그인 한다고 가정하면,
@@ -108,10 +103,10 @@
 &nbsp;
 #### 📍 디바운싱
 > <strong>💡 선택한 이유 </strong>      
-검색 시 사용자가 키워드 입력만으로 즉시 결과를 확인할 수 있도록 onChanged 를 활용하였습니다. 
-그러나 onChanged 는 사용자가 입력할 때마다 API 요청이 발생하여 성능 저하를 초래할 수 있습니다. 
+검색 시 사용자가 키워드 입력만으로 즉시 결과를 확인할 수 있도록<br> onChanged 를 활용하였습니다. 
+그러나 onChanged 는 사용자가 입력할 때마다 API 요청이 발생하여 성능 저하를 초래할 수 있습니다.<br> 
 이를 방지하기 위해 디바운스를 적용하여, 일정 시간 동안 추가 입력이 없을 경우에만 
-요청이 실행되도록 최적화하였습니다.
+<br>요청이 실행되도록 최적화하였습니다.
 
 &nbsp;
 #### 📍 Sentry 모니터링
