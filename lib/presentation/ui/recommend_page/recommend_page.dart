@@ -131,7 +131,6 @@ class _RecommendPageState extends ConsumerState<RecommendPage> {
             ],
           ),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }

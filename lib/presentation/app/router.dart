@@ -19,6 +19,7 @@ import 'package:oz_player/presentation/ui/settings_page/private_info_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/revoke_page.dart';
 import 'package:oz_player/presentation/ui/settings_page/settings_page.dart';
 import 'package:oz_player/presentation/ui/splash/splash.dart';
+import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -40,72 +41,87 @@ final router = GoRouter(
         ),
       ],
     ),
-    GoRoute(
-      path: '/saved',
-      builder: (context, state) => SavedPage(),
+
+    ShellRoute(
+      navigatorKey: GlobalKey<NavigatorState>(),
+      builder: (context, state, child) {
+        return Scaffold(
+          body: child, // 현재 선택된 페이지가 child로 들어옴
+          bottomNavigationBar: HomeBottomNavigation(), // 고정된 네비게이션 바
+        );
+      },
       routes: [
         GoRoute(
-          path: 'playlist',
-          builder: (context, state) => PlaylistPage(
-            playlist: state.extra as PlayListEntity,
-          ),
+          path: '/home',
+          builder: (context, state) => HomePage(),
           routes: [
             GoRoute(
-              path: 'edit',
-              builder: (context, state) =>
-                  EditPlaylistPage(playlist: state.extra as PlayListEntity),
+              path: 'recommend',
+              builder: (context, state) => RecommendPage(),
+              routes: [
+                GoRoute(
+                  path: 'conditionOne',
+                  builder: (context, state) => RecommendPageConditionOne(),
+                ),
+                GoRoute(
+                  path: 'conditionTwo',
+                  builder: (context, state) => RecommendPageConditionTwo(),
+                )
+              ],
+            ),
+            GoRoute(
+              path: 'ranking',
+              builder: (context, state) => RankingPage(),
             ),
           ],
         ),
         GoRoute(
-          path: 'library',
-          builder: (context, state) => LibraryPage(
-            library: (state.extra as List<dynamic>)[0] as List<LibraryEntity>,
-          ),
-        ),
-      ],
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => HomePage(),
-      routes: [
-        GoRoute(
-          path: 'recommend',
-          builder: (context, state) => RecommendPage(),
+          path: '/saved',
+          builder: (context, state) => SavedPage(),
           routes: [
             GoRoute(
-              path: 'conditionOne',
-              builder: (context, state) => RecommendPageConditionOne(),
+              path: 'playlist',
+              builder: (context, state) => PlaylistPage(
+                playlist: state.extra as PlayListEntity,
+              ),
+              routes: [
+                GoRoute(
+                  path: 'edit',
+                  builder: (context, state) =>
+                      EditPlaylistPage(playlist: state.extra as PlayListEntity),
+                ),
+              ],
             ),
             GoRoute(
-              path: 'conditionTwo',
-              builder: (context, state) => RecommendPageConditionTwo(),
-            )
+              path: 'library',
+              builder: (context, state) => LibraryPage(
+                library:
+                    (state.extra as List<dynamic>)[0] as List<LibraryEntity>,
+              ),
+            ),
           ],
         ),
         GoRoute(
-          path: 'ranking',
-          builder: (context, state) => RankingPage(),
+          path: '/search',
+          builder: (context, state) => Search(),
+          routes: [
+            GoRoute(
+              path: 'lyrics',
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                return LyricsPage(
+                  song: args['song'],
+                  artist: args['artist'],
+                  lyrics: args['lyrics'],
+                );
+              },
+            ),
+          ],
         ),
       ],
     ),
-    GoRoute(
-      path: '/search',
-      builder: (context, state) => Search(),
-      routes: [
-        GoRoute(
-          path: 'lyrics',
-          builder: (context, state) {
-            final args = state.extra as Map<String, dynamic>;
-            return LyricsPage(
-              song: args['song'],
-              artist: args['artist'],
-              lyrics: args['lyrics'],
-            );
-          },
-        ),
-      ],
-    ),
+    // 설정 페이지 같은 네비게이션 바 없는 페이지들은 여전히 따로 관리
+
     GoRoute(
       path: '/settings',
       parentNavigatorKey: _rootNavigatorKey,

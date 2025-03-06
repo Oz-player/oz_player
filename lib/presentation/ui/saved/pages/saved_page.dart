@@ -277,7 +277,6 @@ class _SavedPageState extends ConsumerState<SavedPage> {
             ),
           ],
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }

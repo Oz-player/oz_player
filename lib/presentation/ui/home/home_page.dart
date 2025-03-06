@@ -198,7 +198,6 @@ class HomePage extends ConsumerWidget {
             ],
           ),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }

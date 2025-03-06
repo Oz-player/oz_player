@@ -67,7 +67,6 @@ class _SearchState extends ConsumerState<Search> {
           ),
         ),
       ),
-      bottomNavigationBar: HomeBottomNavigation(),
     );
   }
 }

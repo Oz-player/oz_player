@@ -127,7 +127,6 @@ class RecommendPageConditionOne extends ConsumerWidget {
           ),
         ),
       ),
-      bottomNavigationBar: HomeBottomNavigation(),
     );
   }
 

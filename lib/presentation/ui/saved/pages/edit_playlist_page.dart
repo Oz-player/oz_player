@@ -654,7 +654,6 @@ class _EditPlaylistPageState extends ConsumerState<EditPlaylistPage> {
                 ))
           ],
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }
