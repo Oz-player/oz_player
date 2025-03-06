@@ -207,7 +207,6 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
             ],
           ),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }

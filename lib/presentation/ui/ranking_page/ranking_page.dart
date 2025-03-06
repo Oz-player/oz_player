@@ -141,7 +141,6 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                   ),
                 ],
               ),
-              bottomNavigationBar: HomeBottomNavigation(),
             ),
           );
         });

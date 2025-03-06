@@ -885,7 +885,6 @@ class _MainScaffoldState extends State<MainScaffold> {
               ),
             ],
           ),
-          bottomNavigationBar: HomeBottomNavigation(),
         ),
       ),
     );

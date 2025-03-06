@@ -132,7 +132,6 @@ class _RecommendPageConditionTwoState
             ),
           ],
         )),
-        bottomNavigationBar: HomeBottomNavigation(),
       );
     }
 
@@ -456,7 +455,6 @@ class _RecommendPageConditionTwoState
             ],
           ),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }
