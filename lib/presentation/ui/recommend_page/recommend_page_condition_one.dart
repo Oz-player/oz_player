@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
 import 'package:oz_player/presentation/ui/recommend_page/view_model/condition_view_model.dart';
-import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class RecommendPageConditionOne extends ConsumerWidget {
   const RecommendPageConditionOne({super.key});
