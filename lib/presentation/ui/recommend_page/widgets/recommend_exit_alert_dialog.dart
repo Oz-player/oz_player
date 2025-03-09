@@ -58,10 +58,13 @@ class RecommendExitAlertDialog extends ConsumerWidget {
                                 .updatePage(destination!);
                             ref.read(cardPositionProvider.notifier).reset();
                             if (destination == 0) {
+                              context.pop();
                               context.go('/saved');
                             } else if (destination == 1) {
+                              context.pop();
                               context.go('/home');
                             } else if (destination == 2) {
+                              context.pop();
                               context.go('/search');
                             }
                           },
