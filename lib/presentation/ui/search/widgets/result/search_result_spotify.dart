@@ -122,7 +122,7 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                         return SearchSongBottomSheet(
                           imgUrl: imageUrl,
                           artist: result.type == 'track'
-                              ? result.album!['artists'].first['name']
+                              ? artistNamesString
                               : result.genres!.isNotEmpty
                                   ? result.genres.toString()
                                   : '',
