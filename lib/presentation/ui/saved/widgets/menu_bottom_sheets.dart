@@ -45,7 +45,7 @@ class SavedMenuBottomSheet extends StatelessWidget {
                     height: 48,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      image: imgUrl == null
+                      image: imgUrl!.isEmpty
                           ? DecorationImage(
                               image: AssetImage(
                                   'assets/images/empty_thumbnail.png'),

@@ -659,10 +659,17 @@ class _MainScaffoldState extends State<MainScaffold> {
                                                           BorderRadius.circular(
                                                               4),
                                                       color: AppColors.gray600,
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            data[index].imgUrl),
-                                                      ),
+                                                      image: data[index]
+                                                              .imgUrl
+                                                              .isEmpty
+                                                          ? DecorationImage(
+                                                              image: AssetImage(
+                                                                  'assets/images/empty_thumbnail.png'))
+                                                          : DecorationImage(
+                                                              image: NetworkImage(
+                                                                  data[index]
+                                                                      .imgUrl),
+                                                            ),
                                                     ),
                                                   ),
                                                   // -------
