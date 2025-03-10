@@ -11,6 +11,7 @@ class SpotifyEntity {
   final bool? explicit; // 명시적 여부 (트랙에 대해서만)
   final String? previewUrl; // 미리 듣기 URL (트랙에 대해서만)
   final Map<String, dynamic>? album; // 앨범 정보 (트랙에 대해서만)
+  final List<dynamic>? artists;
 
   SpotifyEntity({
     required this.id,
@@ -25,5 +26,6 @@ class SpotifyEntity {
     required this.explicit,
     required this.previewUrl,
     required this.album,
+    required this.artists,
   });
 }
