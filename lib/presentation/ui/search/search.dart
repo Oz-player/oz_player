@@ -5,7 +5,6 @@ import 'package:oz_player/presentation/ui/search/widgets/search_page.dart';
 import 'package:oz_player/presentation/ui/search/widgets/result/search_result_page.dart';
 import 'package:oz_player/presentation/ui/search/widgets/search_word_page.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
-import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class Search extends ConsumerStatefulWidget {
   const Search({super.key});
@@ -67,7 +66,6 @@ class _SearchState extends ConsumerState<Search> {
           ),
         ),
       ),
-      bottomNavigationBar: HomeBottomNavigation(),
     );
   }
 }

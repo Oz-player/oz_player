@@ -24,6 +24,7 @@ class SpotifyRepositoryImpl implements SpotifyRepository{
             explicit: e.explicit,
             previewUrl: e.previewUrl,
             album: e.album,
+            artists: e.artists,
           ),
         )
         .toList();

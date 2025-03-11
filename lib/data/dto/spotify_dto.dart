@@ -11,6 +11,7 @@ class SpotifyDto {
   final bool? explicit; // 명시적 여부 (트랙에 대해서만)
   final String? previewUrl; // 미리 듣기 URL (트랙에 대해서만)
   final Map<String, dynamic>? album; // 앨범 정보 (트랙에 대해서만)
+  final List<dynamic>? artists;
 
   SpotifyDto({
     required this.id,
@@ -25,6 +26,8 @@ class SpotifyDto {
     this.explicit,
     this.previewUrl,
     this.album,
+    this.artists,
+
   });
 
   factory SpotifyDto.fromJson(Map<String, dynamic> json) {
@@ -51,6 +54,7 @@ class SpotifyDto {
         explicit: json['explicit'] ?? false,
         previewUrl: json['preview_url'] ?? '',
         album: json['album'] ?? {},
+        artists: json['artists'] ?? {},
       );
     }
     throw Exception('Unknown type: ${json['type']}');

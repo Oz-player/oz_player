@@ -21,6 +21,7 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
     //     spotifyResults!.where((result) => result.type == 'track').toList();
     // final artists =
     //     spotifyResults.where((result) => result.type == 'artist').toList();
+    
 
     if (spotifyResults!.isEmpty) {
       return Container(
@@ -53,6 +54,10 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
               : result.images?.isNotEmpty == true
                   ? result.images!.first['url']
                   : '';
+
+
+          List<dynamic> artistNames = result.artists!.map((artist) => artist['name']).toList();
+          String artistNamesString = artistNames.join(', ');
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -94,7 +99,7 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                         ),
                         Text(
                           result.type == 'track'
-                              ? result.album!['artists'].first['name']
+                              ? artistNamesString
                               : result.genres!.isNotEmpty
                                   ? result.genres.toString()
                                   : '',
@@ -117,7 +122,7 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                         return SearchSongBottomSheet(
                           imgUrl: imageUrl,
                           artist: result.type == 'track'
-                              ? result.album!['artists'].first['name']
+                              ? artistNamesString
                               : result.genres!.isNotEmpty
                                   ? result.genres.toString()
                                   : '',

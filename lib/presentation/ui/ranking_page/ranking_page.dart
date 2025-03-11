@@ -10,7 +10,6 @@ import 'package:oz_player/presentation/ui/ranking_page/widgets/ranking_switch.da
 import 'package:oz_player/presentation/widgets/audio_player/audio_player.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_bottomsheet.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
-import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class RankingPage extends ConsumerStatefulWidget {
   const RankingPage({super.key});
@@ -141,7 +140,6 @@ class _RankingPageState extends ConsumerState<RankingPage> {
                   ),
                 ],
               ),
-              bottomNavigationBar: HomeBottomNavigation(),
             ),
           );
         });

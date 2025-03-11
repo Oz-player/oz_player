@@ -7,7 +7,6 @@ import 'package:oz_player/presentation/ui/recommend_page/view_model/text_box_wid
 import 'package:oz_player/presentation/ui/recommend_page/widgets/text_box_widgets.dart';
 import 'package:oz_player/presentation/widgets/audio_player/audio_player_view_model.dart';
 import 'package:oz_player/presentation/widgets/home_tap/bottom_navigation_view_model/bottom_navigation_view_model.dart';
-import 'package:oz_player/presentation/widgets/home_tap/home_bottom_navigation.dart';
 
 class RecommendPage extends ConsumerStatefulWidget {
   const RecommendPage({super.key});
@@ -131,7 +130,6 @@ class _RecommendPageState extends ConsumerState<RecommendPage> {
             ],
           ),
         ),
-        bottomNavigationBar: HomeBottomNavigation(),
       ),
     );
   }
