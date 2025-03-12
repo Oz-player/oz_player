@@ -85,6 +85,12 @@ class SearchSongBottomSheet extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              Spacer(),
+                              IconButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  icon: Icon(Icons.close, size: 20))
                             ],
                           ),
                           SizedBox(height: 25),
