@@ -154,6 +154,7 @@ class SearchSongBottomSheet extends StatelessWidget {
                               if (ref
                                   .watch(loadingViewModelProvider)
                                   .isLoading) {
+                                log('a');
                                 return;
                               }
 
@@ -189,7 +190,8 @@ class SearchSongBottomSheet extends StatelessWidget {
                                       ref,
                                       titleController,
                                       descriptionController,
-                                      newEntity);
+                                      newEntity,
+                                      ispop: true);
                                 }
                               } catch (e) {
                                 log('오디오를 불러오는데 실패했습니다');

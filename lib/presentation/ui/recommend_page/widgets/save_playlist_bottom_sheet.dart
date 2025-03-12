@@ -24,7 +24,7 @@ class SavePlaylistBottomSheet {
       WidgetRef ref,
       TextEditingController title,
       TextEditingController description,
-      SongEntity? entity) async {
+      SongEntity? entity, {bool ispop = false}) async {
     final openSheet = await showModalBottomSheet(
         context: context,
         isDismissible: false,
@@ -531,6 +531,7 @@ class SavePlaylistBottomSheet {
                                             if (context.mounted) {
                                               ToastMessage.show(context);
                                               context.pop();
+                                              if(ispop) context.pop();
                                               ref
                                                   .read(
                                                       savePlaylistBottomSheetProvider
@@ -543,7 +544,7 @@ class SavePlaylistBottomSheet {
                                             }
                                           } catch (e) {
                                             if (context.mounted) {
-                                              ToastMessage.show(context);
+                                              ToastMessage.showErrorMessage(context);
                                             }
                                             ref
                                                 .read(
