@@ -73,6 +73,7 @@ dependencies:
   sentry_flutter: ^8.13.0
   flutter_secure_storage: ^9.2.4
   flutter_styled_toast: ^2.2.1
+  dio: ^5.8.0+1
 
 dev_dependencies:
   flutter_test:
