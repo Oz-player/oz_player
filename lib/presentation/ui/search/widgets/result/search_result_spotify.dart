@@ -118,6 +118,7 @@ class _SearchSpotifyResultState extends ConsumerState<SearchResultSpotify> {
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
+                      isDismissible: false,
                       builder: (BuildContext context) {
                         return SearchSongBottomSheet(
                           imgUrl: imageUrl,

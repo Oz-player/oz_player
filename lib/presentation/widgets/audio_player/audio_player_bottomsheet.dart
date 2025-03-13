@@ -99,7 +99,7 @@ class AudioBottomSheet {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/empty_thumbnail',
+                                      'assets/images/empty_thumbnail.png',
                                       fit: BoxFit.contain,
                                     ),
                         ),
@@ -346,7 +346,7 @@ class AudioBottomSheet {
                                       },
                                     )
                                   : Image.asset(
-                                      'assets/images/empty_thumbnail',
+                                      'assets/images/empty_thumbnail.png',
                                       fit: BoxFit.contain,
                                     ),
                         ),
