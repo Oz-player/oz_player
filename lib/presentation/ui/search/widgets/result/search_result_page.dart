@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
-import 'package:oz_player/presentation/ui/search/widgets/result/search_result_naver.dart';
+// import 'package:oz_player/presentation/ui/search/widgets/result/search_result_naver.dart';
 import 'package:oz_player/presentation/ui/search/widgets/result/search_result_spotify.dart';
 
 class SearchResultPage extends ConsumerStatefulWidget {
