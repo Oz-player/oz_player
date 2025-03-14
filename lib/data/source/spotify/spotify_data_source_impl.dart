@@ -50,7 +50,13 @@ class SpotifyDataSourceImpl implements SpotifyDataSource {
   Future<List<SpotifyDto>> searchList(String query) async {
     final token = await _getToken();
     final response = await dio.get(
-      'https://api.spotify.com/v1/search?q=$query&type=track&locale=ko-KR',
+      'https://api.spotify.com/v1/search',
+      queryParameters: {
+        'q': query,
+        'type': 'track',
+        'locale': 'ko-KR',
+        'offset': 0
+      },
       options: Options(
         headers: {
         'Authorization': 'Bearer $token',
@@ -58,7 +64,7 @@ class SpotifyDataSourceImpl implements SpotifyDataSource {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> map = jsonDecode(response.data);
+      final Map<String, dynamic> map = response.data;
       List<SpotifyDto> list = [];
 
       // tracks
