@@ -5,13 +5,17 @@ class SearchPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/search_page.png'),
-              alignment: Alignment(0, -0.5)
-            )
-          )
+    return Center(
+      child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/search_page.png'),
+                alignment: Alignment(0, -0.5)
+              ),
+            ),
+            height: 300,
+            width: 300,
+      ),
     );
   }
 

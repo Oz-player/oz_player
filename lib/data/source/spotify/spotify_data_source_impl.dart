@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 import 'package:oz_player/data/dto/spotify_dto.dart';
@@ -8,6 +9,8 @@ class SpotifyDataSourceImpl implements SpotifyDataSource {
 
   String? _token;
   DateTime? _tokenExpiration;
+
+  final dio = Dio();
 
   // 토큰을 요청하는 메서드
   Future<void> _fetchToken() async {
@@ -45,17 +48,23 @@ class SpotifyDataSourceImpl implements SpotifyDataSource {
 
   @override
   Future<List<SpotifyDto>> searchList(String query) async {
-    final client = Client();
     final token = await _getToken();
-    final response = await client.get(
-      Uri.parse('https://api.spotify.com/v1/search?q=$query&type=track&locale=ko-KR'),
-      headers: {
-        'Authorization': 'Bearer $token',
+    final response = await dio.get(
+      'https://api.spotify.com/v1/search',
+      queryParameters: {
+        'q': query,
+        'type': 'track',
+        'locale': 'ko-KR',
+        'offset': 0
       },
+      options: Options(
+        headers: {
+        'Authorization': 'Bearer $token',
+      },)
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> map = jsonDecode(response.body);
+      final Map<String, dynamic> map = response.data;
       List<SpotifyDto> list = [];
 
       // tracks
