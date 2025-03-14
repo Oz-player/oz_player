@@ -68,7 +68,7 @@ class _SearchAreaState extends ConsumerState<SearchArea> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.black12,
-                hintText: '제목 또는 가사 검색',
+                hintText: '제목 또는 가수로 검색',
                 hintStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
