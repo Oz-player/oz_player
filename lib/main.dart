@@ -25,6 +25,9 @@ void main() async {
 
   // kakao SDK 초기화
   KakaoSdk.init(nativeAppKey: 'dea017541ec3464d927cfbc9ec26c9c4');
+
+  // runApp(const ProviderScope(child: MyApp()));
+  
   await SentryFlutter.init(
     (options) {
       options.dsn = kDebugMode
