@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oz_player/presentation/theme/app_colors.dart';
-import 'package:oz_player/presentation/ui/search/widgets/result/search_result_naver.dart';
+// import 'package:oz_player/presentation/ui/search/widgets/result/search_result_naver.dart';
 import 'package:oz_player/presentation/ui/search/widgets/result/search_result_spotify.dart';
 
 class SearchResultPage extends ConsumerStatefulWidget {
@@ -61,32 +61,32 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   ),
                 ),
                 SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    if (!lyricsButton) {
-                      changeSelected(false);
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(
-                      lyricsButton ? AppColors.main800 : Colors.white,
-                    ),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: Color(0xffE5E8EB)),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    '가사 검색',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: lyricsButton ? Colors.white : Colors.grey[600],
-                    ),
-                  ),
-                ),
+                // TextButton(
+                //   onPressed: () {
+                //     if (!lyricsButton) {
+                //       changeSelected(false);
+                //     }
+                //   },
+                //   style: ButtonStyle(
+                //     backgroundColor: WidgetStateProperty.all(
+                //       lyricsButton ? AppColors.main800 : Colors.white,
+                //     ),
+                //     shape: WidgetStateProperty.all(
+                //       RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(8),
+                //         side: BorderSide(color: Color(0xffE5E8EB)),
+                //       ),
+                //     ),
+                //   ),
+                //   child: Text(
+                //     '가사 검색',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.w500,
+                //       fontSize: 16,
+                //       color: lyricsButton ? Colors.white : Colors.grey[600],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -94,7 +94,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
             height: 10,
           ),
           Expanded(
-            child: titleButton ? SearchResultSpotify() : SearchResultNaver(),
+            child: SearchResultSpotify(),
           ),
         ],
       ),
