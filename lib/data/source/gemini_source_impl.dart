@@ -41,7 +41,7 @@ class GeminiSourceImpl implements AiSource {
       log('GEMINI 추천 시작');
       
       final model = GenerativeModel(
-        model: 'gemini-1.5-pro-latest',
+        model: 'gemini-2.0-pro-latest',
         apiKey: apiKey,
         generationConfig: GenerationConfig(temperature: 1.3),
       );
